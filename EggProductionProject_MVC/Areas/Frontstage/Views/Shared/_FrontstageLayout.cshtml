@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author"
+          content="Mark Otto, Jacob Thornton, and Bootstrap contributors" />
+    <meta name="generator" content="Hugo 0.88.1" />
+    <title>@ViewData["Title"] - EggProductionProject_MVC</title>
+	@* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+	@* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+	@* <link rel="stylesheet" href="~/EggProductionProject_MVC.styles.css" asp-append-version="true" /> *@
+    <link rel="canonical"
+          href="https://getbootstrap.com/docs/5.1/examples/album/" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	
+
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+	
+    <link href="~/frontstagetemplate/assets/dist/css/style.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
+    
+</head>
+<body>
+	<header class="">
+		<div class="container_title p-0 m-0">
+			<!-- <div class="title-bg">
+				<img
+					class="w-100"
+					src="./assets/brand/layout/banners/banner_01.png"
+					alt="" />
+			</div> -->
+
+
+			<div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
+				<!-- <div class="d-flex justify-content-between align-items-center w-100"> -->
+
+				<div class="outer-layout-n">
+					<a href="#"
+					   class="d-flex align-items-center  text-decoration-none">
+						賣家中心
+					</a>
+					<a href="#"
+					   class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
+						<h5>
+						</h5>
+						<img src="~/Frontstage/exm/assets/brand/layout/GOOD_EGG.svg"
+							 class="bi "
+							 width="120"
+							 alt="Bootstrap" />
+					</a>
+
+				</div>
+
+
+				<ul class="nav col-12 col-lg-auto  justify-content-center align-items-center d-none d-lg-flex">
+					<li><a href="#" class="nav-link px-3 link-dark ">蛋雞分析</a></li>
+					<li><a href="#" class="nav-link px-3 link-dark ">知識討論</a></li>
+					<li>
+						<a href="#" class="nav-link px-3 link-dark ">
+							
+							<img src="~/frontstagetemplate/assets/brand/layout/egg-logo-sm.svg" class="bi"
+								 width="35"
+								 alt="Bootstrap" />
+
+						</a>
+					</li>
+					<li><a href="#" class="nav-link px-3 link-dark ">影片生活12</a></li>
+					<li><a href="#" class="nav-link px-3 link-dark ">商城購物</a></li>
+				</ul>
+				<div class="nav-right-no-abo mt-3 mt-lg-0">
+					<a href="#"
+					   class="d-block link-dark text-decoration-none"
+					   aria-expanded="false">
+						<i class="fa-solid fa-cart-shopping"></i>
+					</a>
+
+					<a href="#"
+					   class="d-block link-dark text-decoration-none"
+					   aria-expanded="false">
+						<img src="https://github.com/mdo.png"
+							 alt="mdo"
+							 width="28"
+							 height="28"
+							 class="rounded-circle" />
+					</a>
+
+					<a href="#"
+					   class="d-block link-dark text-decoration-none"
+					   aria-expanded="false">
+						<i class="fa-solid fa-bars"></i>
+					</a>
+				</div>
+				<!-- </div> -->
+
+
+			</div>
+		</div>
+	</header>
+
+
+
+
+
+	<main>
+		<div class="title-bg mb-3">
+			<img class="w-100"
+				 src="~/Frontstage/exm/assets/brand/layout/banners/banner_01.png"
+				 alt="" />
+		</div>
+		<div>
+			@RenderBody()
+		</div>
+
+	</main>
+
+	<!-- <footer class="text-muted py-5">
+		<div class="container">
+			<p class="float-end mb-1">
+				<a href="#">Back to top</a>
+			</p>
+			<p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+			<p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a
+					href="../getting-started/introduction/">getting started guide</a>.</p>
+		</div>
+	</footer> -->
+
+	<script src="~/Frontstage/exm/assets/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const elements = document.querySelectorAll('.select-n');
+			elements.forEach(function (element) {
+				new Choices(element, {
+					searchEnabled: false,
+					itemSelectText: ''
+				});
+			});
+		});
+	</script>
+@*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script> *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
