@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace EggProductionProject_MVC.Models;
+
+public partial class PublicStatus
+{
+    public int PublicStatusNo { get; set; }
+
+    public string? StatusDescription { get; set; }
+
+    public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
+
+    public virtual ICollection<CouponType> CouponTypes { get; set; } = new List<CouponType>();
+
+    public virtual ICollection<Reply> Replies { get; set; } = new List<Reply>();
+
+    public virtual ICollection<VideoSummary> VideoSummaries { get; set; } = new List<VideoSummary>();
+}
