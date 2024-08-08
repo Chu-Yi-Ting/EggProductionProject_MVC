@@ -1,0 +1,66 @@
+﻿@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <style>
+
+    </style>
+}
+<table class="table table-striped table-hover">
+      <thead class="table-primary ">
+
+
+
+    </thead>
+    <tbody class="123">
+
+    </tbody>
+</table>
+
+@section Scripts {
+    
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("table").dataTable({
+                ajax: {
+                    type: "GET",
+                    url: "/Backstage/CouponTypes/IndexJson",
+                    dataSrc: function (json) {
+                        return json;
+                    },
+                },
+                columnDefs: [
+                    {
+                        targets: -1, // Target the last column
+                        render: function (data, type, row) {
+                            // Return HTML for buttons with icons
+                            return `
+                               <button class="btn btn-edit"><i class="fa-solid fa-pen"></i> </button>
+                                    `;
+                        }
+                    }
+                ],
+                columns: [
+                    { "data": "couponTypeNo", "width": "", "title": "優惠券號碼", "visible": false },
+                    { "data": "name", "width": "", "title": "優惠券名稱" },
+                    { "data": "price", "width": "", "title": "優惠價格" },
+                    { "data": "minimum", "width": "", "title": "最低消費" },
+                    { "data": "publicStatusNo", "width": "", "title": "公開狀態號碼", "visible": false },
+                    { "data": "statusDescription", "width": "", "title": "公開狀態" },
+                    { "data": "startTime", "width": "", "title": "開始時間" },
+                    { "data": "endTime", "width": "", "title": "結束時間" },
+                    { "data": "useAlone", "width": "", "title": "獨立使用" },
+                    { "data": "empName", "width": "", "title": "操作員工" },
+                    { "data": "", "width": "", "title": "" },
+
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            })
+        });
+
+    </script>
+}
