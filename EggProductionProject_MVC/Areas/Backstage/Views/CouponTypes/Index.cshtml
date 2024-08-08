@@ -2,18 +2,119 @@
     <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
     <style>
 
+        .table-control-n {
+            overflow-x: scroll;
+            width: 100%;
+            clear: left;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-track {
+            border-radius: 3px;
+            background: rgba(0,0,0,0.06);
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
+        }
+        /* 滚动条滑块 */
+        .dataTables_scrollBody::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background: rgba(0,0,0,0.12);
+            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .dataTables_wrapper.no-footer .dataTables_scrollBody {
+            border-bottom: none;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            --bs-table-accent-bg: #fff;
+            color: var(--bs-table-striped-color);
+        }
+
+        .table-primary {
+            --bs-table-bg: #446188;
+            --bs-table-striped-bg: #c5d7f2;
+            --bs-table-striped-color: #000;
+            --bs-table-active-bg: #bacbe6;
+            --bs-table-active-color: #000;
+            --bs-table-hover-bg: #bfd1ec;
+            --bs-table-hover-color: #000;
+            color: #fff;
+            border-color: #bacbe6;
+        }
+
+        .table-hover > tbody > tr:hover {
+            --bs-table-accent-bg: var(--bs-table-hover-bg);
+            color: var(--bs-table-hover-color);
+        }
+
+        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .dataTables_wrapper .dataTables_filter{
+            padding-bottom:20px;
+        }
+
+        table.dataTable thead .sorting{
+            text-align:center;
+        }
+
+        .x_title h4 {
+            font-size:22px;
+            font-weight:600;
+        }
+
+        .big-title{
+            font-size:18px;
+            margin:20px 40px 0px 40px;
+            width:auto;
+        }
+
     </style>
 }
-<table class="table table-striped table-hover">
-      <thead class="table-primary ">
 
+<div class="row">
+    <h3 class="big-title">優惠券列表</h3>
+    <div class="col-md-12 col-sm-12 ">
+        <div class="dashboard_graph m-4 p-4">
+            <div class="row x_title mb-4">
+                <div class="col-md-6">
+                    <h4>查詢</h4>
+                </div>
 
+            </div>
 
-    </thead>
-    <tbody class="123">
+           
 
-    </tbody>
-</table>
+        </div>
+
+    </div>
+    <div class="col-md-12 col-sm-12  mt-3">
+        <div class="dashboard_graph m-4 p-4">
+            <div class="row x_title mb-4">
+                <div class="col-md-6">
+                    <h4>優惠券列表</h4>
+                </div>
+                
+            </div>
+            
+                <table class="table table-striped table-hover">
+                    <thead class="table-primary ">
+                    </thead>
+                    <tbody class="123">
+                    </tbody>
+                </table>
+            
+        </div>
+        
+</div>
+</div>
+
 
 @section Scripts {
     
@@ -23,6 +124,8 @@
 
         $(document).ready(function () {
             $("table").dataTable({
+                scrollX: "auto",
+                autoWidth: false,
                 ajax: {
                     type: "GET",
                     url: "/Backstage/CouponTypes/IndexJson",
@@ -32,9 +135,8 @@
                 },
                 columnDefs: [
                     {
-                        targets: -1, // Target the last column
+                        targets: -1, 
                         render: function (data, type, row) {
-                            // Return HTML for buttons with icons
                             return `
                                <button class="btn btn-edit"><i class="fa-solid fa-pen"></i> </button>
                                     `;
@@ -42,17 +144,17 @@
                     }
                 ],
                 columns: [
-                    { "data": "couponTypeNo", "width": "", "title": "優惠券號碼", "visible": false },
-                    { "data": "name", "width": "", "title": "優惠券名稱" },
-                    { "data": "price", "width": "", "title": "優惠價格" },
-                    { "data": "minimum", "width": "", "title": "最低消費" },
-                    { "data": "publicStatusNo", "width": "", "title": "公開狀態號碼", "visible": false },
-                    { "data": "statusDescription", "width": "", "title": "公開狀態" },
-                    { "data": "startTime", "width": "", "title": "開始時間" },
-                    { "data": "endTime", "width": "", "title": "結束時間" },
-                    { "data": "useAlone", "width": "", "title": "獨立使用" },
-                    { "data": "empName", "width": "", "title": "操作員工" },
-                    { "data": "", "width": "", "title": "" },
+                    { "data": "couponTypeNo", "width": "auto", "title": "優惠券號碼", "visible": false },
+                    { "data": "name", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "price", "width": "auto", "title": "優惠價格" },
+                    { "data": "minimum", "width": "auto", "title": "最低消費" },
+                    { "data": "publicStatusNo", "width": "auto", "title": "公開狀態號碼", "visible": false },
+                    { "data": "statusDescription", "width": "auto", "title": "公開狀態" },
+                    { "data": "startTime", "width": "auto", "title": "開始時間" },
+                    { "data": "endTime", "width": "auto", "title": "結束時間" },
+                    { "data": "useAlone", "width": "auto", "title": "獨立使用" },
+                    { "data": "empName", "width": "auto", "title": "操作員工" },
+                    { "data": "", "width": "auto", "title": "" },
 
                 ],
                 fixedHeader: { header: true },
@@ -61,6 +163,41 @@
                 },
             })
         });
+
+
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // 获取指定 class 的 table 元素
+        //     var table = document.querySelector('.table.table-striped.table-hover.dataTable.no-footer');
+
+        //     if (table) {
+        //         // 创建新的 div 元素，并添加 class
+        //         var div = document.createElement('div');
+        //         div.className = 'table-control-n';
+
+        //         // 插入新 div 元素到 table 元素的父节点之前
+        //         table.parentNode.insertBefore(div, table);
+
+        //         // 将 table 移动到 div 中
+        //         div.appendChild(table);
+
+
+
+        //     }
+
+        //     var paginate = document.querySelector('.dataTables_paginate');
+            
+
+        //     if (paginate) {
+        //         // 将具有 dataTables_paginate 类的元素插入到 table 的父节点下方
+        //         table.parentNode.insertBefore(paginate, table.nextSibling);
+        //         console.log("asd");
+        //     }
+
+            
+
+
+
+        // });
 
     </script>
 }
