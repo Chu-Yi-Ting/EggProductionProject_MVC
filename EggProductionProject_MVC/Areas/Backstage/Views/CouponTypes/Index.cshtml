@@ -1,4 +1,9 @@
-﻿@section Styles {
+﻿@model EggProductionProject_MVC.Models.CouponType
+@{
+    var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+
+@section Styles {
     <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
     <style>
 
@@ -77,8 +82,8 @@
 
     </style>
 }
-
-<div class="row">
+<div id="formContainer"></div>
+<div class="row" style="height:1400px">
     <h3 class="big-title">優惠券列表</h3>
     <div class="col-md-12 col-sm-12 ">
         <div class="dashboard_graph m-4 p-4">
@@ -116,11 +121,138 @@
 </div>
 
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @* <form id="editForm" asp-action="Edit" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Minimum" class="control-label"></label>
+                                <input asp-for="Minimum" class="form-control" />
+                                <span asp-validation-for="Minimum" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublicStatusNo" class="control-label"></label>
+                                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartTime" class="control-label"></label>
+                                <input asp-for="StartTime" class="form-control" />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label"></label>
+                                <input asp-for="EndTime" class="form-control" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UseAlone" class="control-label"></label>
+                                <input asp-for="UseAlone" class="form-control" />
+                                <span asp-validation-for="UseAlone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EmployeeSid" class="control-label"></label>
+                                <input asp-for="EmployeeSid" class="form-control" />
+                                <span asp-validation-for="EmployeeSid" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </form> *@
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="CouponTypeNo" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Minimum" class="control-label"></label>
+                                <input asp-for="Minimum" class="form-control" />
+                                <span asp-validation-for="Minimum" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublicStatusNo" class="control-label"></label>
+                                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                                <span asp-validation-for="PublicStatusNo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartTime" class="control-label"></label>
+                                <input asp-for="StartTime" class="form-control" />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label"></label>
+                                <input asp-for="EndTime" class="form-control" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UseAlone" class="control-label"></label>
+                                <input asp-for="UseAlone" class="form-control" />
+                                <span asp-validation-for="UseAlone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EmployeeSid" class="control-label"></label>
+                                <input asp-for="EmployeeSid" class="form-control" />
+                                <span asp-validation-for="EmployeeSid" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     
     <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
     <script src="//cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+
     <script>
+
+     
 
         $(document).ready(function () {
             $("table").dataTable({
@@ -138,8 +270,12 @@
                         targets: -1, 
                         render: function (data, type, row) {
                             return `
-                               <button class="btn btn-edit"><i class="fa-solid fa-pen"></i> </button>
-                                    `;
+                                                       <button class="btn btn-edit" onclick="location.href='@Url.Action("Edit", new { id = 1 })'" ><i class="fa-solid fa-pen"></i> </button>
+                                                                       <button type="button" asp-action="Edit" asp-route-id="1" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch 
+        </button>
+                <button type="button" onclick="loadEditForm(1)">Edit Coupon Type 1</button>
+        `;
                         }
                     }
                 ],
@@ -164,40 +300,121 @@
             })
         });
 
+        $(function () {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajaxSetup({
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            });
+        });
 
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     // 获取指定 class 的 table 元素
-        //     var table = document.querySelector('.table.table-striped.table-hover.dataTable.no-footer');
+        function loadEditForm(id) {
+            $.ajax({
+                url: '@Url.Action("Edit", "CouponTypes")',
+                type: 'GET',
+                data: { id: id },
+                success: function (result) {
+                    $('#formContainer').html(result);
+                    // console.log("asd",asd)
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading form:', status, error);
+                }
+            });
+        }
 
-        //     if (table) {
-        //         // 创建新的 div 元素，并添加 class
-        //         var div = document.createElement('div');
-        //         div.className = 'table-control-n';
+        // $(document).on('submit', '#editForm', function (event) {
+        //     event.preventDefault(); // 阻止表单的默认提交行为
+        //     // console.log('$(this)', $(this))
+        //     // console.log('$(this).serialize()', $(this).serialize())
 
-        //         // 插入新 div 元素到 table 元素的父节点之前
-        //         table.parentNode.insertBefore(div, table);
-
-        //         // 将 table 移动到 div 中
-        //         div.appendChild(table);
-
-
-
-        //     }
-
-        //     var paginate = document.querySelector('.dataTables_paginate');
-            
-
-        //     if (paginate) {
-        //         // 将具有 dataTables_paginate 类的元素插入到 table 的父节点下方
-        //         table.parentNode.insertBefore(paginate, table.nextSibling);
-        //         console.log("asd");
-        //     }
-
-            
-
+        //     $.ajax({
+        //         url: '@Url.Action("Edit", "CouponTypes")',
+        //         type: 'POST',
+        //         data: { id: 1 },
+        //         success: function (response) {
+        //             if (response.success) {
+        //                 alert('Form submitted successfully!');
+        //                 // $('#formContainer').empty(); // 清空表单容器
+        //             } else {
+        //                 alert('Form submitted NOsuccessfully!');
+        //                 // $('#formContainer').html(response);
+        //             }
+        //         },
+        //         error: function (xhr, status, error) {
+        //             // alert('Form submitted NAAOsuccessfully!');
+        //             // console.log("ss", response)
+        //             // console.log("sss", $(this))
+        //             console.log("sss", $(this).data('accepts'));
+        //             console.error('Error submitting form:', status, error);
+        //         }
+        //     });
 
 
         // });
 
+
+        // $(document).ready(function () {
+        //     $('#editForm').on('submit', function (event) {
+        //         event.preventDefault(); // 阻止默认提交行为
+
+        //         var formData = $(this).serialize(); // 获取表单数据
+        //         var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); // 获取 anti-forgery token
+
+        //         $.ajax({
+        //             url: '@Url.Action("Edit", "CouponTypes")', // 使用 URL Helper 获取 URL
+        //             type: 'POST',
+        //             headers: {
+        //                 'RequestVerificationToken': antiForgeryToken // 设置 anti-forgery token 头部
+        //             },
+        //             data: formData, // 发送表单数据
+        //             success: function (response) {
+        //                 // 处理成功响应
+        //                 console.log('Form submitted successfully!', response);
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 // 处理错误响应
+        //                 console.error('Error submitting form:', status, error);
+        //             }
+        //         });
+        //     });
+        // });
+
+        $(document).ready(function () {
+            $('#editForm').on('submit', function (event) {
+                event.preventDefault(); // 阻止默认提交行为
+
+                var formData = $(this).serialize(); // 获取表单数据
+                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); // 获取 anti-forgery token
+
+                $.ajax({
+                    url: $(this).attr('action'), // 获取表单的 action 属性作为 URL
+                    type: 'POST',
+                    headers: {
+                        'RequestVerificationToken': antiForgeryToken // 添加 anti-forgery token 头部
+                    },
+                    data: formData, // 发送表单数据
+                    dataType: 'json', // 期望 JSON 响应
+                    success: function (response) {
+                        if (response.success) {
+                            // 处理成功情况
+                            // 可选：重置表单
+                            $('#editForm')[0].reset();
+
+                            // 可选：显示成功消息
+                            alert('Form submitted successfully!');
+                        } else {
+                            // 处理失败情况
+                            alert(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // 处理错误响应
+                        console.error('Error submitting form:', status, error);
+                    }
+                });
+            });
+        });
     </script>
 }

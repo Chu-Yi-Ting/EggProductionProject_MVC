@@ -1,0 +1,66 @@
+﻿@model EggProductionProject_MVC.Models.CouponType
+
+<form id="editForm" asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input  asp-for="CouponTypeNo" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Minimum" class="control-label"></label>
+        <input asp-for="Minimum" class="form-control" />
+        <span asp-validation-for="Minimum" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PublicStatusNo" class="control-label"></label>
+        <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartTime" class="control-label"></label>
+        <input asp-for="StartTime" class="form-control" />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndTime" class="control-label"></label>
+        <input asp-for="EndTime" class="form-control" />
+        <span asp-validation-for="EndTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UseAlone" class="control-label"></label>
+        <input asp-for="UseAlone" class="form-control" />
+        <span asp-validation-for="UseAlone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EmployeeSid" class="control-label"></label>
+        <input asp-for="EmployeeSid" class="form-control" />
+        <span asp-validation-for="EmployeeSid" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-default" type="submit" value="Save" data-accepts="application/json">Submit</button>
+
+</form>
+
+
+@* <form id="editForm">
+    @Html.AntiForgeryToken() <!-- 添加 Anti-Forgery Token -->
+    <!-- 其他表单字段 -->
+    <input type="hidden" name="CouponTypeNo" value="@Model.CouponTypeNo" />
+    <input type="text" name="Name" value="@Model.Name" />
+    <input type="text" name="Price" value="@Model.Price" />
+    <input type="text" name="Minimum" value="@Model.Minimum" />
+    <input type="text" name="StartTime" value="@Model.StartTime" />
+    <input type="text" name="EndTime" value="@Model.EndTime" />
+    <input type="checkbox" name="UseAlone" value="1" @(Model.UseAlone ? "checked" : "") />
+    <input type="hidden" name="EmployeeSid" value="@Model.EmployeeSid" />
+
+    <button type="submit">Submit</button>
+</form> *@
+
