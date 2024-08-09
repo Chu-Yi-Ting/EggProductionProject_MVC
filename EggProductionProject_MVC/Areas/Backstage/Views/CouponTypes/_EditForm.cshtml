@@ -1,9 +1,9 @@
 ﻿@model EggProductionProject_MVC.Models.CouponType
 
-<form id="editForm" asp-action="Edit" method="post">
+<form id="editForm" method="post">
     @Html.AntiForgeryToken()
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input  asp-for="CouponTypeNo" />
+    @Html.HiddenFor(model => model.CouponTypeNo)
+    <input asp-for="CouponTypeNo" />
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
@@ -43,24 +43,13 @@
         <input asp-for="EmployeeSid" class="form-control" />
         <span asp-validation-for="EmployeeSid" class="text-danger"></span>
     </div>
-
-    <button class="btn btn-default" type="submit" value="Save" data-accepts="application/json">Submit</button>
-
+    <!-- Add other form fields similarly -->
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
-
-@* <form id="editForm">
-    @Html.AntiForgeryToken() <!-- 添加 Anti-Forgery Token -->
-    <!-- 其他表单字段 -->
-    <input type="hidden" name="CouponTypeNo" value="@Model.CouponTypeNo" />
-    <input type="text" name="Name" value="@Model.Name" />
-    <input type="text" name="Price" value="@Model.Price" />
-    <input type="text" name="Minimum" value="@Model.Minimum" />
-    <input type="text" name="StartTime" value="@Model.StartTime" />
-    <input type="text" name="EndTime" value="@Model.EndTime" />
-    <input type="checkbox" name="UseAlone" value="1" @(Model.UseAlone ? "checked" : "") />
-    <input type="hidden" name="EmployeeSid" value="@Model.EmployeeSid" />
-
-    <button type="submit">Submit</button>
-</form> *@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 

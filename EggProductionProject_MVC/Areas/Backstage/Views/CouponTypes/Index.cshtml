@@ -82,6 +82,11 @@
 
     </style>
 }
+
+<div id="editFormContainer"></div>
+
+<!-- Example edit button to load form -->
+<button class="edit-button" data-id="1">Edit Item 1</button>
 <div id="formContainer"></div>
 <div class="row" style="height:1400px">
     <h3 class="big-title">優惠券列表</h3>
@@ -255,7 +260,7 @@
      
 
         $(document).ready(function () {
-            $("table").dataTable({
+           $("table").dataTable({
                 scrollX: "auto",
                 autoWidth: false,
                 ajax: {
@@ -298,123 +303,55 @@
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
             })
-        });
 
-        $(function () {
-            var token = $('input[name="__RequestVerificationToken"]').val();
-            $.ajaxSetup({
-                headers: {
-                    'RequestVerificationToken': token
-                }
-            });
-        });
-
-        function loadEditForm(id) {
-            $.ajax({
-                url: '@Url.Action("Edit", "CouponTypes")',
-                type: 'GET',
-                data: { id: id },
-                success: function (result) {
-                    $('#formContainer').html(result);
-                    // console.log("asd",asd)
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error loading form:', status, error);
-                }
-            });
-        }
-
-        // $(document).on('submit', '#editForm', function (event) {
-        //     event.preventDefault(); // 阻止表单的默认提交行为
-        //     // console.log('$(this)', $(this))
-        //     // console.log('$(this).serialize()', $(this).serialize())
-
-        //     $.ajax({
-        //         url: '@Url.Action("Edit", "CouponTypes")',
-        //         type: 'POST',
-        //         data: { id: 1 },
-        //         success: function (response) {
-        //             if (response.success) {
-        //                 alert('Form submitted successfully!');
-        //                 // $('#formContainer').empty(); // 清空表单容器
-        //             } else {
-        //                 alert('Form submitted NOsuccessfully!');
-        //                 // $('#formContainer').html(response);
-        //             }
-        //         },
-        //         error: function (xhr, status, error) {
-        //             // alert('Form submitted NAAOsuccessfully!');
-        //             // console.log("ss", response)
-        //             // console.log("sss", $(this))
-        //             console.log("sss", $(this).data('accepts'));
-        //             console.error('Error submitting form:', status, error);
-        //         }
-        //     });
-
-
-        // });
-
-
-        // $(document).ready(function () {
-        //     $('#editForm').on('submit', function (event) {
-        //         event.preventDefault(); // 阻止默认提交行为
-
-        //         var formData = $(this).serialize(); // 获取表单数据
-        //         var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); // 获取 anti-forgery token
-
-        //         $.ajax({
-        //             url: '@Url.Action("Edit", "CouponTypes")', // 使用 URL Helper 获取 URL
-        //             type: 'POST',
-        //             headers: {
-        //                 'RequestVerificationToken': antiForgeryToken // 设置 anti-forgery token 头部
-        //             },
-        //             data: formData, // 发送表单数据
-        //             success: function (response) {
-        //                 // 处理成功响应
-        //                 console.log('Form submitted successfully!', response);
-        //             },
-        //             error: function (xhr, status, error) {
-        //                 // 处理错误响应
-        //                 console.error('Error submitting form:', status, error);
-        //             }
-        //         });
-        //     });
-        // });
-
-        $(document).ready(function () {
-            $('#editForm').on('submit', function (event) {
-                event.preventDefault(); // 阻止默认提交行为
-
-                var formData = $(this).serialize(); // 获取表单数据
-                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); // 获取 anti-forgery token
-
+            // 绑定事件以加载编辑表单
+            $(document).on('click', '.edit-button', function () {
+                var id = $(this).data('id'); // 从按钮的 data-id 属性获取 ID
                 $.ajax({
-                    url: $(this).attr('action'), // 获取表单的 action 属性作为 URL
-                    type: 'POST',
-                    headers: {
-                        'RequestVerificationToken': antiForgeryToken // 添加 anti-forgery token 头部
-                    },
-                    data: formData, // 发送表单数据
-                    dataType: 'json', // 期望 JSON 响应
-                    success: function (response) {
-                        if (response.success) {
-                            // 处理成功情况
-                            // 可选：重置表单
-                            $('#editForm')[0].reset();
-
-                            // 可选：显示成功消息
-                            alert('Form submitted successfully!');
-                        } else {
-                            // 处理失败情况
-                            alert(response.message);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // 处理错误响应
-                        console.error('Error submitting form:', status, error);
+                    url: '@Url.Action("Edit", "CouponTypes")/' + id, // 调用 Edit 方法获取表单
+                    type: 'GET',
+                    success: function (data) {
+                        $('#editFormContainer').html(data); // 将返回的部分视图插入到指定的容器中
                     }
                 });
             });
+
+
+            $('#editFormContainer').on('submit', '#editForm', function (event) {
+                event.preventDefault(); 
+
+                var formData = $(this).serialize(); // 获取表单数据
+                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); 
+
+                $.ajax({
+                    url: '@Url.Action("Edit", "CouponTypes")', 
+                    type: 'POST',
+                    headers: {
+                        'RequestVerificationToken': antiForgeryToken 
+                    },
+                    data: formData,
+                    dataType: 'json', 
+                    success: function (response) {
+                        if (response.success) {
+                            $('#editFormContainer').html(''); 
+
+                            var table = $("table").DataTable(); 
+                            table.ajax.reload();
+                         
+                        } else {
+                            alert(response.message); 
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error); 
+                    }
+                });
+            });
+
+
+
         });
+
+
     </script>
 }
