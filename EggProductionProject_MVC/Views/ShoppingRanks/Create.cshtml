@@ -38,6 +38,7 @@
 </div>
 
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 	
     <script>function previewImage(inputFile) {
                 var file = inputFile.files[0];
@@ -71,5 +72,4 @@
                 previewImage(this);
             });</script>
         
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

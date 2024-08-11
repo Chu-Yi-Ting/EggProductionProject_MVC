@@ -69,6 +69,11 @@ namespace EggProductionProject_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Request.Form.Files["Eggimage"] != null)
+                {
+                    ReadUploadImage(shoppingRank);
+                }
+
                 _context.Add(shoppingRank);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
