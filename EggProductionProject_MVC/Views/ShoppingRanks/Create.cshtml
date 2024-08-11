@@ -13,17 +13,21 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ShoppingRank1" class="control-label"></label>
+                <label asp-for="ShoppingRank1" class="control-label">會員等級名稱</label>
                 <input asp-for="ShoppingRank1" class="form-control" />
                 <span asp-validation-for="ShoppingRank1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Eggimage" class="control-label"></label>
-                <input asp-for="Eggimage" class="form-control" />
+                <label asp-for="Eggimage" class="control-label">會員等級圖片</label>
+        
+
+                <img id="imgPreview" style="width:640px;height:480px" title="尚未選擇圖片" src="~/MemberImg/NoImage.png" />
+                <input type="file" asp-for="Eggimage" class="form-control" accept="image/*" />
+
                 <span asp-validation-for="Eggimage" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input id="btnSubmit" type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -34,5 +38,38 @@
 </div>
 
 @section Scripts {
+	<script src="~/js/memberpicupload.min.js"></script>
+    <script>function previewImage(inputFile) {
+                var file = inputFile.files[0];
+
+                if (inputFile.files[0]!=null){
+                    var allowType = "image.*";
+                    if (file.type.match(allowType)) {
+                        //預覽
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("#imgPreview").attr("src", e.target.result);
+                            $("#imgPreview").attr("title", file.name);
+                        };
+                        reader.readAsDataURL(file);
+
+
+                        $("#btnSubmit").prop("disabled", false);
+                    }
+                    else {
+                        alert("不允許的檔案類型");
+                        $("#btnSubmit").prop("disabled", true);
+                    $("#Eggimage").val("");
+                    }
+                }
+
+            }
+
+
+        $("#Eggimage").on("change", function () {
+
+                previewImage(this);
+            });</script>
+        
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

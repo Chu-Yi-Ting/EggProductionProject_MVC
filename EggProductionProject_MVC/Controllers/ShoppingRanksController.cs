@@ -12,9 +12,11 @@ namespace EggProductionProject_MVC.Controllers
     public class ShoppingRanksController : Controller
     {
         private readonly EggPlatformContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ShoppingRanksController(EggPlatformContext context)
+        public ShoppingRanksController(EggPlatformContext context, IWebHostEnvironment webHostEnvironment)
         {
+            _webHostEnvironment = webHostEnvironment;
             _context = context;
         }
 
