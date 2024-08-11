@@ -1,0 +1,89 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Member>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsChickFarm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassWord)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBlocked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShoppingRankNoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsChickFarm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassWord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfilePic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBlocked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShoppingRankNoNavigation.ShoppingRankNo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MemberSid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MemberSid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
