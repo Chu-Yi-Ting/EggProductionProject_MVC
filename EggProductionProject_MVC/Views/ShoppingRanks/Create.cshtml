@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ShoppingRank1" class="control-label">會員等級名稱</label>
@@ -38,7 +38,7 @@
 </div>
 
 @section Scripts {
-	<script src="~/js/memberpicupload.min.js"></script>
+	
     <script>function previewImage(inputFile) {
                 var file = inputFile.files[0];
 
