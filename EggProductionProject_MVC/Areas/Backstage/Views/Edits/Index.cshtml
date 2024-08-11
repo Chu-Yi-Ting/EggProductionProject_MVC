@@ -1,0 +1,43 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Edit>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    tr {
+        cursor: pointer;
+    }
+</style>
+<h1>編輯紀錄</h1>
+
+<table class="table">
+    <thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>編輯前內容</th>
+                    <th>編輯後內容</th>
+                    <th>編輯日期</th>
+                    <th>文章標題</th>
+                    <th>回覆編號</th>
+                    <th></th>
+                </tr>
+            </thead>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Details", new { id = item.EditSid })'">
+                <td>@Html.DisplayFor(modelItem => item.EditBefore)</td>
+                <td>@Html.DisplayFor(modelItem => item.EditAfter)</td>
+                <td>@Html.DisplayFor(modelItem => item.EditTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArticleS.ArticleTitle)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReplyS.ReplySid)</td>
+            </tr>
+        }
+    </tbody>
+</table>

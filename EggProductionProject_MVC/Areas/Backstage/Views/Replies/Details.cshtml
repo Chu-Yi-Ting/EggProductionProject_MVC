@@ -1,0 +1,72 @@
+﻿@model EggProductionProject_MVC.Models.Reply
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Reply</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyUpdate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyUpdate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EditTimes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EditTimes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TagMemberNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TagMemberNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeleteOrNot)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeleteOrNot)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleCreaterS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleCreaterS.MemberSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleS.ArticleSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicStatusNoNavigation.PublicStatusNo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ReplySid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
