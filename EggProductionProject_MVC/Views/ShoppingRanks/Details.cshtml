@@ -1,0 +1,32 @@
+﻿@model EggProductionProject_MVC.Models.ShoppingRank
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ShoppingRank</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ShoppingRank1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShoppingRank1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Eggimage)
+        </dt>
+        <dd>
+            @* <img src="@Url.Action("Getpic","ShoppingRanks", new {id=Model.ShoppingRankNo})"
+                 title="@Html.DisplayFor(model => model.ShoppingRank1)" /> *@
+            <partial name="_ShoppingRankPartial" />
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ShoppingRankNo">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

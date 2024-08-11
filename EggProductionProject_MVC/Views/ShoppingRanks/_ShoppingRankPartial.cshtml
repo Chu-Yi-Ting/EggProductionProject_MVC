@@ -1,0 +1,12 @@
+﻿@model ShoppingRank
+
+@if (Model.Eggimage != null)
+{
+
+	<img src="@Url.Action("GetPic","ShoppingRanks", new {id=Model.ShoppingRankNo})"
+		 title="@Html.DisplayFor(model => model.ShoppingRank1)" class="w-25" />
+}
+else
+{
+	<img class="w-25" title="尚無圖片" src="~/images/360_f_251955356_faqh0u1y1tzw3zcdpgybwukh90a3vahb.jpg" />
+}
