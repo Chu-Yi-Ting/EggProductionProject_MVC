@@ -58,11 +58,30 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: CouponTypes/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var couponType = await _context.CouponTypes.FindAsync(id);
-            if (couponType == null)
+            if (id < 0)
             {
-                return NotFound();
+                return BadRequest("无效的ID");
             }
+
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+            CouponType couponType;
+
+            if (id == 0)
+            {
+                couponType = new CouponType
+                {
+                    CouponTypeNo = 0 
+                };
+            }
+            else
+            {
+                couponType = await _context.CouponTypes.FindAsync(id);
+                if (couponType == null)
+                {
+                    return NotFound();
+                }
+            }
+
             return PartialView("_EditForm", couponType);
         }
 
