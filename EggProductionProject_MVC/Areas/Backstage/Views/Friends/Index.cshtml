@@ -4,8 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>好友清單查詢</h2>
-<input  id="inpKeyword" type="text"/>
+<h2>好友清單</h2>   
+@* <input  id="inpKeyword" type="text"/> *@
+<form asp-action="Index" method="get">
+    <input type="hidden" name="id" value="@ViewBag.CurrentMemberId" />
+    <input type="text" name="searchString" value="@ViewBag.CurrentFilter" placeholder="Search by member name..." />
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" value="@ViewBag.StartDate" />
+
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" value="@ViewBag.EndDate" />
+
+    <button type="submit">Search</button>
+</form>
 
 <p>
     
@@ -50,11 +62,3 @@
 
 
 
-@section Scripts{
-    <script>
-        const keyword = document.querySelector("#inpKeyword")
-
-        keyword.addEventListener("")
-
-    </script>
-}

@@ -21,12 +21,22 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
         // GET: Backstage/Friends
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id, string searchString , DateTime? startDate, DateTime? endDate)
         {
             //var eggPlatformContext = _context.Friends.Include(f => f.MemberS)
             //    .Where(f=>f.MemberSid==id);
             //return View(await eggPlatformContext.ToListAsync());
 
+
+            //日期篩選
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+            
+
+
+            //搜尋關鍵字
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentMemberId = id;
             var query = from friend in _context.Friends
                         join member1 in _context.Members on friend.MemberSid equals member1.MemberSid
                         join member2 in _context.Members on friend.MemberSid2 equals member2.MemberSid
@@ -38,6 +48,24 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                             MemberName2 = member2.Name,
                             DateAdded = friend.DateAdded
                         };
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(f => f.MemberName1.Contains(searchString) || f.MemberName2.Contains(searchString));
+            }
+
+            // 日期篩選
+            if (startDate.HasValue)
+            {
+                var start = DateOnly.FromDateTime(startDate.Value);
+                query = query.Where(f => f.DateAdded >= start);
+            }
+            if (endDate.HasValue)
+            {
+                var end = DateOnly.FromDateTime(endDate.Value);
+                query = query.Where(f => f.DateAdded <= end);
+            }
+
 
             var result = await query.ToListAsync();
 
