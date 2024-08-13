@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
+using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -20,10 +21,39 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
         // GET: Backstage/Members
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString,MemberVM _memberVM)
         {
-            var eggPlatformContext = _context.Members.Include(m => m.ShoppingRankNoNavigation);
-            return View(await eggPlatformContext.ToListAsync());
+            //var eggPlatformContext = _context.Members.Include(m => m.ShoppingRankNoNavigation);
+            //return View(await eggPlatformContext.ToListAsync());
+
+            //搜尋關鍵字
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentMemberId = _memberVM.MemberSid;
+            var query = from Member in _context.Members
+                        where _memberVM.MemberSid == Member.MemberSid
+                        select new MemberVM
+                        {
+                            MemberSid = Member.MemberSid,
+                            Name = Member.Name,
+                            Email = Member.Email,
+                            Phone = Member.Phone,
+                            BirthDate = Member.BirthDate,
+                            IsChickFarm = Member.IsChickFarm,
+                            ShoppingRankNo = Member.ShoppingRankNo,
+                            ProfilePic = Member.ProfilePic,
+                            IsBlocked = Member.IsBlocked,
+                        };
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(f => f.Name.Contains(searchString) || f.Email.Contains(searchString));
+            }
+
+            var result = await query.ToListAsync();
+
+            return View(result);
+
+
         }
 
         // GET: Backstage/Members/Details/5
