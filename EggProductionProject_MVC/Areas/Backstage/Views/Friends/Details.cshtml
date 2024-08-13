@@ -1,0 +1,36 @@
+﻿@model EggProductionProject_MVC.Models.Friend
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Friend</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberSid2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MemberSid2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateAdded)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MemberS.MemberSid)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.FriendSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

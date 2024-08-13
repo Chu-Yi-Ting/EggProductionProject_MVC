@@ -7,7 +7,8 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @* <a asp-action="Create">Create New</a> *@
+    <div>會員數量 : @Model.Count()</div>
 </p>
 <table class="table">
     <thead>
@@ -81,7 +82,8 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MemberSid">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MemberSid">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.MemberSid">Delete</a>|
+                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a>
             </td>
         </tr>
 }

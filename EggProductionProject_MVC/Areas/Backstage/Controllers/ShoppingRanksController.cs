@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 
-namespace EggProductionProject_MVC.Controllers
+namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
+    [Area("Backstage")]
     public class ShoppingRanksController : Controller
     {
         private readonly EggPlatformContext _context;
@@ -22,7 +23,7 @@ namespace EggProductionProject_MVC.Controllers
 
 
         //拿圖片
-        public async Task<IActionResult> GetPic(int id) 
+        public async Task<IActionResult> GetPic(int id)
         {
             ShoppingRank? shoppingRank = await _context.ShoppingRanks.FindAsync(id);
             byte[]? content = shoppingRank?.Eggimage;
