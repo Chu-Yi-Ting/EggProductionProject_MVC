@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
+using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -20,10 +21,27 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
         // GET: Backstage/Friends
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var eggPlatformContext = _context.Friends.Include(f => f.MemberS);
-            return View(await eggPlatformContext.ToListAsync());
+            //var eggPlatformContext = _context.Friends.Include(f => f.MemberS)
+            //    .Where(f=>f.MemberSid==id);
+            //return View(await eggPlatformContext.ToListAsync());
+
+            var query = from friend in _context.Friends
+                        join member1 in _context.Members on friend.MemberSid equals member1.MemberSid
+                        join member2 in _context.Members on friend.MemberSid2 equals member2.MemberSid
+                        where friend.MemberSid == id
+                        select new FriendVM
+                        {
+                            FriendSid = friend.FriendSid,
+                            MemberName1 = member1.Name,
+                            MemberName2 = member2.Name,
+                            DateAdded = friend.DateAdded
+                        };
+
+            var result = await query.ToListAsync();
+
+            return View(result);
         }
 
         // GET: Backstage/Friends/Details/5

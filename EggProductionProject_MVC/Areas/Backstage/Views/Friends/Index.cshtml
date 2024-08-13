@@ -1,25 +1,26 @@
-﻿@model IEnumerable<EggProductionProject_MVC.Models.Friend>
+﻿@model IEnumerable<EggProductionProject_MVC.Models.MemberVM.FriendVM>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>好友清單查詢</h2>
+<input  id="inpKeyword" type="text"/>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MemberSid2)
+                @Html.DisplayNameFor(model => model.MemberName1)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateAdded)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MemberS)
+                @Html.DisplayNameFor(model => model.MemberName2)
             </th>
             <th></th>
         </tr>
@@ -28,13 +29,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MemberSid2)
+                    @Html.DisplayFor(modelItem => item.MemberName2)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateAdded)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
+                    @Html.DisplayFor(modelItem => item.MemberName1)
             </td>
             <td>
                 
@@ -45,3 +46,15 @@
 }
     </tbody>
 </table>
+
+
+
+
+@section Scripts{
+    <script>
+        const keyword = document.querySelector("#inpKeyword")
+
+        keyword.addEventListener("")
+
+    </script>
+}
