@@ -54,6 +54,26 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(CouponTypesViewModels);
         }
 
+        public JsonResult CouponList()
+        {
+            var couponStatuses = _context.CouponStatuses.ToList();
+            var coupons = _context.Coupons.ToList();
+            var couponTypes = _context.CouponTypes.ToList();
+            var members = _context.Members.ToList();
+
+            var CouponViewModels = coupons.Select(p => new CouponViewModel
+            {
+                CouponSid=p.CouponSid,
+                CouponTypeNo = p.CouponTypeNo,
+                Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
+                CouponStatusNo=p.CouponStatusNo,
+                Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
+                CollectionTime = p.CollectionTime,
+                MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
+            });
+
+            return Json(CouponViewModels);
+        }
 
         // GET: CouponTypes/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -133,26 +153,26 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(new { success = false, message = string.Join(", ", errors) });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CouponTypeNo,Name,Price,Minimum,PublicStatusNo,StartTime,EndTime,UseAlone,EmployeeSid")] CouponType couponType)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(couponType);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", couponType.PublicStatusNo);
-            return View(couponType);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("CouponTypeNo,Name,Price,Minimum,PublicStatusNo,StartTime,EndTime,UseAlone,EmployeeSid")] CouponType couponType)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(couponType);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", couponType.PublicStatusNo);
+        //    return View(couponType);
+        //}
 
        
       
 
-        private bool CouponTypeExists(int id)
-        {
-            return _context.CouponTypes.Any(e => e.CouponTypeNo == id);
-        }
+        //private bool CouponTypeExists(int id)
+        //{
+        //    return _context.CouponTypes.Any(e => e.CouponTypeNo == id);
+        //}
     }
 }

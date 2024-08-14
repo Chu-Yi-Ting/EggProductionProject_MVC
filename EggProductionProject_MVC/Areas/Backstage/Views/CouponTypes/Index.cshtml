@@ -28,43 +28,85 @@
 
 
     <div class="row" style="">
-    <h3 class="big-title">優惠券列表</h3>
     <div class="col-md-12 col-sm-12 ">
-        <div class="dashboard_graph m-4 p-4">
-            <div class="row x_title mb-4">
-                <div class="col-md-6">
-                    <h4>查詢</h4>
-                </div>
-
-            </div>
-
-           
-
-        </div>
-
+    <div class="big-title d-flex">
+        優惠券管理
+            <ul class="nav tab_n" id="myTab">
+            <li class="nav-item">
+                <a class="nav-link active p-0" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">優惠券列表</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">券種管理</a>
+            </li>
+        </ul>
     </div>
-    <div class="col-md-12 col-sm-12  mt-3">
-        <div class="dashboard_graph m-4 p-4">
-            <div class="row x_title mb-4">
-                <div class="col-md-12 p-0">
-                    <h4 class="w-100 d-flex justify-content-lg-between">
-                        優惠券列表 
-                        <button type="button" data-id="0" class="btn  edit-button title-botton">
-                           +
-                        </button>
-                    </h4>
+    </div>
+    
+    
+
+
+    <!-- Tab content -->
+    <div class="tab-content mt-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row" style="">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="dashboard_graph m-4 p-4">
+                    <div class="row x_title mb-4">
+                        <div class="col-md-6">
+                            <h4>查詢</h4>
+                        </div>
+                    </div>
                 </div>
-                
             </div>
-            
-                <table div="tableType" class="table table-striped table-hover">
-                    <thead class="table-primary ">
-                    </thead>            
-                </table>
-            
+            <div class="col-md-12 col-sm-12  mt-3">
+                <div class="dashboard_graph m-4 p-4">
+                    <div class="row x_title mb-4">
+                        <div class="col-md-12 p-0">
+                            <h4 class="w-100 d-flex justify-content-lg-between">
+                                優惠券列表
+                                <button type="button" data-id="0" class="btn  edit-button title-botton">
+                                    +
+                                </button>
+                            </h4>
+                        </div>
+                    </div>
+                    <table id="tableList" class="table table-striped table-hover">
+                        <thead class="table-primary ">
+                        </thead>
+                    </table>
+                </div>
+            </div>
+           </div>
         </div>
-        
-</div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="row" style="">
+            <div class="col-md-12 col-sm-12  mt-3">
+                <div class="dashboard_graph m-4 p-4">
+                    <div class="row x_title mb-4">
+                        <div class="col-md-12 p-0">
+                            <h4 class="w-100 d-flex justify-content-lg-between">
+                                優惠券列表
+                                <button type="button" data-id="0" class="btn  edit-button title-botton">
+                                    +
+                                </button>
+                            </h4>
+                        </div>
+                    </div>
+                    <table id="tableType" class="table table-striped table-hover w-100 ">
+                        <thead class="table-primary ">
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+
+    
+
 </div>
 
 <!-- Modal -->
@@ -103,6 +145,13 @@
 
         $(document).ready(function () {
 
+            $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var table = $("#tableType").DataTable();
+                table.ajax.reload();
+            });
+
+
+
             const preprocessData = (data) => {
                 return data.map(item => {
                     // Get all keys from the item object
@@ -126,23 +175,20 @@
                          return preprocessData(json);                   
                     },
                 },
-                
                 columnDefs: [
                     {
                         targets: -1, 
                         render: function (data, type, row) {
                             return `
-                                            <button type="button " data-id="${row.couponTypeNo}" class="btn  edit-button " >
+                                            <button type="button " data-id="${row.couponTypeNo}" class="btn  edit-button m-0 p-0" >
                                               <i class="fa-solid fa-pen" style="color: #8ba3d2;"></i>
                             </button>
                               `;
                         }
                     }
                 ],
-                lengthMenu: [[4, 12, 20, -1], [4, 12, 20, "All"]],
-                // fixedColumns: {
-                //     leftColumns: 1 //左邊要固定的欄位數，如果右側需要固定可以用rightColunms
-                // },
+                // lengthMenu: [[4, 12, 20, -1], [4, 12, 20, "All"]],
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
                 fixedColumns: {
                     start: 0,
                     end: 1
@@ -163,7 +209,7 @@
                         }
                     },
                     { "data": "empName", "width": "auto", "title": "操作員工" },
-                    { "data": "", "width": "auto", "title": "" },
+                    { "data": "","width": "65px", "title": "" },
 
                 ],
                 fixedHeader: { header: true },
@@ -175,55 +221,30 @@
             const sel_Type = null;
 
             $(document).on('click', '.edit-button', function () {
-                var id = $(this).data('id'); // 从按钮的 data-id 属性获取 ID
+                var id = $(this).data('id'); 
 
                 $.ajax({
-                    url: '@Url.Action("Edit", "CouponTypes")/' + id, // 调用 Edit 方法获取表单
+                    url: '@Url.Action("Edit", "CouponTypes")/' + id, 
                     type: 'GET',
                     success: function (data) {
-                        $('#editFormContainer').html(data); // 将返回的部分视图插入到指定的容器中
-
-                        // 初始化和显示 modal
-                        // var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-                        // modal.show();
-                   
-
-                        // modal.addEventListener('change', function () {
-                        //     selType = document.querySelector('#sel_Type');
-                        //     console.log(selType); // 你可以根据需要处理 selType
-                        // });
-
-
+                        $('#editFormContainer').html(data); 
                         var modalElement = document.getElementById('exampleModal');
                         var modal = new bootstrap.Modal(modalElement);
-                        
+                        selType = document.querySelector('#sel_Type');
+                        loadSpots(selType);
 
-                        // 确保在 modal 完全显示后再执行 DOM 操作
-                        // modalElement.addEventListener('shown.bs.modal', function () {
-                            selType = document.querySelector('#sel_Type');
-                            // 你可以根据需要处理 selType
-                            loadSpots(selType);
-                            
-                            // selType = document.querySelector('#sel_Type');
-                        // });
                         modal.show();
 
                         document.getElementById('saveChangesButton').addEventListener('click', function () {
-                            // 这里可以添加保存数据的逻辑
-                            // 成功后隐藏 modal
                             modal.hide();
                         });
                     },
                     error: function (xhr, status, error) {
                         console.error('AJAX请求失败: ', status, error);
-                        // 可以在此显示一个错误消息
                     }
                 });
             });
 
-            // function showAlert(message) {
-            //     alert(message);
-            // }
 
             const loadSpots = (selType) => {
                 const inp_StartTimes = document.querySelector('#StartTime')
@@ -247,11 +268,9 @@
                     if (e.target.value == "noshow") {
                         inp_EndTime.classList.add('d-none');
                         inp_StartTime.classList.add('d-none');
-                        // selectElement.selectedIndex = 1;
                     } else if (e.target.value == "show") {
                         inp_EndTime.classList.remove('d-none');
                         inp_StartTime.classList.remove('d-none');
-                        // selectElement.selectedIndex = 0;
                     }
 
                     
@@ -261,34 +280,11 @@
 
             }
 
-            // sel_Type.addEventListener('change', event => {
-            //     // const selectedValue = event.target.value;
-            //     // console.log("Selected value:", selectedValue);
-            //     alert("asd");
-            // });
-
-            // loadSpots();
-
- 
-                // alert("asd");
-                
-            
-            //alert("Hello from the Scripts section!");
-            
-
-            // const sel_Type = document.querySelector('#sel_Type')
-
-            // sel_Type.addEventListener('change', event => {
-            //     // const selectedValue = event.target.value;
-            //     // console.log("Selected value:", selectedValue);
-            //     alert("asd");
-
-            // });
 
             $('#editFormContainer').on('submit', '#editForm', function (event) {
                 event.preventDefault(); 
 
-                var formData = $(this).serialize(); // 获取表单数据
+                var formData = $(this).serialize(); 
                 var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); 
 
                 $.ajax({
@@ -315,13 +311,37 @@
                     }
                 });
             });
+
+
+            $("#tableList").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "GET",
+                    url: "/Backstage/CouponTypes/CouponList",
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                },
+               
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "name", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "status", "width": "auto", "title": "使用狀態" },
+                    { "data": "collectionTime", "width": "auto", "title": "獲得時間" },
+                    { "data": "memberName", "width": "auto", "title": "擁有者" },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            })
+
         });
 
-        // $(document).ready(function () {
-        //     $('#example').DataTable({
-        //         scrollX: true
-        //     });
-        // });
 
 
     </script>
