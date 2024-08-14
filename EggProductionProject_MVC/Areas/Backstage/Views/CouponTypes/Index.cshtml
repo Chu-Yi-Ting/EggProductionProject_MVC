@@ -4,95 +4,20 @@
 }
 
 @section Styles {
-@*     <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
-    <!-- FixedHeader CSS -->
-    <link rel="stylesheet" href="//cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css">
-    <!-- FixedHeader 样式 -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css"> *@
+@*    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css">
+    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" /> *@
+
+    @* <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css"> *@
+
+    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
     <!-- FixedHeader 样式 -->
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.0" rel="stylesheet" />
+
     <style>
 
-        .table-control-n {
-            overflow-x: scroll;
-            width: 100%;
-            clear: left;
-        }
-
-        .dataTables_scrollBody::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .dataTables_scrollBody::-webkit-scrollbar-track {
-            border-radius: 3px;
-            background: rgba(0,0,0,0.06);
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
-        }
-
-        .dataTables_scrollBody::-webkit-scrollbar-thumb {
-            border-radius: 3px;
-            background: rgba(0,0,0,0.12);
-            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-        }
-
-        .dataTables_wrapper.no-footer .dataTables_scrollBody {
-            border-bottom: none;
-        }
-
-        .table-striped > tbody > tr:nth-of-type(odd) {
-            --bs-table-accent-bg: #fff;
-            color: var(--bs-table-striped-color);
-        }
-
-        .table-primary {
-            --bs-table-bg: #446188;
-            --bs-table-striped-bg: #c5d7f2;
-            --bs-table-striped-color: #000;
-            --bs-table-active-bg: #bacbe6;
-            --bs-table-active-color: #000;
-            --bs-table-hover-bg: #bfd1ec;
-            --bs-table-hover-color: #000;
-            color: #fff;
-            border-color: #bacbe6;
-        }
-
-        .table-hover > tbody > tr:hover {
-            --bs-table-accent-bg: var(--bs-table-hover-bg);
-            color: var(--bs-table-hover-color);
-        }
-
-        .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
-            vertical-align: middle;
-            text-align: center;
-        }
-
-        .dataTables_wrapper .dataTables_filter{
-            padding-bottom:20px;
-        }
-
-        table.dataTable thead .sorting{
-            text-align:center;
-        }
-
-        .x_title h4 {
-            font-size:22px;
-            font-weight:600;
-        }
-
-        .big-title{
-            font-size:18px;
-            margin:20px 40px 0px 40px;
-            width:auto;
-        }
-
-        .table > :not(:last-child) > :last-child > * {
-            background: var(--bs-table-bg);
-            white-space: nowrap;
-        }
-
+   
     </style>
 }
 
@@ -123,7 +48,7 @@
     <div class="col-md-12 col-sm-12  mt-3">
         <div class="dashboard_graph m-4 p-4">
             <div class="row x_title mb-4">
-                <div class="col-md-6">
+                <div class="col-md-6 p-0">
                     <h4>優惠券列表</h4>
                 </div>
                 
@@ -168,15 +93,11 @@
 
 @section Scripts {
     
-    @* <script src="~/lib/datatables/js/jquery.datatables.min.js"></script> *@
-    @* <script src="//cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script> *@
+    <script src="~/lib/datatables.net/datatables.min.js"></script>
+    
+    <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+    @* <script src="~/lib/datatables.net-fixedcolumns/fixedcolumns.min.js"></script> *@
 
-    <!-- DataTables 核心 JS -->
-    <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
-    <!-- FixedHeader JS -->
-    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.js"></script>
-    <!-- FixedColumns JS -->
-    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/fixedColumns.dataTables.js"></script>
 
     <script>
 

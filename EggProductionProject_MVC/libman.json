@@ -7,8 +7,20 @@
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "library": "datatables@1.10.21",
-      "destination": "wwwroot/datatables/"
-    }
-  ]
+      "provider": "cdnjs",
+      "library": "datatables.net@2.1.3",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+{
+  "provider": "cdnjs",
+  "library": "datatables.net-jqui@2.1.3",
+  "destination": "wwwroot/lib/datatables.net-jqui/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "datatables.net-fixedcolumns@5.0.0",
+  "destination": "wwwroot/lib/datatables.net-fixedcolumns/"
+}
+]
 }
