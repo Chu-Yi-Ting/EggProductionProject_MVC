@@ -108,12 +108,15 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 try
                 {
+                    
+
                     if (couponType.CouponTypeNo == 0) // 新建
                     {
                         _context.Add(couponType);
                     }
                     else // 更新
                     {
+                        couponType.EmployeeSid = 1;
                         _context.Update(couponType);
                     }
                     await _context.SaveChangesAsync();

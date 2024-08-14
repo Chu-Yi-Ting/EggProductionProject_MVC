@@ -27,9 +27,10 @@
 
     <div class="form-group ">
         <label class="control-label" for="Type">券種性質</label>
-        <select class="form-control" id="sel_Type" name="Type">
+        <select class="form-control" id="sel_Type" name="Type">          
             <option value="show" >限時</option>
-            <option value="noshow " selected>常駐</option>
+            <option value="noshow" selected>常駐</option>
+            
         </select>
 
     </div>
@@ -49,6 +50,7 @@
         <select asp-for="UseAlone" class="form-control" asp-items="ViewBag.UseAloneOptions"></select>
         <span asp-validation-for="UseAlone" class="text-danger"></span>
     </div>
+
     
     <!-- Add other form fields similarly -->
     <button type="submit" class="btn btn-primary" id="saveChangesButton">Save</button>
