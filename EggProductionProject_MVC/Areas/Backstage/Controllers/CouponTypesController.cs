@@ -27,7 +27,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         public IActionResult  Index()
         {
             var eggPlatformContext = _context.CouponTypes.Include(c => c.PublicStatusNoNavigation);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
             return View();
         }
 
@@ -62,8 +62,22 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 return BadRequest("无效的ID");
             }
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses,"PublicStatusNo","StatusDescription");
 
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+            ViewData["UseAloneOptions"] = new SelectList(
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "是" },
+                        new SelectListItem { Value = "0", Text = "否" }
+                    },"Value", "Text");
+
+            //ViewData["TypeOptions"] = new SelectList(
+            //        new List<SelectListItem>
+            //        {
+            //            new SelectListItem { Value = "1", Text = "限時" },
+            //            new SelectListItem { Value = "0", Text = "常駐" }
+            //        }, "Value", "Text");
+
             CouponType couponType;
 
             if (id == 0)

@@ -66,8 +66,6 @@
 </div>
 </div>
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -101,7 +99,6 @@
 
     <script>
 
-       
 
         $(document).ready(function () {
            $("table").dataTable({
@@ -144,7 +141,12 @@
                     { "data": "statusDescription", "width": "auto", "title": "公開狀態" },
                     { "data": "startTime", "width": "auto", "title": "開始時間" },
                     { "data": "endTime", "width": "auto", "title": "結束時間" },
-                    { "data": "useAlone", "width": "auto", "title": "獨立使用" },
+                    {
+                        "data": "useAlone", "width": "auto", "title": "獨立使用",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "是" : "否";
+                        }
+                    },
                     { "data": "empName", "width": "auto", "title": "操作員工" },
                     { "data": "", "width": "auto", "title": "" },
 
@@ -154,6 +156,8 @@
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
             })
+
+            const sel_Type = null;
 
             $(document).on('click', '.edit-button', function () {
                 var id = $(this).data('id'); // 从按钮的 data-id 属性获取 ID
@@ -165,8 +169,30 @@
                         $('#editFormContainer').html(data); // 将返回的部分视图插入到指定的容器中
 
                         // 初始化和显示 modal
-                        var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                        // var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                        // modal.show();
+                   
+
+                        // modal.addEventListener('change', function () {
+                        //     selType = document.querySelector('#sel_Type');
+                        //     console.log(selType); // 你可以根据需要处理 selType
+                        // });
+
+
+                        var modalElement = document.getElementById('exampleModal');
+                        var modal = new bootstrap.Modal(modalElement);
+                        
+
+                        // 确保在 modal 完全显示后再执行 DOM 操作
+                        // modalElement.addEventListener('shown.bs.modal', function () {
+                            selType = document.querySelector('#sel_Type');
+                            // 你可以根据需要处理 selType
+                            loadSpots(selType);
+                            
+                            // selType = document.querySelector('#sel_Type');
+                        // });
                         modal.show();
+
                         document.getElementById('saveChangesButton').addEventListener('click', function () {
                             // 这里可以添加保存数据的逻辑
                             // 成功后隐藏 modal
@@ -180,6 +206,70 @@
                 });
             });
 
+            // function showAlert(message) {
+            //     alert(message);
+            // }
+
+            const loadSpots = (selType) => {
+                const inp_StartTimes = document.querySelector('#StartTime')
+                const inp_CouponTypeNo = document.querySelector('#CouponTypeNo')
+                const inp_StartTime = document.querySelector('#StartTime').closest('.form-group');
+                const inp_EndTime = document.querySelector('#EndTime').closest('.form-group');
+                const selectElement = document.querySelector('#sel_Type');
+
+                if (inp_StartTimes.value != "" && inp_CouponTypeNo != 0) {
+                    inp_EndTime.classList.remove('d-none');
+                    inp_StartTime.classList.remove('d-none');
+                    selectElement.selectedIndex = 0;
+                } else {
+                    selectElement.selectedIndex = 1;
+                    inp_EndTime.classList.add('d-none');
+                    inp_StartTime.classList.add('d-none');
+                }
+
+                selType.addEventListener('change', (e) => {
+
+                    console.log(e.target.value);
+                    if (e.target.value == "noshow") {
+                        inp_EndTime.classList.add('d-none');
+                        inp_StartTime.classList.add('d-none');
+                        selectElement.selectedIndex = 1;
+                    } else {
+                        inp_EndTime.classList.remove('d-none');
+                        inp_StartTime.classList.remove('d-none');
+                        selectElement.selectedIndex = 0;
+                    }
+
+                    
+                });
+
+            
+
+            }
+
+            // sel_Type.addEventListener('change', event => {
+            //     // const selectedValue = event.target.value;
+            //     // console.log("Selected value:", selectedValue);
+            //     alert("asd");
+            // });
+
+            // loadSpots();
+
+ 
+                // alert("asd");
+                
+            
+            //alert("Hello from the Scripts section!");
+            
+
+            // const sel_Type = document.querySelector('#sel_Type')
+
+            // sel_Type.addEventListener('change', event => {
+            //     // const selectedValue = event.target.value;
+            //     // console.log("Selected value:", selectedValue);
+            //     alert("asd");
+
+            // });
 
             $('#editFormContainer').on('submit', '#editForm', function (event) {
                 event.preventDefault(); 
