@@ -106,3 +106,21 @@ table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dat
     margin: 0px;
 }
 
+.title-botton {
+    margin: 0px;
+    padding: 0px 7.5px;
+    background: white;
+    color: cadetblue;
+    border: 1px solid cadetblue;
+}
+
+.btn-check:active + .btn-primary:focus, .btn-check:checked + .btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show > .btn-primary.dropdown-toggle:focus, .btn-check:focus + .btn, .btn:focus {
+    box-shadow: 0 0 0 .25rem rgb(0 0 0 / 0%);
+}
+
+.title-botton:hover {
+    color: #398ee2;
+    background: #4f6185;
+    border: 1px solid transparent;
+    color: white;
+}

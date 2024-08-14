@@ -13,7 +13,7 @@
     <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
     <!-- FixedHeader 样式 -->
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
-    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.0" rel="stylesheet" />
+    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.1" rel="stylesheet" />
 
     <style>
 
@@ -25,9 +25,7 @@
 
 
 
-<button type="button " data-id="0" class="btn btn-primary edit-button" >
-    Launch
-</button>
+
 
     <div class="row" style="">
     <h3 class="big-title">優惠券列表</h3>
@@ -48,17 +46,20 @@
     <div class="col-md-12 col-sm-12  mt-3">
         <div class="dashboard_graph m-4 p-4">
             <div class="row x_title mb-4">
-                <div class="col-md-6 p-0">
-                    <h4>優惠券列表</h4>
+                <div class="col-md-12 p-0">
+                    <h4 class="w-100 d-flex justify-content-lg-between">
+                        優惠券列表 
+                        <button type="button" data-id="0" class="btn  edit-button title-botton">
+                           +
+                        </button>
+                    </h4>
                 </div>
                 
             </div>
             
-                <table class="table table-striped table-hover">
+                <table div="tableType" class="table table-striped table-hover">
                     <thead class="table-primary ">
-                    </thead>
-                    <tbody class="123">
-                    </tbody>
+                    </thead>            
                 </table>
             
         </div>
@@ -101,14 +102,28 @@
 
 
         $(document).ready(function () {
-           $("table").dataTable({
+
+            const preprocessData = (data) => {
+                return data.map(item => {
+                    // Get all keys from the item object
+                    const keys = Object.keys(item);
+                    // Return a new object with default values
+                    return keys.reduce((acc, key) => {
+                        acc[key] = item[key] || ''; // Set default value to empty string
+                        return acc;
+                    }, {});
+                });
+            };
+
+
+            $("#tableType").dataTable({
                 scrollX: "auto",
                 // autoWidth: false,
                 ajax: {
                     type: "GET",
                     url: "/Backstage/CouponTypes/IndexJson",
                     dataSrc: function (json) {
-                        return json;
+                         return preprocessData(json);                   
                     },
                 },
                 
