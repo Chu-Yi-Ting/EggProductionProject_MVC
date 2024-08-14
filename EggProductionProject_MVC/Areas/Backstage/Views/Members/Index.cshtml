@@ -57,22 +57,35 @@
                 @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsChickFarm)
+                  @if (item.IsChickFarm == 1)
+                    {
+                        @:雞農
+                    }
+                    else
+                    {
+                        @:一般用戶
+                    }
             </td>
            
             <td>
-                @Html.DisplayFor(modelItem => item.ProfilePic)
+                
+                    <partial name="_ProfilePicPartialView" model="@item" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsBlocked)
+                    @if (item.IsChickFarm == 1)
+                    {
+                        @:禁用
+                    }
+                    else
+                    {
+                        @:活耀
+                    }
             </td>
            
             <td>
-             
                 <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
-
-                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a>
-                   
+                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
+                    <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a>
             </td>
         </tr>
 }

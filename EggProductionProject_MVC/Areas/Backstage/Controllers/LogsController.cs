@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
+using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -20,10 +21,50 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
         // GET: Backstage/Logs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id, string searchString, DateTime? startDate, DateTime? endDate)
         {
-            var eggPlatformContext = _context.Logs.Include(l => l.MemberS);
-            return View(await eggPlatformContext.ToListAsync());
+           
+
+            //日期篩選
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+
+
+            //搜尋關鍵字
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentMemberId = id;
+            var query = _context.Logs.Include(m => m.MemberS).Where(q=>q.MemberSid==id).Select(x => new LogVM
+            {
+                LogSid = x.LogSid,
+                MemberName = x.MemberS.Name,
+                IsLogSuccess = x.IsLogSuccess,
+                LogTime = x.LogTime,
+
+            });
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(f => f.MemberName.Contains(searchString));
+            }
+
+            // 日期篩選
+            if (startDate.HasValue)
+            {
+                var start = startDate.Value.Date;
+                 
+                query = query.Where(f => f.LogTime.Value.Date >= start);
+            }
+            if (endDate.HasValue)
+            {
+                var end = endDate.Value.Date;
+                query = query.Where(f => f.LogTime.Value.Date <= end);
+            }
+
+
+            var result = await query.ToListAsync();
+
+            return View(result);
         }
 
         // GET: Backstage/Logs/Details/5

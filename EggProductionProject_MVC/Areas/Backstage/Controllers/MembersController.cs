@@ -20,6 +20,15 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             _context = context;
         }
 
+        //拿圖片
+        public async Task<IActionResult> GetPic(int id)
+        {
+            Member? member = await _context.Members.FindAsync(id);
+            byte[]? content = member?.ProfilePic;
+            return File(content, "image/jpeg");
+        }
+
+
         // GET: Backstage/Members
         public async Task<IActionResult> Index()
         {
@@ -85,7 +94,23 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 return NotFound();
             }
 
-            return View(member);
+            var memberVM = new MemberVM
+            {
+                MemberSid = member.MemberSid,
+                Name = member.Name,
+                Email = member.Email,
+                Phone = member.Phone,
+                BirthDate = member.BirthDate,
+                IsChickFarm = member.IsChickFarm,
+                ShoppingRankNo = member.ShoppingRankNo,
+                ProfilePic = member.ProfilePic,
+                IsBlocked = member.IsBlocked,
+            };
+
+            return View(memberVM);
+
+
+            //return View(member);
         }
 
         // GET: Backstage/Members/Create

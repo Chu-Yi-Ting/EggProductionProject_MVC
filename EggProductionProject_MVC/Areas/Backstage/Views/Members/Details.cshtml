@@ -1,4 +1,4 @@
-﻿@model EggProductionProject_MVC.Models.Member
+﻿@model EggProductionProject_MVC.Models.MemberVM.MemberVM
 
 @{
     ViewData["Title"] = "Details";
@@ -38,41 +38,40 @@
             @Html.DisplayNameFor(model => model.IsChickFarm)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsChickFarm)
+            @if (Model.IsChickFarm == 1)
+            {
+                @:雞農
+            }
+            else
+            {
+                @:一般用戶
+            }
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PassWord)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PassWord)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+       
         <dt>
             @Html.DisplayNameFor(model => model.ProfilePic)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ProfilePic)
+            <partial name="_ProfilePicPartialView"  />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IsBlocked)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsBlocked)
+            @if (Model.IsChickFarm == 1)
+            {
+                @:禁用
+            }
+            else
+            {
+                @:活耀
+            }
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ShoppingRankNoNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ShoppingRankNoNavigation.ShoppingRankNo)
-        </dd>
+      
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MemberSid">Edit</a> |
+    
     <a asp-action="Index">Back to List</a>
 </div>
