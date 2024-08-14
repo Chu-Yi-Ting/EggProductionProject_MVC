@@ -21,37 +21,50 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
         // GET: Backstage/Members
-        public async Task<IActionResult> Index(string searchString,MemberVM _memberVM)
+        public async Task<IActionResult> Index()
         {
-            //var eggPlatformContext = _context.Members.Include(m => m.ShoppingRankNoNavigation);
-            //return View(await eggPlatformContext.ToListAsync());
+            var eggPlatformContext = _context.Members.Include(m => m.ShoppingRankNoNavigation).Select(
+                x=>new MemberVM
+                {
+                    MemberSid = x.MemberSid,
+                    Name = x.Name,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    BirthDate = x.BirthDate,
+                    IsChickFarm = x.IsChickFarm,
+                    ShoppingRankNo = x.ShoppingRankNo,
+                    ProfilePic = x.ProfilePic,
+                    IsBlocked = x.IsBlocked,
+                }
+                );
+            return View(await eggPlatformContext.ToListAsync());
 
             //搜尋關鍵字
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentMemberId = _memberVM.MemberSid;
-            var query = from Member in _context.Members
-                        where _memberVM.MemberSid == Member.MemberSid
-                        select new MemberVM
-                        {
-                            MemberSid = Member.MemberSid,
-                            Name = Member.Name,
-                            Email = Member.Email,
-                            Phone = Member.Phone,
-                            BirthDate = Member.BirthDate,
-                            IsChickFarm = Member.IsChickFarm,
-                            ShoppingRankNo = Member.ShoppingRankNo,
-                            ProfilePic = Member.ProfilePic,
-                            IsBlocked = Member.IsBlocked,
-                        };
+            //ViewBag.CurrentFilter = searchString;
+            //ViewBag.CurrentMemberId = _memberVM.MemberSid;
+            //var query = from Member in _context.Members
+            //            where _memberVM.MemberSid == Member.MemberSid
+            //            select new MemberVM
+            //            {
+            //                MemberSid = Member.MemberSid,
+            //                Name = Member.Name,
+            //                Email = Member.Email,
+            //                Phone = Member.Phone,
+            //                BirthDate = Member.BirthDate,
+            //                IsChickFarm = Member.IsChickFarm,
+            //                ShoppingRankNo = Member.ShoppingRankNo,
+            //                ProfilePic = Member.ProfilePic,
+            //                IsBlocked = Member.IsBlocked,
+            //            };
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                query = query.Where(f => f.Name.Contains(searchString) || f.Email.Contains(searchString));
-            }
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    query = query.Where(f => f.Name.Contains(searchString) || f.Email.Contains(searchString));
+            //}
 
-            var result = await query.ToListAsync();
+            //var result = await query.ToListAsync();
 
-            return View(result);
+            //return View(result);
 
 
         }
