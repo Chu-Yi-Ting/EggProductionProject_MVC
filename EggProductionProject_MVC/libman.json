@@ -5,6 +5,22 @@
     {
       "library": "font-awesome@6.6.0",
       "destination": "wwwroot/lib/font-awesome/"
-    }
-  ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables.net@2.1.3",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+{
+  "provider": "cdnjs",
+  "library": "datatables.net-jqui@2.1.3",
+  "destination": "wwwroot/lib/datatables.net-jqui/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "datatables.net-fixedcolumns@5.0.0",
+  "destination": "wwwroot/lib/datatables.net-fixedcolumns/"
+}
+]
 }
