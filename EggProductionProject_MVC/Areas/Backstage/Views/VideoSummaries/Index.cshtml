@@ -1,0 +1,98 @@
+﻿@model IEnumerable<EggProductionProject_MVC.ViewModels.ShowViedoSummary>
+
+@inject EggPlatformContext context;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>影片總數：@context.VideoSummaries.Count()</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InformationColumn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UploadDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimesWatched)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoviePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Advertise)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoCoverImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ViedoNature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScreenTextCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusDescription)
+            </th>
+            
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.VideoTitle)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.InformationColumn)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.UploadDate)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.TimesWatched)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+            </td>
+            <td>
+                    <partial name="_Videopartial" model="@item"></partial>
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Advertise)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.VideoCoverImage)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ViedoNature)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScreenTextCategory)
+                </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.StatusDescription)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.VideoSid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.VideoSid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.VideoSid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

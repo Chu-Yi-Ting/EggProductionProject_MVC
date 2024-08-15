@@ -28,7 +28,6 @@ public partial class VideoSummary
     public string? MoviePath { get; set; }
 
     public bool? Advertise { get; set; }
-
     public int? PublicStatusNo { get; set; }
 
     public string? VideoCoverImage { get; set; }

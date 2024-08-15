@@ -1,0 +1,89 @@
+﻿@model EggProductionProject_MVC.ViewModels.ShowViedoSummary
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>VideoSummary</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            
+            <input type="hidden" asp-for="VideoSid" />
+            <div class="form-group">
+                <label asp-for="VideoDuration" class="control-label"></label>
+                <input asp-for="VideoDuration" class="form-control" />
+                <span asp-validation-for="VideoDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoTitle" class="control-label"></label>
+                <input asp-for="VideoTitle" class="form-control" />
+                <span asp-validation-for="VideoTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InformationColumn" class="control-label"></label>
+                <input asp-for="InformationColumn" class="form-control" />
+                <span asp-validation-for="InformationColumn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploadDate" class="control-label"></label>
+                <input asp-for="UploadDate" class="form-control" />
+                <span asp-validation-for="UploadDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimesWatched" class="control-label"></label>
+                <input asp-for="TimesWatched" class="form-control" />
+                <span asp-validation-for="TimesWatched" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScreenTextCategory" class="control-label"></label>
+                <select asp-for="ScreenTextCategory" class="form-control"  ></select>
+                <span asp-validation-for="ScreenTextCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoviePath" class="control-label"></label>
+                <partial name="_Videopartial" model="@Model"></partial>
+                <input asp-for="MoviePath" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Advertise" class="control-label"></label>
+                <input asp-for="Advertise" class="form-control" />
+                <span asp-validation-for="Advertise" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusDescription" class="control-label"></label>
+                <select asp-for="StatusDescription" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                <span asp-validation-for="StatusDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoCoverImage" class="control-label"></label>
+                <input asp-for="VideoCoverImage" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">返回首頁</a>
+</div>
+
+@section Scripts {
+    <script>
+        const Getimage = document.querySelector("#MoviePath")
+
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

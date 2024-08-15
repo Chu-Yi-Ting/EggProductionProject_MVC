@@ -1,0 +1,11 @@
+﻿
+
+@if (Model.MoviePath != null)
+{
+    <video src="@Url.Action("GetVideopath","VideoSummaries",new {id=Model.VideoSid})"
+           type="video/mp4" width="320" height="240" controls ></video>
+}
+else
+{
+    <img src="~/videoimage/novideo.png" width="320" height="240"/>
+}
