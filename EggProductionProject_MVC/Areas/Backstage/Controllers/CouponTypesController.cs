@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.Areas.Backstage.ViewModels;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Humanizer;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -27,7 +28,23 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         public IActionResult  Index()
         {
             var eggPlatformContext = _context.CouponTypes.Include(c => c.PublicStatusNoNavigation);
+            ViewData["TimeOptions"] = new SelectList(
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "近三月" },
+                        new SelectListItem { Value = "2", Text = "本月"},
+                        new SelectListItem { Value = "3", Text = "本週"}
+                    }, "Value", "Text");
+
             ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+            ViewData["TypeOptions"] = new SelectList(
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "常駐" },
+                        new SelectListItem { Value = "2", Text = "限時" }
+                        
+                    }, "Value", "Text");
+            ViewData["NameOptions"] = new SelectList(_context.CouponTypes, "CouponTypeNo", "Name");
             return View();
         }
 
@@ -54,19 +71,294 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(CouponTypesViewModels);
         }
 
+
+        public class CouponSec
+        {
+            public string? TimeSec { get; set; }
+            public string? TypeSec { get; set; }
+            public string? NameSec { get; set; }
+            public string? StatusSec { get; set; }
+        }
+
+   
+        internal class CoupontypeDto
+        {
+            public int CouponTypeNo { get; set; }
+            public DateTime? StartTime { get; set; }
+            public string? Name { get; set; }
+        }
+
+        [HttpPost]
+        public JsonResult CouponList1([FromBody] CouponSec sec)
+        {
+            var couponStatuses = _context.CouponStatuses.Select(c => new couponStatusDto
+            {
+                CouponStatusNo = c.CouponStatusNo,
+                Status = c.Status
+            }).ToList();
+            var members = _context.Members.Select(c => new memberDto
+            {
+                MemberSid = c.MemberSid,
+                Name = c.Name
+            }).ToList();
+
+
+
+
+            var ori_ct = _context.CouponTypes
+               .Select(c => new CoupontypeDto
+               {
+                   CouponTypeNo = c.CouponTypeNo,
+                   StartTime = c.StartTime,
+                   Name = c.Name
+               })
+               .ToList();
+            var one_ct = ori_ct;
+
+            var ori_co = _context.Coupons.ToList();
+            var end_co = ori_co;
+
+
+            if (sec.NameSec != "all" && sec.NameSec != null && sec.NameSec != "" && sec.NameSec != "0")
+            {
+                if (!int.TryParse(sec.NameSec, out int nameSecInt))
+                {
+                    return new JsonResult(new { Success = false, Message = "Invalid CouponTypeNo" });
+                }
+         
+                ori_ct = _context.CouponTypes
+               .Select(c => new CoupontypeDto
+               {
+                   CouponTypeNo = c.CouponTypeNo,
+                   StartTime = c.StartTime,
+                   Name = c.Name
+               })
+                .Where(c => c.CouponTypeNo == nameSecInt)
+                .ToList();
+            }
+            
+
+            switch (sec.TypeSec)
+            {
+                case "1":
+                    one_ct = ori_ct
+                     .Where(c => !c.StartTime.HasValue)
+                     .ToList();
+                    break;
+
+                case "2":
+                    one_ct = ori_ct
+                    .Where(c => c.StartTime.HasValue)
+                    .ToList();
+                    break;
+
+                default:
+                    one_ct = ori_ct
+                   .ToList();
+                    break;
+            }
+
+            //type結束回到 coupo,拿到被塞選的結果
+            var filteredCouponTypeNos = one_ct.Select(c => c.CouponTypeNo).ToList();
+
+
+
+            if (sec.StatusSec != "all" && sec.StatusSec != null && sec.StatusSec != "" && sec.StatusSec != "0")
+            {
+                if (!int.TryParse(sec.StatusSec, out int statusSecInt))
+                {
+                    return new JsonResult(new { Success = false, Message = "Invalid CouponTypeNo" });
+                }
+                ori_co = _context.Coupons
+                .Where(c => c.CouponStatusNo == statusSecInt)
+                .ToList();
+            }
+            else
+            {
+                ori_co = _context.Coupons
+                .ToList();
+            }
+
+
+
+
+            switch (sec.TimeSec)
+            {
+                case "1":
+
+                    DateTime threeMonthsAgo = DateTime.Now.AddMonths(-3);
+
+                    end_co = ori_co
+                    .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
+                    c.CollectionTime >= threeMonthsAgo)
+                    .ToList();
+                    break;
+
+                case "2":
+                    DateTime oneMonthsAgo = DateTime.Now.AddMonths(-1);
+                    end_co = _context.Coupons
+                      .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
+                    c.CollectionTime >= oneMonthsAgo)
+                    .ToList();
+                    break;
+
+                case "3":
+                    DateTime now = DateTime.Now;
+                    DateTime startOfWeek = now.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
+                    DateTime endOfWeek = startOfWeek.AddDays(6);
+
+                    end_co = ori_co
+                    .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
+                    c.CollectionTime >= startOfWeek &&
+                    c.CollectionTime <= endOfWeek)
+                    .ToList();
+                    break;
+
+                default:
+                    end_co = ori_co
+                     .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo))
+                     .ToList();
+                    break;
+            }
+
+            var CouponViewModels = end_co.Select(p => new CouponViewModel
+            {
+                CouponSid = p.CouponSid,
+                CouponTypeNo = p.CouponTypeNo,
+                Name = ori_ct.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
+                CouponStatusNo = p.CouponStatusNo,
+                Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
+                CollectionTime = p.CollectionTime,
+                MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
+            });
+
+
+
+            return Json(CouponViewModels);
+        }
+
+
+        //[HttpPost]
+        //public JsonResult CouponList([FromBody] CouponSec sec)
+        //{
+        //    var filteredCouponTypesd = _context.CouponTypes.ToList();
+
+        //    switch (sec.StatusSec)
+        //    {
+        //        case 1:
+        //           filteredCouponTypesd = _context.CouponTypes
+        //            .Where(c => c.PublicStatusNo == sec.StatusSec)
+        //            .ToList();
+        //            break;
+
+        //        case 2:
+        //            filteredCouponTypesd = _context.CouponTypes
+        //            //.Where(c => c.PublicStatusNo == sec.StatusSec)
+        //            .ToList();
+        //            break;
+
+        //        default:
+        //            // 處理其他狀態的邏輯
+        //            break;
+        //    }
+
+
+
+        //    // Optionally, you can perform additional operations or validations here
+
+        //    return Json(filteredCouponTypesd);
+        //}
+
+
+
+
+
+
+
+
+        //    public JsonResult CouponLists()
+        //    {
+        //        var couponStatuses = _context.CouponStatuses.ToList();
+
+        //        DateTime now = DateTime.Now;
+        //        DateTime startOfWeek = now.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
+        //        DateTime endOfWeek = startOfWeek.AddDays(6);
+        //        //var coupons = _context.Coupons
+        //        //    .Where(c => c.CollectionTime >= startOfWeek && c.CollectionTime <= endOfWeek)
+        //        //    .ToList();
+
+        //        DateTime threeMonthsAgo = DateTime.Now.AddMonths(-1);
+
+
+
+        //         //var coupons = _context.Coupons
+        //         //   .Where(c => c.CollectionTime >= threeMonthsAgo)
+        //         //   .ToList();
+
+        ////        var couponTypes = _context.CouponTypes
+        ////.Where(c => c.StartTime.HasValue)
+        ////.ToList();
+
+        //        var coupons = _context.Coupons.ToList();
+        //        var couponTypes = _context.CouponTypes.ToList();
+        //        var members = _context.Members.ToList();
+
+        //        var filteredCouponTypes = _context.CouponTypes
+        //.Where(c => c.StartTime.HasValue)
+        //.ToList();
+
+        //        var filteredCouponTypesd = _context.CouponTypes
+        //.Where(c => c.CouponTypeNo== 5 && c.StartTime.HasValue)
+        //.ToList();
+
+
+        //        var filteredCouponTypeNos = filteredCouponTypesd.Select(c => c.CouponTypeNo).ToList();
+
+        //        //var filteredCoupons = _context.Coupons
+        //        //    .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo))
+        //        //    .ToList();
+
+
+        //            var mm = _context.Coupons
+        //    .Where(c => c.CouponStatusNo == 2)
+        //    .ToList();
+
+        //        var filteredCoupons = mm
+        //.Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
+        //            c.CollectionTime >= startOfWeek &&
+        //            c.CollectionTime <= endOfWeek ) 
+        //.ToList();
+
+        //        var CouponViewModels = filteredCoupons.Select(p => new CouponViewModel
+        //        {
+        //            CouponSid=p.CouponSid,
+        //            CouponTypeNo = p.CouponTypeNo,
+        //            Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
+        //            CouponStatusNo=p.CouponStatusNo,
+        //            Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
+        //            CollectionTime = p.CollectionTime,
+        //            MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
+        //        });
+
+        //        return Json(CouponViewModels);
+        //    }
+
+
         public JsonResult CouponList()
         {
             var couponStatuses = _context.CouponStatuses.ToList();
+
+
             var coupons = _context.Coupons.ToList();
             var couponTypes = _context.CouponTypes.ToList();
             var members = _context.Members.ToList();
 
             var CouponViewModels = coupons.Select(p => new CouponViewModel
             {
-                CouponSid=p.CouponSid,
+                CouponSid = p.CouponSid,
                 CouponTypeNo = p.CouponTypeNo,
                 Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
-                CouponStatusNo=p.CouponStatusNo,
+                CouponStatusNo = p.CouponStatusNo,
                 Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
                 CollectionTime = p.CollectionTime,
                 MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
@@ -132,6 +424,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
                     if (couponType.CouponTypeNo == 0) // 新建
                     {
+                        couponType.EmployeeSid = 1;
                         _context.Add(couponType);
                     }
                     else // 更新
@@ -174,5 +467,17 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         //{
         //    return _context.CouponTypes.Any(e => e.CouponTypeNo == id);
         //}
+    }
+
+    internal class memberDto
+    {
+        public int MemberSid { get; set; }
+        public string Name { get; set; }
+    }
+
+    internal class couponStatusDto
+    {
+        public int CouponStatusNo { get; set; }
+        public string Status { get; set; }
     }
 }

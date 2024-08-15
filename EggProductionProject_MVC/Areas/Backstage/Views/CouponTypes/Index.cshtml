@@ -49,38 +49,68 @@
     <div class="tab-content mt-2" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row" style="">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="dashboard_graph m-4 p-4">
-                    <div class="row x_title mb-4">
-                        <div class="col-md-6">
-                            <h4>查詢</h4>
+                <div class="col-md-12 col-sm-12">
+                    <div class="dashboard_graph m-4 p-4">
+                        <div class="row x_title mb-4">
+                            <div class="col-md-12 p-0">
+                                <h4 class="w-100 d-flex justify-content-lg-between">
+                                    查詢
+                                </h4>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <select id="TimeOptions" class="form-control" asp-items="ViewBag.TimeOptions">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <select id="TypeOptions" class="form-control" asp-items="ViewBag.TypeOptions">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <select id="NameOptions" class="form-control" asp-items="ViewBag.NameOptions">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <button id="checkButton">123123123</button>
+                                </div>
+                        </div>
+                          
+                        </div>
+                        
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-sm-12  mt-3">
+
+
+
+            <div class="col-md-12 col-sm-12">
                 <div class="dashboard_graph m-4 p-4">
                     <div class="row x_title mb-4">
                         <div class="col-md-12 p-0">
                             <h4 class="w-100 d-flex justify-content-lg-between">
-                                優惠券列表
-                                <button type="button" data-id="0" class="btn  edit-button title-botton">
-                                    +
-                                </button>
+                                優惠券列表                             
                             </h4>
                         </div>
                     </div>
-                    <table id="tableList" class="table table-striped table-hover">
+                    <table id="tableList" class="table table-striped table-hover w-100">
                         <thead class="table-primary ">
                         </thead>
                     </table>
                 </div>
             </div>
            </div>
-        </div>
+
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="row" style="">
-            <div class="col-md-12 col-sm-12  mt-3">
+            <div class="col-md-12 col-sm-12 ">
                 <div class="dashboard_graph m-4 p-4">
                     <div class="row x_title mb-4">
                         <div class="col-md-12 p-0">
@@ -145,20 +175,111 @@
 
         $(document).ready(function () {
 
+
             $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                var table = $("#tableType").DataTable();
+                var table = $("table").DataTable();
                 table.ajax.reload();
+                table.columns.adjust().draw();
             });
+
+
+
+            // const selSortBy = document.querySelector('#TimeOptions')
+
+            // selSortBy.addEventListener('change', event => {
+            //     const selectedValue = event.target.value;
+
+            //     console.log("Selected value:", selectedValue);
+
+               
+            // });
+            const leftmeauBtn = document.querySelector('#menu_toggle');
+
+            leftmeauBtn.addEventListener('click', event => {
+
+                var table = $("table").DataTable();
+                table.columns.adjust().draw();
+
+
+            });
+
+            const checkButton = document.querySelector('#checkButton');
+            const timeOptions = document.querySelector('#TimeOptions');
+            const publicStatusNoOptions = document.querySelector('#PublicStatusNo');
+            const TypeOptions = document.querySelector('#TypeOptions');
+            const NameOptions = document.querySelector('#NameOptions');
+
+            checkButton.addEventListener('click', event => {
+                const selected_time = timeOptions.value;
+                const selected_status = publicStatusNoOptions.value;
+                const selected_type = TypeOptions.value;
+                const selected_name = NameOptions.value;
+
+                const jsonObject = {
+                    timeSec: selected_time,
+                    publicStatus: selected_status,
+                    type: selected_type,
+                    name: selected_name
+                };
+
+                const jsonString = JSON.stringify(jsonObject);
+
+                console.log("Selected values:", jsonString);
+
+                var table = $("#tableList").DataTable();
+                 table.ajax.reload();
+              
+            });
+
+             $("#tableList").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Backstage/coupontypes/CouponList1",
+                    data: function () {
+                        // Collect data to be sent
+                        const jsonObject = {
+                            timeSec: $("#TimeOptions").val(),
+                            statusSec: $("#PublicStatusNo").val(),
+                            typeSec: $("#TypeOptions").val(),
+                            nameSec: $("#NameOptions").val()
+                        };
+                        return JSON.stringify(jsonObject); 
+                    },
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json", 
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "name", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "status", "width": "auto", "title": "使用狀態" },
+                    { "data": "collectionTime", "width": "auto", "title": "獲得時間" },
+                    { "data": "memberName", "width": "auto", "title": "擁有者" },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            })
 
 
 
             const preprocessData = (data) => {
                 return data.map(item => {
-                    // Get all keys from the item object
                     const keys = Object.keys(item);
-                    // Return a new object with default values
                     return keys.reduce((acc, key) => {
-                        acc[key] = item[key] || ''; // Set default value to empty string
+                        acc[key] = item[key] || ''; 
                         return acc;
                     }, {});
                 });
@@ -167,7 +288,6 @@
 
             $("#tableType").dataTable({
                 scrollX: "auto",
-                // autoWidth: false,
                 ajax: {
                     type: "GET",
                     url: "/Backstage/CouponTypes/IndexJson",
@@ -187,7 +307,6 @@
                         }
                     }
                 ],
-                // lengthMenu: [[4, 12, 20, -1], [4, 12, 20, "All"]],
                 lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
                 fixedColumns: {
                     start: 0,
@@ -299,7 +418,7 @@
                         if (response.success) {
                             $('#editFormContainer').html('');
 
-                            var table = $("table").DataTable(); 
+                            var table = $("#tableType").DataTable();
                             table.ajax.reload();
                          
                         } else {
@@ -313,32 +432,7 @@
             });
 
 
-            $("#tableList").dataTable({
-                scrollX: "auto",
-                ajax: {
-                    type: "GET",
-                    url: "/Backstage/CouponTypes/CouponList",
-                    dataSrc: function (json) {
-                        return preprocessData(json);
-                    },
-                },
-               
-                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
-                fixedColumns: {
-                    start: 0,
-                    end: 1
-                },
-                columns: [
-                    { "data": "name", "width": "auto", "title": "優惠券名稱" },
-                    { "data": "status", "width": "auto", "title": "使用狀態" },
-                    { "data": "collectionTime", "width": "auto", "title": "獲得時間" },
-                    { "data": "memberName", "width": "auto", "title": "擁有者" },
-                ],
-                fixedHeader: { header: true },
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
-                },
-            })
+         
 
         });
 
