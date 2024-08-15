@@ -1,12 +1,5 @@
-﻿<div class="mb-3">
-    <label class="form-label">訂單:</label>
-</div>
-<div class="mb-3">
-   @*  <select id="orders" asp-items="@ViewBag.Orders" class="form-control">
-        <option>--請選擇--</option>
-    </select> *@
-    <select id="TypeOptions" class="form-control" asp-items="ViewBag.TypeOptions">
+﻿<label class="form-label">優惠券名稱</label>
+<select id="NameOptions" class="form-control bd-r-4" asp-items="ViewBag.NameOptions">
         <option value="all">全部</option>
     </select>
-</div>
 

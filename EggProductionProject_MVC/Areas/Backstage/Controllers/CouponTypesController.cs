@@ -56,7 +56,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 ViewData["NameOptions"] = new SelectList(_context.CouponTypes.Where(o => !o.StartTime.HasValue), "CouponTypeNo", "Name");
             }
-            else if (id == "2") {
+            else if (id == "2")
+            {
                 ViewData["NameOptions"] = new SelectList(_context.CouponTypes.Where(o => o.StartTime.HasValue), "CouponTypeNo", "Name");
             }
             else
@@ -64,7 +65,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 ViewData["NameOptions"] = new SelectList(_context.CouponTypes, "CouponTypeNo", "Name");
             }
 
-           
             return PartialView("_SelectNamePartialcs");
         }
 

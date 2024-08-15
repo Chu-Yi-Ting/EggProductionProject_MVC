@@ -81,6 +81,8 @@ table.dataTable thead .sorting {
 .x_title h4 {
     font-size: 22px;
     font-weight: 600;
+    /*margin-bottom: 0px;*/
+   
 }
 
 .big-title {
@@ -103,8 +105,10 @@ table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dat
 
 
 .dashboard_graph .x_title {
-     padding:0px; 
+    padding: 0px;
     margin: 0px;
+/*    border-bottom: none;*/
+    border-bottom: 1px solid #E6E9ED;
 }
 
 .title-botton {
@@ -146,4 +150,8 @@ table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dat
     display: flex;
     align-items: center;
     margin-left:  20px;
+}
+
+.bd-r-4 {
+    border-radius: 4px;
 }
