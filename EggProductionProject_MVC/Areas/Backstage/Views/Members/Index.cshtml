@@ -72,14 +72,14 @@
                     <partial name="_ProfilePicPartialView" model="@item" />
             </td>
             <td>
-                    @if (item.IsChickFarm == 1)
-                    {
-                        @:禁用
-                    }
-                    else
-                    {
-                        @:活耀
-                    }
+                    <form asp-action="UpdateIsBlocked" method="post">
+                        <select asp-for="@item.IsBlocked" class="form-control" asp-items="@(new SelectList(new List<SelectListItem> {
+                            new SelectListItem { Text = "未封鎖", Value = "0" },
+                            new SelectListItem { Text = "已封鎖", Value = "1" }
+                        }, "Value", "Text", item.IsBlocked))"></select>
+                        <input type="hidden" asp-for="@item.MemberSid" />
+                        <button type="submit" class="btn btn-primary">更新</button>
+                    </form>
             </td>
            
             <td>
@@ -91,3 +91,4 @@
 }
     </tbody>
 </table>
+

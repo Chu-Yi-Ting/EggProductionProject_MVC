@@ -46,6 +46,9 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                     IsBlocked = x.IsBlocked,
                 }
                 );
+
+            ViewData["IsBlocked"] = new SelectList(_context.Members, "IsBlocked", "IsBlocked");
+
             return View(await eggPlatformContext.ToListAsync());
 
             //搜尋關鍵字
@@ -189,6 +192,26 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             ViewData["ShoppingRankNo"] = new SelectList(_context.ShoppingRanks, "ShoppingRankNo", "ShoppingRankNo", member.ShoppingRankNo);
             return View(member);
         }
+
+
+        [HttpPost]
+        public IActionResult UpdateIsBlocked(int MemberSid, byte IsBlocked)
+        {
+            // 查找指定的Member
+            var member = _context.Members.FirstOrDefault(m => m.MemberSid == MemberSid);
+
+            if (member != null)
+            {
+                // 更新IsBlocked屬性
+                member.IsBlocked = IsBlocked;
+                _context.SaveChanges();
+            }
+
+            // 重定向到Index視圖
+            return RedirectToAction("Index");
+        }
+
+
 
         // GET: Backstage/Members/Delete/5
         public async Task<IActionResult> Delete(int? id)
