@@ -48,6 +48,28 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return View();
         }
 
+        public IActionResult Orders(string id)
+        {
+            //ViewBag.Orders = new SelectList(_context.Orders.Where(o => o.CustomerId == id), "OrderId", "OrderId");
+
+            if (id == "1")
+            {
+                ViewData["NameOptions"] = new SelectList(_context.CouponTypes.Where(o => !o.StartTime.HasValue), "CouponTypeNo", "Name");
+            }
+            else if (id == "2") {
+                ViewData["NameOptions"] = new SelectList(_context.CouponTypes.Where(o => o.StartTime.HasValue), "CouponTypeNo", "Name");
+            }
+            else
+            {
+                ViewData["NameOptions"] = new SelectList(_context.CouponTypes, "CouponTypeNo", "Name");
+            }
+
+           
+            return PartialView("_SelectNamePartialcs");
+        }
+
+
+
         public JsonResult IndexJson()
         {
             var publicStatuses = _context.PublicStatuses.ToList();
@@ -237,113 +259,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(CouponViewModels);
         }
 
-
-        //[HttpPost]
-        //public JsonResult CouponList([FromBody] CouponSec sec)
-        //{
-        //    var filteredCouponTypesd = _context.CouponTypes.ToList();
-
-        //    switch (sec.StatusSec)
-        //    {
-        //        case 1:
-        //           filteredCouponTypesd = _context.CouponTypes
-        //            .Where(c => c.PublicStatusNo == sec.StatusSec)
-        //            .ToList();
-        //            break;
-
-        //        case 2:
-        //            filteredCouponTypesd = _context.CouponTypes
-        //            //.Where(c => c.PublicStatusNo == sec.StatusSec)
-        //            .ToList();
-        //            break;
-
-        //        default:
-        //            // 處理其他狀態的邏輯
-        //            break;
-        //    }
-
-
-
-        //    // Optionally, you can perform additional operations or validations here
-
-        //    return Json(filteredCouponTypesd);
-        //}
-
-
-
-
-
-
-
-
-        //    public JsonResult CouponLists()
-        //    {
-        //        var couponStatuses = _context.CouponStatuses.ToList();
-
-        //        DateTime now = DateTime.Now;
-        //        DateTime startOfWeek = now.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
-        //        DateTime endOfWeek = startOfWeek.AddDays(6);
-        //        //var coupons = _context.Coupons
-        //        //    .Where(c => c.CollectionTime >= startOfWeek && c.CollectionTime <= endOfWeek)
-        //        //    .ToList();
-
-        //        DateTime threeMonthsAgo = DateTime.Now.AddMonths(-1);
-
-
-
-        //         //var coupons = _context.Coupons
-        //         //   .Where(c => c.CollectionTime >= threeMonthsAgo)
-        //         //   .ToList();
-
-        ////        var couponTypes = _context.CouponTypes
-        ////.Where(c => c.StartTime.HasValue)
-        ////.ToList();
-
-        //        var coupons = _context.Coupons.ToList();
-        //        var couponTypes = _context.CouponTypes.ToList();
-        //        var members = _context.Members.ToList();
-
-        //        var filteredCouponTypes = _context.CouponTypes
-        //.Where(c => c.StartTime.HasValue)
-        //.ToList();
-
-        //        var filteredCouponTypesd = _context.CouponTypes
-        //.Where(c => c.CouponTypeNo== 5 && c.StartTime.HasValue)
-        //.ToList();
-
-
-        //        var filteredCouponTypeNos = filteredCouponTypesd.Select(c => c.CouponTypeNo).ToList();
-
-        //        //var filteredCoupons = _context.Coupons
-        //        //    .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo))
-        //        //    .ToList();
-
-
-        //            var mm = _context.Coupons
-        //    .Where(c => c.CouponStatusNo == 2)
-        //    .ToList();
-
-        //        var filteredCoupons = mm
-        //.Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
-        //            c.CollectionTime >= startOfWeek &&
-        //            c.CollectionTime <= endOfWeek ) 
-        //.ToList();
-
-        //        var CouponViewModels = filteredCoupons.Select(p => new CouponViewModel
-        //        {
-        //            CouponSid=p.CouponSid,
-        //            CouponTypeNo = p.CouponTypeNo,
-        //            Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
-        //            CouponStatusNo=p.CouponStatusNo,
-        //            Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
-        //            CollectionTime = p.CollectionTime,
-        //            MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
-        //        });
-
-        //        return Json(CouponViewModels);
-        //    }
-
-
         public JsonResult CouponList()
         {
             var couponStatuses = _context.CouponStatuses.ToList();
@@ -446,27 +361,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(new { success = false, message = string.Join(", ", errors) });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("CouponTypeNo,Name,Price,Minimum,PublicStatusNo,StartTime,EndTime,UseAlone,EmployeeSid")] CouponType couponType)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(couponType);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", couponType.PublicStatusNo);
-        //    return View(couponType);
-        //}
-
-       
-      
-
-        //private bool CouponTypeExists(int id)
-        //{
-        //    return _context.CouponTypes.Any(e => e.CouponTypeNo == id);
-        //}
+    
     }
 
     internal class memberDto

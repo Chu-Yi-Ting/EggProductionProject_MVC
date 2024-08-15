@@ -78,6 +78,7 @@
                                 <select id="NameOptions" class="form-control" asp-items="ViewBag.NameOptions">
                                     <option value="all">全部</option>
                                 </select>
+                                <div id="ordersSelect"></div>
                             </div>
                             <div class="col-lg-3">
                                 <button id="checkButton">123123123</button>
@@ -200,7 +201,6 @@
                 var table = $("table").DataTable();
                 table.columns.adjust().draw();
 
-
             });
 
             const checkButton = document.querySelector('#checkButton');
@@ -208,6 +208,25 @@
             const publicStatusNoOptions = document.querySelector('#PublicStatusNo');
             const TypeOptions = document.querySelector('#TypeOptions');
             const NameOptions = document.querySelector('#NameOptions');
+
+
+            // $("#PublicStatusNo").on("change", () => {
+            //     if (PublicStatusNo.value != '--請選擇--') {
+            //         $.ajax({
+            //             type: "GET",
+            //             url: `@Url.Action("Orders", "CouponTypes")/${PublicStatusNo.value}`
+            //         }).done(data => {
+            //             $("#ordersSelect").html(data);
+            //         }).fail(err => {
+            //             alert(`${err.statusCode}:${err.statusText}`);
+            //         });
+            //     }
+            //     else {
+            //         $("#ordersSelect").html("");
+            //     }
+            // });
+
+
 
             checkButton.addEventListener('click', event => {
                 const selected_time = timeOptions.value;
