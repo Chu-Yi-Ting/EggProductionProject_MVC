@@ -13,6 +13,10 @@
 <table class="table">
     <thead>
         <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorSid)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.VideoTitle)
             </th>
@@ -54,6 +58,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatorSid)
+                </td>
             <td>
                     @Html.DisplayFor(modelItem => item.VideoTitle)
             </td>

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class ArticleCreater
+public partial class NormalizedDatum
 {
-    public int ArticleCreaterSid { get; set; }
+    public int? Subcategory { get; set; }
 
-    public int? MemberNo { get; set; }
+    public int? WeekAge { get; set; }
 
-    public string PersonalInfo { get; set; }
+    public double? EggRate { get; set; }
 
-    public int? ArticleCount { get; set; }
+    public double? DeathRate { get; set; }
 }

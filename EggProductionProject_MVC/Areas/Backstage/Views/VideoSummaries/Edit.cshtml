@@ -1,4 +1,4 @@
-﻿@model EggProductionProject_MVC.ViewModels.ShowViedoSummary
+﻿@model EggProductionProject_MVC.Models.VideoSummary
 
 @{
     ViewData["Title"] = "Edit";
@@ -39,14 +39,13 @@
                 <span asp-validation-for="TimesWatched" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
+                <label asp-for="CreatorSid" class="control-label"></label>
+                <input asp-for="CreatorSid" class="form-control" />
+                <span asp-validation-for="CreatorSid" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ScreenTextCategory" class="control-label"></label>
-                <select asp-for="ScreenTextCategory" class="form-control"  ></select>
-                <span asp-validation-for="ScreenTextCategory" class="text-danger"></span>
+                <label asp-for="ScreenTextSid" class="control-label"></label>
+                <select asp-for="ScreenTextSid" class="form-control" asp-items="ViewBag.ScreenTextSid"></select>
             </div>
             <div class="form-group">
                 <label asp-for="MoviePath" class="control-label"></label>
@@ -54,18 +53,17 @@
                 <input asp-for="MoviePath" type="file" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Advertise" class="control-label"></label>
-                <input asp-for="Advertise" class="form-control" />
-                <span asp-validation-for="Advertise" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StatusDescription" class="control-label"></label>
-                <select asp-for="StatusDescription" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
-                <span asp-validation-for="StatusDescription" class="text-danger"></span>
+                <label asp-for="Advertised" class="control-label"></label>
+                <input asp-for="Advertised" class="form-control" />
+                <span asp-validation-for="Advertised" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="VideoCoverImage" class="control-label"></label>
                 <input asp-for="VideoCoverImage" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicStatusNo" class="control-label"></label>
+                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

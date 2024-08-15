@@ -1,0 +1,322 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "EggPlatformContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "EggProductionProject_MVC",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Advertisments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AreaFeed]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Article]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ArticleCategories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ArticleCreater]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Calendar]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CarrierAddress]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CarrierOpens]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Carriers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CarrierWays]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Carts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Certification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChickDeath]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChickHouse]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ChickLotNo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CoinUseAreas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Collect]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Coupons]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CouponStatuses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CouponTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Creator]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DailyEggRe]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EcImage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Edit]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmpDepartment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employee]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmpRank]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FlashSales]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Friend]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FriendAction]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FriendActionType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GoodorBad]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Log]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LogicalDeletion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Manure]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Member]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MemberArea]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Message]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Nature]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Normalized_Data]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Notify]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NotifyType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OrderDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Orders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OrderStatuses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Payments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductItems]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductReviews]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Products]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductSubcategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PublicStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Reply]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Report]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportReason]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SalesBatches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ScreenSummary]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ShoppingRank]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[StoreCoins]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Stores]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubscriptionMasterList]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Talk]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tracks]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TrackStatuses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TrackTimes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Vaccinate]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VaccineTable]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VideoSummary]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WebSiteType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DailyChickAmountsRate]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

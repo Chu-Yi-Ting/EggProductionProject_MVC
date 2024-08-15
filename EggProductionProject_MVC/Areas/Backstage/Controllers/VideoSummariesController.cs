@@ -34,13 +34,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                   .Include(v => v.Messages)
 
                   .Select(x => new ShowViedoSummary
-                  {
+
+                  {  CreatorSid = x.CreatorSid,
                       ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
                       VideoSid = x.VideoSid,
-                      Advertise = x.Advertise,
+                      Advertise = x.Advertised,
                       VideoDuration = x.VideoDuration,
                       VideoTitle = x.VideoTitle,
-                      MemberName = x.MemberName,
+                      MemberName = x.CreatorS.MemberName,
                       TimesWatched = x.TimesWatched,
                       MoviePath = x.MoviePath,
                       InformationColumn = x.InformationColumn,
@@ -108,45 +109,48 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/VideoSummaries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            
+            var videoSummary = await _context.VideoSummaries.FindAsync(id);
+
             if (id == null)
             {
                 return NotFound();
             }
-            var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
-                .Select(x=> new ShowViedoSummary
-                {
-                    ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
-                    VideoSid = x.VideoSid,
-                    Advertise = x.Advertise,
-                    VideoDuration = x.VideoDuration,
-                    VideoTitle = x.VideoTitle,
-                    MemberName = x.MemberName,
-                    TimesWatched = x.TimesWatched,
-                    MoviePath = x.MoviePath,
-                    InformationColumn = x.InformationColumn,
-                    VideoCoverImage = x.VideoCoverImage,
-                    UploadDate = x.UploadDate,
-                    ViedoNature = x.NatureS.ViedoNature,
-                    StatusDescription = x.PublicStatusNoNavigation.StatusDescription
-                });
+            //var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
+            //    .Select(x=> new ShowViedoSummary
+            //    {
+            //        ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
+            //        VideoSid = x.VideoSid,
+            //        Advertise = x.Advertised,
+            //        VideoDuration = x.VideoDuration,
+            //        VideoTitle = x.VideoTitle,
+            //        MemberName = x.CreatorS.MemberName,
+            //        TimesWatched = x.TimesWatched,
+            //        MoviePath = x.MoviePath,
+            //        InformationColumn = x.InformationColumn,
+            //        VideoCoverImage = x.VideoCoverImage,
+            //        UploadDate = x.UploadDate,
+            //        ViedoNature = x.NatureS.ViedoNature,
+            //        StatusDescription = x.PublicStatusNoNavigation.StatusDescription
+            //    });
 
             //var x = await _context.VideoSummaries.FindAsync(id)  ;
-            if (editViewmodels == null)
+            if (videoSummary == null)
             {
                 return NotFound();
             }
             else
             {
-                ShowViedoSummary x = editViewmodels.ToList()[0];
-                ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses.Where(x=>x.PublicStatusNo ==x.PublicStatusNo).Select(x=>x), "PublicStatusNo", "StatusDescription");
-            return View(x);
-            }
-            //ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            //ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
+                //ShowViedoSummary x = editViewmodels.ToList()[0];
+                ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
+                ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
 
-            //ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            //return View(videoSummary);
+                ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextCategory", videoSummary.ScreenTextS);
+                ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+
+
+            return View(videoSummary);
+            }
+            
 
         }
 

@@ -7,8 +7,11 @@ namespace EggProductionProject_MVC.Models
         [Key]
         public int VideoSid { get; set; }
 
+        [Display(Name = "創作者編號")]
+        public int? CreatorSid { get; set; }
+
         [Display(Name = "影片時長")]
-        public TimeOnly? VideoDuration { get; set; }
+        public int? VideoDuration { get; set; }
 
         [Display(Name = "影片標題")]
         public string? VideoTitle { get; set; }
@@ -32,10 +35,18 @@ namespace EggProductionProject_MVC.Models
         [Display(Name = "影片上傳時間")]
         public DateTime UploadDate { get; set; }
 
-        [Display(Name = "是否已經被當作廣告使用")]
+        [Display(Name = "影片分類")]
+        public string? ViedoNature { get; set; }
+
+        [Display(Name = "廣告來源")]
         public bool? Advertise { get; set; }
 
+        [Display(Name = "字幕語言")]
+        public string? ScreenTextCategory { get; set; }
 
+
+        [Display(Name = "公開狀態")]
+        public string? StatusDescription { get; set; }
 
 
     }
