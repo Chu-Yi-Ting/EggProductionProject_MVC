@@ -1,0 +1,54 @@
+﻿@model EggProductionProject_MVC.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmpName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpPhone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmpPhone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportTo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportTo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Account)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpDepartmentS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmpDepartmentS.EmpDepartmentSid)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.EmployeeSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

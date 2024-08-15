@@ -1,0 +1,77 @@
+﻿@model EggProductionProject_MVC.Models.MemberVM.MemberVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Member</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsChickFarm)
+        </dt>
+        <dd>
+            @if (Model.IsChickFarm == 1)
+            {
+                @:雞農
+            }
+            else
+            {
+                @:一般用戶
+            }
+        </dd>
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfilePic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProfilePic)
+            <partial name="_ProfilePicPartialView"  />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsBlocked)
+        </dt>
+        <dd>
+            @if (Model.IsChickFarm == 1)
+            {
+                @:禁用
+            }
+            else
+            {
+                @:活耀
+            }
+        </dd>
+      
+    </dl>
+</div>
+<div>
+    
+    <a asp-action="Index">Back to List</a>
+</div>

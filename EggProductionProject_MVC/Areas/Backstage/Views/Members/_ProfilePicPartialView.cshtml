@@ -1,0 +1,13 @@
+﻿@using EggProductionProject_MVC.Models.MemberVM
+@model MemberVM
+
+@if (Model.ProfilePic != null)
+{
+
+	<img src="@Url.Action("GetPic","Members", new {id=Model.MemberSid})"
+		 title="@Html.DisplayFor(model => model.Name)" class="w-25" />
+}
+else
+{
+	<img class="w-25" title="尚無圖片" src="~/MemberImg/NoImage.png" />
+}

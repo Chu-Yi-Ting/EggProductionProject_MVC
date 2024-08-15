@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.MemberVM.FriendVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>好友清單</h2>   
+@* <input  id="inpKeyword" type="text"/> *@
+<form asp-action="Index" method="get">
+    <input type="hidden" name="id" value="@ViewBag.CurrentMemberId" />
+    <input type="text" name="searchString" value="@ViewBag.CurrentFilter" placeholder="Search by member name..." />
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" value="@ViewBag.StartDate" />
+
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" value="@ViewBag.EndDate" />
+
+    <button type="submit">Search</button>
+</form>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName2)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.MemberName2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdded)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.MemberName1)
+            </td>
+            <td>
+                
+                <a asp-action="Details" asp-route-id="@item.FriendSid">Details</a> 
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+
+
