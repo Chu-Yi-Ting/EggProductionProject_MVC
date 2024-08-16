@@ -28,6 +28,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+
         // 加載發布文章的表單
         $('#loadCreateForm').on('click', function (e) {
             e.preventDefault(); // 阻止默認的按鈕行為
@@ -64,7 +65,8 @@
                 success: function (result) {
                     if (result.success) {
                         // 顯示發佈成功消息並添加返回文章列表按鈕
-                        $('#createArticleContainer').html('<p>文章已成功發佈！<button id="showArticleList" class="btn btn-secondary">返回文章列表</button></p>');
+                        $('#createArticleContainer').html('<p>文章已成功發佈！</p>');
+                        refreshArticleList()
                     } else {
                         $('#createArticleContainer').html(result); // 如果有錯誤，重新渲染表單
                     }
@@ -106,19 +108,34 @@
         $('#resetButton').on('click', function () {
             $('#searchString').val(''); // 清空搜尋字串
 
-            // 檢查當前是否在發布文章階段
-            if ($('#createArticleContainer').children().length > 0) {
-                // 如果在發布文章階段，回到文章列表
+            // 如果在發布文章或編輯文章階段，回到文章列表
+            if ($('#createArticleContainer').children().length > 0 || $('#editContainer').children().length > 0) {
                 $('#createArticleContainer').html(''); // 清空發佈文章的表單或成功消息
+                $('#editContainer').html(''); // 清空編輯文章的表單
                 $('#articlesList').show(); // 顯示文章列表
                 // 恢復搜索按鈕和搜索框
                 $('#searchButton').show();
                 $('#searchString').show();
             } else {
-                // 如果不是發布文章階段，則提交表單以重新加載完整的文章列表
+                // 如果不是發布文章或編輯文章階段，則提交表單以重新加載完整的文章列表
                 $('#searchForm').submit();
             }
         });
+        function refreshArticleList() {
+            $.ajax({
+                url: '@Url.Action("SearchPartial")', // 使用與搜索相同的動作來獲取最新的文章列表
+                success: function (result) {
+                    $('#articlesList').html(result); // 更新文章列表部分
+                    $('#articlesList').show(); // 顯示文章列表
+                    // 恢復搜索按鈕和搜索框
+                    $('#searchButton').show();
+                    $('#searchString').show();
+                },
+                error: function () {
+                    alert('無法更新文章列表，請稍後重試。');
+                }
+            });
+        }
     });
 
 </script>
