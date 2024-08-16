@@ -1,0 +1,40 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Article>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>文章分類</th>
+            <th>文章標題</th>
+            <th>發文者</th>
+            <th>是否刪除</th>
+            <th>公開狀態</th>
+            <th>創建日期</th>
+            <th>更新日期</th>
+            <th>編輯次數</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Edit", new { id = item.ArticleSid })'">
+                <td>@Html.DisplayFor(modelItem => item.ArticleCategoriesS.ArticleCategories)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArticleTitle)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArticleCreaterS.UserName)</td>
+                <td>
+                    @if (item.DeleteOrNot == true)
+                    {
+                        <span>是</span>
+                    }
+                    else
+                    {
+                        <span>否</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArticleDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArticleUpdate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EditCountTimes)</td>
+            </tr>
+        }
+    </tbody>
+</table>

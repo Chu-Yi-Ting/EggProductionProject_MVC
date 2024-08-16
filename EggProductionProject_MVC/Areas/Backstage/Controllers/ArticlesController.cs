@@ -23,22 +23,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Articles
         public async Task<IActionResult> Index(string searchString)
         {
-            //搜尋後保留搜尋的關鍵字
+            // 搜尋後保留搜尋的關鍵字
             ViewData["CurrentFilter"] = searchString;
 
-            var articles = from a in _context.Articles
-                           .Include(a => a.ArticleCategoriesS)
-                           .Include(a => a.ArticleCreaterS)
-                           .Include(a => a.PublicStatusNoNavigation)
-                           select a;
+            var articles = await GetFilteredArticlesAsync(searchString);
+            int totalArticles = articles.Count();
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                articles = articles.Where(s => s.ArticleTitle.Contains(searchString));
-            }
-            int totalArticles = await articles.CountAsync();
             ViewData["TotalArticles"] = totalArticles;
-            return View(await articles.ToListAsync());
+            return View(articles);
         }
         //後臺不需要
         // GET: Articles/Details/5 
@@ -210,6 +202,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                             ArticleSid = article.ArticleSid,
                             EditBefore = originalArticle.ArticleInfo,  // 保存编辑前的信息
                             EditAfter = article.ArticleInfo,  // 保存编辑后的信息
+                            //改資料庫的類別後後換這個
+                            //EditTime = DateTime.Now
                             EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
                         };
 
@@ -291,6 +285,33 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         {
             return _context.Articles.Any(e => e.ArticleSid == id);
         }
+        public async Task<IActionResult> SearchPartial(string searchString)
+        {
+            ViewData["CurrentFilter"] = searchString;
+
+            var articles = await GetFilteredArticlesAsync(searchString);
+            int totalArticles = articles.Count();
+
+            ViewData["TotalArticles"] = totalArticles;
+            return PartialView("_ArticlesPartial", articles);
+        }
+        //搜尋後獲取查詢列表的方法
+        private async Task<List<Article>> GetFilteredArticlesAsync(string searchString)
+        {
+            var articles = from a in _context.Articles
+                           .Include(a => a.ArticleCategoriesS)
+                           .Include(a => a.ArticleCreaterS)
+                           .Include(a => a.PublicStatusNoNavigation)
+                           select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                articles = articles.Where(s => s.ArticleTitle.Contains(searchString));
+            }
+
+            return await articles.ToListAsync();
+        }
+
     }
 }
 
