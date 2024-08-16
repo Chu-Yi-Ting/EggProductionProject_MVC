@@ -33,7 +33,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<CarrierOpen> CarrierOpens { get; set; }
 
-    public virtual DbSet<CarrierWay> CarrierWays { get; set; }
+    public virtual DbSet<CarrierWays> CarrierWays { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -285,11 +285,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_CarrierOpens_Stores");
         });
 
-        modelBuilder.Entity<CarrierWay>(entity =>
+        modelBuilder.Entity<CarrierWays>(entity =>
         {
             entity.HasKey(e => e.CarrierWayNo);
 
-            entity.Property(e => e.CarrierWay1)
+            entity.Property(e => e.CarrierWay)
                 .HasMaxLength(20)
                 .HasColumnName("CarrierWay");
             entity.Property(e => e.Price).HasColumnType("money");

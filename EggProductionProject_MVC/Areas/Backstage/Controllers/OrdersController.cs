@@ -69,6 +69,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 OrderStatus = c.OrderStatus
             }).ToList();
 
+            var tracks = _context.Tracks.Select(c => new trackDto
+            {
+                OrderSid = (int)c.OrderSid,
+                TrackingNum = c.TrackingNum
+            }).ToList();
+
             var coupons = _context.Coupons.Select(c => new couponsDto
             {
                 CouponSid = c.CouponSid,
@@ -183,7 +189,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 OrderStatusNo = p.OrderStatusNo,
                 OrderStatus = orderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.OrderStatus,
 
-                TrackingNum = orderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.OrderStatus,
+                //TrackingNum = tracks.FirstOrDefault(s => s.OrderSid == p.OrderSid)?.TrackingNum,
+                TrackingNum = tracks.FirstOrDefault(s => s.OrderSid == p.OrderSid)?.TrackingNum,
                 Price = coupons.FirstOrDefault(s => s.CouponSid == p.CouponSid)?.Price,
                 TotalPrice = p.TotalPrice
             });
@@ -244,7 +251,9 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
     }
 
-  
-
-    
+    internal class trackDto
+    {
+        public int OrderSid { get; set; }
+        public string TrackingNum { get; set; }
+    }
 }

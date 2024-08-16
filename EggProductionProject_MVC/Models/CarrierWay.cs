@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class CarrierWay
+public partial class CarrierWays
 {
     public int CarrierWayNo { get; set; }
 
     public int? CarrierNo { get; set; }
 
-    public string? CarrierWay1 { get; set; }
+    public string? CarrierWay { get; set; }
 
     public decimal? Price { get; set; }
 
