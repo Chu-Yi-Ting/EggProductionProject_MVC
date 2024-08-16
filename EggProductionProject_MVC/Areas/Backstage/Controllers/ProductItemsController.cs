@@ -56,6 +56,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/ProductItems/Create
         public IActionResult Create()
         {
+            // 從資料庫中獲取最後一個 ItemNo，並加1
+            var lastItemNo = _context.ProductItems.OrderByDescending(p => p.ItemNo).FirstOrDefault()?.ItemNo ?? 0;
+            var newItemNo = lastItemNo + 1;
+
+            // 將新計算的 ItemNo 和產品分類列表傳遞給視圖             
+            ViewBag.ItemNumber = newItemNo;
             ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
             return View();
         }
@@ -66,7 +72,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ItemNo,SubcategoryNo,ItemName,ItemDescription")] ProductItem productItem)
-        {
+        {            
+
             if (ModelState.IsValid)
             {
                 _context.Add(productItem);
