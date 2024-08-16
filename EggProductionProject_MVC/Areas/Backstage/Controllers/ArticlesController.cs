@@ -168,7 +168,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleSid,ArticleCreaterSid,ArticleTitle,ArticleInfo,ArticleCategoriesSid,ArticleDate,ArticleUpdate,EditCountTimes,TagMemberNo,PublicStatusNo,DeleteOrNot")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("ArticleSid,ArticleCreaterSid,ArticleTitle,ArticleInfo,ArticleCategoriesSid,ArticleDate,ArticleUpdate,EditCountTimes,TagMemberNo,PublicStatusNo,DeleteOrNot,EditTime")] Article article)
         {
             if (id != article.ArticleSid)
             {
@@ -191,36 +191,39 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                     bool hasChanges = originalArticle.ArticleTitle != article.ArticleTitle ||
                                                  originalArticle.ArticleInfo != article.ArticleInfo ||
                                                  originalArticle.ArticleCategoriesSid != article.ArticleCategoriesSid ||
-                                                 originalArticle.TagMemberNo != article.TagMemberNo;
+                                                 originalArticle.TagMemberNo != article.TagMemberNo||
+                                                 originalArticle.PublicStatusNo != article.PublicStatusNo || // 加上这行
+                                                 originalArticle.DeleteOrNot != article.DeleteOrNot;
 
-                    if (hasChanges)
-                    {
-                        // 只有在有更改时才保存编辑记录和更新文章数据
-                        var editHistory = new Edit
-                        {
-                            ArticleSid = article.ArticleSid,
-                            EditBefore = originalArticle.ArticleInfo,  // 保存编辑前的信息
-                            EditAfter = article.ArticleInfo,  // 保存编辑后的信息
-                            //改資料庫的類別後後換這個
-                            EditTime = DateTime.Now
-                            //EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
-                        };
+                    //給前台再用 編輯後更新進編輯資料庫
+                    //if (hasChanges)
+                    //{
+                    //    // 只有在有更改时才保存编辑记录和更新文章数据
+                    //    var editHistory = new Edit
+                    //    {
+                    //        ArticleSid = article.ArticleSid,
+                    //        EditBefore = originalArticle.ArticleInfo,  // 保存编辑前的信息
+                    //        EditAfter = article.ArticleInfo,  // 保存编辑后的信息
+                    //        //改資料庫的類別後後換這個
+                    //        EditTime = DateTime.Now
+                    //        //EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
+                    //    };
 
-                        _context.Edits.Add(editHistory);  // 保存编辑历史
+                    //    _context.Edits.Add(editHistory);  // 保存编辑历史
 
-                        // 更新为编辑后的时间
-                        article.ArticleUpdate = DateTime.Now;
+                    //    // 更新为编辑后的时间
+                    //    article.ArticleUpdate = DateTime.Now;
 
-                        // 增加编辑次数
-                        article.EditCountTimes = (article.EditCountTimes ?? 0) + 1;
+                    //    // 增加编辑次数
+                    //    //article.EditCountTimes = (article.EditCountTimes ?? 0) + 1;
 
 
-                        //不要更改創建文章時間
-                        _context.Entry(article).Property(a => a.ArticleDate).IsModified = false;
+                    //    //不要更改創建文章時間
+                    //    _context.Entry(article).Property(a => a.ArticleDate).IsModified = false;
 
-                        _context.Update(article);
-                        await _context.SaveChangesAsync();
-                    }
+                    _context.Update(article);
+                    await _context.SaveChangesAsync();
+                    //}
                 }
                 catch (DbUpdateConcurrencyException)
                 {
