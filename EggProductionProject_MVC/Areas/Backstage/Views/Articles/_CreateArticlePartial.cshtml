@@ -1,0 +1,36 @@
+﻿@model EggProductionProject_MVC.Models.Article
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="createArticleForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ArticleTitle" class="control-label">文章標題</label>
+                <input asp-for="ArticleTitle" class="form-control" />
+                <span asp-validation-for="ArticleTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleInfo" class="control-label">文章內容</label>
+                <textarea asp-for="ArticleInfo" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="ArticleInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleCategoriesSid" class="control-label">文章分類</label>
+                <select asp-for="ArticleCategoriesSid" class="form-control" asp-items="ViewBag.ArticleCategoriesSid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicStatusNo" class="control-label">公開狀態</label>
+                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
