@@ -1,0 +1,65 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Store>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstablishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreImg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreIntroduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstablishDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreImg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreIntroduction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.PublicStatusNo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.StoreSid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.StoreSid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.StoreSid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

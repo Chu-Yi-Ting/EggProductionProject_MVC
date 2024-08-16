@@ -1,0 +1,39 @@
+﻿@model EggProductionProject_MVC.Models.ProductItem
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ProductItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubcategoryNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubcategoryNoNavigation.SubcategoryNo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ItemNo" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

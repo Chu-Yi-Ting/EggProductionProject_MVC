@@ -1,0 +1,57 @@
+﻿@model EggProductionProject_MVC.Models.Store
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Store</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EstablishDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EstablishDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StoreImg)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StoreImg)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StoreIntroduction)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StoreIntroduction)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MemberS.MemberSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicStatusNoNavigation.PublicStatusNo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="StoreSid" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
