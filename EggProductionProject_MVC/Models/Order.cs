@@ -29,9 +29,9 @@ public partial class Order
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual OrderStatus? OrderStatusNoNavigation { get; set; }
+    public virtual OrderStatuses? OrderStatusNoNavigation { get; set; }
 
-    public virtual Payment? PaymentNoNavigation { get; set; }
+    public virtual Payments? PaymentNoNavigation { get; set; }
 
     public virtual ICollection<StoreCoin> StoreCoins { get; set; } = new List<StoreCoin>();
 

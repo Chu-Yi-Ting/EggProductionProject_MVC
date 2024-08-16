@@ -259,28 +259,28 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return Json(CouponViewModels);
         }
 
-        public JsonResult CouponList()
-        {
-            var couponStatuses = _context.CouponStatuses.ToList();
+        //public JsonResult CouponList()
+        //{
+        //    var couponStatuses = _context.CouponStatuses.ToList();
 
 
-            var coupons = _context.Coupons.ToList();
-            var couponTypes = _context.CouponTypes.ToList();
-            var members = _context.Members.ToList();
+        //    var coupons = _context.Coupons.ToList();
+        //    var couponTypes = _context.CouponTypes.ToList();
+        //    var members = _context.Members.ToList();
 
-            var CouponViewModels = coupons.Select(p => new CouponViewModel
-            {
-                CouponSid = p.CouponSid,
-                CouponTypeNo = p.CouponTypeNo,
-                Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
-                CouponStatusNo = p.CouponStatusNo,
-                Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
-                CollectionTime = p.CollectionTime,
-                MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
-            });
+        //    var CouponViewModels = coupons.Select(p => new CouponViewModel
+        //    {
+        //        CouponSid = p.CouponSid,
+        //        CouponTypeNo = p.CouponTypeNo,
+        //        Name = couponTypes.FirstOrDefault(s => s.CouponTypeNo == p.CouponTypeNo)?.Name,
+        //        CouponStatusNo = p.CouponStatusNo,
+        //        Status = couponStatuses.FirstOrDefault(s => s.CouponStatusNo == p.CouponStatusNo)?.Status,
+        //        CollectionTime = p.CollectionTime,
+        //        MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name
+        //    });
 
-            return Json(CouponViewModels);
-        }
+        //    return Json(CouponViewModels);
+        //}
 
         // GET: CouponTypes/Edit/5
         public async Task<IActionResult> Edit(int id)

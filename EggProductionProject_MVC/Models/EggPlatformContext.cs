@@ -101,9 +101,9 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-    public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+    public virtual DbSet<OrderStatuses> OrderStatuses { get; set; }
 
-    public virtual DbSet<Payment> Payments { get; set; }
+    public virtual DbSet<Payments> Payments { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -792,20 +792,20 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_OrderDetails_Products1");
         });
 
-        modelBuilder.Entity<OrderStatus>(entity =>
+        modelBuilder.Entity<OrderStatuses>(entity =>
         {
             entity.HasKey(e => e.OrderStatusNo);
 
-            entity.Property(e => e.OrderStatus1)
+            entity.Property(e => e.OrderStatus)
                 .HasMaxLength(50)
                 .HasColumnName("OrderStatus");
         });
 
-        modelBuilder.Entity<Payment>(entity =>
+        modelBuilder.Entity<Payments>(entity =>
         {
             entity.HasKey(e => e.PaymentNo);
 
-            entity.Property(e => e.Payment1)
+            entity.Property(e => e.Payment)
                 .HasMaxLength(50)
                 .HasColumnName("Payment");
         });

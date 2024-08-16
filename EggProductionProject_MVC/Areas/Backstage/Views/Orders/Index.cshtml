@@ -1,0 +1,235 @@
+﻿@model EggProductionProject_MVC.Models.Order
+@{
+    var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+
+@section Styles {
+
+    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+    <!-- FixedHeader 样式 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.3" rel="stylesheet" />
+    <style>
+
+
+    </style>
+}
+
+
+<div class="row" style="">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="big-title d-flex">
+            訂單管理        
+        </div>
+    </div>
+
+
+
+            <div class="row" style="">
+                <div class="col-md-12 col-sm-12">
+                    <div class="dashboard_graph m-4 my-3 p-4 pb-5">
+                        <div class="row x_title mb-4">
+                            <div class="col-md-12 p-0">
+                                <h4 class="w-100 d-flex justify-content-between">
+                                    條件搜尋
+                                    <button type="button" id="checkButton" class="btn  title-botton">
+                                        <i class="fa-solid fa-magnifying-glass fa-xs"></i>
+                                    </button>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label">成立時間</label>
+                                <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="form-label">訂單狀態</label>
+                        <select asp-for="OrderStatusNo" class="form-control bd-r-4" asp-items="ViewBag.OrderStatusNo">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="form-label">付款方式</label>
+                        <select id="PaymentOptions" class="form-control bd-r-4" asp-items="ViewBag.PaymentOptions">
+                                    <option value="all">全部</option>
+                                </select>
+                            </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">付款狀態</label>
+                        <select id="PayOptions" class="form-control bd-r-4" asp-items="ViewBag.PayOptions">
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+                           
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="dashboard_graph m-4 my-3 p-4">
+                        <div class="row x_title mb-4">
+                            <div class="col-md-12 p-0">
+                                <h4 class="w-100 d-flex justify-content-lg-between">
+                                    訂單列表
+                                </h4>
+                            </div>
+                        </div>
+                        <table id="tableList" class="table table-striped table-hover w-100">
+                            <thead class="table-primary ">
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+     
+
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+
+
+
+
+
+
+@section Scripts {
+
+    <script src="~/lib/datatables.net/datatables.min.js"></script>
+
+    <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+
+    <script>
+
+
+        $(document).ready(function () {
+
+            const leftmeauBtn = document.querySelector('#menu_toggle');
+
+            leftmeauBtn.addEventListener('click', event => {
+
+                var table = $("table").DataTable();
+                table.columns.adjust().draw();
+
+            });
+
+            const checkButton = document.querySelector('#checkButton');
+            const timeOptions = document.querySelector('#TimeOptions');
+            const orderStatusNoOptions = document.querySelector('#OrderStatusNo');
+            const paymentOptions = document.querySelector('#PaymentOptions');
+            const payOptions = document.querySelector('#PayOptions');
+
+            checkButton.addEventListener('click', event => {
+                const selected_time = timeOptions.value;
+                const selected_status = orderStatusNoOptions.value;
+                const selected_Payment = paymentOptions.value;
+                const selected_Pay = PayOptions.value;
+
+                const jsonObject = {
+                    timeSec: selected_time,
+                    publicStatus: selected_status,
+                    paymentSrc: selected_Payment,
+                    paySrc: selected_Pay
+                };
+
+                const jsonString = JSON.stringify(jsonObject);
+
+                console.log("Selected values:", jsonString);
+
+                var table = $("#tableList").DataTable();
+                table.ajax.reload();
+
+            });
+
+            $("#tableList").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Backstage/orders/CouponList",
+                    data: function () {
+                        // Collect data to be sent
+                        const jsonObject = {
+                            timeSec: $("#TimeOptions").val(),
+                            statusSec: $("#OrderStatusNo").val(),
+                            paymentSec: $("#PaymentOptions").val(),
+                            paySec: $("#PayOptions").val()
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+                    
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderNo", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "orderCreatedTime", "width": "auto", "title": "使用狀態" },
+                    { "data": "memberName", "width": "auto", "title": "獲得時間" },
+                    { "data": "payment", "width": "auto", "title": "擁有者" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "獨立使用",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "是" : "否";
+                        }
+                    },
+                    { "data": "trackingNum", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "orderStatus", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "price", "width": "auto", "title": "優惠券名稱" },
+                    { "data": "totalPrice", "width": "auto", "title": "優惠券名稱" }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            })
+
+
+
+            const preprocessData = (data) => {
+                return data.map(item => {
+                    const keys = Object.keys(item);
+                    return keys.reduce((acc, key) => {
+                        acc[key] = item[key] || '';
+                        return acc;
+                    }, {});
+                });
+            };
+
+
+
+
+
+
+        });
+
+
+
+    </script>
+}
