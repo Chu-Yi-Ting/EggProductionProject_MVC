@@ -219,8 +219,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
 
                     //    //不要更改創建文章時間
-                    //    _context.Entry(article).Property(a => a.ArticleDate).IsModified = false;
-
+                    _context.Entry(article).Property(a => a.ArticleDate).IsModified = false;
+                    _context.Entry(article).Property(a => a.ArticleUpdate).IsModified = false;
                     _context.Update(article);
                     await _context.SaveChangesAsync();
                     //}
