@@ -202,8 +202,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                             EditBefore = originalArticle.ArticleInfo,  // 保存编辑前的信息
                             EditAfter = article.ArticleInfo,  // 保存编辑后的信息
                             //改資料庫的類別後後換這個
-                            //EditTime = DateTime.Now
-                            EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
+                            EditTime = DateTime.Now
+                            //EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
                         };
 
                         _context.Edits.Add(editHistory);  // 保存编辑历史

@@ -17,7 +17,7 @@ public partial class Edit
 
     public string EditAfter { get; set; }
 
-    public DateOnly? EditTime { get; set; }
+    public DateTime? EditTime { get; set; }
 
     public virtual Article ArticleS { get; set; }
 
