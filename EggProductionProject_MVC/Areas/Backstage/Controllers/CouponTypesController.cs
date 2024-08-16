@@ -218,7 +218,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
                 case "2":
                     DateTime oneMonthsAgo = DateTime.Now.AddMonths(-1);
-                    end_co = _context.Coupons
+                    end_co = ori_co
                       .Where(c => filteredCouponTypeNos.Contains((int)c.CouponTypeNo) &&
                     c.CollectionTime >= oneMonthsAgo)
                     .ToList();

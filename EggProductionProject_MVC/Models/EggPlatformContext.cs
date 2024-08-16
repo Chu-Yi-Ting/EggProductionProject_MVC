@@ -45,7 +45,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<ChickLotNo> ChickLotNos { get; set; }
 
-    public virtual DbSet<CoinUseArea> CoinUseAreas { get; set; }
+    public virtual DbSet<CoinUseAreas> CoinUseAreas { get; set; }
 
     public virtual DbSet<Collect> Collects { get; set; }
 
@@ -373,11 +373,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_ChickLotNo_ChickHouse");
         });
 
-        modelBuilder.Entity<CoinUseArea>(entity =>
+        modelBuilder.Entity<CoinUseAreas>(entity =>
         {
             entity.HasKey(e => e.CoinUseAreaNo).HasName("PK_CoinChanges");
 
-            entity.Property(e => e.CoinUseArea1)
+            entity.Property(e => e.CoinUseArea)
                 .HasMaxLength(50)
                 .HasColumnName("CoinUseArea");
         });

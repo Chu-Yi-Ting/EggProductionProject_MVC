@@ -21,7 +21,7 @@ public partial class StoreCoin
 
     public virtual Order? AreaS { get; set; }
 
-    public virtual CoinUseArea? CoinUseAreaNoNavigation { get; set; }
+    public virtual CoinUseAreas? CoinUseAreaNoNavigation { get; set; }
 
     public virtual Member? MemberS { get; set; }
 }

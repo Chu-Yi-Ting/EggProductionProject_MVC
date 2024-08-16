@@ -189,20 +189,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderNo", "width": "auto", "title": "優惠券名稱" },
-                    { "data": "orderCreatedTime", "width": "auto", "title": "使用狀態" },
-                    { "data": "memberName", "width": "auto", "title": "獲得時間" },
-                    { "data": "payment", "width": "auto", "title": "擁有者" },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "orderCreatedTime", "width": "auto", "title": "建立時間" },
+                    { "data": "memberName", "width": "auto", "title": "會員名稱" },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "獨立使用",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "是" : "否";
                         }
                     },
-                    { "data": "trackingNum", "width": "auto", "title": "優惠券名稱" },
-                    { "data": "orderStatus", "width": "auto", "title": "優惠券名稱" },
-                    { "data": "price", "width": "auto", "title": "優惠券名稱" },
-                    { "data": "totalPrice", "width": "auto", "title": "優惠券名稱" }
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "orderStatus", "width": "auto", "title": "訂單狀態" },
+                    { "data": "price", "width": "auto", "title": "優惠券折抵" },
+                    { "data": "totalPrice", "width": "auto", "title": "最終結帳金額" }
                 ],
                 fixedHeader: { header: true },
                 language: {

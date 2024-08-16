@@ -277,13 +277,37 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         //    return Json(nn);
         //}
 
+        private class memberDto
+        {
+            public int MemberSid { get; set; }
+            public string? Name { get; set; }
+        }
+
+        private class orderStatusDto
+        {
+            public int OrderStatusNo { get; set; }
+            public string? OrderStatus { get; set; }
+        }
+
+        private class paymentDto
+        {
+            public int PaymentNo { get; set; }
+            public string? Payment { get; set; }
+        }
+
+        private class couponsDto
+        {
+            public int CouponSid { get; set; }
+            public decimal? Price { get; set; }
+        }
+
 
         private class OrderStatusDto
         {
             public int OrderSid { get; set; }
 
             public int OrderStatusNo { get; set; }  
-            public string OrderStatus { get; set; }
+            public string? OrderStatus { get; set; }
         }
 
         private class CarrierAddressesDto
@@ -291,17 +315,19 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             public int CarrierAddressSid { get; set; }
 
             public int CarrierNo { get; set; }
-            public string CarrierName { get; set; }
+            public string? CarrierName { get; set; }
 
             public int CarrierWayNo { get; set; }
-            public string CarrierWay { get; set; }
+            public string? CarrierWay { get; set; }
             
+        }
+
+        private class trackTimesDto
+        {
+            public int TrackSid { get; set; }
+            public DateTime? CreatedTime { get; set; }
         }
     }
 
-    internal class trackTimesDto
-    {
-        public int TrackSid { get; set; }
-        public DateTime? CreatedTime { get; set; }
-    }
+ 
 }

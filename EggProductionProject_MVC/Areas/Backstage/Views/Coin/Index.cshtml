@@ -1,4 +1,4 @@
-﻿@model EggProductionProject_MVC.Models.Order
+﻿@model EggProductionProject_MVC.Models.CoinUseAreas
 @{
     var antiForgeryToken = Html.AntiForgeryToken().ToString();
 }
@@ -19,7 +19,7 @@
 <div class="row" style="">
     <div class="col-md-12 col-sm-12 ">
         <div class="big-title d-flex">
-            物流管理
+            商城代幣管理
         </div>
     </div>
 
@@ -40,29 +40,24 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-3">
-                        <label class="form-label">成立時間</label>
+                        <label class="form-label">異動時間</label>
                         <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
-                        <label class="form-label">訂單狀態</label>
-                        <select asp-for="OrderStatusNo" class="form-control bd-r-4" asp-items="ViewBag.OrderStatusNo">
+                        <label class="form-label">異動項目</label>
+                        <select id="CoinUseAreaNo" class="form-control bd-r-4" asp-items="ViewBag.CoinUseAreaNo">
                             <option value="all">全部</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
-                        <label class="form-label">物流管道</label>
-                        <select id="CarrierOptions" class="form-control bd-r-4" asp-items="ViewBag.CarrierOptions">
+                        <label class="form-label">異動行為</label>
+                        <select id="MoveOptions" class="form-control bd-r-4" asp-items="ViewBag.MoveOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>
-                    <div class="col-lg-3">
-                        <label class="form-label">物流方式</label>
-                        <select id="WayOptions" class="form-control bd-r-4" asp-items="ViewBag.WayOptions">
-                            <option value="all">全部</option>
-                        </select>
-                    </div>
+
 
 
                 </div>
@@ -76,7 +71,7 @@
                 <div class="row x_title mb-4">
                     <div class="col-md-12 p-0">
                         <h4 class="w-100 d-flex justify-content-lg-between">
-                            物流列表
+                            代幣異動列表列表
                         </h4>
                     </div>
                 </div>
@@ -127,7 +122,7 @@
 
 
             checkButton.addEventListener('click', event => {
-           
+
 
                 var table = $("#tableList").DataTable();
                 table.ajax.reload();
@@ -138,14 +133,13 @@
                 scrollX: "auto",
                 ajax: {
                     type: "POST",
-                    url: "/Backstage/tracks/CouponList",
+                    url: "/Backstage/coin/CouponList",
                     data: function () {
                         // Collect data to be sent
                         const jsonObject = {
                             timeSec: $("#TimeOptions").val(),
-                            statusSec: $("#OrderStatusNo").val(),
-                            carrierSec: $("#CarrierOptions").val(),
-                            waySec: $("#WayOptions").val(),
+                            AreaSec: $("#CoinUseAreaNo").val(),
+                            ActionSec: $("#MoveOptions").val(),
                         };
                         return JSON.stringify(jsonObject);
                     },
@@ -166,12 +160,16 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
-                    { "data": "orderStatus", "width": "auto", "title": "物流狀態" },
-                    { "data": "createdTime", "width": "auto", "title": "成立時間" },
-                    { "data": "carrierWay", "width": "auto", "title": "物流方式" },
-
-                    { "data": "carrierName", "width": "auto", "title": "物流管道" }
+                    { "data": "memberName", "width": "auto", "title": "異動人" },
+                    { "data": "coinUseArea", "width": "auto", "title": "代幣異動項目" },
+                    { "data": "changeTime", "width": "auto", "title": "異動時間" },
+                    {
+                        "data": "isPositive", "width": "auto", "title": "異動行為",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "增加" : "減少";
+                        }
+                    },
+                    { "data": "money", "width": "auto", "title": "異動金額" }
                 ],
                 fixedHeader: { header: true },
                 language: {
@@ -191,14 +189,7 @@
                 });
             };
 
-
-
-
-
-
         });
-
-
 
     </script>
 }
