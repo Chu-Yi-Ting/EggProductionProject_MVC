@@ -86,7 +86,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 return NotFound();
             }
             ViewData["MemberSid"] = new SelectList(_context.Members, "MemberSid", "MemberSid", store.MemberSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", store.PublicStatusNo);
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
             return View(store);
         }
 
@@ -123,7 +123,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MemberSid"] = new SelectList(_context.Members, "MemberSid", "MemberSid", store.MemberSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", store.PublicStatusNo);
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
             return View(store);
         }
 

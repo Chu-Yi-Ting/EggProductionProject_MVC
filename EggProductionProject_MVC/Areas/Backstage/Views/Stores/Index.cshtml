@@ -33,22 +33,22 @@
 <table class="table table container text-center table-striped table-hover">
     <thead>
         <tr>
-            <th>
+            <th style="width: 10%">
                會員編號
             </th>
-            <th>
+            <th style="width: 10%">
                 賣場名稱
             </th>
-            <th>
+            <th style="width: 15%">
                 賣場成立時間
             </th>
             @*             <th>
             @Html.DisplayNameFor(model => model.StoreImg)
             </th> *@
-            <th>
+            <th style ="width: 40%">
                 賣場介紹
             </th>
-            <th>
+            <th style="width: 10%">
                 公開狀態
             </th>
             <th></th>
@@ -70,15 +70,15 @@
                 @*             <td>
             @Html.DisplayFor(modelItem => item.StoreImg)
             </td> *@
-                <td>
+                <td class="textalign-left">
                     @Html.DisplayFor(modelItem => item.StoreIntroduction)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.PublicStatusNo)
+                    @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
                 </td>
                 <td>                    
                     <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.StoreSid })'">
-                        <i class="fa-solid fa-edit"></i> 編輯
+                        <i class="fa-solid fa-edit"></i> 公開狀態變更
                     </button>
                 </td>
             </tr>
