@@ -10,6 +10,7 @@
   <ItemGroup>
     <Content Remove="bundleconfig.json" />
     <Content Remove="wwwroot\BackstageTemplate\production\chartjs.html" />
+    <Content Remove="wwwroot\BackstageTemplate\production\chartjs2.html" />
   </ItemGroup>
 
   <ItemGroup>

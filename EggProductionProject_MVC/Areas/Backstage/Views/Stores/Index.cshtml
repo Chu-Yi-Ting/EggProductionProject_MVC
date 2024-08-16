@@ -4,62 +4,84 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+@section Styles {
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黄色背景 */
+            color: #333333; /* 深色文字 */
+        }
+
+        .textalign-left {
+            text-align: left;
+        }
+
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        th {
+            font-size: 16px;
+        }
+    </style>
+
+}
+
+<h2 class="bold-text">賣場清單</h2>
+
+<table class="table table container text-center table-striped table-hover">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Company)
+               會員編號
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstablishDate)
+                賣場名稱
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StoreImg)
+                賣場成立時間
+            </th>
+            @*             <th>
+            @Html.DisplayNameFor(model => model.StoreImg)
+            </th> *@
+            <th>
+                賣場介紹
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StoreIntroduction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+                公開狀態
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstablishDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreImg)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreIntroduction)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.PublicStatusNo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.StoreSid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StoreSid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StoreSid">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstablishDate)
+                </td>
+                @*             <td>
+            @Html.DisplayFor(modelItem => item.StoreImg)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoreIntroduction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.PublicStatusNo)
+                </td>
+                <td>                    
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.StoreSid })'">
+                        <i class="fa-solid fa-edit"></i> 編輯
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
