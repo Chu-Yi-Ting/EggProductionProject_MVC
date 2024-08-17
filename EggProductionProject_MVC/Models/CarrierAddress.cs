@@ -27,7 +27,7 @@ public partial class CarrierAddress
 
     public int? PublicStatusNo { get; set; }
 
-    public virtual CarrierWay CarrierWayNoNavigation { get; set; }
+    public virtual CarrierWays? CarrierWayNoNavigation { get; set; }
 
     public virtual Member MemberS { get; set; }
 

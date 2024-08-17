@@ -1,0 +1,195 @@
+﻿@model EggProductionProject_MVC.Models.CoinUseAreas
+@{
+    var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+
+@section Styles {
+
+    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+    <!-- FixedHeader 样式 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.3" rel="stylesheet" />
+    <style>
+
+
+    </style>
+}
+
+
+<div class="row" style="">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="big-title d-flex">
+            商城代幣管理
+        </div>
+    </div>
+
+
+
+    <div class="row" style="">
+        <div class="col-md-12 col-sm-12">
+            <div class="dashboard_graph m-4 my-3 p-4 pb-5">
+                <div class="row x_title mb-4">
+                    <div class="col-md-12 p-0">
+                        <h4 class="w-100 d-flex justify-content-between">
+                            條件搜尋
+                            <button type="button" id="checkButton" class="btn  title-botton">
+                                <i class="fa-solid fa-magnifying-glass fa-xs"></i>
+                            </button>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label class="form-label">異動時間</label>
+                        <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">異動項目</label>
+                        <select id="CoinUseAreaNo" class="form-control bd-r-4" asp-items="ViewBag.CoinUseAreaNo">
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">異動行為</label>
+                        <select id="MoveOptions" class="form-control bd-r-4" asp-items="ViewBag.MoveOptions">
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            <div class="dashboard_graph m-4 my-3 p-4">
+                <div class="row x_title mb-4">
+                    <div class="col-md-12 p-0">
+                        <h4 class="w-100 d-flex justify-content-lg-between">
+                            代幣異動列表列表
+                        </h4>
+                    </div>
+                </div>
+                <table id="tableList" class="table table-striped table-hover w-100">
+                    <thead class="table-primary ">
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+@section Scripts {
+
+    <script src="~/lib/datatables.net/datatables.min.js"></script>
+
+    <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+
+    <script>
+
+
+        $(document).ready(function () {
+
+            const leftmeauBtn = document.querySelector('#menu_toggle');
+
+            leftmeauBtn.addEventListener('click', event => {
+
+                var table = $("table").DataTable();
+                table.columns.adjust().draw();
+
+            });
+
+            const checkButton = document.querySelector('#checkButton');
+
+
+            checkButton.addEventListener('click', event => {
+
+
+                var table = $("#tableList").DataTable();
+                table.ajax.reload();
+
+            });
+
+            $("#tableList").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Backstage/coin/CouponList",
+                    data: function () {
+                        // Collect data to be sent
+                        const jsonObject = {
+                            timeSec: $("#TimeOptions").val(),
+                            AreaSec: $("#CoinUseAreaNo").val(),
+                            ActionSec: $("#MoveOptions").val(),
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "memberName", "width": "auto", "title": "異動人" },
+                    { "data": "coinUseArea", "width": "auto", "title": "代幣異動項目" },
+                    { "data": "changeTime", "width": "auto", "title": "異動時間" },
+                    {
+                        "data": "isPositive", "width": "auto", "title": "異動行為",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "增加" : "減少";
+                        }
+                    },
+                    { "data": "money", "width": "auto", "title": "異動金額" }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            })
+
+
+
+            const preprocessData = (data) => {
+                return data.map(item => {
+                    const keys = Object.keys(item);
+                    return keys.reduce((acc, key) => {
+                        acc[key] = item[key] || '';
+                        return acc;
+                    }, {});
+                });
+            };
+
+        });
+
+    </script>
+}

@@ -4,17 +4,11 @@
 }
 
 @section Styles {
-@*    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
-
-    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" /> *@
-
-    @* <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css"> *@
 
     <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
     <!-- FixedHeader 样式 -->
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
-    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.1" rel="stylesheet" />
-
+    <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.2" rel="stylesheet" />
     <style>
 
    
@@ -30,7 +24,7 @@
     <div class="row" style="">
     <div class="col-md-12 col-sm-12 ">
     <div class="big-title d-flex">
-        優惠券管理
+        優惠券專區
             <ul class="nav tab_n" id="myTab">
             <li class="nav-item">
                 <a class="nav-link active p-0" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">優惠券列表</a>
@@ -50,72 +44,75 @@
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row" style="">
                 <div class="col-md-12 col-sm-12">
-                    <div class="dashboard_graph m-4 p-4">
+                    <div class="dashboard_graph m-4 my-3 p-4 pb-5">
                         <div class="row x_title mb-4">
                             <div class="col-md-12 p-0">
-                                <h4 class="w-100 d-flex justify-content-lg-between">
-                                    查詢
+                                <h4 class="w-100 d-flex justify-content-between">
+                                    條件搜尋
+                                    <button type="button" id="checkButton" class="btn  title-botton">
+                                        <i class="fa-solid fa-magnifying-glass fa-xs"></i>
+                                    </button>
                                 </h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3">
-                                <select id="TimeOptions" class="form-control" asp-items="ViewBag.TimeOptions">
+                                <label class="form-label">獲得時間</label>
+                                <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                             <div class="col-lg-3">
-                                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo">
+                                <label class="form-label">使用狀態</label>
+                                <select asp-for="PublicStatusNo" class="form-control bd-r-4" asp-items="ViewBag.PublicStatusNo">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                             <div class="col-lg-3">
-                                <select id="TypeOptions" class="form-control" asp-items="ViewBag.TypeOptions">
+                                <label class="form-label">優惠券類型</label>
+                                <select id="TypeOptions" class="form-control bd-r-4" asp-items="ViewBag.TypeOptions">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                             <div class="col-lg-3">
-                                <select id="NameOptions" class="form-control" asp-items="ViewBag.NameOptions">
-                                    <option value="all">全部</option>
-                                </select>
                                 <div id="ordersSelect"></div>
                             </div>
-                            <div class="col-lg-3">
-                                <button id="checkButton">123123123</button>
-                                </div>
+                           
                         </div>
                           
                         </div>
                         
                     </div>
-                </div>
 
-
-
-            <div class="col-md-12 col-sm-12">
-                <div class="dashboard_graph m-4 p-4">
-                    <div class="row x_title mb-4">
-                        <div class="col-md-12 p-0">
-                            <h4 class="w-100 d-flex justify-content-lg-between">
-                                優惠券列表                             
-                            </h4>
+                <div class="col-md-12 col-sm-12">
+                    <div class="dashboard_graph m-4 my-3 p-4">
+                        <div class="row x_title mb-4">
+                            <div class="col-md-12 p-0">
+                                <h4 class="w-100 d-flex justify-content-lg-between">
+                                    優惠券列表
+                                </h4>
+                            </div>
                         </div>
+                        <table id="tableList" class="table table-striped table-hover w-100">
+                            <thead class="table-primary ">
+                            </thead>
+                        </table>
                     </div>
-                    <table id="tableList" class="table table-striped table-hover w-100">
-                        <thead class="table-primary ">
-                        </thead>
-                    </table>
                 </div>
             </div>
-           </div>
+                </div>
+
+
+
+            
 
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="row" style="">
             <div class="col-md-12 col-sm-12 ">
-                <div class="dashboard_graph m-4 p-4">
+                    <div class="dashboard_graph m-4 my-3 p-4">
                     <div class="row x_title mb-4">
                         <div class="col-md-12 p-0">
-                            <h4 class="w-100 d-flex justify-content-lg-between">
+                            <h4 class="w-100 d-flex justify-content-between">
                                 優惠券列表
                                 <button type="button" data-id="0" class="btn  edit-button title-botton">
                                     +
@@ -141,15 +138,15 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="editFormContainer"></div>
+                <div  id="editFormContainer"></div>
 
                
             </div>
@@ -168,8 +165,6 @@
     <script src="~/lib/datatables.net/datatables.min.js"></script>
     
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
-    @* <script src="~/lib/datatables.net-fixedcolumns/fixedcolumns.min.js"></script> *@
-
 
     <script>
 
@@ -207,24 +202,32 @@
             const timeOptions = document.querySelector('#TimeOptions');
             const publicStatusNoOptions = document.querySelector('#PublicStatusNo');
             const TypeOptions = document.querySelector('#TypeOptions');
-            const NameOptions = document.querySelector('#NameOptions');
+            
+            
+            loadOrders();
 
+            function loadOrders() {
+                const NameOptions = document.querySelector('#NameOptions');
+                $.ajax({
+                    type: "GET",
+                    url: `@Url.Action("Orders", "CouponTypes")/${TypeOptions.value}`
+                }).done(data => {
+                    $("#ordersSelect").html(data);
+                }).fail(err => {
+                    alert(`${err.statusCode}:${err.statusText}`);
+                });
+            }
 
-            // $("#PublicStatusNo").on("change", () => {
-            //     if (PublicStatusNo.value != '--請選擇--') {
-            //         $.ajax({
-            //             type: "GET",
-            //             url: `@Url.Action("Orders", "CouponTypes")/${PublicStatusNo.value}`
-            //         }).done(data => {
-            //             $("#ordersSelect").html(data);
-            //         }).fail(err => {
-            //             alert(`${err.statusCode}:${err.statusText}`);
-            //         });
-            //     }
-            //     else {
-            //         $("#ordersSelect").html("");
-            //     }
-            // });
+            
+
+            $("#TypeOptions").on("change", () => {
+                if (PublicStatusNo.value != '--請選擇--') {
+                    loadOrders();
+                }
+                else {
+                    $("#ordersSelect").html("");
+                }
+            });
 
 
 
@@ -358,8 +361,17 @@
 
             const sel_Type = null;
 
+
             $(document).on('click', '.edit-button', function () {
-                var id = $(this).data('id'); 
+                var id = $(this).data('id');
+                const modeltitle = document.querySelector('#exampleModalLabel');
+                if (id == 0) {
+                    modeltitle.textContent = "新增項目";
+                }else {
+                    modeltitle.textContent = "編輯項目";
+                }
+
+
 
                 $.ajax({
                     url: '@Url.Action("Edit", "CouponTypes")/' + id, 
