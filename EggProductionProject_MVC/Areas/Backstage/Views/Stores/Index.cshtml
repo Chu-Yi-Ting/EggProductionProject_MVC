@@ -21,6 +21,14 @@
             font-size: 28px;
         }
 
+        .text-center {
+            text-align: center; /* 水平置中 */
+        }
+
+        .align-middle {
+            vertical-align: middle; /* 垂直置中 */
+        }
+
         th {
             font-size: 16px;
         }
@@ -58,25 +66,25 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center align-middle">
                     @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
                 </td>
-                <td>
+                <td class="text-center align-middle">
                     @Html.DisplayFor(modelItem => item.Company)
                 </td>
-                <td>
+                <td class="text-center align-middle">
                     @Html.DisplayFor(modelItem => item.EstablishDate)
                 </td>
                 @*             <td>
             @Html.DisplayFor(modelItem => item.StoreImg)
             </td> *@
-                <td class="textalign-left">
+                <td class="textalign-left align-middle">
                     @Html.DisplayFor(modelItem => item.StoreIntroduction)
                 </td>
-                <td>
+                <td class="text-center align-middle">
                     @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
                 </td>
-                <td>                    
+                <td class="text-center align-middle">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.StoreSid })'">
                         <i class="fa-solid fa-edit"></i> 公開狀態變更
                     </button>
