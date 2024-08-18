@@ -161,26 +161,31 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
                     // 检查是否有实际更改 並且不檢查刪除跟公開狀態
                     bool hasChanges = originalReply.ReplyInfo != reply.ReplyInfo ||
-                                                 originalReply.ReplySid != reply.ReplySid;
+                                                 originalReply.ReplySid != reply.ReplySid ||
+                                                 originalReply.DeleteOrNot != reply.DeleteOrNot ||
+                                                 originalReply.PublicStatusNo != reply.PublicStatusNo ||
+                                                 originalReply.EditTimes != reply.EditTimes;
+
 
                     if (hasChanges)
                     {
                         // 只有在有更改时才保存编辑记录和更新文章数据
-                        var editHistory = new Edit
-                        {
-                            ReplySid = reply.ReplySid,
-                            EditBefore = originalReply.ReplyInfo,  // 保存编辑前的信息
-                            EditAfter = reply.ReplyInfo,  // 保存编辑后的信息
-                        };
+                        //var editHistory = new Edit
+                        //{
+                        //    ReplySid = reply.ReplySid,
+                        //    EditBefore = originalReply.ReplyInfo,  // 保存编辑前的信息
+                        //    EditAfter = reply.ReplyInfo,  // 保存编辑后的信息
+                        //};
 
-                        _context.Edits.Add(editHistory);  // 保存编辑历史
+                        //_context.Edits.Add(editHistory);  // 保存编辑历史
 
-                        reply.EditTimes = (reply.EditTimes ?? 0) + 1;
+                        //reply.EditTimes = (reply.EditTimes ?? 0) + 1;
 
-                        reply.ReplyUpdate = DateTime.Now;
-
-                        _context.Update(reply);
+                        //reply.ReplyUpdate = DateTime.Now;
                         _context.Entry(reply).Property(a => a.ReplyDate).IsModified = false;
+                        _context.Entry(reply).Property(a => a.ReplyUpdate).IsModified = false;
+                        _context.Update(reply);
+                        
                         await _context.SaveChangesAsync();
                     }
                 }
