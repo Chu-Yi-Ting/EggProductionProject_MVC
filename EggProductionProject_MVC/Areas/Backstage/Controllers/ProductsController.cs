@@ -62,7 +62,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,ItemNo,StoreSid,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,SubcategoryName,ItemNo,StoreSid,,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo,Company")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -89,9 +89,9 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 return NotFound();
             }
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", product.PublicStatusNo);
-            ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "StoreSid", product.StoreSid);
-            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryNo", product.SubcategoryNo);
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+            ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "Company");
+            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
             return View(product);
         }
 
@@ -100,7 +100,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,ItemNo,StoreSid,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,ItemNo,StoreSid,,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo")] Product product)
         {
             if (id != product.ProductSid)
             {
@@ -127,9 +127,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", product.PublicStatusNo);
-            ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "StoreSid", product.StoreSid);
-            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryNo", product.SubcategoryNo);
+            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+            ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "Company");
+            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
+            //ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", product.PublicStatusNo);
+            //ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "StoreSid", product.StoreSid);
+            //ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryNo", product.SubcategoryNo);
             return View(product);
         }
 
@@ -172,6 +175,15 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.ProductSid == id);
+        }
+
+        public IActionResult GetProductsByStoreSid(int StoreSid)
+        {
+            var products = _context.Products
+                                   .Where(p => p.StoreSid == StoreSid)
+                                   .Include(p => p.PublicStatusNoNavigation) // 加入關聯的 PublicStatus 表
+                                   .ToList();
+            return PartialView("_ProductListPartial", products);
         }
     }
 }
