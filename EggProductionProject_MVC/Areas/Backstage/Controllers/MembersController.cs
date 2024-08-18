@@ -28,6 +28,45 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return File(content, "image/jpeg");
         }
 
+        [HttpGet]
+        public IActionResult FilterMembers(string keyword , string isBlocked, string isChickFarm)
+        {
+            var members = _context.Members.AsQueryable();
+
+			if (!string.IsNullOrEmpty(isBlocked))
+			{
+                int blocked = int.Parse(isBlocked);
+				members = members.Where(m => m.IsBlocked == blocked);
+			}
+
+			if (!string.IsNullOrEmpty(isChickFarm))
+			{
+				int chickFarm = int.Parse(isChickFarm);
+				members = members.Where(m => m.IsChickFarm == chickFarm);
+			}
+
+
+			if (!string.IsNullOrEmpty(keyword))
+            {
+                members = members.Where(m => m.Name.Contains(keyword) || m.Email.Contains(keyword) || m.Phone.Contains(keyword));
+            }
+
+            var memberVMs = members.Select(m => new MemberVM
+            {
+                MemberSid = m.MemberSid,
+                Name = m.Name,
+                Email = m.Email,
+                Phone = m.Phone,
+                BirthDate = m.BirthDate,
+                IsChickFarm = m.IsChickFarm,
+                ProfilePic = m.ProfilePic,
+                IsBlocked = m.IsBlocked
+            }).ToList();
+
+            return PartialView("_MemberListPartial", memberVMs);
+        }
+
+
 
         // GET: Backstage/Members
         public async Task<IActionResult> Index()

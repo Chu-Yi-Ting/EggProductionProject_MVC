@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace EggProductionProject_MVC.Models.MemberVM
 {
     public class MemberVM
     {
-        
+        [Key]
      public int MemberSid { get; set; }
 
         [Display(Name ="會員名稱")]

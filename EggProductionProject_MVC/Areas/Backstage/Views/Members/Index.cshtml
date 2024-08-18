@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EggProductionProject_MVC.Models.MemberVM.MemberVM>
+﻿ @model IEnumerable<EggProductionProject_MVC.Models.MemberVM.MemberVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,87 +8,106 @@
 
 <h2>Index</h2>
 
-<p>
-    @* <a asp-action="Create">Create New</a> *@
-    <div>會員數量 : @Model.Count()</div>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsChickFarm)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.ProfilePic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsBlocked)
-            </th>
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                  @if (item.IsChickFarm == 1)
-                    {
-                        @:雞農
-                    }
-                    else
-                    {
-                        @:一般用戶
-                    }
-            </td>
-           
-            <td>
-                
-                    <partial name="_ProfilePicPartialView" model="@item" />
-            </td>
-            <td>
-                    <form asp-action="UpdateIsBlocked" method="post">
-                        <select asp-for="@item.IsBlocked" class="form-control" asp-items="@(new SelectList(new List<SelectListItem> {
-                            new SelectListItem { Text = "未封鎖", Value = "0" },
-                            new SelectListItem { Text = "已封鎖", Value = "1" }
-                        }, "Value", "Text", item.IsBlocked))"></select>
-                        <input type="hidden" asp-for="@item.MemberSid" />
-                        <button type="submit" class="btn btn-primary">更新</button>
-                    </form>
-            </td>
-           
-            <td>
-                <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
-                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
-                    <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<nav>
+	<div class="row">
+		<div class="col-3">
+			<label for="selectIsBlocked">是否被禁用:</label>
+			<select id="selectIsBlocked" class="form-control">
+				<option value="">全部</option>
+				<option value="1">已封鎖</option>
+				<option value="0">未封鎖</option>
+			</select>
+		</div>
+		<div class="col-3">
+			<label for="selectIsChickFarm">是否為雞農:</label>
+			<select id="selectIsChickFarm" class="form-control">
+				<option value="">全部</option>
+				<option value="1">雞農</option>
+				<option value="0">一般用戶</option>
+			</select>
+		</div>
+		<div class="col-3" >
+			<input  type="search" placeholder="搜尋關鍵字" id="inputSearch" class="form-control" />
+		</div>
+	</div>
 
+
+</nav>
+
+
+
+
+<p>
+
+    <div>會員數量 : <span id="memberCount">@Model.Count()</span></div>
+</p>
+
+<div id="memberList">
+    @* 将会员列表渲染为一个局部视图，以便AJAX请求时更新这一部分 *@
+    @Html.Partial("_MemberListPartial", Model)
+</div>
+
+
+
+
+
+
+
+@section Scripts {
+
+
+    <script>
+
+
+        //查詢會員的功能
+        $(document).ready(function () {
+            $('#inputSearch').on('keydown', function () {
+                var keyword = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("FilterMembers", "Members")',
+                    type: 'GET',
+                    data: { keyword: keyword },
+                    success: function (result) {
+                        $('#memberList').html(result); // 更新会员列表
+                      
+                    },
+                    error: function () {
+                        alert('发生错误，请稍后重试。');
+                    }
+                });
+            });
+        });
+
+
+
+        //篩選雞農與禁用功能
+        $(document).ready(function () {
+            // 綁定篩選事件
+            $('#selectIsBlocked, #selectIsChickFarm').change(function () {
+                filterMembers();
+            });
+
+            function filterMembers() {
+                var isBlocked = $('#selectIsBlocked').val();
+                var isChickFarm = $('#selectIsChickFarm').val();
+
+                $.ajax({
+                    url: '@Url.Action("FilterMembers", "Members")',
+                    type: 'GET',
+                    data: {
+                        isBlocked: isBlocked,
+                        isChickFarm: isChickFarm
+                    },
+                    success: function (result) {
+                        $('#memberList').html(result); // 更新會員列表
+                        $('#memberCount').text($(result).find('tr').length); // 更新會員數量
+                    },
+                    error: function () {
+                        alert('發生錯誤，請稍後重試。');
+                    }
+                });
+            }
+        });
+    </script>
+} 
