@@ -4,15 +4,24 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>編輯</h2>
 
-<h4>VideoSummary</h4>
+<h4>影片編輯</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             
             <input type="hidden" asp-for="VideoSid" />
+            <div class="form-group">
+                <label asp-for="CreatorSid" class="control-label"></label>
+                <input asp-for="CreatorSid" class="form-control" disabled />
+                <span asp-validation-for="CreatorSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatorSid" class="control-label"></label>
+                <select asp-for="CreatorSid" class="form-control" asp-items="ViewBag.CreatorSid" disabled></select>
+            </div>
             <div class="form-group">
                 <label asp-for="VideoDuration" class="control-label"></label>
                 <input asp-for="VideoDuration" class="form-control" />
@@ -30,18 +39,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="UploadDate" class="control-label"></label>
-                <input asp-for="UploadDate" class="form-control" />
-                <span asp-validation-for="UploadDate" class="text-danger"></span>
+                <input asp-for="UploadDate" class="form-control" disabled />
             </div>
             <div class="form-group">
                 <label asp-for="TimesWatched" class="control-label"></label>
-                <input asp-for="TimesWatched" class="form-control" />
-                <span asp-validation-for="TimesWatched" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatorSid" class="control-label"></label>
-                <input asp-for="CreatorSid" class="form-control" />
-                <span asp-validation-for="CreatorSid" class="text-danger"></span>
+                <input asp-for="TimesWatched" class="form-control" disabled />
             </div>
             <div class="form-group">
                 <label asp-for="ScreenTextSid" class="control-label"></label>
@@ -54,11 +56,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Advertised" class="control-label"></label>
-                <input asp-for="Advertised" class="form-control" />
-                <span asp-validation-for="Advertised" class="text-danger"></span>
+                <select asp-for="Advertised" class="form-control" asp-items="ViewBag.Advertised"></select>
             </div>
+
             <div class="form-group">
                 <label asp-for="VideoCoverImage" class="control-label"></label>
+                <img id="Image" name="Image" asp-append-version width="320" height="240"></img>
                 <input asp-for="VideoCoverImage" type="file" class="form-control" />
             </div>
             <div class="form-group">
@@ -77,10 +80,64 @@
 </div>
 
 @section Scripts {
+   
     <script>
-        const Getimage = document.querySelector("#MoviePath")
+        var videoData = null;
+        $("#MoviePath").on("change", function () {
+            if (this.files[0] != null) {
+                var allowType = "video.*";
+                var file = this.files[0];
+                if (file.type.match(allowType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        videoData = this.result;
+                        var blob = new Blob([videoData], { type: "Video/mp4" });
+                        var urlCreator = window.URL || window.webkitURL;
+                        var videoUrl = urlCreator.createObjectURL(blob);
+                        $("#video").attr("src", videoUrl);
+                    };
+                    reader.readAsArrayBuffer(file);
+                    $("#btncilck").prop("disabled", false);
+                }
+                else {
+                    alert("不支援檔案上傳類型");
+                    $("#MoviePath").val("");
+                    $("#video").attr("src","");
+                    $("#btncilck").prop("disabled", true);
+                }
+            }
+        })
+
+        var imageData = null;
+        $("#VideoCoverImage").on("change", function () {
+            if (this.files[0] != null) {
+                var allowType = "image.*";
+                var file = this.files[0];
+                if (file.type.match(allowType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        imageData = this.result;
+                        var blob = new Blob([imageData], { type: "image/jpeg" });
+                        var urlCreator = window.URL || window.webkitURL;
+                        var imageUrl = urlCreator.createObjectURL(blob);
+                        $("#Image").attr("src", imageUrl);
+                    };
+                    reader.readAsArrayBuffer(file);
+                    $("#btncilck").prop("disabled", false);
+                }
+                else {
+                    alert("不支援檔案上傳類型");
+                    $("#Image").attr("src", "");
+                    $("#VideoCoverImage").val("");
+                    
+                }
+            }
+        })
+
 
     </script>
+
+    
 
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

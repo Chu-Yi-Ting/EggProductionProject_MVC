@@ -458,8 +458,11 @@ public partial class EggPlatformContext : DbContext
                 .HasNoKey()
                 .ToView("DailyChickAmountsRate");
 
-            entity.Property(e => e.UnQamount).HasColumnName("UnQAmount");
             entity.Property(e => e.UnQrate).HasColumnName("UnQRate");
+            entity.Property(e => e.會員名字).HasMaxLength(50);
+            entity.Property(e => e.生產種類).HasMaxLength(50);
+            entity.Property(e => e.雞舍位址).HasMaxLength(50);
+            entity.Property(e => e.雞舍名字).HasMaxLength(50);
         });
 
         modelBuilder.Entity<DailyEggRe>(entity =>

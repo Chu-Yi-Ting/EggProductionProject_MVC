@@ -7,13 +7,17 @@ namespace EggProductionProject_MVC.Models;
 
 public partial class DailyChickAmountsRate
 {
-    public int? MemberSid { get; set; }
+    public string 會員名字 { get; set; }
 
-    public int? HouseSid { get; set; }
+    public string 雞舍位址 { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public string 雞舍名字 { get; set; }
 
-    public int? RemainingCount { get; set; }
+    public string 生產種類 { get; set; }
+
+    public DateOnly? 生產日期 { get; set; }
+
+    public int? 剩餘雞隻 { get; set; }
 
     public double? DeathRate { get; set; }
 
@@ -21,9 +25,11 @@ public partial class DailyChickAmountsRate
 
     public double? UnQrate { get; set; }
 
-    public int? EggAmount { get; set; }
+    public int? 生產數量 { get; set; }
 
-    public int? UnQamount { get; set; }
+    public int? 不合格數 { get; set; }
 
-    public int? SubcategoryNo { get; set; }
+    public int? 死亡數 { get; set; }
+
+    public int? WeekAge { get; set; }
 }

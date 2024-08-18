@@ -38,7 +38,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                   {  CreatorSid = x.CreatorSid,
                       ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
                       VideoSid = x.VideoSid,
-                      Advertise = x.Advertised,
+                      Advertised = x.Advertised,
                       VideoDuration = x.VideoDuration,
                       VideoTitle = x.VideoTitle,
                       MemberName = x.CreatorS.MemberName,
@@ -82,6 +82,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
             ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
             ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+    
             ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid");
             return View();
         }
@@ -141,14 +142,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             else
             {
                 //ShowViedoSummary x = editViewmodels.ToList()[0];
-                ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
+                ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "MemberName");
                 ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
-
                 ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextCategory", videoSummary.ScreenTextS);
                 ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+                ViewBag.Advertised = new SelectList(_context.VideoSummaries,"VideoSid","Advertised");
 
 
-            return View(videoSummary);
+                return View(videoSummary);
             }
             
 

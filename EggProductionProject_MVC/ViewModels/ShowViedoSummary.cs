@@ -38,12 +38,11 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "影片分類")]
         public string? ViedoNature { get; set; }
 
-        [Display(Name ="廣告來源")]
-        public bool? Advertise { get; set; }
+        [Display(Name = "已被投放廣告")]
+        public bool? Advertised { get; set; }
 
         [Display(Name ="字幕語言")]
         public string? ScreenTextCategory { get; set; }
-
 
         [Display(Name ="公開狀態")]
         public string? StatusDescription { get; set; }
