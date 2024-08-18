@@ -177,12 +177,42 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return _context.Products.Any(e => e.ProductSid == id);
         }
 
+        //商品根據賣場id做篩選
         public IActionResult GetProductsByStoreSid(int StoreSid)
         {
             var products = _context.Products
                                    .Where(p => p.StoreSid == StoreSid)
                                    .Include(p => p.PublicStatusNoNavigation) // 加入關聯的 PublicStatus 表
                                    .ToList();
+            return PartialView("_ProductListPartial", products);
+        }
+
+        //商品名稱查詢功能
+        public async Task<IActionResult> SearchProducts(string searchString)
+        {
+            var products = from p in _context.Products
+                           .Include(p => p.PublicStatusNoNavigation)
+                           .Include(p => p.StoreS)
+                           .Include(p => p.SubcategoryNoNavigation)
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.ProductName.Contains(searchString));
+            }
+
+            return PartialView("_ProductListPartial", await products.ToListAsync());
+        }
+
+        //顯示所有商品
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var products = await _context.Products
+                           .Include(p => p.PublicStatusNoNavigation)
+                           .Include(p => p.StoreS)
+                           .Include(p => p.SubcategoryNoNavigation)
+                           .ToListAsync();
+
             return PartialView("_ProductListPartial", products);
         }
     }

@@ -35,27 +35,24 @@
 
 <h2 class="bold-text">商品清單</h2>
 <div class="card p-4">
-    <div class="form-group">
-        <label for="StoreSid" class="mb-2" style="font-weight: bold; font-size: 20px">選擇賣場：</label>
-        <select id="StoreSid" class="form-select" style="width: 250px">
-            <option value="" class="text-center">全部賣場</option>
-            @foreach (var store in ViewBag.Company)
-            {
-                <option value="@store.Value" class="text-center">@store.Text</option>
-            }
-        </select>
+    @* 查詢商品表單 *@
+    <div class="d-flex justify-content-end mb-3">
+        <input type="text" id="searchString" class="form-control" placeholder="查詢商品" style="width: 250px; margin-right: 15px;" />
+        <button type="button" id="searchButton" class="btn btn-secondary">
+            <i class="fa-solid fa-search"></i>
+        </button>
     </div>
 
     <div id="productList">
         <table class="table table container text-center table-striped table-hover">
             <thead>
                 <tr>
-    @*             <th>
+                    @*             <th>
                     @Html.DisplayNameFor(model => model.StoreS)
                     </th> *@
                     <th>
                         商品編號
-    @* @Html.DisplayNameFor(model => model.ProductNo) *@
+                        @* @Html.DisplayNameFor(model => model.ProductNo) *@
                     </th>
                     <th style="width: 10%">
                         商品名稱
@@ -66,16 +63,16 @@
                     <th style="width: 5%">
                         庫存
                     </th>
-    @*             <th>
+                    @*             <th>
                     @Html.DisplayNameFor(model => model.ItemNo)
                     </th> *@
                     <th style="width: 20%">
                         商品描述
                     </th>
-    @*             <th>
+                    @*             <th>
                     @Html.DisplayNameFor(model => model.Origin)
                     </th> *@
-    @*             <th>
+                    @*             <th>
                     @Html.DisplayNameFor(model => model.Quanitity)
                     </th>
                     <th>
@@ -83,66 +80,66 @@
                     </th> *@
                     <th style="width: 15%">
                         內容物成分
-    @* @Html.DisplayNameFor(model => model.Component) *@
+                        @* @Html.DisplayNameFor(model => model.Component) *@
                     </th>
                     <th>
                         上架時間
-    @*                 @Html.DisplayNameFor(model => model.LaunchTime) *@
+                        @*                 @Html.DisplayNameFor(model => model.LaunchTime) *@
                     </th>
                     <th style="width: 10%">
-                        公開狀態編號
-    @* @Html.DisplayNameFor(model => model.PublicStatusNoNavigation) *@
+                        公開狀態
+                        @* @Html.DisplayNameFor(model => model.PublicStatusNoNavigation) *@
                     </th>
-    @*             <th>
+                    @*             <th>
                     @Html.DisplayNameFor(model => model.SubcategoryNoNavigation)
                     </th> *@
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-    @foreach (var item in Model)
-    {
+                @foreach (var item in Model)
+                {
                     <tr>
-            @*                 <td>
+                        @*                 <td>
                     @Html.DisplayFor(modelItem => item.StoreS.StoreSid)
                     </td> *@
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.ProductNo)
+                            @Html.DisplayFor(modelItem => item.ProductNo)
                         </td>
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.ProductName)
+                            @Html.DisplayFor(modelItem => item.ProductName)
                         </td>
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.Price)
+                            @Html.DisplayFor(modelItem => item.Price)
                         </td>
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.Stock)
+                            @Html.DisplayFor(modelItem => item.Stock)
                         </td>
-            @*             <td>
+                        @*             <td>
                     @Html.DisplayFor(modelItem => item.ItemNo)
                     </td> *@
                         <td class="textalign-left align-middle">
-                @Html.DisplayFor(modelItem => item.Description)
+                            @Html.DisplayFor(modelItem => item.Description)
                         </td>
-            @*             <td>
+                        @*             <td>
                     @Html.DisplayFor(modelItem => item.Origin)
                     </td> *@
-            @*             <td>
+                        @*             <td>
                     @Html.DisplayFor(modelItem => item.Quanitity)
                     </td> *@
-            @*             <td>
+                        @*             <td>
                     @Html.DisplayFor(modelItem => item.Weight)
                     </td> *@
                         <td class="textalign-left align-middle">
-                @Html.DisplayFor(modelItem => item.Component)
+                            @Html.DisplayFor(modelItem => item.Component)
                         </td>
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.LaunchTime)
+                            @Html.DisplayFor(modelItem => item.LaunchTime)
                         </td>
                         <td class="text-center align-middle">
-                @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
+                            @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
                         </td>
-            @*                 <td>
+                        @*                 <td>
                     @Html.DisplayFor(modelItem => item.SubcategoryNoNavigation.SubcategoryNo)
                     </td> *@
                         <td class="text-center align-middle">
@@ -151,12 +148,12 @@
                             </button>
                         </td>
                     </tr>
-    }
+                }
             </tbody>
         </table>
     </div>
 </div>
-    @section Scripts {
+@section Scripts {
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -183,6 +180,36 @@
                 }
             });
         });
+
+        // 關鍵字查詢局部更新
+        document.getElementById("searchButton").addEventListener("click", async function () {
+            var inputSearchString = document.getElementById("searchString")
+            var searchString = inputSearchString.value;
+
+            // 如果搜索字符串為空，返回全部賣場
+            var url;
+            if (searchString.trim() === "") {
+                url = '@Url.Action("GetAllProducts", "Products")'; // 獲取全部賣場的 Action
+            } else {
+                url = '@Url.Action("SearchProducts", "Products")?searchString=' + encodeURIComponent(searchString);
+            }
+
+            try {
+                let response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                let html = await response.text();
+                document.getElementById("productList").innerHTML = html;
+
+                //清空輸入框內容
+                inputSearchString.value = "";
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
     </script>
 
-    }
+}
