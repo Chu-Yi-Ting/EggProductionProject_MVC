@@ -41,25 +41,25 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label class="form-label">成立時間</label>
-                                <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
+                        <select id="TimeOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.TimeOptions">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                             <div class="col-lg-3">
                                 <label class="form-label">訂單狀態</label>
-                        <select asp-for="OrderStatusNo" class="form-control bd-r-4" asp-items="ViewBag.OrderStatusNo">
+                        <select asp-for="OrderStatusNo" class="form-control bd-r-4 form-select" asp-items="ViewBag.OrderStatusNo">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                             <div class="col-lg-3">
                                 <label class="form-label">付款方式</label>
-                        <select id="PaymentOptions" class="form-control bd-r-4" asp-items="ViewBag.PaymentOptions">
+                        <select id="PaymentOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.PaymentOptions">
                                     <option value="all">全部</option>
                                 </select>
                             </div>
                     <div class="col-lg-3">
                         <label class="form-label">付款狀態</label>
-                        <select id="PayOptions" class="form-control bd-r-4" asp-items="ViewBag.PayOptions">
+                        <select id="PayOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.PayOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>
