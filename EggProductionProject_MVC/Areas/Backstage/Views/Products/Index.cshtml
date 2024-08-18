@@ -36,7 +36,7 @@
 <h2 class="bold-text">商品清單</h2>
 <div class="card p-4">
     <div class="form-group">
-        <label for="StoreSid" style="font-weight: bold; font-size: 20px">選擇賣場：</label>
+        <label for="StoreSid" class="mb-2" style="font-weight: bold; font-size: 20px">選擇賣場：</label>
         <select id="StoreSid" class="form-select" style="width: 250px">
             <option value="" class="text-center">全部賣場</option>
             @foreach (var store in ViewBag.Company)
@@ -46,7 +46,7 @@
         </select>
     </div>
 
-    <div id="productList" ">
+    <div id="productList">
         <table class="table table container text-center table-striped table-hover">
             <thead>
                 <tr>

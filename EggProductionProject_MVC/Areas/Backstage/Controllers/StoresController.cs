@@ -162,6 +162,31 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
+        //賣場名稱查詢功能
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var stores = from s in _context.Stores.Include(s => s.MemberS).Include(s => s.PublicStatusNoNavigation)
+                         select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                stores = stores.Where(s => s.Company.Contains(searchString));
+            }
+
+            return PartialView("_StoreListPartial", await stores.ToListAsync());
+        }
+
+        //顯示所有賣場
+        public async Task<IActionResult> GetAllStores()
+        {
+            var stores = await _context.Stores
+                                       .Include(s => s.PublicStatusNoNavigation)
+                                       .Include(s => s.MemberS)
+                                       .ToListAsync();
+
+            return PartialView("_StoreListPartial", stores);
+        }
+
         private bool StoreExists(int id)
         {
             return _context.Stores.Any(e => e.StoreSid == id);
