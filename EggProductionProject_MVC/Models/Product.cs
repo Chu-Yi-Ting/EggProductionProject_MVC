@@ -35,8 +35,6 @@ public partial class Product
 
     public DateOnly? LaunchTime { get; set; }
 
-    public int? LaunchStatusNo { get; set; }
-
     public int? PublicStatusNo { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();

@@ -110,12 +110,16 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/VideoSummaries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
+            
             var videoSummary = await _context.VideoSummaries.FindAsync(id);
-
             if (id == null)
             {
                 return NotFound();
             }
+
+            string VideoLong = Path.Combine(_webHostEnvironment.WebRootPath,
+                "Video", _context.Creators.ToQueryString() + id);
             //var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
             //    .Select(x=> new ShowViedoSummary
             //    {
@@ -143,7 +147,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 //ShowViedoSummary x = editViewmodels.ToList()[0];
                 ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "MemberName");
-                ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
+                ViewBag.NatureSid = new SelectList(_context.Natures, "NatureSid", "ViedoNature");
                 ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextCategory", videoSummary.ScreenTextS);
                 ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
                 ViewBag.Advertised = new SelectList(_context.VideoSummaries,"VideoSid","Advertised");
@@ -160,7 +164,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,MemberName,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
         {
             if (id != videoSummary.VideoSid)
             {
@@ -171,6 +175,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 try
                 {
+                    VideoSummary 上傳時間 = _context.VideoSummaries.Find(videoSummary.UploadDate);
+
+
+
+                    _context.Entry(上傳時間).State = EntityState.Detached;
                     _context.Update(videoSummary);
                     await _context.SaveChangesAsync();
                 }

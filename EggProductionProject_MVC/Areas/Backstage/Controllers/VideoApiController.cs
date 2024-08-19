@@ -19,7 +19,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 VideoSummary c = await _context.VideoSummaries.FindAsync(id);
                 string x = c?.MoviePath;
                 return File(x, "Video/mp4");
-            
         }
 
         //public async Task<FileResult> VideoUpdata(int id)

@@ -159,9 +159,16 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.AdvertismentSid);
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateAdBehavior"));
+
+            entity.Property(e => e.AdContent).HasMaxLength(50);
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UploadTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Advertisments)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Advertisments_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Advertisments)
                 .HasForeignKey(d => d.StoreSid)
@@ -458,11 +465,8 @@ public partial class EggPlatformContext : DbContext
                 .HasNoKey()
                 .ToView("DailyChickAmountsRate");
 
+            entity.Property(e => e.UnQamount).HasColumnName("UnQAmount");
             entity.Property(e => e.UnQrate).HasColumnName("UnQRate");
-            entity.Property(e => e.會員名字).HasMaxLength(50);
-            entity.Property(e => e.生產種類).HasMaxLength(50);
-            entity.Property(e => e.雞舍位址).HasMaxLength(50);
-            entity.Property(e => e.雞舍名字).HasMaxLength(50);
         });
 
         modelBuilder.Entity<DailyEggRe>(entity =>

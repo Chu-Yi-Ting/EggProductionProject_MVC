@@ -35,18 +35,18 @@ namespace EggProductionProject_MVC.Models
         [Display(Name = "影片上傳時間")]
         public DateTime UploadDate { get; set; }
 
-        [Display(Name = "影片分類")]
-        public string? ViedoNature { get; set; }
-
         [Display(Name = "已被投放廣告")]
         public bool? Advertised { get; set; }
 
         [Display(Name = "字幕語言")]
-        public string? ScreenTextCategory { get; set; }
+        public string? ScreenTextSid { get; set; }
+
+        [Display(Name = "影片分類")]
+        public int? NatureSid { get; set; }
 
 
         [Display(Name = "公開狀態")]
-        public string? StatusDescription { get; set; }
+        public string? PublicStatusNo { get; set; }
 
 
     }

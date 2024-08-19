@@ -23,14 +23,14 @@
                 <select asp-for="CreatorSid" class="form-control" asp-items="ViewBag.CreatorSid" disabled></select>
             </div>
             <div class="form-group">
-                <label asp-for="VideoDuration" class="control-label"></label>
-                <input asp-for="VideoDuration" class="form-control" />
-                <span asp-validation-for="VideoDuration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="VideoTitle" class="control-label"></label>
                 <input asp-for="VideoTitle" class="form-control" />
                 <span asp-validation-for="VideoTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoDuration" class="control-label"></label>
+                <input asp-for="VideoDuration" class="form-control" type="text" disabled/>
+                
             </div>
             <div class="form-group">
                 <label asp-for="InformationColumn" class="control-label"></label>
@@ -46,10 +46,6 @@
                 <input asp-for="TimesWatched" class="form-control" disabled />
             </div>
             <div class="form-group">
-                <label asp-for="ScreenTextSid" class="control-label"></label>
-                <select asp-for="ScreenTextSid" class="form-control" asp-items="ViewBag.ScreenTextSid"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="MoviePath" class="control-label"></label>
                 <partial name="_Videopartial" model="@Model"></partial>
                 <input asp-for="MoviePath" type="file" class="form-control" />
@@ -58,18 +54,26 @@
                 <label asp-for="Advertised" class="control-label"></label>
                 <select asp-for="Advertised" class="form-control" asp-items="ViewBag.Advertised"></select>
             </div>
-
             <div class="form-group">
                 <label asp-for="VideoCoverImage" class="control-label"></label>
                 <img id="Image" name="Image" asp-append-version width="320" height="240"></img>
                 <input asp-for="VideoCoverImage" type="file" class="form-control" />
             </div>
             <div class="form-group">
+                <label asp-for="NatureSid" class="control-label"></label>
+                <select asp-for="NatureSid" class="form-control" asp-items="ViewBag.NatureSid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScreenTextSid" class="control-label"></label>
+                <select asp-for="ScreenTextSid" class="form-control" asp-items="ViewBag.ScreenTextSid"></select>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="PublicStatusNo" class="control-label"></label>
                 <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="儲存" class="btn btn-default" />
             </div>
         </form>
     </div>
@@ -107,6 +111,27 @@
                 }
             }
         })
+
+        
+
+         document.addEventListener('DOMContentLoaded', function () {
+
+            var video = document.querySelector("#video")
+            var videoduration = document.querySelector('#VideoDuration')
+
+
+            video.addEventListener('loadedmetadata', function () {
+
+                var duration = video.duration;
+                var minutes = Math.floor(duration / 60)
+                var seconds = Math.floor(duration % 60)
+
+                videoduration.value = minutes+":"+seconds
+            });
+
+        });
+
+       
 
         var imageData = null;
         $("#VideoCoverImage").on("change", function () {
