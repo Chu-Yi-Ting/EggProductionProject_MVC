@@ -33,12 +33,12 @@
             <input type="hidden" asp-for="ProductSid" />
             <div class="form-group">
                 <label asp-for="ProductNo" class="control-label">商品編號</label>
-                <input asp-for="ProductNo" class="form-control" />
+                <input asp-for="ProductNo" class="form-control" readonly />
                 <span asp-validation-for="ProductNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label">商品名稱</label>
-                <input asp-for="ProductName" class="form-control" />
+                <input asp-for="ProductName" class="form-control" readonly />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -53,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="SubcategoryNo" class="control-label">商品分類</label>
-                <select asp-for="SubcategoryNo" class="form-control" asp-items="ViewBag.SubcategoryNo"></select>
+                <select asp-for="SubcategoryNo" class="form-control" asp-items="ViewBag.SubcategoryNo" readonly></select>
                 <span asp-validation-for="SubcategoryNo" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -63,7 +63,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="StoreSid" class="control-label">賣場名稱</label>
-                <select asp-for="StoreSid" class="form-control" asp-items="ViewBag.StoreSid"></select>
+                <input type="text" class="form-control" value="@ViewBag.StoreSid" readonly />
+                <input type="hidden" asp-for="StoreSid" />                
+                @* <select asp-for="StoreSid" class="form-control" asp-items="ViewBag.StoreSid" readonly></select> *@
                 <span asp-validation-for="StoreSid" class="text-danger"></span>
             </div>
             <div class="form-group">

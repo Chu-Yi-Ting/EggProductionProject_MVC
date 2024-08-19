@@ -90,7 +90,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 return NotFound();
             }
             ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
-            ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "Company");
+            //ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "Company");
+            //因為網頁編輯的時候，賣場名稱只能唯獨，改成下面方式處理，不能直接使用了 SelectList 而是從 ViewBag.StoreSid 中提取具體的賣場名稱
+            ViewBag.StoreSid = _context.Stores
+                           .Where(s => s.StoreSid == product.StoreSid)
+                           .Select(s => s.Company) // 取得賣場名稱
+                           .FirstOrDefault();
             ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
             return View(product);
         }

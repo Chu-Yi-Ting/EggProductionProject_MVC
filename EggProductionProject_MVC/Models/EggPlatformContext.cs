@@ -159,9 +159,16 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.AdvertismentSid);
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateAdBehavior"));
+
+            entity.Property(e => e.AdContent).HasMaxLength(50);
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UploadTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Advertisments)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Advertisments_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Advertisments)
                 .HasForeignKey(d => d.StoreSid)

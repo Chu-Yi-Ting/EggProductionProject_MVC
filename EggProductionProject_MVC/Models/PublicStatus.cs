@@ -11,6 +11,8 @@ public partial class PublicStatus
 
     public string StatusDescription { get; set; }
 
+    public virtual ICollection<Advertisment> Advertisments { get; set; } = new List<Advertisment>();
+
     public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
 
     public virtual ICollection<CouponType> CouponTypes { get; set; } = new List<CouponType>();
