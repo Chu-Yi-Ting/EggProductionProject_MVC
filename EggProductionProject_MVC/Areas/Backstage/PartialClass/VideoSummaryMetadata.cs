@@ -16,10 +16,6 @@ namespace EggProductionProject_MVC.Models
         [Display(Name = "影片標題")]
         public string? VideoTitle { get; set; }
 
-
-        [Display(Name = "會員名稱")]
-        public string? MemberName { get; set; }
-
         [Display(Name = "觀看次數")]
         public int? TimesWatched { get; set; }
 
@@ -36,13 +32,16 @@ namespace EggProductionProject_MVC.Models
         public DateTime UploadDate { get; set; }
 
         [Display(Name = "已被投放廣告")]
-        public bool? Advertised { get; set; }
+        public bool Advertised { get; set; }
 
         [Display(Name = "字幕語言")]
         public string? ScreenTextSid { get; set; }
 
         [Display(Name = "影片分類")]
         public int? NatureSid { get; set; }
+
+        [Display(Name = "廣告來源")]
+        public bool AdSource { get; set; }
 
 
         [Display(Name = "公開狀態")]

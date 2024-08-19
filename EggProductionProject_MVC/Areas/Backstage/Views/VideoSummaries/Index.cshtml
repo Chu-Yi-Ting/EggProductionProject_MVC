@@ -7,9 +7,9 @@
 
 <h1>影片總數：@context.VideoSummaries.Count()</h1>
 
-<p>
+@* <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> *@
 <table class="table">
     <thead>
         <tr>
@@ -37,6 +37,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Advertised)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdSource)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.VideoCoverImage)
@@ -82,6 +85,9 @@
             <td>
                     @Html.DisplayFor(modelItem => item.Advertised)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdSource)
+                </td>
             <td>
                     @Html.DisplayFor(modelItem => item.VideoCoverImage)
             </td>
@@ -95,7 +101,7 @@
                     @Html.DisplayFor(modelItem => item.StatusDescription)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.VideoSid">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.VideoSid">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.VideoSid">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.VideoSid">Delete</a>
             </td>

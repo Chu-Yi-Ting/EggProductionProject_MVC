@@ -35,7 +35,9 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
                   .Select(x => new ShowViedoSummary
 
-                  {  CreatorSid = x.CreatorSid,
+                  {
+                      AdSource = x.AdSource,
+                      CreatorSid = x.CreatorSid,
                       ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
                       VideoSid = x.VideoSid,
                       Advertised = x.Advertised,
@@ -76,36 +78,36 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return View(videoSummary);
         }
 
-        // GET: Backstage/VideoSummaries/Create
-        public IActionResult Create()
-        {
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+        //// GET: Backstage/VideoSummaries/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
+        //    ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
+        //    ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
     
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid");
-            return View();
-        }
+        //    ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid");
+        //    return View();
+        //}
 
-        // POST: Backstage/VideoSummaries/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,MemberName,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(videoSummary);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", videoSummary.PublicStatusNo);
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            return View(videoSummary);
-        }
+        //// POST: Backstage/VideoSummaries/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,MemberName,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(videoSummary);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
+        //    ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
+        //    ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", videoSummary.PublicStatusNo);
+        //    ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
+        //    return View(videoSummary);
+        //}
 
         // GET: Backstage/VideoSummaries/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -117,9 +119,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 return NotFound();
             }
-
-            string VideoLong = Path.Combine(_webHostEnvironment.WebRootPath,
-                "Video", _context.Creators.ToQueryString() + id);
             //var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
             //    .Select(x=> new ShowViedoSummary
             //    {
@@ -150,8 +149,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 ViewBag.NatureSid = new SelectList(_context.Natures, "NatureSid", "ViedoNature");
                 ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextCategory", videoSummary.ScreenTextS);
                 ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
-                ViewBag.Advertised = new SelectList(_context.VideoSummaries,"VideoSid","Advertised");
-
+                //ViewBag.Advertised = new SelectList(_context.VideoSummaries,"VideoSid","Advertised");
+                //ViewBag.AdSource = new SelectList(_context.VideoSummaries, "VideoSid", "AdSource");
 
                 return View(videoSummary);
             }
@@ -164,7 +163,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,Advertised,AdSource,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
         {
             if (id != videoSummary.VideoSid)
             {
@@ -175,11 +174,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 try
                 {
-                    VideoSummary 上傳時間 = _context.VideoSummaries.Find(videoSummary.UploadDate);
+                    VideoSummary 資料庫資料 =await _context.VideoSummaries.FindAsync(id);
+                    videoSummary.UploadDate = 資料庫資料.UploadDate;
+                    videoSummary.TimesWatched = 資料庫資料.TimesWatched;
+                    videoSummary.CreatorSid = 資料庫資料.CreatorSid;
+                    //videoSummary.CreatorS.MemberName =  資料庫資料.CreatorS.MemberName;
+                    _context.Entry(資料庫資料).State = EntityState.Detached;
 
 
-
-                    _context.Entry(上傳時間).State = EntityState.Detached;
                     _context.Update(videoSummary);
                     await _context.SaveChangesAsync();
                 }

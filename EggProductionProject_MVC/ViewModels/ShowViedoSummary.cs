@@ -41,6 +41,9 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "已被投放廣告")]
         public bool? Advertised { get; set; }
 
+        [Display(Name = "廣告來源")]
+        public bool? AdSource { get; set; }
+
         [Display(Name ="字幕語言")]
         public string? ScreenTextCategory { get; set; }
 
