@@ -5,9 +5,13 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class LogicalDeletion
+public partial class NormalizedDatum
 {
-    public int LogicalDeletionNo { get; set; }
+    public int? Subcategory { get; set; }
 
-    public string DeletionStatus { get; set; }
+    public int? WeekAge { get; set; }
+
+    public double? EggRate { get; set; }
+
+    public double? DeathRate { get; set; }
 }

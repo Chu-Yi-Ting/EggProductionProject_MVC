@@ -19,7 +19,7 @@ public partial class Store
 
     public string StoreIntroduction { get; set; }
 
-    public int? LogicalDeletionNo { get; set; }
+    public int? PublicStatusNo { get; set; }
 
     public virtual ICollection<Advertisment> Advertisments { get; set; } = new List<Advertisment>();
 
@@ -27,9 +27,9 @@ public partial class Store
 
     public virtual ICollection<EcImage> EcImages { get; set; } = new List<EcImage>();
 
-    public virtual LogicalDeletion LogicalDeletionNoNavigation { get; set; }
-
     public virtual Member MemberS { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public virtual PublicStatus PublicStatusNoNavigation { get; set; }
 }

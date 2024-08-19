@@ -171,6 +171,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Normalized_Data]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Notify]",
          "ObjectType": 0
       },

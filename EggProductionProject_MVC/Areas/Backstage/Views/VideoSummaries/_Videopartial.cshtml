@@ -1,11 +1,18 @@
 ﻿
 
-@if (Model.MoviePath != null)
+
+
+<video id="video" src="@Url.Action("GetVideopath","VideoSummaries",new {id=Model.VideoSid})"
+       type="video/mp4" width="320" height="240" controls></video>
+@* @if (Model.MoviePath != null) 
 {
-    <video src="@Url.Action("GetVideopath","VideoSummaries",new {id=Model.VideoSid})"
-           type="video/mp4" width="320" height="240" controls ></video>
-}
-else
+} 
+ else
 {
     <img src="~/videoimage/novideo.png" width="320" height="240"/>
+} *@
+
+
+@section Scripts {
+    
 }

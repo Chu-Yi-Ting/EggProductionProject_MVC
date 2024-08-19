@@ -93,6 +93,8 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<Nature> Natures { get; set; }
 
+    public virtual DbSet<NormalizedDatum> NormalizedData { get; set; }
+
     public virtual DbSet<Notify> Notifies { get; set; }
 
     public virtual DbSet<NotifyType> NotifyTypes { get; set; }
@@ -157,9 +159,16 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.AdvertismentSid);
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateAdBehavior"));
+
+            entity.Property(e => e.AdContent).HasMaxLength(50);
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UploadTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Advertisments)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Advertisments_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Advertisments)
                 .HasForeignKey(d => d.StoreSid)
@@ -438,6 +447,7 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("Creator");
 
             entity.Property(e => e.Image).HasColumnType("image");
+            entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.PersonalProfile).HasMaxLength(50);
 
             entity.HasOne(d => d.MemberS).WithMany(p => p.Creators)
@@ -498,6 +508,7 @@ public partial class EggPlatformContext : DbContext
 
             entity.Property(e => e.EditAfter).HasMaxLength(500);
             entity.Property(e => e.EditBefore).HasMaxLength(500);
+            entity.Property(e => e.EditTime).HasColumnType("datetime");
 
             entity.HasOne(d => d.ArticleS).WithMany(p => p.Edits)
                 .HasForeignKey(d => d.ArticleSid)
@@ -731,6 +742,13 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ViedoNature).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<NormalizedDatum>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Normalized_Data");
+        });
+
         modelBuilder.Entity<Notify>(entity =>
         {
             entity.HasKey(e => e.NotifySid);
@@ -834,9 +852,9 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ProductName).HasMaxLength(50);
             entity.Property(e => e.ProductNo).HasMaxLength(50);
 
-            entity.HasOne(d => d.LogicalDeletionNoNavigation).WithMany(p => p.Products)
-                .HasForeignKey(d => d.LogicalDeletionNo)
-                .HasConstraintName("FK_Products_LogicalDeletion");
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Products_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreSid)
@@ -862,6 +880,7 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.ItemNo);
 
             entity.Property(e => e.ItemNo).ValueGeneratedNever();
+            entity.Property(e => e.ItemDescription).HasMaxLength(50);
             entity.Property(e => e.ItemName).HasMaxLength(50);
 
             entity.HasOne(d => d.SubcategoryNoNavigation).WithMany(p => p.ProductItems)
@@ -992,13 +1011,13 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.StoreImg).HasColumnType("image");
             entity.Property(e => e.StoreIntroduction).HasMaxLength(50);
 
-            entity.HasOne(d => d.LogicalDeletionNoNavigation).WithMany(p => p.Stores)
-                .HasForeignKey(d => d.LogicalDeletionNo)
-                .HasConstraintName("FK_Stores_LogicalDeletion");
-
             entity.HasOne(d => d.MemberS).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.MemberSid)
                 .HasConstraintName("FK_Stores_Member");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Stores)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Stores_PublicStatus");
         });
 
         modelBuilder.Entity<StoreCoin>(entity =>
@@ -1129,11 +1148,9 @@ public partial class EggPlatformContext : DbContext
 
             entity.ToTable("VideoSummary");
 
-            entity.Property(e => e.Advertise).HasDefaultValue(false);
+            entity.Property(e => e.AdSource).HasDefaultValue(false);
             entity.Property(e => e.InformationColumn).HasMaxLength(50);
-            entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.UploadDate).HasColumnType("datetime");
-            entity.Property(e => e.VideoDuration).HasPrecision(0);
             entity.Property(e => e.VideoTitle).HasMaxLength(50);
 
             entity.HasOne(d => d.CreatorS).WithMany(p => p.VideoSummaries)

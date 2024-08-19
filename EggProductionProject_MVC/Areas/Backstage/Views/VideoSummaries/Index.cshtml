@@ -13,6 +13,13 @@
 <table class="table">
     <thead>
         <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorSid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.VideoTitle)
             </th>
@@ -26,13 +33,10 @@
                 @Html.DisplayNameFor(model => model.TimesWatched)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MemberName)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.MoviePath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Advertise)
+                @Html.DisplayNameFor(model => model.Advertised)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.VideoCoverImage)
@@ -55,6 +59,12 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                    @Html.DisplayFor(modelItem => item.CreatorSid)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+            </td>
+            <td>
                     @Html.DisplayFor(modelItem => item.VideoTitle)
             </td>
             <td>
@@ -67,13 +77,10 @@
                     @Html.DisplayFor(modelItem => item.TimesWatched)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.MemberName)
-            </td>
-            <td>
                     <partial name="_Videopartial" model="@item"></partial>
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.Advertise)
+                    @Html.DisplayFor(modelItem => item.Advertised)
             </td>
             <td>
                     @Html.DisplayFor(modelItem => item.VideoCoverImage)

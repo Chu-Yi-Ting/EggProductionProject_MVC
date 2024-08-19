@@ -34,13 +34,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                   .Include(v => v.Messages)
 
                   .Select(x => new ShowViedoSummary
-                  {
+
+                  {  CreatorSid = x.CreatorSid,
                       ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
                       VideoSid = x.VideoSid,
-                      Advertise = x.Advertise,
+                      Advertised = x.Advertised,
                       VideoDuration = x.VideoDuration,
                       VideoTitle = x.VideoTitle,
-                      MemberName = x.MemberName,
+                      MemberName = x.CreatorS.MemberName,
                       TimesWatched = x.TimesWatched,
                       MoviePath = x.MoviePath,
                       InformationColumn = x.InformationColumn,
@@ -81,6 +82,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
             ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
             ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
+    
             ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid");
             return View();
         }
@@ -109,44 +111,51 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             
+            
+            var videoSummary = await _context.VideoSummaries.FindAsync(id);
             if (id == null)
             {
                 return NotFound();
             }
-            var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
-                .Select(x=> new ShowViedoSummary
-                {
-                    ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
-                    VideoSid = x.VideoSid,
-                    Advertise = x.Advertise,
-                    VideoDuration = x.VideoDuration,
-                    VideoTitle = x.VideoTitle,
-                    MemberName = x.MemberName,
-                    TimesWatched = x.TimesWatched,
-                    MoviePath = x.MoviePath,
-                    InformationColumn = x.InformationColumn,
-                    VideoCoverImage = x.VideoCoverImage,
-                    UploadDate = x.UploadDate,
-                    ViedoNature = x.NatureS.ViedoNature,
-                    StatusDescription = x.PublicStatusNoNavigation.StatusDescription
-                });
+
+            string VideoLong = Path.Combine(_webHostEnvironment.WebRootPath,
+                "Video", _context.Creators.ToQueryString() + id);
+            //var editViewmodels = _context.VideoSummaries.Where(x=>x.VideoSid == id )
+            //    .Select(x=> new ShowViedoSummary
+            //    {
+            //        ScreenTextCategory = x.ScreenTextS.ScreenTextCategory,
+            //        VideoSid = x.VideoSid,
+            //        Advertise = x.Advertised,
+            //        VideoDuration = x.VideoDuration,
+            //        VideoTitle = x.VideoTitle,
+            //        MemberName = x.CreatorS.MemberName,
+            //        TimesWatched = x.TimesWatched,
+            //        MoviePath = x.MoviePath,
+            //        InformationColumn = x.InformationColumn,
+            //        VideoCoverImage = x.VideoCoverImage,
+            //        UploadDate = x.UploadDate,
+            //        ViedoNature = x.NatureS.ViedoNature,
+            //        StatusDescription = x.PublicStatusNoNavigation.StatusDescription
+            //    });
 
             //var x = await _context.VideoSummaries.FindAsync(id)  ;
-            if (editViewmodels == null)
+            if (videoSummary == null)
             {
                 return NotFound();
             }
             else
             {
-                ShowViedoSummary x = editViewmodels.ToList()[0];
-                ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses.Where(x=>x.PublicStatusNo ==x.PublicStatusNo).Select(x=>x), "PublicStatusNo", "StatusDescription");
-            return View(x);
-            }
-            //ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            //ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
+                //ShowViedoSummary x = editViewmodels.ToList()[0];
+                ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "MemberName");
+                ViewBag.NatureSid = new SelectList(_context.Natures, "NatureSid", "ViedoNature");
+                ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextCategory", videoSummary.ScreenTextS);
+                ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
+                ViewBag.Advertised = new SelectList(_context.VideoSummaries,"VideoSid","Advertised");
 
-            //ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            //return View(videoSummary);
+
+                return View(videoSummary);
+            }
+            
 
         }
 
@@ -155,7 +164,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,MemberName,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,Advertise,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
         {
             if (id != videoSummary.VideoSid)
             {
@@ -166,6 +175,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 try
                 {
+                    VideoSummary 上傳時間 = _context.VideoSummaries.Find(videoSummary.UploadDate);
+
+
+
+                    _context.Entry(上傳時間).State = EntityState.Detached;
                     _context.Update(videoSummary);
                     await _context.SaveChangesAsync();
                 }

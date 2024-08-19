@@ -13,5 +13,7 @@ public partial class ProductItem
 
     public string ItemName { get; set; }
 
+    public string ItemDescription { get; set; }
+
     public virtual ProductSubcategory SubcategoryNoNavigation { get; set; }
 }
