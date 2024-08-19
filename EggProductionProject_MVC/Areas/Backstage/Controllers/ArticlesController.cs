@@ -210,7 +210,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                             ArticleSid = article.ArticleSid,
                             EditBefore = originalArticle.ArticleInfo,  // 保存编辑前的信息
                             EditAfter = article.ArticleInfo,  // 保存编辑后的信息
-                            EditTime = DateOnly.FromDateTime(DateTime.Now)  // 只保存日期
+                            EditTime = DateOnly.FromDateTime(DateTime.Now).ToDateTime(new TimeOnly(0, 0))  // 只保存日期
                         };
 
                         _context.Edits.Add(editHistory);  // 保存编辑历史
