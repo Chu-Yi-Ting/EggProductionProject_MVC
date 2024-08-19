@@ -1,0 +1,125 @@
+﻿@model EggProductionProject_MVC.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+
+    <style>
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .btn {
+            margin-top: 10px; /* 为按钮添加额外的顶部间距 */
+        }
+    </style>
+
+}
+
+<h4 class="bold-text">編輯商品公開狀態</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductSid" />
+            <div class="form-group">
+                <label asp-for="ProductNo" class="control-label">商品編號</label>
+                <input asp-for="ProductNo" class="form-control" readonly />
+                <span asp-validation-for="ProductNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label">商品名稱</label>
+                <input asp-for="ProductName" class="form-control" readonly />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label" hidden></label>
+                <input asp-for="Price" class="form-control" hidden/>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stock" class="control-label" hidden></label>
+                <input asp-for="Stock" class="form-control" hidden />
+                <span asp-validation-for="Stock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubcategoryNo" class="control-label">商品分類</label>
+                <select asp-for="SubcategoryNo" class="form-control" asp-items="ViewBag.SubcategoryNo" readonly></select>
+                <span asp-validation-for="SubcategoryNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemNo" class="control-label" hidden></label>
+                <input asp-for="ItemNo" class="form-control" hidden />
+                <span asp-validation-for="ItemNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StoreSid" class="control-label">賣場名稱</label>
+                <input type="text" class="form-control" value="@ViewBag.StoreSid" readonly />
+                <input type="hidden" asp-for="StoreSid" />                
+                @* <select asp-for="StoreSid" class="form-control" asp-items="ViewBag.StoreSid" readonly></select> *@
+                <span asp-validation-for="StoreSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label" hidden></label>
+                <input asp-for="Description" class="form-control" hidden />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Origin" class="control-label" hidden></label>
+                <input asp-for="Origin" class="form-control" hidden />
+                <span asp-validation-for="Origin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quanitity" class="control-label" hidden></label>
+                <input asp-for="Quanitity" class="form-control" hidden />
+                <span asp-validation-for="Quanitity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label" hidden></label>
+                <input asp-for="Weight" class="form-control" hidden />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Component" class="control-label" hidden></label>
+                <input asp-for="Component" class="form-control" hidden />
+                <span asp-validation-for="Component" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LaunchTime" class="control-label" hidden></label>
+                <input asp-for="LaunchTime" class="form-control" hidden />
+                <span asp-validation-for="LaunchTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicStatusNo" class="control-label">公開狀態</label>
+                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                <span asp-validation-for="PublicStatusNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary btn-sm">
+                    <i class="fa-solid fa-save"></i> 儲存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Index")'">
+        <i class="fa-solid fa-arrow-left"></i> 回商品清單
+    </button>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

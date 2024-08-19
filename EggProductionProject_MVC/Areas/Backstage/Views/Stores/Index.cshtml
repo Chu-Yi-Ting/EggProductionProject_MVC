@@ -1,0 +1,142 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Store>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黄色背景 */
+            color: #333333; /* 深色文字 */
+        }
+
+        .textalign-left {
+            text-align: left;
+        }
+
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .text-center {
+            text-align: center; /* 水平置中 */
+        }
+
+        .align-middle {
+            vertical-align: middle; /* 垂直置中 */
+        }
+
+        th {
+            font-size: 16px;
+        }
+    </style>
+
+}
+
+<h2 class="bold-text">賣場清單</h2>
+
+<div class="card p-4">
+    @* 賣場查詢表單 *@
+    <div class="d-flex justify-content-end mb-3">
+        <input type="text" id="searchString" class="form-control" placeholder="查詢賣場" style="width: 250px;" />
+        <button type="button" id="searchButton" class="btn btn-secondary" style="margin-left: 10px;">
+            <i class="fa-solid fa-search"></i>
+        </button>
+    </div>
+    <div id="storeList">
+        <table class="table table container text-center table-striped table-hover">
+            <thead>
+                <tr>
+                    <th style="width: 10%">
+                        會員編號
+                    </th>
+                    <th style="width: 10%">
+                        賣場名稱
+                    </th>
+                    <th style="width: 15%">
+                        賣場成立時間
+                    </th>
+                    @*             <th>
+                    @Html.DisplayNameFor(model => model.StoreImg)
+                    </th> *@
+                    <th style="width: 40%">
+                        賣場介紹
+                    </th>
+                    <th style="width: 10%">
+                        公開狀態
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center align-middle">
+                            @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
+                        </td>
+                        <td class="text-center align-middle">
+                            @Html.DisplayFor(modelItem => item.Company)
+                        </td>
+                        <td class="text-center align-middle">
+                            @Html.DisplayFor(modelItem => item.EstablishDate)
+                        </td>
+                        @*             <td>
+                    @Html.DisplayFor(modelItem => item.StoreImg)
+                    </td> *@
+                        <td class="textalign-left align-middle">
+                            @Html.DisplayFor(modelItem => item.StoreIntroduction)
+                        </td>
+                        <td class="text-center align-middle">
+                            @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
+                        </td>
+                        <td class="text-center align-middle">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.StoreSid })'">
+                                <i class="fa-solid fa-edit"></i> 公開狀態變更
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        document.getElementById("searchButton").addEventListener("click", async function () {
+            var inputSearchString = document.getElementById("searchString")
+            var searchString = inputSearchString.value;
+
+            // 如果搜索字符串為空，返回全部賣場
+            var url;
+            if (searchString.trim() === "") {
+                url = '@Url.Action("GetAllStores", "Stores")'; // 獲取全部賣場的 Action
+            } else {
+                url = '@Url.Action("Search", "Stores")?searchString=' + encodeURIComponent(searchString);
+            }
+
+            try {
+                let response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                let html = await response.text();
+                document.getElementById("storeList").innerHTML = html;
+
+                //清空輸入框內容
+                inputSearchString.value = "";
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+
+}
+

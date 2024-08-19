@@ -1,0 +1,69 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Product>
+
+<table class="table table container text-center table-striped table-hover">
+    <thead>
+        <tr>
+            <th style="width: 10%">
+                商品編號
+            </th>
+            <th style="width: 10%">
+                商品名稱
+            </th>
+            <th>
+                原價
+            </th>
+            <th style="width: 5%">
+                庫存
+            </th>
+            <th style="width: 20%">
+                商品描述
+            </th>
+            <th style="width: 15%">
+                內容物成分
+            </th>
+            <th>
+                上架時間
+            </th>
+            <th style="width: 10%">
+                公開狀態
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ProductNo)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+                <td class="textalign-left align-middle">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="textalign-left align-middle">
+                    @Html.DisplayFor(modelItem => item.Component)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.LaunchTime)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
+                </td>
+                <td class="text-center align-middle">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.ProductSid })'">
+                        <i class="fa-solid fa-edit"></i> 狀態變更
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
