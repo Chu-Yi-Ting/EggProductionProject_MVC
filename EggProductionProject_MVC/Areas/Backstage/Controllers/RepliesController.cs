@@ -24,20 +24,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         {
             ViewData["CurrentFilter"] = searchString;
 
-            var replies = _context.Replies
-                                  .Include(r => r.ArticleCreaterS)
-                                  .Include(r => r.ArticleS)
-                                  .Include(r => r.PublicStatusNoNavigation)
-                                  .AsQueryable();
+            var replies = GetFilteredReplies(searchString);
 
-            // 如果 searchString 不为空，则根据 ArticleTitle 进行过滤
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                replies = replies.Where(r => r.ArticleS.ArticleTitle.Contains(searchString));
-            }
+            int totalReplies = await replies.CountAsync();
+            ViewData["TotalArticles"] = totalReplies;
 
-            int totalreplies = await replies.CountAsync();
-            ViewData["TotalArticles"] = totalreplies;
             return View(await replies.ToListAsync());
         }
 
@@ -61,7 +52,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
             return View(reply);
         }
-        //後台不會有回覆功能
+        //後台不會有創造回覆功能
         // GET: Replies/Create 
         //    public IActionResult Create()
         //    {
@@ -266,6 +257,29 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         private bool ReplyExists(int id)
         {
             return _context.Replies.Any(e => e.ReplySid == id);
+        }
+        public async Task<IActionResult> SearchPartial(string searchString)
+        {
+            ViewData["CurrentFilter"] = searchString;
+
+            var replies = GetFilteredReplies(searchString);
+
+            return PartialView("_ReplyPartial", await replies.ToListAsync());
+        }
+        private IQueryable<Reply> GetFilteredReplies(string searchString)
+        {
+            var replies = _context.Replies
+                                  .Include(r => r.ArticleCreaterS)
+                                  .Include(r => r.ArticleS)
+                                  .Include(r => r.PublicStatusNoNavigation)
+                                  .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                replies = replies.Where(r => r.ArticleS.ArticleTitle.Contains(searchString));
+            }
+
+            return replies;
         }
     }
 }

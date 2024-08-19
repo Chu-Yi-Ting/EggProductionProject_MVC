@@ -28,7 +28,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
             var articles = await GetFilteredArticlesAsync(searchString);
             int totalArticles = articles.Count();
-
             ViewData["TotalArticles"] = totalArticles;
             return View(articles);
         }
