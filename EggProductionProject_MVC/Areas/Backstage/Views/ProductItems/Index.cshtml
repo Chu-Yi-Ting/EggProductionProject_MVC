@@ -24,6 +24,37 @@
         th {
             font-size: 16px;
         }
+
+        /* modal的樣式及动画效果 */
+        .modal {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1050;
+            background-color: rgba(0, 0, 0, 0.5); /* 背景透明度 */
+        }
+
+        .modal-dialog {
+            margin: 10% auto;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            top: 0;
+        }
+
+        .modal-dialog.show {
+            transform: translateY(0);
+        }
+
     </style>
 
 }
@@ -35,7 +66,53 @@
         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Create")'">
             <i class="fa-solid fa-square-plus"></i> 新增
         </button>
+        @* 觸發modal的按鈕 *@
+        <button type="button" id="addItemBtn" class="btn btn-primary">新增項目</button>
     </p>
+
+    @* 安插一個新增項目的modal *@
+    <div id="addItemModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增項目</h5>
+                    <button type="button" class="btn-close" id="closeModalBtn"></button>                  
+                </div>
+                <div class="modal-body">
+                    <form id="addItemForm">
+                        <div class="form-group">
+                            <label for="ItemNo">項目編號</label>
+                            @* <input type="text" id="itemNo" name="itemNo" class="form-control"> *@
+                            <input type="text" id="ItemNo" name="ItemNo" class="form-control" value="@ViewBag.ItemNumber" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="SubcategoryNo">產品分類</label>                            
+                            <select id="SubcategoryNo" name="SubcategoryNo" class="form-control">
+                                <option value="">請選擇產品分類</option>
+                                @foreach (var subcategoryName in ViewBag.SubcategoryNo)
+                                {
+                                    <option value="@subcategoryName.Value">@subcategoryName.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ItemName">項目名稱</label>
+                            <input type="text" id="ItemName" name="ItemName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="ItemDescription">項目描述</label>
+                            <input type="text" id="ItemDescription" name="ItemDescription" class="form-control">
+                        </div>
+                        <!-- Add more fields as needed -->
+                        <button id="addItemForm" type="submit" class="btn btn-primary">送出</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @* 這是razor生成的index畫面 *@
     <table class="table container text-center table-striped table-hover">
         <thead>
             <tr>
@@ -80,3 +157,86 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 打开模态框
+            document.getElementById('addItemBtn').addEventListener('click', function () {
+                var modal = document.getElementById('addItemModal');
+                var modalDialog = document.querySelector('.modal-dialog');
+
+                modal.style.display = 'block';
+                setTimeout(function () {
+                    modal.classList.add('show');
+                    modalDialog.classList.add('show');
+                }, 10); // 延时以确保CSS过渡效果能生效
+            });
+
+            // 关闭模态框
+            document.getElementById('closeModalBtn').addEventListener('click', function () {
+                var modal = document.getElementById('addItemModal');
+                var modalDialog = document.querySelector('.modal-dialog');
+
+                modalDialog.classList.remove('show');
+                modal.classList.remove('show');
+                setTimeout(function () {
+                    modal.style.display = 'none';
+                }, 500); // 这个时间需要与CSS中的transition时间一致
+            });
+
+            // 点击模态框外部区域关闭模态框
+            window.addEventListener('click', function (e) {
+                var modal = document.getElementById('addItemModal');
+                var modalDialog = document.querySelector('.modal-dialog');
+
+                if (e.target === modal) {
+                    modalDialog.classList.remove('show');
+                    modal.classList.remove('show');
+                    setTimeout(function () {
+                        modal.style.display = 'none';
+                    }, 500);
+                }
+            });
+
+            document.getElementById("addItemForm").addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const formData = {
+                    ItemNo: document.getElementById("ItemNo").value,
+                    SubcategoryNo: document.getElementById("SubcategoryNo").value,
+                    ItemName: document.getElementById("ItemName").value,
+                    ItemDescription: document.getElementById("ItemDescription").value
+                };
+
+                try {
+                    const response = await fetch('/ProductItems/Create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Handle success, e.g., close the modal and refresh the item list
+                        document.getElementById("addItemModal").style.display = "none";
+                        // Optionally, you can refresh the item list or append the new item to the list
+                        alert("新增資料成功")
+                    } else {
+                        // Handle error
+                        alert("新增失敗：" + data.message);
+                    }
+                } catch (error) {
+                    // Handle fetch errors
+                    console.error('Error:', error);
+                    alert("新增失敗：發生錯誤，請稍後再試。");
+                }
+            });
+        });
+    </script>
+
+}

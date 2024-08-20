@@ -4,6 +4,8 @@
     {
         public int ItemNo { get; set; }
         public string SubcategoryName { get; set; }
+
+        public int SubcategoryNo { get; set; }
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
     }

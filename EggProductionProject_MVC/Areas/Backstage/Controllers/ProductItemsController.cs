@@ -31,6 +31,13 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 ItemName = p.ItemName,
                 ItemDescription = p.ItemDescription
             });
+            // 從資料庫中獲取最後一個 ItemNo，並加1
+            var lastItemNo = _context.ProductItems.OrderByDescending(p => p.ItemNo).FirstOrDefault()?.ItemNo ?? 0;
+            var newItemNo = lastItemNo + 1;
+
+            // 將新計算的 ItemNo 和產品分類列表傳遞給視圖             
+            ViewBag.ItemNumber = newItemNo;
+            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
             return View(await eggPlatformContext.ToListAsync());
         }
 
