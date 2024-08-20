@@ -39,7 +39,6 @@
 		</div>
 	</div>
 
-
 </nav>
 
 
@@ -58,12 +57,63 @@
 
 
 
-
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMemberModalLabel">修改會員資料</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editMemberForm" enctype="multipart/form-data">
+                    <input type="hidden" id="memberSid" name="memberSid" />
+                    <div class="mb-3">
+                        <label for="memberName" class="form-label">會員名稱</label>
+                        <input type="text" class="form-control" id="memberName" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberEmail" class="form-label">會員信箱</label>
+                        <input type="email" class="form-control" id="memberEmail" name="Email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberPhone" class="form-label">聯絡電話</label>
+                        <input type="text" class="form-control" id="memberPhone" name="Phone" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberBirthDate" class="form-label">會員生日</label>
+                        <input type="date" class="form-control" id="memberBirthDate" name="BirthDate" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberIsChickFarm" class="form-label">會員身分</label>
+                        <select class="form-control" id="memberIsChickFarm" name="IsChickFarm">
+                            <option value="1">雞農</option>
+                            <option value="0">一般用戶</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberIsBlocked" class="form-label">是否被禁用</label>
+                        <select class="form-control" id="memberIsBlocked" name="IsBlocked">
+                            <option value="1">禁用</option>
+                            <option value="0">活耀</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberProfilePic" class="form-label">會員頭貼</label>
+                        <input type="file" class="form-control" id="memberProfilePic" name="ProfilePic" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @section Scripts {
-
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
 
@@ -121,28 +171,6 @@
 
 
 
-        // $(document).ready(function () {
-        //     // 在每个修改按钮上绑定点击事件
-        //     $('.edit-member-btn').on('click', function () {
-        //         var memberId = $(this).data('member-id');
-
-        //         // 发起AJAX请求获取会员数据
-        //         $.get('/Members/GetMemberDetails', { id: memberId }, function (data) {
-        //             if (data) {
-        //                 // 加载数据到Modal中
-        //                 loadMemberData(data);
-
-        //                 // 显示Modal
-        //                 $('#editMemberModal').modal('show');
-        //             } else {
-        //                 alert('无法加载会员数据，请稍后重试。');
-        //             }
-        //         }).fail(function () {
-        //             alert('请求失败，请检查网络连接。');
-        //         });
-        //     });
-        // });
-
         $(document).ready(function () {
             // 绑定点击事件到所有带有class 'edit-member-btn' 的按钮
             $('.edit-member-btn').on('click', function () {
@@ -150,7 +178,7 @@
                 console.log('Member ID:', memberId); // Debug 输出 memberId
 
                 // 使用 fetch 发起 AJAX 请求获取会员详细信息
-                fetch(`/Backstage/Members/GetMemberDetails?id=${memberId}`)
+                fetch(`@Url.Action("GetMemberDetails", "Members")?id=${memberId}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`请求失败，状态码：${response.status}`);
@@ -159,9 +187,10 @@
                     })
                     .then(data => {
                         if (data) {
+                            console.log('Member Data:', data); // Debug 输出获取的会员数据
                             // 调用函数加载数据到 Modal 中
                             loadMemberData(data);
-                                    #('table')
+                            console.log(data.birthDate)
                             // 显示 Modal
                             $('#editMemberModal').modal('show');
                         } else {
@@ -178,13 +207,84 @@
 
         // 用于加载会员数据到Modal中的函数
         function loadMemberData(data) {
-            $('#memberName').val(data.Name);
-            $('#memberEmail').val(data.Email);
-            $('#memberPhone').val(data.Phone);
-            $('#memberBirthDate').val(data.BirthDate);
-            $('#memberIsChickFarm').val(data.IsChickFarm.toString());
-            $('#memberIsBlocked').val(data.IsBlocked.toString());
+            console.log('Loading member data into form:', data); // Debug 输出
+            console.log(data.birthDate)
+            $('#memberSid').val(data.memberSid || '');
+            $('#memberName').val(data.name || '');  // 防止 undefined 错误
+            $('#memberEmail').val(data.email || '');
+            $('#memberPhone').val(data.phone || '');
+            $('#memberBirthDate').val(data.birthDate ? data.birthDate.split('T')[0] : ''); // 格式化日期
+            $('#memberIsChickFarm').val((data.isChickFarm != null) ? data.isChickFarm.toString() : '0');
+            $('#memberIsBlocked').val((data.isBlocked != null) ? data.isBlocked.toString() : '0');
         }
 
+        //----------------------------------------------------------------------------------------------------------------------
+
+
+
+        $(document).ready(function () {
+            $('#editMemberForm').on('submit', function (event) {
+                event.preventDefault(); // 阻止表单的默认提交行为
+
+                // 创建 FormData 对象
+                var formData = new FormData(this);
+
+                fetch('@Url.Action("CreateSave", "Members")', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络错误：' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            alert('修改成功！');
+                            $('#editMemberModal').modal('hide');
+                            location.reload(); // 刷新页面以显示更新后的数据
+                        } else {
+                            console.log('修改失败原因:', data.errors);
+                            alert('修改失败，请重试。');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message);
+                        alert('请求失败，请检查网络连接。');
+                    });
+            });
+        });
+
+
+
+
+        document.getElementById("editMemberForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('@Url.Action("CreateSave", "Members", new { Area = "Backstage" })', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("修改成功！");
+                    document.getElementById("editMemberModal").style.display = "none";
+                    // 刷新页面内容，例如刷新列表等操作
+                    location.reload();
+                } else {
+                    console.error("修改失败原因:", data.errors);
+                    alert("修改失敗：" + data.message + "\n錯誤詳情：" + (data.errors || "無法獲取錯誤詳情"));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("修改失敗：發生錯誤，請稍後再試。\n" + error.message);
+            }
+        });
     </script>
 } 

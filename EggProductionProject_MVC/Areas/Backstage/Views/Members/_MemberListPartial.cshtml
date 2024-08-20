@@ -40,19 +40,3 @@
         }
     </tbody>
 </table>
-
-
-
-
-
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            var table = $('#maintable').DataTable();
-            $('#maintable tbody').on('click', 'tr', function () {
-                const data = table.row(this).data();
-                console.log("Row data: ", data);  // 確認是否正確取得行資料
-            });
-        });
-    </script>
-}

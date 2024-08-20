@@ -30,10 +30,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
 
 
-      
+
+        
+        //點擊修改後使用者資料要出現在修改表單
         public IActionResult GetMemberDetails(int id)
         {
-            
             var member = _context.Members.FirstOrDefault(m => m.MemberSid == id);
             if (member == null)
             {
@@ -44,9 +45,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-        //會員編輯
+
+
+        //點下確認後修改該名會員的資料
         [HttpPost]
-        public IActionResult UpdateMember(MemberVM model)
+        public IActionResult UpdateMember(MemberVM model, IFormFile profilePic)
         {
             if (ModelState.IsValid)
             {
@@ -56,20 +59,103 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                     return NotFound();
                 }
 
-                member.Name = model.Name;   
+                // 更新其他字段
+                member.Name = model.Name;
                 member.Email = model.Email;
                 member.Phone = model.Phone;
                 member.BirthDate = model.BirthDate;
                 member.IsChickFarm = model.IsChickFarm;
                 member.IsBlocked = model.IsBlocked;
 
+                // 处理上传的头像图片
+                if (profilePic != null && profilePic.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        profilePic.CopyTo(ms);
+                        member.ProfilePic = ms.ToArray();  // 假设 ProfilePic 是 byte[] 类型
+                    }
+                }
+
                 _context.SaveChanges();
 
                 return Json(new { success = true });
             }
 
-            return Json(new { success = false });
+            return Json(new { success = false, message = "具体的错误信息" });
+
         }
+
+
+        public async Task<IActionResult> CreateSave([FromForm] MemberVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var member = await _context.Members.FindAsync(model.MemberSid);
+                if (member == null)
+                {
+                    return NotFound(new { success = false, message = "會員未找到" });
+                }
+
+                // 更新相关字段
+                member.Name = model.Name;
+                member.Email = model.Email;
+                member.Phone = model.Phone;
+                member.BirthDate = model.BirthDate;
+                member.IsChickFarm = model.IsChickFarm;
+                member.IsBlocked = model.IsBlocked;
+
+                if (model.ProfilePicFile != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await model.ProfilePicFile.CopyToAsync(memoryStream);
+                        member.ProfilePic = memoryStream.ToArray(); // 将文件内容转换为 byte[]
+                    }
+                }
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Ok(new { success = true, message = "資料成功寫入" });
+                }
+                catch (Exception ex)
+                {
+                    // 处理错误并返回状态码和错误信息
+                    return StatusCode(500, new { success = false, message = "沒有成功寫入資料", error = ex.Message });
+                }
+            }
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return BadRequest(new { success = false, message = "資料驗證失敗", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //------------------------------------以下都不要動------------------------------------
+
+
+
+
+
+
 
 
         //查詢與篩選功能
