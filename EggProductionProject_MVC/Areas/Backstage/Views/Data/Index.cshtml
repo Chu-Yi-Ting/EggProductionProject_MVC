@@ -1,93 +1,22 @@
 ﻿
-@* @section Styles
+@section Styles
 {
     <style>
-         #exportButton {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            text-align: center;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: absolute;
-        }
-
-        #exportIcon {
-            margin-right: 8px;
-        }
 
     </style>
-} *@
+}
 
-<div class="container-fluid">
-    <iframe title="DataAnalyzepowerbi" width="1250" height="600" frameborder="0" allowFullScreen="true"
-            src="https://app.powerbi.com/view?r=eyJrIjoiZmI5NTVjYzAtZWJlYy00Y2IzLTljYjYtZThlZjI2ZGI1YjBkIiwidCI6IjcwODk3ZDZmLTBhNDgtNDlkZS04ODBmLTI3ZDhhZDQ1ZDc2ZSIsImMiOjEwfQ%3D%3D">
+<div class="container-fluid " style="overflow: hidden;">
+    <iframe title="DataAnalyzepowerbi" width="1250" height="600" frameborder="0" allowFullScreen="true" style="width: inherit;"
+      src="https://app.powerbi.com/view?r=eyJrIjoiZmI5NTVjYzAtZWJlYy00Y2IzLTljYjYtZThlZjI2ZGI1YjBkIiwidCI6IjcwODk3ZDZmLTBhNDgtNDlkZS04ODBmLTI3ZDhhZDQ1ZDc2ZSIsImMiOjEwfQ%3D%3D">
     </iframe>
-
-@*     <div class="row-cols-1">
-        <button id="exportButton">
-            <span id="buttonContent">
-                <i id="exportIcon" class="fas fa-download"></i>匯出資料</span>
-            <div id="spinner"></div>
-        </button>
-    </div> *@
 </div>
+    
 
 
-@* @section Scripts
+@section Scripts
 {
     <script>
-        document.getElementById("exportButton").addEventListener("click", async function () {
-            let button = this;
-            let spinner = document.getElementById("spinner");
-            let buttonContent = document.getElementById("buttonContent");
-            
-            // 顯示旋轉圈圈並隱藏文字和圖標
-            spinner.style.display = "block";
-            buttonContent.style.display = "none";
 
-            try {
-                // 發送匯出請求
-                const response = await fetch('/export/excel', { method: 'GET' });
-
-                if (!response.ok) {
-                    alert("匯出錯誤");
-                    return;
-                }
-
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(new Blob([blob]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'exported_data.xlsx'); // 文件名
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (error) {
-                alert("發生錯誤");
-            } finally {
-                // 匯出完成後恢復按鈕狀態
-                spinner.style.display = "none";
-                buttonContent.style.display = "inline-flex";
-            }
-
-        });
     </script>
-} *@
+}

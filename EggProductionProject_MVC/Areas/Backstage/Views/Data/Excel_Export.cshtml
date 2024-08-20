@@ -1,0 +1,183 @@
+﻿
+@section Styles
+{
+    <style>
+        .bd-r-4 {
+            border-radius: 0.25rem; /* 圓角設置 */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* 標籤與下拉選單的間距 */
+        .font-weight-bold {
+            margin-bottom: 5px;
+        }
+
+        #exportButton {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #exportButton.loading #buttonContent {
+            display: none;
+        }
+
+        #exportButton.loading #loadingText {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        #exportIcon {
+            margin-right: 8px;
+        }
+
+    </style>
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Name_Selected" class="font-weight-bold">選擇名稱</label>
+                <select id="Name_Selected" class="form-control bd-r-4">
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="ChickHouse_Selected" class="font-weight-bold">選擇雞舍</label>
+                <select id="ChickHouse_Selected" class="form-control bd-r-4">
+                </select>
+            </div>
+            <br />
+            <div class="d-flex justify-content-center">
+                <button id="exportButton">
+                    <span id="buttonContent" class="mr-2">
+                        <i id="exportIcon" class="fas fa-download"></i> 匯出資料
+                    </span>
+                    <span id="loadingText" class="d-none">
+                        <i class="fas fa-spinner fa-spin"></i> LOADING
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+            {
+    <script>
+        let options = '';
+        async function loadName() {
+            try {
+                let response = await $.ajax({
+                    url: '@Url.Content("/Backstage/Api/Get_Member")',
+                    type: 'GET'
+                });
+
+                let NameSelected = $('#Name_Selected');
+                
+                $.each(response, function (index, item) {
+                    options += `<option value="${item.value}">${item.text}</option>`;
+                });
+
+                NameSelected.html(options);
+
+                if (NameSelected.find('option').length > 0) {
+                    NameSelected.prop('selectedIndex', 0); // 選擇第一個選項
+                    let firstSid = parseInt(NameSelected.val()); // 確保獲取到選中的值
+                    loadHouse(firstSid);
+                }
+            } catch (error) {
+                console.error('加載選單時發生錯誤:', error);
+            }
+        }
+
+        async function loadHouse(selectedSid) {
+            try {
+                options = '';
+                let response = await $.ajax({
+                    url: '@Url.Content("/Backstage/Api/Get_House")',
+                    type: 'GET',
+                    data: { Sid: selectedSid }
+                });
+
+                let ChickHouseSelected = $('#ChickHouse_Selected');
+                ChickHouseSelected.empty();
+                $.each(response, function (index, item) {
+                    options += `<option value="${item.value}">${item.text}</option>`;
+                });
+                ChickHouseSelected.html(options);
+            } catch (error) {
+                console.error('加載選單時發生錯誤:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            loadName();
+        });
+
+        document.getElementById("Name_Selected").addEventListener("change", async function () {
+            let NameSelected = $('#Name_Selected');
+            let firstSid = parseInt(NameSelected.val()); 
+            loadHouse(firstSid);
+        });
+
+        document.getElementById("exportButton").addEventListener("click", async function () {
+            let button = this;
+            let spinner = document.getElementById("spinner");
+            let buttonContent = document.getElementById("buttonContent");
+            let NameSelected = $('#Name_Selected');
+            let HouseSelected = $('#ChickHouse_Selected');
+            let firstSid = parseInt(NameSelected.val())
+            let HouseSid = parseInt(HouseSelected.val())
+            let text1 = NameSelected.find("option:selected").text()
+            let text2 = HouseSelected.find("option:selected").text()
+
+            // 顯示旋轉圈圈並隱藏文字和圖標
+            loadingText.classList.remove('d-none');
+            buttonContent.style.display = "none";
+
+            try {
+                // 發送匯出請求
+                const response = await fetch(`@Url.Content("/Backstage/Api/Export")?Sid=${firstSid}&HouseSid=${HouseSid}`,
+                {
+                    method: 'GET',
+                });
+                //console.log(response)
+                if (!response.ok) {
+                    alert("匯出錯誤");
+                    return;
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `${text1}_${text2}.xlsx`); // 文件名
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                alert("發生錯誤");
+            } finally {
+                // 匯出完成後恢復按鈕狀態
+                loadingText.classList.add('d-none');
+                buttonContent.style.display = "inline-flex";
+            }
+            
+        });
+    </script>
+}
