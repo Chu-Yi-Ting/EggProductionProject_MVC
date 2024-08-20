@@ -28,6 +28,51 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return File(content, "image/jpeg");
         }
 
+
+
+      
+        public IActionResult GetMemberDetails(int id)
+        {
+            
+            var member = _context.Members.FirstOrDefault(m => m.MemberSid == id);
+            if (member == null)
+            {
+                return NotFound();
+            }
+
+            return Json(member);
+        }
+
+
+        //會員編輯
+        [HttpPost]
+        public IActionResult UpdateMember(MemberVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var member = _context.Members.Find(model.MemberSid);
+                if (member == null)
+                {
+                    return NotFound();
+                }
+
+                member.Name = model.Name;   
+                member.Email = model.Email;
+                member.Phone = model.Phone;
+                member.BirthDate = model.BirthDate;
+                member.IsChickFarm = model.IsChickFarm;
+                member.IsBlocked = model.IsBlocked;
+
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
+
+        //查詢與篩選功能
         [HttpGet]
         public IActionResult FilterMembers(string keyword , string isBlocked, string isChickFarm)
         {

@@ -51,8 +51,6 @@
 
 
 
-
-
 @section Scripts {
 
 
@@ -73,7 +71,7 @@
                       
                     },
                     error: function () {
-                        alert('发生错误，请稍后重试。');
+                        alert('發生錯誤，请稍後重試。');
                     }
                 });
             });
@@ -109,5 +107,73 @@
                 });
             }
         });
+
+
+
+        // $(document).ready(function () {
+        //     // 在每个修改按钮上绑定点击事件
+        //     $('.edit-member-btn').on('click', function () {
+        //         var memberId = $(this).data('member-id');
+
+        //         // 发起AJAX请求获取会员数据
+        //         $.get('/Members/GetMemberDetails', { id: memberId }, function (data) {
+        //             if (data) {
+        //                 // 加载数据到Modal中
+        //                 loadMemberData(data);
+
+        //                 // 显示Modal
+        //                 $('#editMemberModal').modal('show');
+        //             } else {
+        //                 alert('无法加载会员数据，请稍后重试。');
+        //             }
+        //         }).fail(function () {
+        //             alert('请求失败，请检查网络连接。');
+        //         });
+        //     });
+        // });
+
+        $(document).ready(function () {
+            // 绑定点击事件到所有带有class 'edit-member-btn' 的按钮
+            $('.edit-member-btn').on('click', function () {
+                const memberId = $(this).data('member-id'); // 获取会员ID
+                console.log('Member ID:', memberId); // Debug 输出 memberId
+
+                // 使用 fetch 发起 AJAX 请求获取会员详细信息
+                fetch(`/Backstage/Members/GetMemberDetails?id=${memberId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`请求失败，状态码：${response.status}`);
+                        }
+                        return response.json(); // 将响应解析为 JSON
+                    })
+                    .then(data => {
+                        if (data) {
+                            // 调用函数加载数据到 Modal 中
+                            loadMemberData(data);
+                                    #('table')
+                            // 显示 Modal
+                            $('#editMemberModal').modal('show');
+                        } else {
+                            console.log('Data is empty for Member ID:', memberId);
+                            alert('无法加载会员数据，请稍后重试。');
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        alert('请求失败，请检查网络连接。');
+                    });
+            });
+        });
+
+        // 用于加载会员数据到Modal中的函数
+        function loadMemberData(data) {
+            $('#memberName').val(data.Name);
+            $('#memberEmail').val(data.Email);
+            $('#memberPhone').val(data.Phone);
+            $('#memberBirthDate').val(data.BirthDate);
+            $('#memberIsChickFarm').val(data.IsChickFarm.toString());
+            $('#memberIsBlocked').val(data.IsBlocked.toString());
+        }
+
     </script>
 } 

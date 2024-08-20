@@ -10,7 +10,7 @@
 }
 
 
-<table id="maintable" class="table table-hover table-striped" style="color: #333333 ">
+<table class="table table-hover table-striped" style="color: #333333 ">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.Name)</th>
@@ -39,7 +39,9 @@
                     <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
                     <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
                     <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a> |
-                    <a  asp-action="Edit" asp-route-id="@item.MemberSid">修改</a>
+                    <a  asp-action="Edit" asp-route-id="@item.MemberSid">修改</a>|
+                    <button  class="edit-member-btn" data-member-id="@item.MemberSid">修改</button>
+                   
 
                 </td>
             </tr>
