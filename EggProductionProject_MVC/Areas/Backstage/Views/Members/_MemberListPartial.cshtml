@@ -32,7 +32,7 @@
                     <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
                     <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a> |
                     <a  asp-action="Edit" asp-route-id="@item.MemberSid">修改</a>|
-                    <button type="button" class=" edit-member-btn" data-member-id="@item.MemberSid">修改</button>
+                    <button  class="edit-member-btn" data-member-id="@item.MemberSid">修改</button>
                    
 
                 </td>
@@ -44,41 +44,15 @@
 
 
 
+
 @section Scripts{
     <script>
-      
-
-
         $(document).ready(function () {
-            // 绑定点击事件到所有带有class 'edit-member-btn' 的按钮
-            $('.edit-member-btn').on('click', function () {
-                var memberId = $(this).data('member-id'); // 获取会员ID
-
-                // 发起AJAX请求获取会员详细信息
-                $.get('/Backstage/Members/GetMemberDetails', { id: memberId }, function (data) {
-                    if (data) {
-                        // 调用函数加载数据到Modal中
-                        loadMemberData(data);
-
-                        // 显示Modal
-                        $('#editMemberModal').modal('show');
-                    } else {
-                        alert('无法加载会员数据，请稍后重试。');
-                    }
-                }).fail(function () {
-                    alert('请求失败，请检查网络连接。');
-                });
+            var table = $('#maintable').DataTable();
+            $('#maintable tbody').on('click', 'tr', function () {
+                const data = table.row(this).data();
+                console.log("Row data: ", data);  // 確認是否正確取得行資料
             });
         });
-
-        // 用于加载会员数据到Modal中的函数
-        function loadMemberData(data) {
-            $('#memberName').val(data.Name);
-            $('#memberEmail').val(data.Email);
-            $('#memberPhone').val(data.Phone);
-            $('#memberBirthDate').val(data.BirthDate);
-            $('#memberIsChickFarm').val(data.IsChickFarm.toString());
-            $('#memberIsBlocked').val(data.IsBlocked.toString());
-        }
     </script>
 }

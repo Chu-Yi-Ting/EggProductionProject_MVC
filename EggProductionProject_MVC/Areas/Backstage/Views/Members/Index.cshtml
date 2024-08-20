@@ -47,7 +47,7 @@
 
 <p>
 
-    <div>會員數量 : <span id="memberCount">@Model.Count()</span></div>
+    <div>會員數量 : <span id="memberCount">@(Model.Count()-1)</span></div>
 </p>
 
 <div id="memberList">
@@ -57,55 +57,6 @@
 
 
 
-
-<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editMemberModalLabel">修改會員資料</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editMemberForm">
-                    <div class="mb-3">
-                        <label for="memberName" class="form-label">會員名稱</label>
-                        <input type="text" class="form-control" id="memberName" name="Name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="memberEmail" class="form-label">會員信箱</label>
-                        <input type="email" class="form-control" id="memberEmail" name="Email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="memberPhone" class="form-label">聯絡電話</label>
-                        <input type="text" class="form-control" id="memberPhone" name="Phone" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="memberBirthDate" class="form-label">會員生日</label>
-                        <input type="date" class="form-control" id="memberBirthDate" name="BirthDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="memberIsChickFarm" class="form-label">會員身份（雞農？）</label>
-                        <select class="form-control" id="memberIsChickFarm" name="IsChickFarm">
-                            <option value="1">雞農</option>
-                            <option value="0">一般用戶</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="memberIsBlocked" class="form-label">是否禁用</label>
-                        <select class="form-control" id="memberIsBlocked" name="IsBlocked">
-                            <option value="1">禁用</option>
-                            <option value="0">活耀</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-primary" id="saveMemberChanges">保存修改</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -170,31 +121,70 @@
 
 
 
+        // $(document).ready(function () {
+        //     // 在每个修改按钮上绑定点击事件
+        //     $('.edit-member-btn').on('click', function () {
+        //         var memberId = $(this).data('member-id');
+
+        //         // 发起AJAX请求获取会员数据
+        //         $.get('/Members/GetMemberDetails', { id: memberId }, function (data) {
+        //             if (data) {
+        //                 // 加载数据到Modal中
+        //                 loadMemberData(data);
+
+        //                 // 显示Modal
+        //                 $('#editMemberModal').modal('show');
+        //             } else {
+        //                 alert('无法加载会员数据，请稍后重试。');
+        //             }
+        //         }).fail(function () {
+        //             alert('请求失败，请检查网络连接。');
+        //         });
+        //     });
+        // });
+
         $(document).ready(function () {
-            // 在每个修改按钮上绑定点击事件
+            // 绑定点击事件到所有带有class 'edit-member-btn' 的按钮
             $('.edit-member-btn').on('click', function () {
-                var memberId = $(this).data('member-id');
+                const memberId = $(this).data('member-id'); // 获取会员ID
+                console.log('Member ID:', memberId); // Debug 输出 memberId
 
-                // 发起AJAX请求获取会员数据
-                $.get('/Members/GetMemberDetails', { id: memberId }, function (data) {
-                    if (data) {
-                        // 加载数据到Modal中
-                        loadMemberData(data);
-
-                        // 显示Modal
-                        $('#editMemberModal').modal('show');
-                    } else {
-                        alert('无法加载会员数据，请稍后重试。');
-                    }
-                }).fail(function () {
-                    alert('请求失败，请检查网络连接。');
-                });
+                // 使用 fetch 发起 AJAX 请求获取会员详细信息
+                fetch(`/Backstage/Members/GetMemberDetails?id=${memberId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`请求失败，状态码：${response.status}`);
+                        }
+                        return response.json(); // 将响应解析为 JSON
+                    })
+                    .then(data => {
+                        if (data) {
+                            // 调用函数加载数据到 Modal 中
+                            loadMemberData(data);
+                                    #('table')
+                            // 显示 Modal
+                            $('#editMemberModal').modal('show');
+                        } else {
+                            console.log('Data is empty for Member ID:', memberId);
+                            alert('无法加载会员数据，请稍后重试。');
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        alert('请求失败，请检查网络连接。');
+                    });
             });
         });
 
+        // 用于加载会员数据到Modal中的函数
+        function loadMemberData(data) {
+            $('#memberName').val(data.Name);
+            $('#memberEmail').val(data.Email);
+            $('#memberPhone').val(data.Phone);
+            $('#memberBirthDate').val(data.BirthDate);
+            $('#memberIsChickFarm').val(data.IsChickFarm.toString());
+            $('#memberIsBlocked').val(data.IsBlocked.toString());
+        }
 
-
-        
-    
     </script>
 } 
