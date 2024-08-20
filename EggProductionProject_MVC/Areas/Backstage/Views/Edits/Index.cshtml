@@ -4,19 +4,43 @@
     ViewData["Title"] = "Index";
 }
 <style>
-    tr:hover {
-        background-color: #f1f1f1;
+    /* 表格样式 */
+    .table-hover {
+        width: 100%;
+        border-collapse: collapse; /* 合并边框 */
+        font-family: 'Arial', sans-serif; /* 字体族 */
+        font-size: 16px; /* 字体大小 */
+        line-height: 1.6; /* 行高 */
     }
+        /* 表头样式 */
+        .table-hover thead th {
+            background-color: #4169E1; /* 主题颜色 */
+            color: #ffffff;
+            padding: 12px; /* 调整内边距 */
+            text-align: left;
+            font-weight: bold;
+            font-size: 18px; /* 增大表头字体 */
+            border: 1px solid #dddddd; /* 表头边框 */
+        }
 
-    tr {
-        cursor: pointer;
-    }
+        /* 表格内容样式 */
+        .table-hover tbody td {
+            padding: 12px; /* 调整内边距 */
+            border: 1px solid #dddddd; /* 单元格边框 */
+            vertical-align: middle;
+        }
+
+        /* 悬停效果 */
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黃色背景 */
+            color: #333333; /* 深色文字 */
+        }
 </style>
 <h1>編輯紀錄</h1>
 
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
-        <table class="table">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>編輯前內容</th>
@@ -24,7 +48,6 @@
                     <th>編輯日期</th>
                     <th>文章標題</th>
                     <th>回覆編號</th>
-                    <th></th>
                 </tr>
             </thead>
     </thead>
