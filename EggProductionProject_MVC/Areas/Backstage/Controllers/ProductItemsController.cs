@@ -31,6 +31,13 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 ItemName = p.ItemName,
                 ItemDescription = p.ItemDescription
             });
+            // 從資料庫中獲取最後一個 ItemNo，並加1
+            var lastItemNo = _context.ProductItems.OrderByDescending(p => p.ItemNo).FirstOrDefault()?.ItemNo ?? 0;
+            var newItemNo = lastItemNo + 1;
+
+            // 將新計算的 ItemNo 和產品分類列表傳遞給視圖             
+            ViewBag.ItemNumber = newItemNo;
+            ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
             return View(await eggPlatformContext.ToListAsync());
         }
 
@@ -174,6 +181,29 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        //製作一個create的儲存action
+        [HttpPost]
+        public async Task<IActionResult> CreateSave([FromForm] ProductItem productItem)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(productItem);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Ok(new { success = true, message = "資料成功寫入" });
+                }
+                catch (Exception ex)
+                {
+                    // 处理错误并返回状态码和错误信息
+                    return StatusCode(500, new { success = false, message = "沒有成功寫入資料" });
+                }
+            }
+
+            return BadRequest(new { success = false, message = "資料驗證失敗" });
+        }
+
 
         private bool ProductItemExists(int id)
         {
