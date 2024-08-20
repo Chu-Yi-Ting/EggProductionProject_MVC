@@ -1,6 +1,7 @@
 using EggProductionProject_MVC.Data;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.Models.MemberVM;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,14 @@ builder.Services.AddDbContext<EggPlatformContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
 });
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/AccountLogin/Login"; // 登入頁面路徑
+                options.LogoutPath = "/AccountLogin/Logout"; // 登出頁面路徑
+            });
+
+        builder.Services.AddControllersWithViews();
 
 //builder.Services.AddDefaultIdentity<EggUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();

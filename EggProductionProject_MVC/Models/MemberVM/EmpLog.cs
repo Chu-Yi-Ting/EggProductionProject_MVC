@@ -2,17 +2,16 @@
 
 namespace EggProductionProject_MVC.Models.MemberVM
 {
-    public class MemberLogVM
+    public class EmpLog
     {
-        public int MemberSid { get; set; }
+        public int EmployeeSid { get; set; }
 
 
-        [Display(Name = "會員信箱")]
-        public string Email { get; set; }
-        [Display(Name = "會員密碼")]
+        [Display(Name = "員工帳號")]
+        public string Account { get; set; }
+        [Display(Name = "員工密碼")]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
-        
     }
 }

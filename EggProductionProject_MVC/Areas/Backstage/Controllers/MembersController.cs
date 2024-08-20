@@ -87,7 +87,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-        public async Task<IActionResult> CreateSave([FromForm] MemberVM model)
+        public async Task<IActionResult> CreateSave([FromForm] MemberVM model ,IFormFile profilePic)
         {
             if (ModelState.IsValid)
             {
