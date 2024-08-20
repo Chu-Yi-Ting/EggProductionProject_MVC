@@ -41,25 +41,25 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <label class="form-label">成立時間</label>
-                        <select id="TimeOptions" class="form-control bd-r-4" asp-items="ViewBag.TimeOptions">
+                        <select id="TimeOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.TimeOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label class="form-label">訂單狀態</label>
-                        <select asp-for="OrderStatusNo" class="form-control bd-r-4" asp-items="ViewBag.OrderStatusNo">
+                        <select asp-for="OrderStatusNo" class="form-control bd-r-4 form-select" asp-items="ViewBag.OrderStatusNo">
                             <option value="all">全部</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label class="form-label">物流管道</label>
-                        <select id="CarrierOptions" class="form-control bd-r-4" asp-items="ViewBag.CarrierOptions">
+                        <select id="CarrierOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.CarrierOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label class="form-label">物流方式</label>
-                        <select id="WayOptions" class="form-control bd-r-4" asp-items="ViewBag.WayOptions">
+                        <select id="WayOptions" class="form-control bd-r-4 form-select" asp-items="ViewBag.WayOptions">
                             <option value="all">全部</option>
                         </select>
                     </div>

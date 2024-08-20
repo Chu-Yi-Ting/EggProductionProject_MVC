@@ -4,67 +4,75 @@
     ViewData["Title"] = "Index";
 }
 <style>
-    tr:hover {
-        background-color: #f1f1f1;
+    /* 表格样式 */
+    .table-hover {
+        width: 100%;
+        border-collapse: collapse; /* 合并边框 */
+        font-family: 'Arial', sans-serif; /* 字体族 */
+        font-size: 16px; /* 字体大小 */
+        line-height: 1.6; /* 行高 */
     }
+        /* 表头样式 */
+        .table-hover thead th {
+            background-color: #4169E1; /* 主题颜色 */
+            color: #ffffff;
+            padding: 12px; /* 调整内边距 */
+            text-align: left;
+            font-weight: bold;
+            font-size: 18px; /* 增大表头字体 */
+            border: 1px solid #dddddd; /* 表头边框 */
+        }
 
-    tr {
-        cursor: pointer;
-    }
+        /* 表格内容样式 */
+        .table-hover tbody td {
+            padding: 12px; /* 调整内边距 */
+            border: 1px solid #dddddd; /* 单元格边框 */
+            vertical-align: middle;
+        }
+
+        /* 悬停效果 */
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黃色背景 */
+            color: #333333; /* 深色文字 */
+        }
 </style>
-<h1>回覆總數:共 @ViewData["TotalArticles"] 篇文章</h1>
-<form asp-action="Index" method="get">
+<h1>回覆總數:共<span id="total-articles"> @ViewData["TotalArticles"] </span>篇文章</h1>
+<form id="searchForm" method="get">
     <div class="form-group">
-        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="搜尋文章標題" />
+        <input type="text"name="searchString" class="form-control" placeholder="搜尋文章標題" aria-label="搜尋文章標題" aria-describedby="searchButton" />
     </div>
-
-    <div class="form-group">
-        <input type="submit" value="搜尋" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">重置</a>
+    <div class="mt-2">
+        <button class="btn btn-primary" type="submit" id="searchButton">搜尋</button>
+        <button class="btn btn-primary" type="submit" id="resetButton">返回文章列表</button>
     </div>
 </form>
-<table class="table">
-    <thead>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>回覆標題</th>
-                    <th>回覆者</th>
-                    <th>回覆內容</th>
-                    <th>是否刪除</th>
-                    <th>公開狀態</th>
-                    <th>回覆日期</th>
-                    <th>更新日期</th>
-                    <th>編輯次數</th>
-                    <th></th>
-                </tr>
-            </thead>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-            <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Edit", new { id = item.ReplySid })'">
-            <td>@Html.DisplayFor(modelItem => item.ArticleS.ArticleTitle)</td>
-            <td>@Html.DisplayFor(modelItem => item.ArticleCreaterS.UserName)</td>
-            <td>@Html.DisplayFor(modelItem => item.ReplyInfo)</td>
-                <td>
-                    @if (item.DeleteOrNot == true)
-                    {<span>是</span>}
-                    else
-                    {<span>否</span>}
-                </td>
-            <td>@Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)</td>
-            <td>@Html.DisplayFor(modelItem => item.ReplyDate)</td>
-            <td> @Html.DisplayFor(modelItem => item.ReplyUpdate)</td>
-            <td>@Html.DisplayFor(modelItem => item.EditTimes)</td>
+<div id="articlesList">
+    @await Html.PartialAsync("_ReplyPartial", Model)
+</div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchForm').on('submit', function (e) {
+            e.preventDefault(); // 阻止表单的默认提交行为
 
-@*          後臺用不到
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ReplySid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReplySid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReplySid">Delete</a>
-            </td> *@
-        </tr>
-}
-    </tbody>
-</table>
+            var searchString = $('input[name="searchString"]').val();
+
+            $.ajax({
+                url: '@Url.Action("SearchPartial", "Replies", new { area = "Backstage" })',
+                data: { searchString: searchString },
+                success: function (result) {
+                    $('#articlesList').html(result); // 更新文章列表部分
+                },
+                error: function () {
+                    alert('搜尋時出錯，請稍後重試。');
+                }
+            });
+        });
+        $('#resetButton').on('click', function () {
+            $('input[name="searchString"]').val(''); // 清空搜索框内容
+            $('#searchForm').trigger('submit'); // 触发表单提交，重新加载数据
+        });
+    });
+</script>
+
