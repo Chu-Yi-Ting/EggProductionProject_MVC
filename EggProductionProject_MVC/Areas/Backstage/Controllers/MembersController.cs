@@ -29,11 +29,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-       
 
-
+      
         public IActionResult GetMemberDetails(int id)
         {
+            
             var member = _context.Members.FirstOrDefault(m => m.MemberSid == id);
             if (member == null)
             {
