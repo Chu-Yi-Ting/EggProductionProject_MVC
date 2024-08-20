@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    int maxLength = 200; // 定義最大顯示字數
 }
 <style>
     /* 表格样式 */
@@ -15,8 +14,6 @@
     }
         /* 表头样式 */
         .table-hover thead th {
-            /* background-color: #4169E1; /* 主题颜色 */ */
-            /* color: #ffffff; */
             padding: 12px; /* 调整内边距 */
             text-align: left;
             font-weight: bold;
@@ -54,48 +51,30 @@
     }
 </style>
 <h1>編輯紀錄</h1>
+<div id="detailEditContainer" style="display: none;">
+    <!-- 這裡將動態加載Detail的表單 -->
+</div>
+<div id="editsList">
+    @await Html.PartialAsync("_EditsPartial", Model)
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadDetails(id) {
+        $.ajax({
+            url: '@Url.Action("Details", "Edits")',
+            data: { id: id },
+            success: function (data) {
+                $('#editsList').hide();
+                $('#detailEditContainer').html(data).show();
+            },
+            error: function () {
+                alert('加載時出錯，請稍後重試。');
+            }
+        });
+    }
 
-<table class="table table-hover table-striped">
-    <thead>
-        <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th class="column-edit-before">編輯前內容</th>
-                    <th class="column-edit-after">編輯後內容</th>
-                    <th class="column-edit-time">編輯日期</th>
-                    <th class="column-article-title">文章標題</th>
-                    <th class="column-reply-sid">回覆編號</th>
-                </tr>
-            </thead>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Details", new { id = item.EditSid })'">
-                <td>
-                    @{
-                        var editBefore = item.EditBefore;
-                        if (editBefore.Length > maxLength)
-                        {
-                            editBefore = editBefore.Substring(0, maxLength) + "...";
-                        }
-                    }
-                    @Html.Raw(editBefore)
-                </td>
-                <td>
-                    @{
-                        var editAfter = item.EditAfter;
-                        if (editAfter.Length > maxLength)
-                        {
-                            editAfter = editAfter.Substring(0, maxLength) + "...";
-                        }
-                    }
-                    @Html.Raw(editAfter)
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.EditTime)</td>
-                <td>@Html.DisplayFor(modelItem => item.ArticleS.ArticleTitle)</td>
-                <td>@Html.DisplayFor(modelItem => item.ReplyS.ReplySid)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    function goBackToList() {
+        $('#detailEditContainer').hide();
+        $('#editsList').show();
+    }
+</script>

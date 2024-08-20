@@ -42,8 +42,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 return NotFound();
             }
-
-            return View(edit);
+            return PartialView("_EditsDetailsPartial", edit);
         }
 
         //編輯紀錄只給讀
