@@ -1,0 +1,98 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.SalesBatch>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黄色背景 */
+            color: #333333; /* 深色文字 */
+        }
+
+        .textalign-left {
+            text-align: left;
+        }
+
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        th {
+            font-size: 20px;
+        }
+
+        tbody {
+            font-size: 16px;
+        }
+
+    </style>
+
+}
+
+<h2 class="bold-text">特賣活動管理</h2>
+
+
+<div class="card p-4">
+    <p>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Create")'">
+            <i class="fa-solid fa-square-plus"></i> 新增
+        </button>
+    </p>
+    <table class="table container text-center table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    活動日期
+                </th>
+                <th>
+                    開始時間
+                </th>
+                <th>
+                    結束時間
+                </th>
+                <th>
+                    運作狀態
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RunningStatusNo)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.PeriodSid })'">
+                            <i class="fa-solid fa-edit"></i> 編輯
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Delete", new {id = item.PeriodSid })'">
+                            <i class="fas fa-trash-alt"></i>刪除
+                        </button>                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+
+    <script>
+
+    </script>
+}

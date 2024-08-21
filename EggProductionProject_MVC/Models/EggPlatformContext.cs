@@ -465,6 +465,9 @@ public partial class EggPlatformContext : DbContext
                 .HasNoKey()
                 .ToView("DailyChickAmountsRate");
 
+            entity.Property(e => e.HouseName).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.SubcategoryName).HasMaxLength(50);
             entity.Property(e => e.UnQamount).HasColumnName("UnQAmount");
             entity.Property(e => e.UnQrate).HasColumnName("UnQRate");
         });
@@ -506,8 +509,6 @@ public partial class EggPlatformContext : DbContext
 
             entity.ToTable("Edit");
 
-            entity.Property(e => e.EditAfter).HasMaxLength(500);
-            entity.Property(e => e.EditBefore).HasMaxLength(500);
             entity.Property(e => e.EditTime).HasColumnType("datetime");
 
             entity.HasOne(d => d.ArticleS).WithMany(p => p.Edits)
@@ -847,6 +848,7 @@ public partial class EggPlatformContext : DbContext
 
             entity.Property(e => e.Component).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(50);
+            entity.Property(e => e.DiscountPercent).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.Origin).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("money");
             entity.Property(e => e.ProductName).HasMaxLength(50);
@@ -976,6 +978,8 @@ public partial class EggPlatformContext : DbContext
         modelBuilder.Entity<SalesBatch>(entity =>
         {
             entity.HasKey(e => e.PeriodSid);
+
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateRunningStatus"));
 
             entity.Property(e => e.EndTime).HasPrecision(0);
             entity.Property(e => e.StartTime).HasPrecision(0);
