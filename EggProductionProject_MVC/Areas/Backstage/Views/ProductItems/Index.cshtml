@@ -22,6 +22,10 @@
         }
 
         th {
+            font-size: 20px;
+        }
+
+        tbody { 
             font-size: 16px;
         }
 
@@ -223,6 +227,7 @@
                         alert("新增資料成功");
                         document.getElementById("addItemModal").style.display = "none";
                         // 更新页面内容，例如刷新列表等操作
+
                         theDiv.innerHTML = data;
                     } else {
                         alert("新增失敗：" + data.message + "\n錯誤詳情：" + (data.error || "無法獲取錯誤詳情"));

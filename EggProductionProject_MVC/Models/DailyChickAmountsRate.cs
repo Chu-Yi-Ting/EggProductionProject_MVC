@@ -9,11 +9,17 @@ public partial class DailyChickAmountsRate
 {
     public int? MemberSid { get; set; }
 
+    public string Name { get; set; }
+
     public int? HouseSid { get; set; }
+
+    public string HouseName { get; set; }
 
     public DateOnly? Date { get; set; }
 
     public int? RemainingCount { get; set; }
+
+    public int? DeathAmount { get; set; }
 
     public double? DeathRate { get; set; }
 
@@ -26,4 +32,8 @@ public partial class DailyChickAmountsRate
     public int? UnQamount { get; set; }
 
     public int? SubcategoryNo { get; set; }
+
+    public string SubcategoryName { get; set; }
+
+    public int? WeekAge { get; set; }
 }
