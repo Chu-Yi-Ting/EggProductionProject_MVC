@@ -213,6 +213,13 @@ html body {
   font-size: 16px;
   margin-top: 8px;
 }
+
+    .offcanvas .offcanvas-body li .nav-link:hover {
+        color: var(--main-color)
+    }
+
+
+
 .offcanvas .offcanvas-body li span {
   font-size: 12px;
   color: #cfcfcf;
