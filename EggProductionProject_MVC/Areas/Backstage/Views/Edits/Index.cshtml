@@ -14,8 +14,6 @@
     }
         /* 表头样式 */
         .table-hover thead th {
-            background-color: #4169E1; /* 主题颜色 */
-            color: #ffffff;
             padding: 12px; /* 调整内边距 */
             text-align: left;
             font-weight: bold;
@@ -35,32 +33,48 @@
             background-color: #f0e68c; /* 淡黃色背景 */
             color: #333333; /* 深色文字 */
         }
+    /* 控制各列宽度 */
+    .column-edit-before,
+    .column-edit-after {
+        width: 25%; /* 調整 EditBefore 和 EditAfter 列寬 */
+        max-width: 25%; /* 設置最大寬度 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 添加省略号 */
+        white-space: nowrap; /* 不换行 */
+    }
+
+    .column-edit-time,
+    .column-article-title,
+    .column-reply-sid {
+        width: 10%; /* 調整其他列寬 */
+        max-width: 10%;
+    }
 </style>
 <h1>編輯紀錄</h1>
+<div id="detailEditContainer" style="display: none;">
+    <!-- 這裡將動態加載Detail的表單 -->
+</div>
+<div id="editsList">
+    @await Html.PartialAsync("_EditsPartial", Model)
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadDetails(id) {
+        $.ajax({
+            url: '@Url.Action("Details", "Edits")',
+            data: { id: id },
+            success: function (data) {
+                $('#editsList').hide();
+                $('#detailEditContainer').html(data).show();
+            },
+            error: function () {
+                alert('加載時出錯，請稍後重試。');
+            }
+        });
+    }
 
-<table class="table table-hover table-striped">
-    <thead>
-        <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>編輯前內容</th>
-                    <th>編輯後內容</th>
-                    <th>編輯日期</th>
-                    <th>文章標題</th>
-                    <th>回覆編號</th>
-                </tr>
-            </thead>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Details", new { id = item.EditSid })'">
-                <td>@Html.DisplayFor(modelItem => item.EditBefore)</td>
-                <td>@Html.DisplayFor(modelItem => item.EditAfter)</td>
-                <td>@Html.DisplayFor(modelItem => item.EditTime)</td>
-                <td>@Html.DisplayFor(modelItem => item.ArticleS.ArticleTitle)</td>
-                <td>@Html.DisplayFor(modelItem => item.ReplyS.ReplySid)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    function goBackToList() {
+        $('#detailEditContainer').hide();
+        $('#editsList').show();
+    }
+</script>

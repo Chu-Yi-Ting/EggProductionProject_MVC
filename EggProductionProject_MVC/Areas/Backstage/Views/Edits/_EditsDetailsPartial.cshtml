@@ -1,0 +1,49 @@
+﻿@model EggProductionProject_MVC.Models.Edit
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">編輯前內容</label>
+            <div class="form-control" readonly style="height: 300px; overflow: auto;">
+                @Html.DisplayFor(model => model.EditBefore)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">編輯後內容</label>
+            <div class="form-control" readonly style="height: 300px; overflow: auto;">
+                @Html.DisplayFor(model => model.EditAfter)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">编辑時間</label>
+            <div class="form-control" readonly>
+                @Html.DisplayFor(model => model.EditTime)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">文章標題</label>
+            <div class="form-control" readonly>
+                @Html.DisplayFor(model => model.ArticleS.ArticleTitle)
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label">回覆編號</label>
+            <div class="form-control" readonly>
+                @if (Model.ReplyS?.ReplySid != null)
+                {
+                    @Html.DisplayFor(model => model.ReplyS.ReplySid)
+                }
+                else
+                {
+                    <span style="color: gray; font-style: italic;">無</span>
+                }
+            </div>
+            <div class="mt-4">
+                <button type="button" class="btn btn-primary" onclick="goBackToList()">返回列表</button>
+            </div>
+        </div>
+    </div>
+</div>
