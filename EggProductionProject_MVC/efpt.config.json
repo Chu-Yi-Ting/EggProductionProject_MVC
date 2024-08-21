@@ -239,6 +239,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[SalesStatus]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ScreenSummary]",
          "ObjectType": 0
       },

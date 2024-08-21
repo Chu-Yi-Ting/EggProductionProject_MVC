@@ -67,11 +67,11 @@
 
 <div class="card p-4">
     <p>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Create")'">
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Create")'">
             <i class="fa-solid fa-square-plus"></i> 新增
         </button>
         @* 觸發modal的按鈕 *@
-        <button type="button" id="addItemBtn" class="btn btn-primary">新增項目</button>
+       @*  <button type="button" id="addItemBtn" class="btn btn-primary">新增項目</button> *@
     </p>
 
     @* 安插一個新增項目的modal *@
@@ -132,7 +132,9 @@
                 <th>
                     項目描述
                 </th>
-                <th></th>
+                <th>
+                    操作
+                </th>
             </tr>
         </thead>
         <tbody>

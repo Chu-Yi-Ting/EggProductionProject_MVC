@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EggProductionProject_MVC.Models.SalesBatch>
+﻿@model IEnumerable<EggProductionProject_MVC.Areas.Backstage.ViewModels.SaleViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,6 +23,7 @@
 
         th {
             font-size: 20px;
+            width: 20%;
         }
 
         tbody {
@@ -38,7 +39,7 @@
 
 <div class="card p-4">
     <p>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Create")'">
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Create")'">
             <i class="fa-solid fa-square-plus"></i> 新增
         </button>
     </p>
@@ -57,7 +58,9 @@
                 <th>
                     運作狀態
                 </th>
-                <th></th>
+                <th>
+                    操作
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -74,15 +77,18 @@
                         @Html.DisplayFor(modelItem => item.EndTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RunningStatusNo)
+                        @Html.DisplayFor(modelItem => item.RunningStatusDescription)
                     </td>
                     <td>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.PeriodSid })'">
-                            <i class="fa-solid fa-edit"></i> 編輯
-                        </button>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Delete", new {id = item.PeriodSid })'">
-                            <i class="fas fa-trash-alt"></i>刪除
-                        </button>                        
+                        @if (item.RunningStatusDescription != "已結束")
+                        {
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.PeriodSid })'">
+                                <i class="fa-solid fa-edit"></i> 編輯
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Delete", new {id = item.PeriodSid })'">
+                                <i class="fas fa-trash-alt"></i>刪除
+                            </button>
+                        }
                     </td>
                 </tr>
             }
