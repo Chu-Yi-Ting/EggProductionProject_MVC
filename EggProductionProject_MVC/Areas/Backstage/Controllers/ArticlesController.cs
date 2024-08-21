@@ -313,7 +313,23 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
             return await articles.ToListAsync();
         }
+        public ActionResult GetCategoryImage(int id)
+        {
+            // 查找对应的分类实体
+            var category = _context.ArticleCategories.Find(id);
 
+            // 如果找到对应的分类且分类中有图片数据
+            if (category != null && category.ArticleCategoriesImg != null)
+            {
+                // 返回图片数据，并设置 MIME 类型为 JPEG 或根据实际图片格式调整
+                return File(category.ArticleCategoriesImg, "image/jpeg");
+            }
+            else
+            {
+                // 如果没有找到图片，返回占位符图片或空白响应
+                return File("~/images/placeholder.png", "image/png");
+            }
+        }
     }
 }
 

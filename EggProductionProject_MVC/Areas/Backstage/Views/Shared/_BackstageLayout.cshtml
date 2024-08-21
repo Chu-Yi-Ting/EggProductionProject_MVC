@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<EggUser> SignInManager
+@inject UserManager<EggUser> UserManager
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -10,6 +17,14 @@
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
     <title>@ViewData["Title"] - EggProductionProject_MVC</title>
     <!--link for css, bootstrap, font-awesome, etc-->
+
+
+
+
+
+
+
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <!-- Font Awesome -->
     <link href="~/BackstageTemplate/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -53,8 +68,9 @@
                             <img src="~/BackstageTemplate/production/images/img.jpg" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            
+                                <p>歡迎, @User.Identity?.Name!</p>
+                            
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -77,6 +93,7 @@
                                     <a><i class="fa fa-edit"></i> 生產分析 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a asp-controller="Data" asp-action="Index">PowerBI後台</a></li>
+                                        <li><a asp-controller="Data" asp-action="Excel_Export">資料匯出</a></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -99,8 +116,7 @@
                                         <li><a asp-area="Backstage" asp-controller="ProductItems" asp-action="Index">商品分類管理</a></li>
                                         <li><a asp-area="Backstage" asp-controller="Products" asp-action="Index">商品管理</a></li>
                                         <li><a asp-area="Backstage" asp-controller="Stores" asp-action="Index">賣場管理</a></li>                               
-                                        <li><a href="echarts.html">ECharts</a></li>
-                                        <li><a href="other_charts.html">Other Charts</a></li>
+                                        <li><a asp-area="Backstage" asp-controller="SalesBatches" asp-action="Index">特賣活動管理</a></li>                                        
                                     </ul>
                                 </li>
                                 <li>
@@ -297,6 +313,14 @@
     <!-- bootstrap-daterangepicker -->
     <script src="~/BackstageTemplate/vendors/moment/min/moment.min.js"></script>
     <script src="~/BackstageTemplate/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+@*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+
+
+
+
 
     <!-- Custom Theme Scripts -->
     <script src="~/BackstageTemplate/build/js/custom.min.js"></script>

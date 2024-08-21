@@ -1,94 +1,309 @@
-﻿@model IEnumerable<EggProductionProject_MVC.Models.MemberVM.MemberVM>
+﻿ @model IEnumerable<EggProductionProject_MVC.Models.MemberVM.MemberVM>
 
 @{
     ViewData["Title"] = "Index";
+}
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c !important; /* 淡黄色背景 */
+            color: #333333 !important; /* 深色文字 */
+        }
+
+        .button{
+            
+        }
+
+
+       
+
+
+
+    </style>
 }
 
 
 
 <h2>Index</h2>
 
-<p>
-    @* <a asp-action="Create">Create New</a> *@
-    <div>會員數量 : @Model.Count()</div>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsChickFarm)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.ProfilePic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsBlocked)
-            </th>
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                  @if (item.IsChickFarm == 1)
-                    {
-                        @:雞農
-                    }
-                    else
-                    {
-                        @:一般用戶
-                    }
-            </td>
-           
-            <td>
-                
-                    <partial name="_ProfilePicPartialView" model="@item" />
-            </td>
-            <td>
-                    <form asp-action="UpdateIsBlocked" method="post">
-                        <select asp-for="@item.IsBlocked" class="form-control" asp-items="@(new SelectList(new List<SelectListItem> {
-                            new SelectListItem { Text = "未封鎖", Value = "0" },
-                            new SelectListItem { Text = "已封鎖", Value = "1" }
-                        }, "Value", "Text", item.IsBlocked))"></select>
-                        <input type="hidden" asp-for="@item.MemberSid" />
-                        <button type="submit" class="btn btn-primary">更新</button>
-                    </form>
-            </td>
-           
-            <td>
-                <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> |
-                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
-                    <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<nav>
+	<div class="row">
+		<div class="col-3">
+			<label for="selectIsBlocked">是否被禁用:</label>
+			<select id="selectIsBlocked" class="form-control">
+				<option value="">全部</option>
+				<option value="1">已封鎖</option>
+				<option value="0">未封鎖</option>
+			</select>
+		</div>
+		<div class="col-3">
+			<label for="selectIsChickFarm">是否為雞農:</label>
+			<select id="selectIsChickFarm" class="form-control">
+				<option value="">全部</option>
+				<option value="1">雞農</option>
+				<option value="0">一般用戶</option>
+			</select>
+		</div>
+		<div class="col-3" style="margin-top:19px;align-items:end">
+			<input  type="search" placeholder="搜尋關鍵字" id="inputSearch" class="form-control" />
+		</div>
+	</div>
 
+</nav>
+
+
+
+
+<p>
+
+    <div>會員數量 : <span id="memberCount">@(Model.Count()-1)</span></div>
+</p>
+
+<div id="memberList">
+    @* 将会员列表渲染为一个局部视图，以便AJAX请求时更新这一部分 *@
+    @Html.Partial("_MemberListPartial", Model)
+</div>
+
+
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMemberModalLabel">修改會員資料</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editMemberForm" enctype="multipart/form-data">
+                    <input type="hidden" id="memberSid" name="memberSid" />
+                    <div class="mb-3">
+                        <label for="memberName" class="form-label">會員名稱</label>
+                        <input type="text" class="form-control" id="memberName" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberEmail" class="form-label">會員信箱</label>
+                        <input type="email" class="form-control" id="memberEmail" name="Email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberPhone" class="form-label">聯絡電話</label>
+                        <input type="text" class="form-control" id="memberPhone" name="Phone" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberBirthDate" class="form-label">會員生日</label>
+                        <input type="date" class="form-control" id="memberBirthDate" name="BirthDate" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberIsChickFarm" class="form-label">會員身分</label>
+                        <select class="form-control" id="memberIsChickFarm" name="IsChickFarm">
+                            <option value="1">雞農</option>
+                            <option value="0">一般用戶</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberIsBlocked" class="form-label">是否被禁用</label>
+                        <select class="form-control" id="memberIsBlocked" name="IsBlocked">
+                            <option value="1">禁用</option>
+                            <option value="0">活耀</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberProfilePic" class="form-label">會員頭貼</label>
+                        <input  type="file" class="form-control" id="memberProfilePic" name="ProfilePic" accept="image/*"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // $("#memberProfilePic").on("change", function () {
+
+        //     previewImage(this, $("#Picture").prev(), $("#btnUpdate"));
+        // });
+
+
+        //----------------------------------------------------------------------------
+        //查詢會員的功能
+        $(document).ready(function () {
+            $('#inputSearch').on('keydown', function () {
+                var keyword = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("FilterMembers", "Members")',
+                    type: 'GET',
+                    data: { keyword: keyword },
+                    success: function (result) {
+                        $('#memberList').html(result); // 更新会员列表
+                      
+                    },
+                    error: function () {
+                        alert('發生錯誤，请稍後重試。');
+                    }
+                });
+            });
+        });
+
+
+
+        //篩選雞農與禁用功能
+        $(document).ready(function () {
+            // 綁定篩選事件
+            $('#selectIsBlocked, #selectIsChickFarm').change(function () {
+                filterMembers();
+            });
+
+            function filterMembers() {
+                var isBlocked = $('#selectIsBlocked').val();
+                var isChickFarm = $('#selectIsChickFarm').val();
+
+                $.ajax({
+                    url: '@Url.Action("FilterMembers", "Members")',
+                    type: 'GET',
+                    data: {
+                        isBlocked: isBlocked,
+                        isChickFarm: isChickFarm
+                    },
+                    success: function (result) {
+                        $('#memberList').html(result); // 更新會員列表
+                        $('#memberCount').text($(result).find('tr').length); // 更新會員數量
+                    },
+                    error: function () {
+                        alert('發生錯誤，請稍後重試。');
+                    }
+                });
+            }
+        });
+
+
+
+        $(document).ready(function () {
+            // 绑定点击事件到所有带有class 'edit-member-btn' 的按钮
+            $('.edit-member-btn').on('click', function () {
+                const memberId = $(this).data('member-id'); // 获取会员ID
+                console.log('Member ID:', memberId); // Debug 输出 memberId
+
+                // 使用 fetch 发起 AJAX 请求获取会员详细信息
+                fetch(`@Url.Action("GetMemberDetails", "Members")?id=${memberId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`请求失败，状态码：${response.status}`);
+                        }
+                        return response.json(); // 将响应解析为 JSON
+                    })
+                    .then(data => {
+                        if (data) {
+                            console.log('Member Data:', data); // Debug 输出获取的会员数据
+                            // 调用函数加载数据到 Modal 中
+                            loadMemberData(data);
+                            console.log(data.birthDate)
+                            // 显示 Modal
+                            $('#editMemberModal').modal('show');
+                        } else {
+                            console.log('Data is empty for Member ID:', memberId);
+                            alert('无法加载会员数据，请稍后重试。');
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        alert('请求失败，请检查网络连接。');
+                    });
+            });
+        });
+
+        // 用于加载会员数据到Modal中的函数
+        function loadMemberData(data) {
+            console.log('Loading member data into form:', data); // Debug 输出
+            console.log(data.birthDate)
+            $('#memberSid').val(data.memberSid || '');
+            $('#memberName').val(data.name || '');  // 防止 undefined 错误
+            $('#memberEmail').val(data.email || '');
+            $('#memberPhone').val(data.phone || '');
+            $('#memberBirthDate').val(data.birthDate ? data.birthDate.split('T')[0] : ''); // 格式化日期
+            $('#memberIsChickFarm').val((data.isChickFarm != null) ? data.isChickFarm.toString() : '0');
+            $('#memberIsBlocked').val((data.isBlocked != null) ? data.isBlocked.toString() : '0');
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------
+
+
+
+        $(document).ready(function () {
+            $('#editMemberForm').on('submit', function (event) {
+                event.preventDefault(); // 阻止表单的默认提交行为
+
+                // 创建 FormData 对象
+                var formData = new FormData(this);
+
+                fetch('@Url.Action("CreateSave", "Members")', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络错误：' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            alert('修改成功！');
+                            $('#editMemberModal').modal('hide');
+                            location.reload(); // 刷新页面以显示更新后的数据
+                        } else {
+                            console.log('修改失败原因:', data.errors);
+                            alert('修改失败，请重试。');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message);
+                        alert('请求失败，请检查网络连接。');
+                    });
+            });
+        });
+
+
+
+
+        document.getElementById("editMemberForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('@Url.Action("CreateSave", "Members", new { Area = "Backstage" })', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("修改成功！");
+                    document.getElementById("editMemberModal").style.display = "none";
+                    // 刷新页面内容，例如刷新列表等操作
+                    location.reload();
+                } else {
+                    console.error("修改失败原因:", data.errors);
+                    alert("修改失敗：" + data.message + "\n錯誤詳情：" + (data.errors || "無法獲取錯誤詳情"));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("修改失敗：發生錯誤，請稍後再試。\n" + error.message);
+            }
+        });
+
+
+
+
+    </script>
+} 

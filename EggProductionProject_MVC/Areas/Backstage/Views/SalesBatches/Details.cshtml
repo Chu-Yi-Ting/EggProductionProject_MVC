@@ -1,0 +1,42 @@
+﻿@model EggProductionProject_MVC.Models.SalesBatch
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SalesBatch</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PeriodDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PeriodDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RunningStatusNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RunningStatusNo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PeriodSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

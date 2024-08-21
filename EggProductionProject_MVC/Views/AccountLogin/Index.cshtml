@@ -1,0 +1,88 @@
+﻿@model EggProductionProject_MVC.Models.MemberVM.MemberLogVM
+
+@section Styles{
+    <style>
+        .bg-image-vertical {
+position: relative;
+overflow: hidden;
+background-repeat: no-repeat;
+background-position: right center;
+background-size: auto 100%;
+}
+
+    
+
+
+    </style>
+}
+
+
+<section class="vh-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 text-black">
+
+                <div class="px-5 ms-xl-4">
+                   @*  <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i> *@
+					<img src="~/memberimg/loginegglogo.png" height="40px" style="margin-bottom:25px"/>
+                    <span class="h1 fw-bold mb-0">GoodEgg</span>
+                </div>
+
+                <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+
+                    <form asp-action="Login" method="post" style="width: 23rem;">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label asp-for="Email" class="form-label" for="form2Example18">信箱</label>
+                            <input asp-for="Email" type="email" id="form2Example18" class="form-control form-control-lg" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label asp-for="Password" class="form-label" for="form2Example28">密碼</label>
+                            <input asp-for="Password" type="password" id="form2Example28" class="form-control form-control-lg" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="pt-1 mb-4">
+                            <button id="btnLogin" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                        </div>
+
+                        <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">忘記密碼?</a></p>
+                        <p>尚未註冊? <a href="#!" class="link-info">成為會員!</a></p>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img src="~/memberimg/loginegg.jpg" class="w-100 vh-100" style="object-fit: cover; object-position: left;  height:500px" />
+               @*  <img src="~/memberimg/loginegg.jpg" class="w-100 vh-100"  style="object-fit: cover; object-position: left;  height:200px" /> *@
+               @*  <img src="./MemberImg/LoginEgg.jpg"
+                     alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;"> *@
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+@* @section Scripts{
+    <script>
+        btnLogin = document.querySelector('#btnLogin')
+
+        btnLogin.addEventListener('click', function (e) {
+            
+            fetch(@Url.Action())
+
+
+
+        }, false);
+
+    </script>
+} *@

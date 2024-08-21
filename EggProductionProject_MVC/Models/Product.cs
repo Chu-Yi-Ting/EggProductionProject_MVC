@@ -37,6 +37,8 @@ public partial class Product
 
     public int? PublicStatusNo { get; set; }
 
+    public decimal? DiscountPercent { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<EcImage> EcImages { get; set; } = new List<EcImage>();
