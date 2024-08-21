@@ -108,7 +108,7 @@
     <script src="~/lib/datatables.net/datatables.min.js"></script>
 
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
-
+    <script src="~/js/common.js"></script>
     <script>
 
 
@@ -168,7 +168,11 @@
                 columns: [
                     { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
                     { "data": "orderStatus", "width": "auto", "title": "物流狀態" },
-                    { "data": "createdTime", "width": "auto", "title": "成立時間" },
+                    {
+                        "data": "createdTime", "width": "auto", "title": "成立時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
                     { "data": "carrierWay", "width": "auto", "title": "物流方式" },
 
                     { "data": "carrierName", "width": "auto", "title": "物流管道" }

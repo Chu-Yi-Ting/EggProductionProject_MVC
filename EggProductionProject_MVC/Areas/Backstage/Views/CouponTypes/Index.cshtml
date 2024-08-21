@@ -163,8 +163,9 @@
 @section Scripts {
     
     <script src="~/lib/datatables.net/datatables.min.js"></script>
-    
+
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+    <script src="~/js/common.js"></script>
 
     <script>
 
@@ -286,7 +287,11 @@
                 columns: [
                     { "data": "name", "width": "auto", "title": "優惠券名稱" },
                     { "data": "status", "width": "auto", "title": "使用狀態" },
-                    { "data": "collectionTime", "width": "auto", "title": "獲得時間" },
+                    {
+                        "data": "collectionTime", "width": "auto", "title": "獲得時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
                     { "data": "memberName", "width": "auto", "title": "擁有者" },
                 ],
                 fixedHeader: { header: true },
@@ -294,7 +299,6 @@
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
             })
-
 
 
             const preprocessData = (data) => {
@@ -327,7 +331,7 @@
                             </button>
                               `;
                         }
-                    }
+                    },
                 ],
                 lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
                 fixedColumns: {
@@ -341,8 +345,16 @@
                     { "data": "minimum", "width": "auto", "title": "最低消費" },
                     { "data": "publicStatusNo", "width": "auto", "title": "公開狀態號碼", "visible": false },
                     { "data": "statusDescription", "width": "auto", "title": "公開狀態" },
-                    { "data": "startTime", "width": "auto", "title": "開始時間" },
-                    { "data": "endTime", "width": "auto", "title": "結束時間" },
+                    {
+                        "data": "startTime", "width": "auto", "title": "開始時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
+                    {
+                        "data": "endTime", "width": "auto", "title": "結束時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
                     {
                         "data": "useAlone", "width": "auto", "title": "獨立使用",
                         "render": function (data, type, row) {
@@ -386,7 +398,10 @@
                         modal.show();
 
                         document.getElementById('saveChangesButton').addEventListener('click', function () {
-                            modal.hide();
+                            
+                                if (validateForm()) {
+                                    modal.hide();
+                                }
                         });
                     },
                     error: function (xhr, status, error) {
@@ -411,6 +426,7 @@
                     selectElement.selectedIndex = 1;
                     inp_EndTime.classList.add('d-none');
                     inp_StartTime.classList.add('d-none');
+                    
                 }
 
                 selType.addEventListener('change', (e) => {
@@ -418,24 +434,74 @@
                     if (e.target.value == "noshow") {
                         inp_EndTime.classList.add('d-none');
                         inp_StartTime.classList.add('d-none');
+                        $("#EndTime").val('')
+                        $("#StartTime").val('')
                     } else if (e.target.value == "show") {
                         inp_EndTime.classList.remove('d-none');
                         inp_StartTime.classList.remove('d-none');
-                    }
-
-                    
+                    }  
                 });
-
-            
-
             }
 
 
-            $('#editFormContainer').on('submit', '#editForm', function (event) {
-                event.preventDefault(); 
+            // function validateForm() {
+            //     var nameInput = $('#Name'); 
+            //     var errorSpan = $('span[data-valmsg-for="Name"]'); 
 
+            //     // 清除之前的错误消息
+            //     errorSpan.text('');
+
+            //     // 验证输入字段是否为空
+            //     if (nameInput.val().trim() === '') {
+            //         errorSpan.text('名稱不可為空值');
+            //         return false; // 验证失败
+            //     }
+
+            //     return true; // 验证成功
+            // }
+
+            function validateForm() {
+                var isValid = true;
+
+                isValid &= validateField('#Name', '名稱不可為空值');
+                isValid &= validateField('#Price', '價格不可為空值', true);
+                isValid &= validateField('#Minimum', '最低消費不可為空值', true);
+
+                var typeValue = $('#sel_Type').val();
+                if (typeValue === 'show') {
+                    isValid &= validateField('#StartTime', '開始時間不可為空值');
+                    isValid &= validateField('#EndTime', '結束時間不可為空值');
+                }
+
+                return isValid;
+            }
+
+            function validateField(selector, emptyMessage, isNumeric = false) {
+                var input = $(selector);
+                var errorSpan = $(selector).siblings('span.text-danger');
+                var value = input.val().trim();
+                var isValid = true;
+                
+                if (value === '') {
+                    errorSpan.text(emptyMessage);
+                    isValid = false;
+                } else if (isNumeric && isNaN(value)) {
+                    errorSpan.text('請填寫數字');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            $('#editFormContainer').on('submit', '#editForm', function (event) {
+                event.preventDefault();
+                $('.text-danger').text('');
                 var formData = $(this).serialize(); 
-                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val(); 
+                var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+
+                if (!validateForm()) {
+                    return; 
+                }
 
                 $.ajax({
                     url: '@Url.Action("Edit", "CouponTypes")', 

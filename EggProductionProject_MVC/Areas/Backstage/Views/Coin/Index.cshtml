@@ -103,6 +103,7 @@
     <script src="~/lib/datatables.net/datatables.min.js"></script>
 
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+    <script src="~/js/common.js"></script>
 
     <script>
 
@@ -162,7 +163,11 @@
                 columns: [
                     { "data": "memberName", "width": "auto", "title": "異動人" },
                     { "data": "coinUseArea", "width": "auto", "title": "代幣異動項目" },
-                    { "data": "changeTime", "width": "auto", "title": "異動時間" },
+                    {
+                        "data": "changeTime", "width": "auto", "title": "異動時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
                     {
                         "data": "isPositive", "width": "auto", "title": "異動行為",
                         "render": function (data, type, row) {
