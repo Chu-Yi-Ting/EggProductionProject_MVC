@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
+using EggProductionProject_MVC.Areas.Backstage.ViewModels;
+using System.Diagnostics;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -22,7 +24,18 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/SalesBatches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SalesBatches.ToListAsync());
+            var eggPlatformContext = _context.SalesBatches.Include(s => s.RunningStatusNoNavigation).Select(s => new SaleViewModel
+            {
+                PeriodSid = s.PeriodSid,
+                PeriodDate = s.PeriodDate,
+                StartTime = s.StartTime,
+                EndTime = s.EndTime,
+                RunningStatusNo = s.RunningStatusNo,
+                RunningStatusDescription = s.RunningStatusNoNavigation.RunningStatusDescription
+            });
+
+            ViewBag.RunningStatusNo = new SelectList(_context.SalesStatuses, "RunningStatusNo", "RunningStatusDescription");
+            return View(await eggPlatformContext.ToListAsync());
         }
 
         // GET: Backstage/SalesBatches/Details/5
@@ -46,6 +59,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/SalesBatches/Create
         public IActionResult Create()
         {
+            ViewBag.RunningStatusNo = new SelectList(_context.SalesStatuses, "RunningStatusNo", "RunningStatusDescription");
             return View();
         }
 
@@ -125,13 +139,25 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             }
 
             var salesBatch = await _context.SalesBatches
-                .FirstOrDefaultAsync(m => m.PeriodSid == id);
+            .Include(sb => sb.RunningStatusNoNavigation) // 加载导航属性
+            .FirstOrDefaultAsync(m => m.PeriodSid == id);
             if (salesBatch == null)
             {
                 return NotFound();
             }
 
-            return View(salesBatch);
+            // 将 SalesBatch 转换为 SaleViewModel
+            var SaleViewModel = new SaleViewModel
+            {
+                PeriodSid = salesBatch.PeriodSid,
+                PeriodDate = salesBatch.PeriodDate, // 替换为实际的属性
+                StartTime = salesBatch.StartTime,
+                EndTime = salesBatch.EndTime,
+                RunningStatusNo = salesBatch.RunningStatusNo, // 替换为实际的属性
+                RunningStatusDescription = salesBatch.RunningStatusNoNavigation.RunningStatusDescription // 继续映射其他属性...
+            };
+
+            return View(SaleViewModel);
         }
 
         // POST: Backstage/SalesBatches/Delete/5

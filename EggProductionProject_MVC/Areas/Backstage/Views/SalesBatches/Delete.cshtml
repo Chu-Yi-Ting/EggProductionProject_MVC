@@ -1,45 +1,67 @@
-﻿@model EggProductionProject_MVC.Models.SalesBatch
+﻿@model EggProductionProject_MVC.Areas.Backstage.ViewModels.SaleViewModel
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+@section Styles {
 
-<h3>Are you sure you want to delete this?</h3>
+    <style>
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        dt {
+            font-size: 24px;
+        }
+
+        dd {
+            font-size: 20px;
+            margin: 16px;
+            
+        }
+    </style>
+
+}
+
 <div>
-    <h4>SalesBatch</h4>
+    <h4 class="bold-text">刪除特賣活動</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PeriodDate)
+            活動日期
         </dt>
         <dd>
             @Html.DisplayFor(model => model.PeriodDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
+            開始時間
         </dt>
         <dd>
             @Html.DisplayFor(model => model.StartTime)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
+            結束時間
         </dt>
         <dd>
             @Html.DisplayFor(model => model.EndTime)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.RunningStatusNo)
+            運作狀態
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.RunningStatusNo)
+            @Html.DisplayFor(model => model.RunningStatusDescription)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="PeriodSid" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-secondary">
+            <i class="fa-solid fa-trash-alt"></i> 刪除
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+            <i class="fa-solid fa-arrow-left"></i> 回特賣活動清單
+        </button>
     </form>
 </div>

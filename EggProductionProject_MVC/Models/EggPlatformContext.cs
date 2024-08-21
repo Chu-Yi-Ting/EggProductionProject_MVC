@@ -127,6 +127,8 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<SalesBatch> SalesBatches { get; set; }
 
+    public virtual DbSet<SalesStatus> SalesStatuses { get; set; }
+
     public virtual DbSet<ScreenSummary> ScreenSummaries { get; set; }
 
     public virtual DbSet<ShoppingRank> ShoppingRanks { get; set; }
@@ -983,6 +985,20 @@ public partial class EggPlatformContext : DbContext
 
             entity.Property(e => e.EndTime).HasPrecision(0);
             entity.Property(e => e.StartTime).HasPrecision(0);
+
+            entity.HasOne(d => d.RunningStatusNoNavigation).WithMany(p => p.SalesBatches)
+                .HasForeignKey(d => d.RunningStatusNo)
+                .HasConstraintName("FK_SalesBatches_SalesStatus");
+        });
+
+        modelBuilder.Entity<SalesStatus>(entity =>
+        {
+            entity.HasKey(e => e.RunningStatusNo);
+
+            entity.ToTable("SalesStatus");
+
+            entity.Property(e => e.RunningStatusNo).ValueGeneratedNever();
+            entity.Property(e => e.RunningStatusDescription).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ScreenSummary>(entity =>

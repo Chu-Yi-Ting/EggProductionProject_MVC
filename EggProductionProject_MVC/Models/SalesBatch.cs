@@ -18,4 +18,6 @@ public partial class SalesBatch
     public int? RunningStatusNo { get; set; }
 
     public virtual ICollection<FlashSale> FlashSales { get; set; } = new List<FlashSale>();
+
+    public virtual SalesStatus RunningStatusNoNavigation { get; set; }
 }
