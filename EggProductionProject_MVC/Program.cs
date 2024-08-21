@@ -1,6 +1,7 @@
 using EggProductionProject_MVC.Data;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.Models.MemberVM;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -29,6 +30,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             });
 
         builder.Services.AddControllersWithViews();
+var authProperties = new AuthenticationProperties
+{
+    IsPersistent = true, // 是否持久化 Cookie
+    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // 設置 Cookie 過期時間
+};
+
+
+
+
+
 
 //builder.Services.AddDefaultIdentity<EggUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();

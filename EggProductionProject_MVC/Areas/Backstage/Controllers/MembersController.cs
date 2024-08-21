@@ -28,10 +28,17 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return File(content, "image/jpeg");
         }
 
+        private void ReadUploadImage(MemberVM member)
+        {
+            using (BinaryReader br = new BinaryReader(
+                Request.Form.Files["Picture"].OpenReadStream()))
+            {
+                member.ProfilePic = br.ReadBytes((int)Request.Form.Files["Picture"].Length);
+            }
+        }
 
 
 
-        
         //點擊修改後使用者資料要出現在修改表單
         public IActionResult GetMemberDetails(int id)
         {

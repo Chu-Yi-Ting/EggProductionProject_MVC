@@ -45,8 +45,8 @@ namespace EggProductionProject_MVC.Controllers
                 {
                     var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    // 可以在這裡添加更多的聲明（Claims），如角色
+                     new Claim(ClaimTypes.Name, user.Name),  // 將使用者的名稱存入 Claim
+                        new Claim(ClaimTypes.Email, user.Email) // 您仍然可以將電子郵件作為另一個 Claim 存儲
                 };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

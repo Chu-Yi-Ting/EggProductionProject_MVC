@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<EggUser> SignInManager
+@inject UserManager<EggUser> UserManager
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -61,8 +68,9 @@
                             <img src="~/BackstageTemplate/production/images/img.jpg" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            
+                                <p>歡迎, @User.Identity?.Name!</p>
+                            
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
