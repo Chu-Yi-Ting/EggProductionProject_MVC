@@ -1,9 +1,7 @@
 ﻿
-
-
-
-<video id="video" src="@Url.Action("GetVideopath","VideoSummaries",new {id=Model.VideoSid})"
-       type="video/mp4" width="320" height="240" controls></video>
+@* 
+<video id="video" src="@Url.Action("GetVideopath","VideoApi",new {id=Model.VideoSid})" *@
+<video id="video" src="@Url.Action("GetVideopath","VideoApi",new {id=Model.VideoSid})" type="video/mp4" width="320" height="240" controls></video>
 @* @if (Model.MoviePath != null) 
 {
 } 
@@ -15,4 +13,9 @@
 
 @section Scripts {
     
+    @* <script>
+        const id = Model.VideoSid
+            ("#video").attr("src", `@Url.Content("/Backstage/VideoApi/GetVideopath/")${id}`)
+    </script> *@
+
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
+    [Area("Backstage")]
     public class VideoApiController : Controller
     {
         private readonly EggPlatformContext _context;
@@ -20,6 +21,15 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 string x = c?.MoviePath;
                 return File(x, "Video/mp4");
         }
+
+        public async Task<FileResult> GetImagepath(int id)
+        {
+            VideoSummary c = await _context.VideoSummaries.FindAsync(id);
+            string x = c?.VideoCoverImage;
+            return File(x, "Image/jpg");
+        }
+
+        
 
         //public async Task<FileResult> VideoUpdata(int id)
         //{

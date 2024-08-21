@@ -53,8 +53,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusDescription)
             </th>
-            
-            
+              @* <th>
+                  留言
+              </th> *@
             <th></th>
         </tr>
     </thead>
@@ -89,7 +90,7 @@
                     @Html.DisplayFor(modelItem => item.AdSource)
                 </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.VideoCoverImage)
+                    <partial name="_Imagepartial" model="@item"></partial>
             </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ViedoNature)
@@ -100,12 +101,47 @@
             <td>
                     @Html.DisplayFor(modelItem => item.StatusDescription)
             </td>
+            @* <td>
+                
+                    <button type="button" class="btn btn-success" data-toggle="modal" 
+                    data-target="#exampleModal"onclick="showdetail(@item.Messages)" value="@item.Messages">
+                        留言
+                    </button>
+            </td> *@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.VideoSid">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.VideoSid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.VideoSid">Delete</a>
+                @* <a asp-action="Details" asp-route-id="@item.VideoSid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.VideoSid">Delete</a> *@
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">留言</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modaldata" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        
+
+
+    </script>
+
+}

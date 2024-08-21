@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             
             <input type="hidden" asp-for="VideoSid" />
             <div class="form-group">
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="VideoCoverImage" class="control-label"></label>
-                <img id="Image" name="Image" asp-append-version width="320" height="240"></img>
+                <partial name="_Imagepartial" model="@Model"></partial>
                 <input asp-for="VideoCoverImage" type="file" class="form-control" />
             </div>
             <div class="form-group">

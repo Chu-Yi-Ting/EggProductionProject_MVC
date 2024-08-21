@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.ViewModels;
+using System.IO;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -163,21 +164,57 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,Advertised,AdSource,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,Advertised,MoviePath,AdSource,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary, IFormFile MoviePath,IFormFile VideoCoverImage)
         {
             if (id != videoSummary.VideoSid)
             {
                 return NotFound();
             }
+            if(MoviePath==null || VideoCoverImage == null)
+            {
+                VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(id);
 
+                videoSummary.MoviePath = 資料庫資料.MoviePath;
+                videoSummary.VideoCoverImage = 資料庫資料.VideoCoverImage;
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
+          
+
                     VideoSummary 資料庫資料 =await _context.VideoSummaries.FindAsync(id);
                     videoSummary.UploadDate = 資料庫資料.UploadDate;
                     videoSummary.TimesWatched = 資料庫資料.TimesWatched;
                     videoSummary.CreatorSid = 資料庫資料.CreatorSid;
+
+                    string File副檔名 = Path.GetExtension(MoviePath.FileName);
+                    string FileName = Path.GetFileName("創作者編號_" + videoSummary
+                        .CreatorSid + "-" + videoSummary.VideoSid + File副檔名);
+                    
+                    string VideoPath = Path.Combine(_webHostEnvironment.
+                        WebRootPath, "Video", FileName);
+
+                    using (var filesteam = new FileStream(VideoPath, FileMode.Create))
+                    {
+                        MoviePath.CopyTo(filesteam);
+                    }
+
+                    string FileImg = Path.GetExtension(VideoCoverImage.FileName);
+                    string FileNameImg = Path.GetFileName("創作者編號_" + 
+                        videoSummary.CreatorSid + "-" + videoSummary.VideoSid + FileImg);
+
+                    string ImagePath = Path.Combine(_webHostEnvironment
+                        .WebRootPath, "VideoImage", FileNameImg);
+
+                    using (var filesteam = new FileStream(ImagePath, FileMode.Create))
+                    {
+                        VideoCoverImage.CopyTo(filesteam);
+                    }
+
+                    videoSummary.VideoCoverImage = $"/VideoImage/{FileNameImg}";
+                    videoSummary.MoviePath = $"/Video/{FileName}";
+
                     //videoSummary.CreatorS.MemberName =  資料庫資料.CreatorS.MemberName;
                     _context.Entry(資料庫資料).State = EntityState.Detached;
 

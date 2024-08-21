@@ -25,7 +25,7 @@ public partial class VideoSummary
 
     public int? ScreenTextSid { get; set; }
 
-    public string MoviePath { get; set; }
+    public string? MoviePath { get; set; }
 
     public bool AdSource { get; set; }
 
@@ -33,7 +33,7 @@ public partial class VideoSummary
 
     public int? PublicStatusNo { get; set; }
 
-    public string VideoCoverImage { get; set; }
+    public string? VideoCoverImage { get; set; }
 
     public virtual ICollection<Advertisment> Advertisments { get; set; } = new List<Advertisment>();
 
