@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EggProductionProject_MVC.Models;
 
@@ -30,8 +31,8 @@ public partial class CarrierAddress
     public virtual CarrierWays? CarrierWayNoNavigation { get; set; }
 
     public virtual Member MemberS { get; set; }
-
-    public virtual ICollection<Track> TrackReceiveSources { get; set; } = new List<Track>();
-
-    public virtual ICollection<Track> TrackSendSouces { get; set; } = new List<Track>();
+	[NotMapped]
+	public virtual ICollection<Track> TrackReceiveSources { get; set; } = new List<Track>();
+	[NotMapped]
+	public virtual ICollection<Track> TrackSendSouces { get; set; } = new List<Track>();
 }

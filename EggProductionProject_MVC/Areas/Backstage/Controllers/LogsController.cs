@@ -67,6 +67,33 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        //public IActionResult Filter(LogVM _LogVM)
+        //{
+        //    var records = _context.Logs.AsQueryable();
+
+        //    if (!string.IsNullOrEmpty(_LogVM.Status))
+        //    {
+        //        records = records.Where(r => r.Status == _LogVM.Status);
+        //    }
+
+        //    if (_LogVM.StartDate.HasValue)
+        //    {
+        //        records = records.Where(r => r.LogTime >= _LogVM.StartDate.Value);
+        //    }
+
+        //    if (_LogVM.EndDate.HasValue)
+        //    {
+        //        records = records.Where(r => r.LogTime <= _LogVM.EndDate.Value);
+        //    }
+
+        //    var result = records.OrderBy(r => r.LogTime).ToList();
+
+        //    return PartialView("_LoginRecordsPartial", result); // 返回局部視圖
+        //}
+
+
+
         // GET: Backstage/Logs/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Models;
 
@@ -1190,4 +1191,6 @@ public partial class EggPlatformContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<EggProductionProject_MVC.Models.MemberVM.MemberVM> MemberVM { get; set; } = default!;
 }

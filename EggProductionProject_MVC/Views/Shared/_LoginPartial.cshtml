@@ -1,9 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
 
+@inject SignInManager<EggUser> SignInManager
+@inject UserManager<EggUser> UserManager
+    
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
+    @if(User.Identity.IsAuthenticated)
 {
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
@@ -15,14 +17,13 @@
     </li>
 }
 
-
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">註冊</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark" asp-controller="AccountLogin" asp-action="Index">登入</a>
     </li>
 }
 </ul>

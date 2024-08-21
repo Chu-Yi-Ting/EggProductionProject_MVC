@@ -2,11 +2,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EggProductionProject_MVC.Models;
 
 public partial class Advertisment
 {
+    [Key]
     public int AdvertismentSid { get; set; }
 
     public int? StoreSid { get; set; }
