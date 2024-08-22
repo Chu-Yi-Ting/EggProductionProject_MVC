@@ -42,6 +42,7 @@
   <ItemGroup>
     <Folder Include="Areas\Frontstage\Models\" />
     <Folder Include="wwwroot\FrontstageTemplate\" />
+    <Folder Include="wwwroot\Imgs\" />
     <Folder Include="wwwroot\Video\" />
   </ItemGroup>
 

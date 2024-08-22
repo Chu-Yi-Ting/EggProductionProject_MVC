@@ -11,7 +11,17 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			return View();
 		}
 
-		public IActionResult Index_light()
+        public IActionResult Index2()
+        {
+            return View();
+        }
+
+        public IActionResult Index3()
+        {
+            return View();
+        }
+
+        public IActionResult Index_light()
 		{
 			return View();
 		}
@@ -20,5 +30,14 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		{
 			return View();
 		}
-	}
+		public IActionResult Index_store2()
+		{
+			return View();
+		}
+        public IActionResult Index_store3()
+        {
+            return View();
+        }
+
+    }
 }
