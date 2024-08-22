@@ -114,7 +114,7 @@
     <script src="~/lib/datatables.net/datatables.min.js"></script>
 
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
-
+    <script src="~/js/common.js"></script>
     <script>
 
 
@@ -190,7 +190,11 @@
                 },
                 columns: [
                     { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "orderCreatedTime", "width": "auto", "title": "建立時間" },
+                    {
+                        "data": "orderCreatedTime", "width": "auto", "title": "建立時間", "render": function (data, type, row) {
+                            return formatDateTime(data);
+                        }
+                    },
                     { "data": "memberName", "width": "auto", "title": "會員名稱" },
                     { "data": "payment", "width": "auto", "title": "付款方式" },
                     {

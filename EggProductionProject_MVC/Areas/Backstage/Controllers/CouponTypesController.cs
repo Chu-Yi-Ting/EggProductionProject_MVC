@@ -335,10 +335,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 try
                 {
-                    
-
                     if (couponType.CouponTypeNo == 0) // 新建
-                    {
+                    {                   
                         couponType.EmployeeSid = 1;
                         _context.Add(couponType);
                     }
