@@ -1,0 +1,144 @@
+﻿@{
+	Layout = "_FrontLayout_store";
+}
+<div class="col-12">
+    <div class="page-title">
+        <h5 class="mb-3 d-flex justify-content-between w-100">
+            訂單管理
+            <span class="d-flex">
+                <button class="btn light-btn-n" type="button">
+                    物流開放
+                </button>
+                <button class="btn light-btn-n ms-3" type="button">
+                    新增宅配
+                </button>
+            </span>
+        </h5>
+    </div>
+</div>
+<div class="col-lg-12 mt-3">
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne"
+                        aria-expanded="true"
+                        aria-controls="collapseOne">
+                    宅配<img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
+                           alt="" />
+                </button>
+            </h2>
+            <div id="collapseOne"
+                 class="accordion-collapse collapse show"
+                 aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        黑貓宅急便<span>常溫</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="m-0" />
+                    <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        黑貓宅急便<span>冷藏</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0 d-none">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item mt-5">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="collapseTwo">
+                    超商
+                    <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png" alt="" />
+                </button>
+            </h2>
+            <div id="collapseTwo"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingTwo"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        7-ELEVEN<span>常溫</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,517 @@
 }
 <div class="title-bg mb-3">
 	<img class="w-100"
-		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_01.png"
+         src="~/FrontstageTemplate/assets/brand/layout/banners/banner_01.png"
 		 alt="" />
+</div>
+
+<section class="py-3 py-lg-5 text-center container">
+    <div class="step-nav">
+        <div class="step step-one finished">
+            <div class="radial-progress active" data-index="0">
+                <div class="step-text">
+                    <p>step1</p>
+                    <p>購物車</p>
+                </div>
+            </div>
+            <p class="step-num">1</p>
+        </div>
+        <div class="step">
+            <div class="line">
+                <div class="progress"></div>
+            </div>
+            <div class="radial-progress" data-index="1">
+
+                <div class="step-text">
+                    <p>step2</p>
+                    <p>資料填寫</p>
+                </div>
+            </div>
+            <p class="step-num">2</p>
+        </div>
+        <div class="step ">
+            <div class="line">
+                <div class="progress"></div>
+            </div>
+            <div class="radial-progress" data-index="2">
+
+                <div class="step-text">
+                    <p>step3</p>
+                    <p>確認完成</p>
+                </div>
+            </div>
+            <p class="step-num">3</p>
+        </div>
+    </div>
+</section>
+
+<div class="album py-5 container-outer-n">
+    <div class="container">
+        <!-- //------------------------------------------- -->
+
+        <div class="row g-lg-5">
+
+
+            <div class="col-lg-4 order-lg-last">
+                <div class="position-sticky" style="top: 2rem;">
+                    <div class="p-0 mb-3 side-control">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="cal-box-title">折扣優惠試算</span>
+                            <!-- <span class="badge text-muted">已勾選4件商品</span> -->
+                        </h4>
+                        <div class="card cal-box">
+                            <div class="card-body">
+                                <div>
+                                    <div class="o_price_total cal-box-list">
+                                        <p class="my-0">小計</p>
+                                        <span class="">$3,600</span>
+                                    </div>
+                                    <hr>
+                                    <div class="discount_total cal-box-list mb-3">
+                                        <p class="my-0">商品折扣</p>
+                                        <span class="">- $1,200</span>
+                                    </div>
+                                    <div class="discount_total cal-box-list">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <p class="my-0 me-3">組合優惠</p>
+                                            <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg" alt="" srcset="">
+                                        </div>
+
+                                        <span class="">無</span>
+                                    </div>
+                                    <hr>
+                                    <div class="price_total cal-box-list">
+                                        <h4 class="my-0">總計</h4>
+                                        <span class="">NT$2,400</span>
+                                    </div>
+                                    <p class="hint">*總付款金額請以結帳頁面為主</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn submit-btn dark-btn-n w-100">
+
+                            <span class="mx-2">立即購買</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <h4 class="cart-list mb-3">購物車清單</h4>
+                <div class="row">
+                    <div class="col col-sm-12 mt-3">
+                        <div class="card shadow-sm cart-card">
+                            <div class="cart-card-owner">
+                                <div class="ck-farm d-flex align-items-center">
+                                    <div class="img-outer">
+                                        <img src="~/FrontstageTemplate/assets/brand/layout/mug.png" alt="" />
+                                    </div>
+                                    <p class="ck-farm-name p-0 m-0">葛瑞絲牧場</p>
+                                </div>
+                                <button class="btn p-0 me-md-3" type="button">
+                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                </button>
+
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010002" checked />
+                                <label for="s1_p202409010002" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>日成放牧蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </button>
+
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010003" checked />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>勤美鮮雞蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 mt-5">
+                        <div class="card shadow-sm cart-card">
+                            <div class="cart-card-owner">
+                                <div class="ck-farm d-flex align-items-center">
+                                    <div class="img-outer">
+                                        <img src="~/FrontstageTemplate/assets/brand/layout/mug.png" alt="" />
+                                    </div>
+                                    <p class="ck-farm-name p-0 m-0">葛瑞絲牧場</p>
+                                </div>
+                                <button class="btn p-0 me-md-3" type="button">
+                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                </button>
+
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010002" checked />
+                                <label for="s1_p202409010002" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>日成放牧蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </button>
+
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010003" checked />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>勤美鮮雞蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 mt-5">
+                        <div class="card shadow-sm cart-card">
+                            <div class="cart-card-owner">
+                                <div class="ck-farm d-flex align-items-center">
+                                    <div class="img-outer">
+                                        <img src="~/FrontstageTemplate/assets/brand/layout/mug.png" alt="" />
+                                    </div>
+                                    <p class="ck-farm-name p-0 m-0">葛瑞絲牧場</p>
+                                </div>
+                                <button class="btn p-0 me-md-3" type="button">
+                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                </button>
+
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010002" checked />
+                                <label for="s1_p202409010002" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>日成放牧蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </button>
+
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010003" checked />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>勤美鮮雞蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-sm-12 mt-5">
+                        <div class="card shadow-sm cart-card">
+                            <div class="cart-card-owner">
+                                <div class="ck-farm d-flex align-items-center">
+                                    <div class="img-outer">
+                                        <img src="~/FrontstageTemplate/assets/brand/layout/mug.png" alt="" />
+                                    </div>
+                                    <p class="ck-farm-name p-0 m-0">葛瑞絲牧場</p>
+                                </div>
+                                <button class="btn p-0 me-md-3" type="button">
+                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                </button>
+
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010002" checked />
+                                <label for="s1_p202409010002" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>日成放牧蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </button>
+
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="cart-card-item w-100">
+                                <input type="checkbox" class="hidden-box" id="s1_p202409010003" checked />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box"></span>
+                                </label>
+
+                                <div class="card-body-img d-flex w-100">
+                                    <div class="img_box">
+                                        <img src="~/FrontstageTemplate/assets/brand/page/cart/profuct_1.png" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <h5>勤美鮮雞蛋</h5>
+                                                <small class="describe">雞蛋</small>
+                                            </div>
+                                            <button class="btn delete_btn" type="button">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bottom_item flex-md-row align-items-md-center">
+                                            <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                <big class="price">NT$ 1,200</big>
+                                                <small class="o_price">NT$ 1,800</small>
+                                            </div>
+
+                                            <div class="input-group num_box_n">
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <input type="text" class="form-control" placeholder="" value="1"
+                                                       aria-label="Example text with two button addons" />
+                                                <button class="btn" type="button">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
