@@ -13,3 +13,14 @@ function formatDateTime(data) {
     }
     return '';
 }
+
+//select 樣式美化(需要就貼去自己view程式裡面)
+//document.addEventListener('DOMContentLoaded', function () {
+//    const elements = document.querySelectorAll('.select-n');
+//    elements.forEach(function (element) {
+//        new Choices(element, {
+//            searchEnabled: false,
+//            itemSelectText: ''
+//        });
+//    });
+//});

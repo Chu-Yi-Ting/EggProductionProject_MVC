@@ -1,6 +1,11 @@
 ﻿@{
 	Layout = "_FrontLayout_common";
 }
+
+@section Styles {
+    <style>
+    </style>
+}
 <div class="title-bg mb-3">
 	<img class="w-100"
 		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_01.png"
@@ -346,3 +351,19 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const elements = document.querySelectorAll('.select-n');
+            elements.forEach(function (element) {
+                new Choices(element, {
+                    searchEnabled: false,
+                    itemSelectText: ''
+                });
+            });
+        });
+
+    </script>
+}
