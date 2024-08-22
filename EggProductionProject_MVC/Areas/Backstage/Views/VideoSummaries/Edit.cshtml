@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             
             <input type="hidden" asp-for="VideoSid" />
             <div class="form-group">
@@ -19,7 +19,7 @@
                 <span asp-validation-for="CreatorSid" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatorSid" class="control-label"></label>
+                <label asp-for="CreatorSid" class="control-label">會員名稱</label>
                 <select asp-for="CreatorSid" class="form-control" asp-items="ViewBag.CreatorSid" disabled></select>
             </div>
             <div class="form-group">
@@ -52,11 +52,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Advertised" class="control-label"></label>
-                <select asp-for="Advertised" class="form-control" asp-items="ViewBag.Advertised"></select>
+                <input asp-for="Advertised" type="checkbox" class="form-check-input form-check-input-lg" />
             </div>
             <div class="form-group">
                 <label asp-for="VideoCoverImage" class="control-label"></label>
-                <img id="Image" name="Image" asp-append-version width="320" height="240"></img>
+                <partial name="_Imagepartial" model="@Model"></partial>
                 <input asp-for="VideoCoverImage" type="file" class="form-control" />
             </div>
             <div class="form-group">
@@ -67,7 +67,10 @@
                 <label asp-for="ScreenTextSid" class="control-label"></label>
                 <select asp-for="ScreenTextSid" class="form-control" asp-items="ViewBag.ScreenTextSid"></select>
             </div>
-
+            <div class="form-group">
+                <label asp-for="AdSource" class="control-label"></label>
+                <input asp-for="AdSource" type="checkbox" class="form-check-input form-check-input-lg" />
+            </div>
             <div class="form-group">
                 <label asp-for="PublicStatusNo" class="control-label"></label>
                 <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
@@ -82,6 +85,21 @@
 <div>
     <a asp-action="Index">返回首頁</a>
 </div>
+
+@section Styles {
+    <style>
+        .form-check-input-lg {
+            transform: scale(1.5);
+            width: 1.5rem;
+            height: 1.5rem;
+            margin:1.5rem;
+        }
+    </style>
+
+}
+
+
+
 
 @section Scripts {
    
