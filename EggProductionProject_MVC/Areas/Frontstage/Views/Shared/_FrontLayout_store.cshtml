@@ -9,7 +9,8 @@
     <meta name="generator" content="Hugo 0.88.1" />
     <title>@ViewData["Title"] - EggProductionProject_MVC</title>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    @* <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
+	<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/frontstagetemplate/assets/dist/css/style.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
@@ -124,19 +125,22 @@
 
 			<div class="collapse collapse show store-leftmeau-n " id="navbarToggleExternalContent">
 				<div class="leftmeau-body">
-					<a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none mt-2 ms-1">
-
-						<img src="~/FrontstageTemplate/assets/brand/layout/egg-logo-sm.svg" alt="" style="width:40px">
+					
+					<div class="title d-flex align-items-start">
+				<a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none mt-2 ms-1">
+	
+					<img src="~/FrontstageTemplate/assets/brand/layout/egg-logo-sm.svg" alt="" style="width:40px">
 						<div class="store-logo d-flex flex-column ">
 							<img src="~/FrontstageTemplate/assets/brand/layout/GOOD_EGG.svg" alt="" style="width:110px">
 							<img src="~/FrontstageTemplate/assets/brand/layout/store-center.svg" alt="" class="mt-2" style="width:56px">
-						</div>
-						
-
-					</a>
-					<button class="navbar-toggler text-decoration-none d-block d-md-none ms-auto py-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent">
-						<i class="fa-solid fa-xmark"></i>
+					</div>
+					
+		  
+				  </a>
+				  <button class="navbar-toggler text-decoration-none d-block d-md-none ms-auto py-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" >
+					  <i class="fa-solid fa-xmark"></i>
 					</button>
+			</div>
 
 
 
@@ -218,8 +222,8 @@
 		</div>
 			
 	</main>
-	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="~/FrontstageTemplate/assets/dist/js/self_n.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
