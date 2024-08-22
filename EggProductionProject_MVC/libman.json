@@ -19,7 +19,7 @@
       "destination": "wwwroot/font-awesome/"
     },
     {
-      "library": "bootstrap@5.1.0",
+      "library": "bootstrap@5.1.3",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "js/bootstrap.min.js",
