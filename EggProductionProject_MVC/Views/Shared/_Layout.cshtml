@@ -32,7 +32,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Frontstage" asp-controller="FtHome" asp-action="Index">前台首頁</a>
                         </li>
-                    </ul>
+
+
+                        
+
+						<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Frontstage" asp-controller="FtHome" asp-action="Index">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <ul>
+                                        @foreach (var claim in User.Claims)
+                                        {
+                                            <li>@claim.Type: @claim.Value</li>
+                                        }
+                                    </ul>
+                                }
+                            </a>
+						</li>
+
+
+
+
+
+					</ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

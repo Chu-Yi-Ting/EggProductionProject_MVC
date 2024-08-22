@@ -56,7 +56,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
         //點下確認後修改該名會員的資料
         [HttpPost]
-        public IActionResult UpdateMember(MemberVM model, IFormFile profilePic)
+        public IActionResult UpdateMember(MemberVM model, IFormFile ProfilePic)
         {
             if (ModelState.IsValid)
             {
@@ -75,11 +75,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 member.IsBlocked = model.IsBlocked;
 
                 // 处理上传的头像图片
-                if (profilePic != null && profilePic.Length > 0)
+                if (ProfilePic != null && ProfilePic.Length > 0)
                 {
                     using (var ms = new MemoryStream())
                     {
-                        profilePic.CopyTo(ms);
+                        ProfilePic.CopyTo(ms);
                         member.ProfilePic = ms.ToArray();  // 假设 ProfilePic 是 byte[] 类型
                     }
                 }
@@ -94,7 +94,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-        public async Task<IActionResult> CreateSave([FromForm] MemberVM model ,IFormFile profilePic)
+        public async Task<IActionResult> CreateSave([FromForm] MemberVM model ,IFormFile ProfilePic)
         {
             if (ModelState.IsValid)
             {
@@ -112,11 +112,11 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 member.IsChickFarm = model.IsChickFarm;
                 member.IsBlocked = model.IsBlocked;
 
-                if (model.ProfilePicFile != null)
+                if (ProfilePic != null)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        await model.ProfilePicFile.CopyToAsync(memoryStream);
+                        await ProfilePic.CopyToAsync(memoryStream);
                         member.ProfilePic = memoryStream.ToArray(); // 将文件内容转换为 byte[]
                     }
                 }
@@ -225,13 +225,22 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 );
 
             ViewData["IsBlocked"] = new SelectList(_context.Members, "IsBlocked", "IsBlocked");
+            var userName = User.Identity.Name; // 應該獲取到名稱
+            var claims = User.Claims.ToList(); // 查看 Claims 集合
+
 
             return View(await eggPlatformContext.ToListAsync());
 
         }
 
-        // GET: Backstage/Members/Details/5
-        public async Task<IActionResult> Details(int? id)
+		public IActionResult LoginSuccessPage()
+		{
+			ViewData["ShoppingRankNo"] = new SelectList(_context.ShoppingRanks, "ShoppingRankNo", "ShoppingRankNo");
+			return View();
+		}
+
+		// GET: Backstage/Members/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

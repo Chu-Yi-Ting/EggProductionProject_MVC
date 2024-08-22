@@ -25,9 +25,15 @@ builder.Services.AddDbContext<EggPlatformContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/AccountLogin/Login"; // 登入頁面路徑
-                options.LogoutPath = "/AccountLogin/Logout"; // 登出頁面路徑
-            });
+                options.Cookie.Name = "EggProductionProject_MVCAuthCookie";  // 確保全應用的 Cookie 名稱一致
+                options.Cookie.Path = "/";  // 將 Cookie 的路徑設置為根，這樣它在所有 Area 中都有效
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.LoginPath = "/AccountLogin/Login";  // 登入頁面路徑
+                options.LogoutPath = "/AccountLogin/Logout";  // 登出頁面路徑
+				options.Cookie.SameSite = SameSiteMode.None;
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // 設置為 None 時需要 Secure
+			});
 
         builder.Services.AddControllersWithViews();
 var authProperties = new AuthenticationProperties
@@ -65,6 +71,13 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+//app.UseCookiePolicy(new CookiePolicyOptions
+//{
+//    MinimumSameSitePolicy = SameSiteMode.Lax, // 或者 None
+//});
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -82,6 +95,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//會員要吃到name要這行
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

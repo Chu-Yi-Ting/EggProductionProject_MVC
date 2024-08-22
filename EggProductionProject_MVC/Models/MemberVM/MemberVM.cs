@@ -20,7 +20,7 @@ namespace EggProductionProject_MVC.Models.MemberVM
         [Display(Name = "會員生日")]
 
         public DateOnly? BirthDate { get; set; }
-        [Display(Name = "會員身分(雞農?)")]
+        [Display(Name = "會員身分")]
 
         public int? IsChickFarm { get; set; }
         [Display(Name = "會員購物等級")]

@@ -1,0 +1,11 @@
+﻿@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<EggUser> SignInManager
+@inject UserManager<EggUser> UserManager
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authorization
+
+@* <h1>歡迎回來， @User.FindFirstValue(ClaimTypes.Name)!</h1> *@
+<h1>歡迎回來， Alice!</h1>

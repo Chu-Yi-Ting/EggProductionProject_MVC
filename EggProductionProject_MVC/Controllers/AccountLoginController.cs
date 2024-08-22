@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
+using Microsoft.Identity.Client;
 
 
 namespace EggProductionProject_MVC.Controllers
@@ -13,10 +14,15 @@ namespace EggProductionProject_MVC.Controllers
     public class AccountLoginController : Controller
     {
         private readonly EggPlatformContext _context;
-        public AccountLoginController(EggPlatformContext context)
+		private readonly ILogger<AccountLoginController> _logger; // 注入 ILogger
+
+
+
+		public AccountLoginController(EggPlatformContext context, ILogger<AccountLoginController> logger)
         {
             _context = context;
-        }
+			_logger = logger; // 赋值 logger
+		}
 
         public IActionResult Index()
         {
@@ -53,14 +59,30 @@ namespace EggProductionProject_MVC.Controllers
 
                     var authProperties = new AuthenticationProperties
                     {
-                        // 在這裡可以自訂選項，例如是否持久化 Cookie
+                        IsPersistent = true // 設置 Cookie 持久化
+
+
+                        ,ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // 設置過期時間
                     };
 
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
 
-                    return RedirectToAction("Index", "Members",  new { area = "Backstage" });
+                    try {  await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties); }
+                    catch (Exception ex)
+{
+						_logger.LogError(ex, "SignInAsync 執行過程中發生異常");
+					}
+
+
+
+                    // 檢查身份驗證是否成功
+
+                    // 登錄成功
+                    return RedirectToAction("LoginSuccessPage", "Members", new { area = "Backstage" });
+                    
+
+
                 }
                 else
                 {
