@@ -4,14 +4,10 @@
 <div class="col-12">
     <div class="page-title">
         <h5 class="mb-3 d-flex justify-content-between w-100">
-            訂單管理
+            物流設定
             <span class="d-flex">
-                <button class="btn light-btn-n" type="button">
-                    物流開放
-                </button>
-                <button class="btn light-btn-n ms-3" type="button">
-                    新增宅配
-                </button>
+                <a class="btn light-btn-n btn-sm-dbrs" data-bs-toggle="modal" href="#exampleModalToggle5" role="button">物流開放</a>
+                <a class="btn  light-btn-n btn-sm-dbrs ms-3" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
             </span>
         </h5>
     </div>
@@ -142,3 +138,230 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title" id="exampleModalToggleLabel">
+                    新增物流
+                    <span class="ms-3">
+                        <nav class="nav">
+                            <ul class="nav tab_n" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active"
+                                       id="home-tab"
+                                       data-bs-toggle="tab"
+                                       href="#home"
+                                       role="tab"
+                                       aria-controls="home"
+                                       aria-selected="true">新增超商</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link"
+                                       id="profile-tab"
+                                       data-bs-toggle="tab"
+                                       href="#profile"
+                                       role="tab"
+                                       aria-controls="profile"
+                                       aria-selected="false">新增宅配</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
+                        <div class="form-control-n">
+                            <div class="title mb-2 d-flex justify-content-between">
+                                <div class="allcoin">收貨人姓名<span></span></div>
+                            </div>
+                            <input class="form-control form-control-sm"
+                                   type="text"
+                                   placeholder=""
+                                   aria-label="" />
+                        </div>
+                        <div class="form-control-n mt-3">
+                            <div class="title mb-2 d-flex justify-content-between">
+                                <div class="allcoin">聯繫方式<span></span></div>
+                            </div>
+                            <input class="form-control form-control-sm"
+                                   type="text"
+                                   placeholder=""
+                                   aria-label="" />
+                        </div>
+
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active"
+                                 id="home"
+                                 role="tabpanel"
+                                 aria-labelledby="home-tab">
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">門市選擇<span></span></div>
+                                    </div>
+                                    <button class="btn light-btn-n" type="button">
+                                        新增 / 調整地址
+                                    </button>
+                                </div>
+                                <div class="accordion-item mt-4">
+                                    <div class="accordion-body">
+                                        <div class="other-info d-flex flex-column flex-lg-row py-3">
+                                            <div class="w-100 mx-auto">
+                                                <div class="part form-control-n">
+                                                    <div class="carrier-type w-100 d-flex justify-content-between pb-2">
+                                                        <p class="d-flex align-items-center mb-0">
+                                                            7-ELEVEN<span>超商</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="carrier-address d-flex flex-column flex-xl-row">
+                                                        <p class="address me-2 m-0">
+                                                            <span class="me-1">
+                                                                忠孝東門市 |
+                                                            </span>
+                                                            <span class="me-1 mb-2">225436</span><br />
+                                                            台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade"
+                                 id="profile"
+                                 role="tabpanel"
+                                 aria-labelledby="profile-tab">
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">取貨地址<span></span></div>
+                                    </div>
+                                    <input class="form-control form-control-sm"
+                                           type="text"
+                                           placeholder=""
+                                           aria-label="" />
+                                </div>
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">配送服務<span></span></div>
+                                    </div>
+                                    <select class="select-n" name="state">
+                                        <option value="AL">常溫</option>
+
+                                        <option value="WY">低溫</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-card bg-none mt-4">
+                            <div class="cart-card-item p-0">
+                                <input type="checkbox"
+                                       class="hidden-box"
+                                       id="s1_p202409010003"
+                                       checked="" />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box ms-0 me-2"></span>
+                                    <span class="checktext">設為預設地址</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="w-100 submit mt-4 mb-3">
+                            <button class="btn dark-btn-n" type="button">
+                                確定新增
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle5"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    物流開放設定
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="d-flex carries_open mt-2">
+                        <div class="d-flex w-100 align-items-center">
+                            <p class="m-0">宅配</p>
+                            <img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
+                                 alt="" />
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="flexSwitchCheckChecked"
+                                   checked />
+                        </div>
+                    </div>
+
+                    <div class="d-flex carries_open my-4">
+                        <div class="d-flex w-100 align-items-center">
+                            <p class="m-0">超商</p>
+                            <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png"
+                                 alt="" />
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="flexSwitchCheckChecked"
+                                   checked />
+                        </div>
+                    </div>
+
+                    <div class="w-100 submit pt-2 mb-3">
+                        <button class="btn dark-btn-n" type="button">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const elements = document.querySelectorAll(".select-n");
+            elements.forEach(function (element) {
+                new Choices(element, {
+                    searchEnabled: false,
+                    itemSelectText: "",
+                });
+            });
+        });
+    </script>
+}

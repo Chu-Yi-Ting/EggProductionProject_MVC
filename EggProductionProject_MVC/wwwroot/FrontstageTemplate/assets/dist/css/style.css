@@ -180,11 +180,25 @@ html body {
   box-shadow: none;
 }
 
+.btn-sm-dbrs {
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 12px;
+  font-weight: 600;
+}
+.btn-sm-dbrs:hover {
+  border: 1px solid;
+}
+
 .form-control:focus,
 .btn-check:focus + .btn,
 .btn:focus,
 .navbar-toggler:focus {
   box-shadow: none;
+}
+
+.bg-none {
+  background-color: transparent !important;
 }
 
 .offcanvas.offcanvas-end {
@@ -213,13 +227,9 @@ html body {
   font-size: 16px;
   margin-top: 8px;
 }
-
-    .offcanvas .offcanvas-body li .nav-link:hover {
-        color: var(--main-color)
-    }
-
-
-
+.offcanvas .offcanvas-body li .nav-link:hover {
+  color: var(--main-color);
+}
 .offcanvas .offcanvas-body li span {
   font-size: 12px;
   color: #cfcfcf;
@@ -587,9 +597,9 @@ h1 b {
   display: box; /* 对标准兼容的浏览器 */
   -webkit-box-orient: vertical; /* 对旧版 WebKit 内核浏览器 */
   -moz-box-orient: vertical; /* 对 Firefox */
-  -ms-box-orient: vertical; /* 对 Internet Explorer */
-  -o-box-orient: vertical; /* 对 Opera */
-  box-orient: vertical; /* 对标准兼容的浏览器 */
+  /*-ms-box-orient: vertical;*/ /* 对 Internet Explorer */
+  /*-o-box-orient: vertical;*/ /* 对 Opera */
+  /*box-orient: vertical;*/ /* 对标准兼容的浏览器 */
   -webkit-line-clamp: 2; /* 对旧版 WebKit 内核浏览器 */
   overflow: hidden; /* 隐藏溢出的文本 */
   text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
@@ -682,16 +692,16 @@ h1 b {
   color: var(--main-color);
   display: flex;
 }
-.other-info .track-info button {
-  margin-left: 4px;
-  padding: 0px 6px;
-  border: 2px solid var(--main-color);
-  border-radius: 4px;
-}
-.other-info .track-info button p {
-  font-size: 11px;
-  font-weight: 600;
-}
+    .other-info .track-info button, .other-info .track-info a {
+        margin-left: 4px;
+        padding: 0px 6px;
+        border: 2px solid var(--main-color);
+        border-radius: 4px;
+    }
+        .other-info .track-info button p, .other-info .track-info a p {
+            font-size: 11px;
+            font-weight: 600;
+        }
 .other-info .carrier-type {
   font-size: 14px;
   font-weight: 800;
@@ -701,7 +711,7 @@ h1 b {
   border: 2px solid var(--main-color);
   border-radius: 40px;
   padding: 0px 6px;
-  font-size: 8px;
+  font-size: 10px;
   margin-left: 4px;
   color: var(--main-color);
 }
@@ -940,6 +950,7 @@ h1 b {
 }
 .store-body-outer .pagebody-store {
   margin: 40px 48px 40px;
+  max-width: 1280px;
 }
 .store-body-outer .page-title h5 {
   color: var(--main-color);
@@ -1122,6 +1133,154 @@ h1 b {
   color: #767676;
 }
 
+.modal-n .modal-header {
+  position: relative;
+}
+.modal-n .modal-header .modal-title {
+  color: var(--main-color);
+  display: flex;
+  align-items: baseline;
+  font-size:18px;
+}
+.modal-n .modal-header .modal-title::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 40%;
+  background-color: var(--main-color);
+  position: absolute;
+  left: 8px;
+  top: 60%;
+  transform: translateY(-50%);
+  margin-right: 8px;
+}
+.modal-n .modal-header .modal-title .nav .nav-link {
+  color: #85827D;
+  font-size: 13px;
+  padding: 0.4rem 0.3rem;
+  margin: 0px 0.5rem;
+}
+.modal-n .modal-header .modal-title .nav .nav-link.active {
+  border-bottom: 2px solid var(--main-color);
+}
+.modal-n .modal-header .btn-close {
+  position: absolute;
+  right: 4px;
+  width: 0em;
+  height: 0em;
+}
+.modal-n .modal-header .btn-close:focus {
+  box-shadow: none;
+}
+.modal-n .modal-header .btn-close:hover {
+  color: var(--main-color);
+}
+.modal-n .modal-body .scroll {
+  max-height: 115px;
+  overflow-y: auto;
+}
+
+    .modal-n .modal-body .scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .modal-n .modal-body .scroll::-webkit-scrollbar-thumb {
+        background-color: #bdbdbd;
+        border-radius: 4px;
+    }
+
+        .modal-n .modal-body .scroll::-webkit-scrollbar-thumb:hover {
+            background-color: #8c8c8c;
+        }
+
+    .modal-n .modal-body .scroll::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+        border-radius: 4px;
+    }
+
+.modal-n .modal-body .form-control-n button {
+  font-size: 12px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid;
+  font-weight: 600;
+}
+.modal-n .modal-body .check--label-box {
+  border-radius: 4px;
+}
+.modal-n .modal-body .checktext {
+  display: flex;
+  color: #737373;
+  font-size: 12px;
+  font-weight: 600;
+}
+.modal-n .modal-body .checktext img {
+  width: 15px;
+  margin-left: 11px;
+  margin-top: 2px;
+}
+.modal-n .modal-body .checktext.text-gray {
+  color: #B1B1B1;
+}
+.modal-n .modal-body .checktext-money {
+  color: var(--main-color);
+  font-weight: 600;
+  font-size: 16px;
+}
+.modal-n .modal-body .accordion-item .accordion-button {
+  padding: 0.7rem 1rem;
+}
+.modal-n .modal-body .accordion-item .accordion-button img {
+  width: 70px;
+}
+.modal-n .modal-body .form-check-input[type=radio] {
+  margin-top: 23px;
+  margin-left: -15px;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+}
+.modal-n .modal-body .form-check-input[type=radio]:checked, .modal-n .modal-body .form-check-input[type=radio]:focus {
+  background-color: #fff;
+  border-color: var(--main-color);
+  box-shadow: none;
+}
+.modal-n .modal-body .form-check-input[type=radio]:checked[type=radio] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23B8860B'/%3e%3c/svg%3e");
+}
+.modal-n .modal-body .form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  background-color: #afafaf;
+  box-shadow: none;
+  border-color: #ffffff;
+}
+.modal-n .modal-body .form-switch .form-check-input:checked {
+    background-color: var(--main-color);
+    border-color: transparent;
+}
+.modal-n .modal-body .carries_open {
+  border: 1px solid var(--main-color);
+  padding: 0.3rem 1rem;
+  align-items: center;
+  border-radius: 4px;
+}
+.modal-n .modal-body .carries_open p {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--main-color);
+}
+.modal-n .modal-body .carries_open img {
+  width: 70px;
+  height: fit-content;
+  margin-left: 15px;
+}
+.modal-n .modal-body .submit button {
+  border-radius: 4px;
+  margin-left: auto;
+  font-size: 14px;
+  min-width: 80px;
+}
+
 @media (max-width: 1200px) {
   .step-nav .step .step-text p {
     font-size: 14px;
@@ -1296,9 +1455,9 @@ h1 b {
     display: box; /* 对标准兼容的浏览器 */
     -webkit-box-orient: vertical; /* 对旧版 WebKit 内核浏览器 */
     -moz-box-orient: vertical; /* 对 Firefox */
-    -ms-box-orient: vertical; /* 对 Internet Explorer */
-    -o-box-orient: vertical; /* 对 Opera */
-    box-orient: vertical; /* 对标准兼容的浏览器 */
+    /*-ms-box-orient: vertical;*/ /* 对 Internet Explorer */
+    /*-o-box-orient: vertical;*/ /* 对 Opera */
+    /*box-orient: vertical;*/ /* 对标准兼容的浏览器 */
     -webkit-line-clamp: 1; /* 对旧版 WebKit 内核浏览器 */
     overflow: hidden; /* 隐藏溢出的文本 */
     text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
@@ -1336,6 +1495,9 @@ h1 b {
   }
   .store-body-outer .input-group-n .btn {
     width: 80px;
+  }
+  .modal-n .modal-header .modal-title {
+    font-size: 16px;
   }
 }
 @media (min-width: 1500px) {
