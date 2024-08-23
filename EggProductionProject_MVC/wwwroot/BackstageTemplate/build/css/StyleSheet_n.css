@@ -1,0 +1,157 @@
+﻿body {
+}
+
+.table-control-n {
+    overflow-x: scroll;
+    width: 100%;
+    clear: left;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar, .dt-scroll-body::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-track,
+.dt-scroll-body::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: rgba(0,0,0,0.06);
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-thumb, .dt-scroll-body::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: rgba(0,0,0,0.12);
+    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody, div.dt-container.dt-empty-footer .dt-scroll-body {
+    border-bottom: none;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: #fff;
+    color: var(--bs-table-striped-color);
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc {
+    padding-right: 10px;
+}
+
+table.dataTable > tbody > tr > td {
+    padding: 16px 10px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+    text-align: center;
+}
+
+.table-primary {
+    --bs-table-bg: #446188;
+    --bs-table-striped-bg: #c5d7f2;
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #bacbe6;
+    --bs-table-active-color: #000;
+    --bs-table-hover-bg: #bfd1ec;
+    --bs-table-hover-color: #000;
+    color: #fff;
+    border-color: #bacbe6;
+}
+
+.table-hover > tbody > tr:hover {
+    --bs-table-accent-bg: var(--bs-table-hover-bg);
+    color: var(--bs-table-hover-color);
+}
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    padding-bottom: 20px;
+}
+
+table.dataTable thead .sorting {
+    text-align: center;
+}
+
+.x_title h4 {
+    font-size: 22px;
+    font-weight: 600;
+    /*margin-bottom: 0px;*/
+   
+}
+
+.big-title {
+    font-size: 18px;
+    margin: 20px 40px 0px 40px;
+    width: auto;
+    font-weight: 600;
+}
+
+.table > :not(:last-child) > :last-child > * {
+    background: var(--bs-table-bg);
+    white-space: nowrap;
+    text-align: center;
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order {
+    right: 4px;
+}
+
+
+
+.dashboard_graph .x_title {
+    padding: 0px;
+    margin: 0px;
+/*    border-bottom: none;*/
+    border-bottom: 1px solid #E6E9ED;
+}
+
+.title-botton {
+    margin: 0px;
+    padding: 0px 7.5px;
+    background: white;
+    color: cadetblue;
+    border: 1px solid cadetblue;
+}
+
+.btn-check:active + .btn-primary:focus, .btn-check:checked + .btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show > .btn-primary.dropdown-toggle:focus, .btn-check:focus + .btn, .btn:focus {
+    box-shadow: 0 0 0 .25rem rgb(0 0 0 / 0%);
+}
+
+.title-botton:hover {
+    color: #398ee2;
+    background: #4f6185;
+    border: 1px solid transparent;
+    color: white;
+}
+
+.dt-scroll-headInner{
+    /*width:100%!important;*/
+}
+
+.tab_n .nav-link {
+    color: currentColor;
+    font-size: 14px;
+    font-weight: 500;
+}
+    .tab_n .nav-link.active {
+
+        border-bottom: 1.5px solid #4f6185;
+    }
+
+    
+
+.tab_n .nav-item {
+    display: flex;
+    align-items: center;
+    margin-left:  20px;
+}
+
+.bd-r-4 {
+    border-radius: 4px;
+}

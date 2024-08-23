@@ -1,0 +1,75 @@
+﻿@model EggProductionProject_MVC.Models.Reply
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>編輯回覆</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ReplySid" />
+            <div class="form-group">
+                <label asp-for="ArticleSid" class="control-label"></label>
+                <input class="form-control" value="@ViewBag.ArticleTitle" readonly />
+                <input type="hidden" asp-for="ArticleSid" />
+                <span asp-validation-for="ArticleSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleCreaterSid" class="control-label"></label>
+                <input class="form-control" value="@ViewBag.ArticleCreaterName" readonly />
+                <input type="hidden" asp-for="ArticleCreaterSid" />
+                <span asp-validation-for="ArticleCreaterSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReplyInfo" class="control-label"></label>
+                <input asp-for="ReplyInfo" class="form-control" readonly />
+                <span asp-validation-for="ReplyInfo" class="text-danger"></span>
+
+                @*             <div class="form-group">
+                <label asp-for="TagMemberNo" class="control-label"></label>
+                <input asp-for="TagMemberNo" class="form-control" />
+                <span asp-validation-for="TagMemberNo" class="text-danger"></span>
+                </div> *@
+                <div class="form-group">
+                    <input asp-for="ReplyDate" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <input asp-for="ReplyUpdate" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <input asp-for="EditTimes" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublicStatusNo" class="control-label"></label>
+                    <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                    <span asp-validation-for="PublicStatusNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeleteOrNot" class="control-label"></label>
+                    <select asp-for="DeleteOrNot" class="form-control" asp-items="ViewBag.DeleteOrNot"></select>
+                    <span asp-validation-for="DeleteOrNot" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> 保存編輯
+                    </button>
+                </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> 離開編輯
+    </a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

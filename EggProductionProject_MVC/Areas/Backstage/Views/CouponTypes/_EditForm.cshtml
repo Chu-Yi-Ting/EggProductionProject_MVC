@@ -1,0 +1,68 @@
+﻿@model EggProductionProject_MVC.Models.CouponType
+
+<form id="editForm" class="row" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CouponTypeNo)
+    @Html.HiddenFor(model => model.EmployeeSid)
+    @* <input asp-for="CouponTypeNo"  />  *@
+    <div class="form-group col-lg-4 mb-3">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control bd-r-4" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group col-lg-4 mb-3">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control bd-r-4" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group col-lg-4 mb-3">
+        <label asp-for="Minimum" class="control-label"></label>
+        <input asp-for="Minimum" class="form-control bd-r-4" />
+        <span asp-validation-for="Minimum" class="text-danger"></span>
+    </div>
+    <div class="form-group col-lg-4 mb-3">
+        <label asp-for="PublicStatusNo" class="control-label"></label>
+        <select asp-for="PublicStatusNo" class="form-control bd-r-4 form-select" asp-items="ViewBag.PublicStatusNo">
+
+        </select>
+    </div>
+
+   
+    <div class="form-group col-lg-4 mb-3">
+        <label asp-for="UseAlone" class="control-label bd-r-4"></label>
+        <select asp-for="UseAlone" class="form-control form-select" asp-items="ViewBag.UseAloneOptions"></select>
+        <span asp-validation-for="UseAlone" class="text-danger"></span>
+    </div>
+    <div class="form-group col-lg-4 mb-3">
+        <label class="control-label" for="Type">券種性質</label>
+        <select class="form-control bd-r-4 form-select" id="sel_Type" name="Type">
+            <option value="show">限時</option>
+            <option value="noshow" selected>常駐</option>
+        </select>
+    </div>
+
+    <div class="form-group d-none col-lg-4 mb-3">
+        <label asp-for="StartTime" class="control-label bd-r-4"></label>
+        <input asp-for="StartTime" class="form-control" />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+    <div class="form-group d-none col-lg-4 mb-3">
+        <label asp-for="EndTime" class="control-label bd-r-4"></label>
+        <input asp-for="EndTime" class="form-control" />
+        <span asp-validation-for="EndTime" class="text-danger"></span>
+    </div>
+   
+
+    <div class="form-group col-12 " style="text-align: end; margin-top:20px">
+        <button type="submit" class="btn btn-primary me-0 title-botton py-1 px-2" id="saveChangesButton">Save</button>
+    </div>
+    <!-- Add other form fields similarly -->
+    
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

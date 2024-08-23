@@ -1,0 +1,68 @@
+﻿@model EggProductionProject_MVC.Models.ProductItem
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles {
+
+    <style>
+        label {
+            font-size: 20px;
+        }
+
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .btn {
+            margin-top: 10px; /* 为按钮添加额外的顶部间距 */
+        }
+    </style>
+
+}
+
+<h4 class="bold-text">新增分類項目</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ItemNo" class="control-label">項目編號</label>
+                <input asp-for="ItemNo" class="form-control" value="@ViewData["ItemNumber"]" readonly />
+                <span asp-validation-for="ItemNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubcategoryNo" class="control-label">產品分類</label>
+                <select asp-for="SubcategoryNo" class="form-select" asp-items="ViewBag.SubcategoryNo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemName" class="control-label">項目名稱</label>
+                <input asp-for="ItemName" class="form-control" />
+                <span asp-validation-for="ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemDescription" class="control-label">項目描述</label>
+                <input asp-for="ItemDescription" class="form-control" />
+                <span asp-validation-for="ItemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fa-solid fa-save"></i> 儲存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+        <i class="fa-solid fa-arrow-left"></i> 回分類項目清單
+    </button>    
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

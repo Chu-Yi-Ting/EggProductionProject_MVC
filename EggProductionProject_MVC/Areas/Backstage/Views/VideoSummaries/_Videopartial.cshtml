@@ -1,0 +1,21 @@
+﻿
+@* 
+<video id="video" src="@Url.Action("GetVideopath","VideoApi",new {id=Model.VideoSid})" *@
+<video id="video" src="@Url.Action("GetVideopath","VideoApi",new {id=Model.VideoSid})" type="video/mp4" width="320" height="240" controls></video>
+@* @if (Model.MoviePath != null) 
+{
+} 
+ else
+{
+    <img src="~/videoimage/novideo.png" width="320" height="240"/>
+} *@
+
+
+@section Scripts {
+    
+    @* <script>
+        const id = Model.VideoSid
+            ("#video").attr("src", `@Url.Content("/Backstage/VideoApi/GetVideopath/")${id}`)
+    </script> *@
+
+}

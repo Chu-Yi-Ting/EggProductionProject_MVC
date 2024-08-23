@@ -1,0 +1,36 @@
+﻿@model EggProductionProject_MVC.Models.ProductItem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubcategoryNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubcategoryNoNavigation.SubcategoryNo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ItemNo">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

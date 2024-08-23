@@ -1,0 +1,94 @@
+﻿@model EggProductionProject_MVC.Models.VideoSummary
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>VideoSummary</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.VideoDuration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VideoDuration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VideoTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VideoTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InformationColumn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InformationColumn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UploadDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UploadDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimesWatched)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimesWatched)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatorS.MemberName)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.MoviePath)
+        </dt>
+        <dd>
+            <partial name="_Videopartial" model="@Model"></partial>
+
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Advertised)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Advertised)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VideoCoverImage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VideoCoverImage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatorS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatorS.CreatorSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NatureS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NatureS.NatureSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicStatusNoNavigation.PublicStatusNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ScreenTextS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ScreenTextS.ScreenTextSid)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.VideoSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,187 @@
+﻿@model EggProductionProject_MVC.Models.VideoSummary
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>編輯</h2>
+
+<h4>影片編輯</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            
+            <input type="hidden" asp-for="VideoSid" />
+            <div class="form-group">
+                <label asp-for="CreatorSid" class="control-label"></label>
+                <input asp-for="CreatorSid" class="form-control" disabled />
+                <span asp-validation-for="CreatorSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatorSid" class="control-label">會員名稱</label>
+                <select asp-for="CreatorSid" class="form-control" asp-items="ViewBag.CreatorSid" disabled></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoTitle" class="control-label"></label>
+                <input asp-for="VideoTitle" class="form-control" />
+                <span asp-validation-for="VideoTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoDuration" class="control-label"></label>
+                <input asp-for="VideoDuration" class="form-control" type="text" disabled/>
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="InformationColumn" class="control-label"></label>
+                <input asp-for="InformationColumn" class="form-control" />
+                <span asp-validation-for="InformationColumn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploadDate" class="control-label"></label>
+                <input asp-for="UploadDate" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="TimesWatched" class="control-label"></label>
+                <input asp-for="TimesWatched" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="MoviePath" class="control-label"></label>
+                <partial name="_Videopartial" model="@Model"></partial>
+                <input asp-for="MoviePath" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Advertised" class="control-label"></label>
+                <input asp-for="Advertised" type="checkbox" class="form-check-input form-check-input-lg" />
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoCoverImage" class="control-label"></label>
+                <partial name="_Imagepartial" model="@Model"></partial>
+                <input asp-for="VideoCoverImage" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NatureSid" class="control-label"></label>
+                <select asp-for="NatureSid" class="form-control" asp-items="ViewBag.NatureSid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScreenTextSid" class="control-label"></label>
+                <select asp-for="ScreenTextSid" class="form-control" asp-items="ViewBag.ScreenTextSid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdSource" class="control-label"></label>
+                <input asp-for="AdSource" type="checkbox" class="form-check-input form-check-input-lg" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicStatusNo" class="control-label"></label>
+                <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="儲存" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">返回首頁</a>
+</div>
+
+@section Styles {
+    <style>
+        .form-check-input-lg {
+            transform: scale(1.5);
+            width: 1.5rem;
+            height: 1.5rem;
+            margin:1.5rem;
+        }
+    </style>
+
+}
+
+
+
+
+@section Scripts {
+   
+    <script>
+        var videoData = null;
+        $("#MoviePath").on("change", function () {
+            if (this.files[0] != null) {
+                var allowType = "video.*";
+                var file = this.files[0];
+                if (file.type.match(allowType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        videoData = this.result;
+                        var blob = new Blob([videoData], { type: "Video/mp4" });
+                        var urlCreator = window.URL || window.webkitURL;
+                        var videoUrl = urlCreator.createObjectURL(blob);
+                        $("#video").attr("src", videoUrl);
+                    };
+                    reader.readAsArrayBuffer(file);
+                    $("#btncilck").prop("disabled", false);
+                }
+                else {
+                    alert("不支援檔案上傳類型");
+                    $("#MoviePath").val("");
+                    $("#video").attr("src","");
+                    $("#btncilck").prop("disabled", true);
+                }
+            }
+        })
+
+        
+
+         document.addEventListener('DOMContentLoaded', function () {
+
+            var video = document.querySelector("#video")
+            var videoduration = document.querySelector('#VideoDuration')
+
+
+            video.addEventListener('loadedmetadata', function () {
+
+                var duration = video.duration;
+                var minutes = Math.floor(duration / 60)
+                var seconds = Math.floor(duration % 60)
+
+                videoduration.value = minutes+":"+seconds
+            });
+
+        });
+
+       
+
+        var imageData = null;
+        $("#VideoCoverImage").on("change", function () {
+            if (this.files[0] != null) {
+                var allowType = "image.*";
+                var file = this.files[0];
+                if (file.type.match(allowType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        imageData = this.result;
+                        var blob = new Blob([imageData], { type: "image/jpeg" });
+                        var urlCreator = window.URL || window.webkitURL;
+                        var imageUrl = urlCreator.createObjectURL(blob);
+                        $("#Image").attr("src", imageUrl);
+                    };
+                    reader.readAsArrayBuffer(file);
+                    $("#btncilck").prop("disabled", false);
+                }
+                else {
+                    alert("不支援檔案上傳類型");
+                    $("#Image").attr("src", "");
+                    $("#VideoCoverImage").val("");
+                    
+                }
+            }
+        })
+
+
+    </script>
+
+    
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

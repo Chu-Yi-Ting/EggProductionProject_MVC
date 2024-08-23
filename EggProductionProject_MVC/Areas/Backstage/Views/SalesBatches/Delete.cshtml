@@ -1,0 +1,67 @@
+﻿@model EggProductionProject_MVC.Areas.Backstage.ViewModels.SaleViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@section Styles {
+
+    <style>
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        dt {
+            font-size: 24px;
+        }
+
+        dd {
+            font-size: 20px;
+            margin: 16px;
+            
+        }
+    </style>
+
+}
+
+<div>
+    <h4 class="bold-text">刪除特賣活動</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            活動日期
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PeriodDate)
+        </dd>
+        <dt>
+            開始時間
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            結束時間
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            運作狀態
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RunningStatusDescription)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PeriodSid" />
+        <button type="submit" class="btn btn-secondary">
+            <i class="fa-solid fa-trash-alt"></i> 刪除
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+            <i class="fa-solid fa-arrow-left"></i> 回特賣活動清單
+        </button>
+    </form>
+</div>

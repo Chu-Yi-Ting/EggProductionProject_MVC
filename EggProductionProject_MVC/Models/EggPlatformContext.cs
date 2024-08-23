@@ -32,7 +32,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<CarrierOpen> CarrierOpens { get; set; }
 
-    public virtual DbSet<CarrierWay> CarrierWays { get; set; }
+    public virtual DbSet<CarrierWays> CarrierWays { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -44,7 +44,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<ChickLotNo> ChickLotNos { get; set; }
 
-    public virtual DbSet<CoinUseArea> CoinUseAreas { get; set; }
+    public virtual DbSet<CoinUseAreas> CoinUseAreas { get; set; }
 
     public virtual DbSet<Collect> Collects { get; set; }
 
@@ -94,6 +94,8 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<Nature> Natures { get; set; }
 
+    public virtual DbSet<NormalizedDatum> NormalizedData { get; set; }
+
     public virtual DbSet<Notify> Notifies { get; set; }
 
     public virtual DbSet<NotifyType> NotifyTypes { get; set; }
@@ -102,9 +104,9 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-    public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+    public virtual DbSet<OrderStatuses> OrderStatuses { get; set; }
 
-    public virtual DbSet<Payment> Payments { get; set; }
+    public virtual DbSet<Payments> Payments { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -125,6 +127,8 @@ public partial class EggPlatformContext : DbContext
     public virtual DbSet<ReportReason> ReportReasons { get; set; }
 
     public virtual DbSet<SalesBatch> SalesBatches { get; set; }
+
+    public virtual DbSet<SalesStatus> SalesStatuses { get; set; }
 
     public virtual DbSet<ScreenSummary> ScreenSummaries { get; set; }
 
@@ -158,9 +162,16 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.AdvertismentSid);
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateAdBehavior"));
+
+            entity.Property(e => e.AdContent).HasMaxLength(50);
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UploadTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Advertisments)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Advertisments_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Advertisments)
                 .HasForeignKey(d => d.StoreSid)
@@ -285,11 +296,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_CarrierOpens_Stores");
         });
 
-        modelBuilder.Entity<CarrierWay>(entity =>
+        modelBuilder.Entity<CarrierWays>(entity =>
         {
             entity.HasKey(e => e.CarrierWayNo);
 
-            entity.Property(e => e.CarrierWay1)
+            entity.Property(e => e.CarrierWay)
                 .HasMaxLength(20)
                 .HasColumnName("CarrierWay");
             entity.Property(e => e.Price).HasColumnType("money");
@@ -373,11 +384,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_ChickLotNo_ChickHouse");
         });
 
-        modelBuilder.Entity<CoinUseArea>(entity =>
+        modelBuilder.Entity<CoinUseAreas>(entity =>
         {
             entity.HasKey(e => e.CoinUseAreaNo).HasName("PK_CoinChanges");
 
-            entity.Property(e => e.CoinUseArea1)
+            entity.Property(e => e.CoinUseArea)
                 .HasMaxLength(50)
                 .HasColumnName("CoinUseArea");
         });
@@ -439,6 +450,7 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("Creator");
 
             entity.Property(e => e.Image).HasColumnType("image");
+            entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.PersonalProfile).HasMaxLength(50);
 
             entity.HasOne(d => d.MemberS).WithMany(p => p.Creators)
@@ -456,6 +468,9 @@ public partial class EggPlatformContext : DbContext
                 .HasNoKey()
                 .ToView("DailyChickAmountsRate");
 
+            entity.Property(e => e.HouseName).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.SubcategoryName).HasMaxLength(50);
             entity.Property(e => e.UnQamount).HasColumnName("UnQAmount");
             entity.Property(e => e.UnQrate).HasColumnName("UnQRate");
         });
@@ -497,8 +512,7 @@ public partial class EggPlatformContext : DbContext
 
             entity.ToTable("Edit");
 
-            entity.Property(e => e.EditAfter).HasMaxLength(500);
-            entity.Property(e => e.EditBefore).HasMaxLength(500);
+            entity.Property(e => e.EditTime).HasColumnType("datetime");
 
             entity.HasOne(d => d.ArticleS).WithMany(p => p.Edits)
                 .HasForeignKey(d => d.ArticleSid)
@@ -732,6 +746,13 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ViedoNature).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<NormalizedDatum>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Normalized_Data");
+        });
+
         modelBuilder.Entity<Notify>(entity =>
         {
             entity.HasKey(e => e.NotifySid);
@@ -806,20 +827,20 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_OrderDetails_Products1");
         });
 
-        modelBuilder.Entity<OrderStatus>(entity =>
+        modelBuilder.Entity<OrderStatuses>(entity =>
         {
             entity.HasKey(e => e.OrderStatusNo);
 
-            entity.Property(e => e.OrderStatus1)
+            entity.Property(e => e.OrderStatus)
                 .HasMaxLength(50)
                 .HasColumnName("OrderStatus");
         });
 
-        modelBuilder.Entity<Payment>(entity =>
+        modelBuilder.Entity<Payments>(entity =>
         {
             entity.HasKey(e => e.PaymentNo);
 
-            entity.Property(e => e.Payment1)
+            entity.Property(e => e.Payment)
                 .HasMaxLength(50)
                 .HasColumnName("Payment");
         });
@@ -830,14 +851,15 @@ public partial class EggPlatformContext : DbContext
 
             entity.Property(e => e.Component).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(50);
+            entity.Property(e => e.DiscountPercent).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.Origin).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("money");
             entity.Property(e => e.ProductName).HasMaxLength(50);
             entity.Property(e => e.ProductNo).HasMaxLength(50);
 
-            entity.HasOne(d => d.LogicalDeletionNoNavigation).WithMany(p => p.Products)
-                .HasForeignKey(d => d.LogicalDeletionNo)
-                .HasConstraintName("FK_Products_LogicalDeletion");
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Products_PublicStatus");
 
             entity.HasOne(d => d.StoreS).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreSid)
@@ -863,6 +885,7 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.ItemNo);
 
             entity.Property(e => e.ItemNo).ValueGeneratedNever();
+            entity.Property(e => e.ItemDescription).HasMaxLength(50);
             entity.Property(e => e.ItemName).HasMaxLength(50);
 
             entity.HasOne(d => d.SubcategoryNoNavigation).WithMany(p => p.ProductItems)
@@ -959,8 +982,24 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.PeriodSid);
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateRunningStatus"));
+
             entity.Property(e => e.EndTime).HasPrecision(0);
             entity.Property(e => e.StartTime).HasPrecision(0);
+
+            entity.HasOne(d => d.RunningStatusNoNavigation).WithMany(p => p.SalesBatches)
+                .HasForeignKey(d => d.RunningStatusNo)
+                .HasConstraintName("FK_SalesBatches_SalesStatus");
+        });
+
+        modelBuilder.Entity<SalesStatus>(entity =>
+        {
+            entity.HasKey(e => e.RunningStatusNo);
+
+            entity.ToTable("SalesStatus");
+
+            entity.Property(e => e.RunningStatusNo).ValueGeneratedNever();
+            entity.Property(e => e.RunningStatusDescription).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ScreenSummary>(entity =>
@@ -993,13 +1032,13 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.StoreImg).HasColumnType("image");
             entity.Property(e => e.StoreIntroduction).HasMaxLength(50);
 
-            entity.HasOne(d => d.LogicalDeletionNoNavigation).WithMany(p => p.Stores)
-                .HasForeignKey(d => d.LogicalDeletionNo)
-                .HasConstraintName("FK_Stores_LogicalDeletion");
-
             entity.HasOne(d => d.MemberS).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.MemberSid)
                 .HasConstraintName("FK_Stores_Member");
+
+            entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Stores)
+                .HasForeignKey(d => d.PublicStatusNo)
+                .HasConstraintName("FK_Stores_PublicStatus");
         });
 
         modelBuilder.Entity<StoreCoin>(entity =>
@@ -1130,11 +1169,9 @@ public partial class EggPlatformContext : DbContext
 
             entity.ToTable("VideoSummary");
 
-            entity.Property(e => e.Advertise).HasDefaultValue(false);
+            entity.Property(e => e.AdSource).HasDefaultValue(false);
             entity.Property(e => e.InformationColumn).HasMaxLength(50);
-            entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.UploadDate).HasColumnType("datetime");
-            entity.Property(e => e.VideoDuration).HasPrecision(0);
             entity.Property(e => e.VideoTitle).HasMaxLength(50);
 
             entity.HasOne(d => d.CreatorS).WithMany(p => p.VideoSummaries)

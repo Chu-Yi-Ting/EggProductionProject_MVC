@@ -13,5 +13,5 @@ public partial class Carrier
 
     public string CarrierName { get; set; }
 
-    public virtual ICollection<CarrierWay> CarrierWays { get; set; } = new List<CarrierWay>();
+    public virtual ICollection<CarrierWays> CarrierWays { get; set; } = new List<CarrierWays>();
 }

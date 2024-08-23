@@ -1,0 +1,57 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Store>
+
+    <table class="table table container text-center table-striped table-hover">
+        <thead>
+            <tr>
+                <th style="width: 10%">
+                    會員編號
+                </th>
+                <th style="width: 10%">
+                    賣場名稱
+                </th>
+                <th style="width: 15%">
+                    賣場成立時間
+                </th>
+                @*             <th>
+                @Html.DisplayNameFor(model => model.StoreImg)
+                </th> *@
+                <th style="width: 40%">
+                    賣場介紹
+                </th>
+                <th style="width: 10%">
+                    公開狀態
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center align-middle">
+                        @Html.DisplayFor(modelItem => item.MemberS.MemberSid)
+                    </td>
+                    <td class="text-center align-middle">
+                        @Html.DisplayFor(modelItem => item.Company)
+                    </td>
+                    <td class="text-center align-middle">
+                        @Html.DisplayFor(modelItem => item.EstablishDate)
+                    </td>
+                    @*             <td>
+                @Html.DisplayFor(modelItem => item.StoreImg)
+                </td> *@
+                    <td class="textalign-left align-middle">
+                        @Html.DisplayFor(modelItem => item.StoreIntroduction)
+                    </td>
+                    <td class="text-center align-middle">
+                        @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.StatusDescription)
+                    </td>
+                    <td class="text-center align-middle">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='@Url.Action("Edit", new { id = item.StoreSid })'">
+                            <i class="fa-solid fa-edit"></i> 公開狀態變更
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

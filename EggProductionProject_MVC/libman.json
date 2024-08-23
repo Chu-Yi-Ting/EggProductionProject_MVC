@@ -3,8 +3,39 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
+      "library": "datatables.net@2.1.3",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+    {
+      "library": "datatables.net-jqui@2.1.3",
+      "destination": "wwwroot/lib/datatables.net-jqui/"
+    },
+    {
+      "library": "datatables.net-fixedcolumns@5.0.0",
+      "destination": "wwwroot/lib/datatables.net-fixedcolumns/"
+    },
+    {
       "library": "font-awesome@6.6.0",
-      "destination": "wwwroot/lib/font-awesome/"
+      "destination": "wwwroot/font-awesome/"
+    },
+    {
+      "library": "bootstrap@5.1.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.min.js"
+      ]
+    },
+    {
+      "library": "choices.js@10.2.0",
+      "destination": "wwwroot/lib/choices.js/",
+      "files": [
+        "choices.min.js",
+        "choices.min.css"
+      ]
     }
   ]
 }

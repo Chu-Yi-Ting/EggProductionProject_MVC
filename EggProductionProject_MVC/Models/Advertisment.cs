@@ -15,13 +15,19 @@ public partial class Advertisment
 
     public int? VideoSid { get; set; }
 
+    public string AdContent { get; set; }
+
     public DateTime? UploadTime { get; set; }
 
     public DateTime? StartTime { get; set; }
 
     public DateTime? EndTime { get; set; }
 
-    public bool? Available { get; set; }
+    public int? AdBehavior { get; set; }
+
+    public int? PublicStatusNo { get; set; }
+
+    public virtual PublicStatus PublicStatusNoNavigation { get; set; }
 
     public virtual Store StoreS { get; set; }
 

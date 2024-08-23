@@ -8,16 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Backstage\Models\**" />
+    <Content Remove="Areas\Backstage\Models\**" />
+    <EmbeddedResource Remove="Areas\Backstage\Models\**" />
+    <None Remove="Areas\Backstage\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="bundleconfig.json" />
-    <Content Remove="Views\LoginSuccessPage.cshtml" />
+    <Content Remove="wwwroot\BackstageTemplate\production\chartjs.html" />
+    <Content Remove="wwwroot\BackstageTemplate\production\chartjs2.html" />
+    <Content Remove="wwwroot\BackstageTemplate\production\morisjs.html" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="bundleconfig.json" />
-    <None Include="efpt.config.json.user" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
@@ -31,9 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Backstage\Models\" />
     <Folder Include="Areas\Frontstage\Models\" />
     <Folder Include="wwwroot\FrontstageTemplate\" />
+    <Folder Include="wwwroot\Imgs\" />
+    <Folder Include="wwwroot\Video\" />
   </ItemGroup>
 
   <ItemGroup>

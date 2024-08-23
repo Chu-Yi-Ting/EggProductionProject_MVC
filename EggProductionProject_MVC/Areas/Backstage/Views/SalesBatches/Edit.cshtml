@@ -1,0 +1,80 @@
+﻿@model EggProductionProject_MVC.Models.SalesBatch
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+
+    <style>
+        .bold-text {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .btn {
+            margin-top: 10px; /* 为按钮添加额外的顶部间距 */
+        }
+    </style>
+
+}
+
+<h4 class="bold-text">編輯特賣活動</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PeriodSid" />
+            <div class="form-group">
+                <label asp-for="PeriodDate" class="control-label">活動日期</label>
+                <input asp-for="PeriodDate" class="form-control" type="date" style="font-size: 20px;" />
+                <span asp-validation-for="PeriodDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label">開始時間</label>
+                <select asp-for="StartTime" class="form-select" style="font-size: 20px;">
+                    <option value="12:00:00">12:00</option>
+                    <option value="18:00:00">18:00</option>
+                </select>
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label">結束時間</label>
+                <select asp-for="EndTime" class="form-select" style="font-size: 20px;">
+                    <option value="18:00:00">18:00</option>
+                    <option value="00:00:00">00:00</option>
+                </select>
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RunningStatusNo" class="control-label">運作狀態</label>
+                <!-- 这个input用于显示文本“未開始” -->
+                <input type="text" class="form-control" style="font-size: 20px;" value="未開始" readonly />
+                <!-- 这个hidden input用于传递实际的数值“0” -->
+                <input asp-for="RunningStatusNo" type="hidden" value="" />
+                <span asp-validation-for="RunningStatusNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fa-solid fa-save"></i> 儲存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+        <i class="fa-solid fa-arrow-left"></i> 回特賣活動清單
+    </button>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

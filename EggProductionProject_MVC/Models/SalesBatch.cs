@@ -15,7 +15,9 @@ public partial class SalesBatch
 
     public TimeOnly? EndTime { get; set; }
 
-    public int? RunningStatus { get; set; }
+    public int? RunningStatusNo { get; set; }
 
     public virtual ICollection<FlashSale> FlashSales { get; set; } = new List<FlashSale>();
+
+    public virtual SalesStatus RunningStatusNoNavigation { get; set; }
 }

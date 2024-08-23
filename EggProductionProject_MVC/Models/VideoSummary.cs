@@ -11,7 +11,7 @@ public partial class VideoSummary
 
     public int? CreatorSid { get; set; }
 
-    public TimeOnly? VideoDuration { get; set; }
+    public int? VideoDuration { get; set; }
 
     public string VideoTitle { get; set; }
 
@@ -23,17 +23,17 @@ public partial class VideoSummary
 
     public int? TimesWatched { get; set; }
 
-    public string MemberName { get; set; }
-
     public int? ScreenTextSid { get; set; }
 
-    public string MoviePath { get; set; }
+    public string? MoviePath { get; set; }
 
-    public bool? Advertise { get; set; }
+    public bool AdSource { get; set; }
+
+    public bool Advertised { get; set; }
 
     public int? PublicStatusNo { get; set; }
 
-    public string VideoCoverImage { get; set; }
+    public string? VideoCoverImage { get; set; }
 
     public virtual ICollection<Advertisment> Advertisments { get; set; } = new List<Advertisment>();
 

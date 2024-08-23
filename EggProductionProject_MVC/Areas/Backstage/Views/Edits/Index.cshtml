@@ -1,0 +1,80 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Edit>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    /* 表格样式 */
+    .table-hover {
+        width: 100%;
+        border-collapse: collapse; /* 合并边框 */
+        font-family: 'Arial', sans-serif; /* 字体族 */
+        font-size: 16px; /* 字体大小 */
+        line-height: 1.6; /* 行高 */
+    }
+        /* 表头样式 */
+        .table-hover thead th {
+            padding: 12px; /* 调整内边距 */
+            text-align: left;
+            font-weight: bold;
+            font-size: 18px; /* 增大表头字体 */
+            border: 1px solid #dddddd; /* 表头边框 */
+        }
+
+        /* 表格内容样式 */
+        .table-hover tbody td {
+            padding: 12px; /* 调整内边距 */
+            border: 1px solid #dddddd; /* 单元格边框 */
+            vertical-align: middle;
+        }
+
+        /* 悬停效果 */
+        .table-hover tbody tr:hover {
+            background-color: #f0e68c; /* 淡黃色背景 */
+            color: #333333; /* 深色文字 */
+        }
+    /* 控制各列宽度 */
+    .column-edit-before,
+    .column-edit-after {
+        width: 25%; /* 調整 EditBefore 和 EditAfter 列寬 */
+        max-width: 25%; /* 設置最大寬度 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 添加省略号 */
+        white-space: nowrap; /* 不换行 */
+    }
+
+    .column-edit-time,
+    .column-article-title,
+    .column-reply-sid {
+        width: 10%; /* 調整其他列寬 */
+        max-width: 10%;
+    }
+</style>
+<h1>編輯紀錄</h1>
+<div id="detailEditContainer" style="display: none;">
+    <!-- 這裡將動態加載Detail的表單 -->
+</div>
+<div id="editsList">
+    @await Html.PartialAsync("_EditsPartial", Model)
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadDetails(id) {
+        $.ajax({
+            url: '@Url.Action("Details", "Edits")',
+            data: { id: id },
+            success: function (data) {
+                $('#editsList').hide();
+                $('#detailEditContainer').html(data).show();
+            },
+            error: function () {
+                alert('加載時出錯，請稍後重試。');
+            }
+        });
+    }
+
+    function goBackToList() {
+        $('#detailEditContainer').hide();
+        $('#editsList').show();
+    }
+</script>

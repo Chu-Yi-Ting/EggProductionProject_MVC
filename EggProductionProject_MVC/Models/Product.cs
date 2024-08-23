@@ -35,9 +35,9 @@ public partial class Product
 
     public DateOnly? LaunchTime { get; set; }
 
-    public int? LaunchStatusNo { get; set; }
+    public int? PublicStatusNo { get; set; }
 
-    public int? LogicalDeletionNo { get; set; }
+    public decimal? DiscountPercent { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
@@ -45,11 +45,11 @@ public partial class Product
 
     public virtual ICollection<FlashSale> FlashSales { get; set; } = new List<FlashSale>();
 
-    public virtual LogicalDeletion LogicalDeletionNoNavigation { get; set; }
-
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual ICollection<ProductReview> ProductReviews { get; set; } = new List<ProductReview>();
+
+    public virtual PublicStatus PublicStatusNoNavigation { get; set; }
 
     public virtual Store StoreS { get; set; }
 

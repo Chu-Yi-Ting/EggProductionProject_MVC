@@ -1,0 +1,88 @@
+﻿@model EggProductionProject_MVC.Models.Article
+
+@{
+    ViewData["Title"] = "_EditArticlesPartial";
+}
+
+<h1>編輯文章</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPartial" method="post" id="Editpage">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" id="ArticleSid" name="ArticleSid" asp-for="ArticleSid" />
+            <div class="form-group">
+                <label class="control-label">文章作者</label>
+                <input class="form-control" value="@ViewData["ArticleCreaterName"]" readonly />
+                <input asp-for="ArticleCreaterSid" type="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleTitle" class="control-label">文章標題</label>
+                <input asp-for="ArticleTitle" class="form-control" readonly />
+                <span asp-validation-for="ArticleTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleInfo" class="control-label">文章內容</label>
+                <textarea asp-for="ArticleInfo" class="form-control" rows="10" readonly></textarea>
+                <span asp-validation-for="ArticleInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">文章分類</label>
+                <input class="form-control" value="@ViewData["ArticleCategories"]" readonly />
+                <input asp-for="ArticleCategoriesSid" type="hidden" />
+            </div>
+            <div>
+                <div class="form-group">
+                    <input asp-for="EditCountTimes" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublicStatusNo" class="control-label">公開狀態</label>
+                    <select asp-for="PublicStatusNo" class="form-control" asp-items="ViewBag.PublicStatusNo"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeleteOrNot" class="control-label">刪除文章</label>
+                    <select asp-for="DeleteOrNot" class="form-control" asp-items="ViewBag.DeleteOrNot"></select>
+                    <span asp-validation-for="DeleteOrNot" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="ArticleDate" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="保存編輯" class="btn btn-primary" id="saveEditButton" />
+                </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $(document).on('click', '.edit-article', function (e) {
+            e.preventDefault(); // 阻止默认的表单提交行为
+
+            var form = $("#Editpage");
+            var formData = form.serialize(); // 序列化表单数据
+
+            console.log(formData);
+
+            $.ajax({
+                url: form.attr('action'), // 使用表单的action属性中的URL
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert('文章已成功更新！');
+                        // 可以在这里刷新文章列表，或执行其他操作
+                    } else {
+                        alert('更新失败：' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('提交表单时出错，请稍后重试。');
+                }
+            });
+        });
+
+    </script>
+}
