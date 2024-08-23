@@ -11,14 +11,14 @@ namespace EggProductionProject_MVC.Data
             : base(options)
         {
         }
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<CarrierAddress>()
-				.Ignore(c => c.TrackReceiveSources);
+		//protected override void OnModelCreating(ModelBuilder modelBuilder)
+		//{
+		//	modelBuilder.Entity<CarrierAddress>()
+		//		.Ignore(c => c.TrackReceiveSources);
 
-			base.OnModelCreating(modelBuilder);
-		}
+		//	base.OnModelCreating(modelBuilder);
+		//}
 
-		public DbSet<Member> Members { get; set; }
+		//public DbSet<Member> Members { get; set; }
     }
 }
