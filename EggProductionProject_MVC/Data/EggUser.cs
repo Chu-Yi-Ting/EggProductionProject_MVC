@@ -5,7 +5,7 @@ namespace EggProductionProject_MVC.Data
 {
     public class EggUser:IdentityUser<int>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         
     }
 }

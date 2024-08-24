@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class CarrierWays
+public partial class CarrierWay
 {
     public int CarrierWayNo { get; set; }
 
     public int? CarrierNo { get; set; }
 
-    public string? CarrierWay { get; set; }
+    public string CarrierWay1 { get; set; }
 
     public decimal? Price { get; set; }
 

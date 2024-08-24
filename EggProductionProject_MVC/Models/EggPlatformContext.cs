@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Models;
 
@@ -19,10 +18,22 @@ public partial class EggPlatformContext : DbContext
     public virtual DbSet<AreaFeed> AreaFeeds { get; set; }
 
     public virtual DbSet<Article> Articles { get; set; }
-
+        
     public virtual DbSet<ArticleCategory> ArticleCategories { get; set; }
 
     public virtual DbSet<ArticleCreater> ArticleCreaters { get; set; }
+
+    public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+
+    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
     public virtual DbSet<Calendar> Calendars { get; set; }
 
@@ -32,7 +43,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<CarrierOpen> CarrierOpens { get; set; }
 
-    public virtual DbSet<CarrierWays> CarrierWays { get; set; }
+    public virtual DbSet<CarrierWay> CarrierWays { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -44,7 +55,7 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<ChickLotNo> ChickLotNos { get; set; }
 
-    public virtual DbSet<CoinUseAreas> CoinUseAreas { get; set; }
+    public virtual DbSet<CoinUseArea> CoinUseAreas { get; set; }
 
     public virtual DbSet<Collect> Collects { get; set; }
 
@@ -104,9 +115,9 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-    public virtual DbSet<OrderStatuses> OrderStatuses { get; set; }
+    public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
 
-    public virtual DbSet<Payments> Payments { get; set; }
+    public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -241,6 +252,72 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.PersonalInfo).HasColumnName("Personal Info");
         });
 
+        modelBuilder.Entity<AspNetRole>(entity =>
+        {
+            entity.Property(e => e.Name).HasMaxLength(256);
+            entity.Property(e => e.NormalizedName).HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<AspNetRoleClaim>(entity =>
+        {
+            entity.Property(e => e.RoleId)
+                .IsRequired()
+                .HasMaxLength(450);
+
+            entity.HasOne(d => d.Role).WithMany(p => p.AspNetRoleClaims).HasForeignKey(d => d.RoleId);
+        });
+
+        modelBuilder.Entity<AspNetUser>(entity =>
+        {
+            entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+            entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+            entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRole",
+                    r => r.HasOne<AspNetRole>().WithMany().HasForeignKey("RoleId"),
+                    l => l.HasOne<AspNetUser>().WithMany().HasForeignKey("UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId");
+                        j.ToTable("AspNetUserRoles");
+                    });
+        });
+
+        modelBuilder.Entity<AspNetUserClaim>(entity =>
+        {
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserLogin>(entity =>
+        {
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.ProviderKey).HasMaxLength(128);
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserToken>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.Name).HasMaxLength(128);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
+        });
+
         modelBuilder.Entity<Calendar>(entity =>
         {
             entity.HasKey(e => e.CalendarSid);
@@ -296,11 +373,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_CarrierOpens_Stores");
         });
 
-        modelBuilder.Entity<CarrierWays>(entity =>
+        modelBuilder.Entity<CarrierWay>(entity =>
         {
             entity.HasKey(e => e.CarrierWayNo);
 
-            entity.Property(e => e.CarrierWay)
+            entity.Property(e => e.CarrierWay1)
                 .HasMaxLength(20)
                 .HasColumnName("CarrierWay");
             entity.Property(e => e.Price).HasColumnType("money");
@@ -384,11 +461,11 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_ChickLotNo_ChickHouse");
         });
 
-        modelBuilder.Entity<CoinUseAreas>(entity =>
+        modelBuilder.Entity<CoinUseArea>(entity =>
         {
             entity.HasKey(e => e.CoinUseAreaNo).HasName("PK_CoinChanges");
 
-            entity.Property(e => e.CoinUseArea)
+            entity.Property(e => e.CoinUseArea1)
                 .HasMaxLength(50)
                 .HasColumnName("CoinUseArea");
         });
@@ -827,20 +904,20 @@ public partial class EggPlatformContext : DbContext
                 .HasConstraintName("FK_OrderDetails_Products1");
         });
 
-        modelBuilder.Entity<OrderStatuses>(entity =>
+        modelBuilder.Entity<OrderStatus>(entity =>
         {
             entity.HasKey(e => e.OrderStatusNo);
 
-            entity.Property(e => e.OrderStatus)
+            entity.Property(e => e.OrderStatus1)
                 .HasMaxLength(50)
                 .HasColumnName("OrderStatus");
         });
 
-        modelBuilder.Entity<Payments>(entity =>
+        modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.PaymentNo);
 
-            entity.Property(e => e.Payment)
+            entity.Property(e => e.Payment1)
                 .HasMaxLength(50)
                 .HasColumnName("Payment");
         });
@@ -1207,6 +1284,4 @@ public partial class EggPlatformContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<EggProductionProject_MVC.Models.MemberVM.MemberVM> MemberVM { get; set; } = default!;
 }
