@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EggProductionProject_MVC.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +13,13 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
     {
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
-        private readonly UserManager<EggUser> _userManager;
-        private readonly SignInManager<EggUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
         public TwoFactorAuthenticationModel(
-            UserManager<EggUser> userManager,
-            SignInManager<EggUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             ILogger<TwoFactorAuthenticationModel> logger)
         {
             _userManager = userManager;

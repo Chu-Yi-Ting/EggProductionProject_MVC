@@ -5,27 +5,25 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using EggProductionProject_MVC.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<EggUser> _userManager;
-        private readonly SignInManager<EggUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<EggUser> signInManager, 
+        public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<EggUser> userManager)
+            UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,8 +33,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
-
-		public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
 

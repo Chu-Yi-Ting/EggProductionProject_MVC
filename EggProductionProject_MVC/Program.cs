@@ -22,18 +22,26 @@ builder.Services.AddDbContext<EggPlatformContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
 });
 
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddControllersWithViews();
+
+
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/AccountLogin/Login"; // µn¤J­¶­±¸ô®|
-                options.LogoutPath = "/AccountLogin/Logout"; // µn¥X­¶­±¸ô®|
+                options.LoginPath = "/AccountLogin/Login"; // ï¿½nï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½|
+                options.LogoutPath = "/AccountLogin/Logout"; // ï¿½nï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½|
             });
 
         builder.Services.AddControllersWithViews();
 var authProperties = new AuthenticationProperties
 {
-    IsPersistent = true, // ¬O§_«ù¤[¤Æ Cookie
-    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // ³]¸m Cookie ¹L´Á®É¶¡
+    IsPersistent = true, // ï¿½Oï¿½_ï¿½ï¿½ï¿½[ï¿½ï¿½ Cookie
+    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // ï¿½]ï¿½m Cookie ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
 };
 
 
@@ -41,23 +49,21 @@ var authProperties = new AuthenticationProperties
 
 
 
-//builder.Services.AddDefaultIdentity<EggUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-//builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<EggUser, IdentityRole<int>>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+
+//builder.Services.AddIdentity<EggUser, IdentityRole<int>>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();
 
 
-// ª`¥U¦Û­qªº EmailSender ªA°È
+// ï¿½`ï¿½Uï¿½Û­qï¿½ï¿½ EmailSender ï¿½Aï¿½ï¿½
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-// µù¥U±ÂÅvªA°È
+// ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½vï¿½Aï¿½ï¿½
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 
 
-// µù¥URazor PagesªA°È
+// ï¿½ï¿½ï¿½URazor Pagesï¿½Aï¿½ï¿½
 builder.Services.AddRazorPages();
 
 

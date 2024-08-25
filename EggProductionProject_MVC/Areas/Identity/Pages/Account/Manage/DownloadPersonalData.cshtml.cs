@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EggProductionProject_MVC.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,11 +13,11 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<EggUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<EggUser> userManager,
+            UserManager<IdentityUser> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -37,7 +36,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(EggUser).GetProperties().Where(
+            var personalDataProps = typeof(IdentityUser).GetProperties().Where(
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

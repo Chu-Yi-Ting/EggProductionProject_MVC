@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EggProductionProject_MVC.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +11,12 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<EggUser> _userManager;
-        private readonly SignInManager<EggUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public ExternalLoginsModel(
-            UserManager<EggUser> userManager,
-            SignInManager<EggUser> signInManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -86,7 +85,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{user.Id}'.");
             }
 
-            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id.ToString());
+            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
             if (info == null)
             {
                 throw new InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
