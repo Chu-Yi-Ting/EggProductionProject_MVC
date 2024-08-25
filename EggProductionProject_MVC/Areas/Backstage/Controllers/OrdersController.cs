@@ -26,8 +26,8 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                         new SelectListItem { Value = "3", Text = "本週"}
                  }, "Value", "Text");
 
-            ViewData["OrderStatusNo"] = new SelectList(_context.OrderStatuses, "OrderStatusNo", "OrderStatus");
-            ViewData["PaymentOptions"] = new SelectList(_context.Payments, "PaymentNo", "Payment");
+            ViewData["OrderStatusNo"] = new SelectList(_context.OrderStatuses, "OrderStatusNo", "Status");
+            ViewData["PaymentOptions"] = new SelectList(_context.Payments, "PaymentNo", "Pay");
             ViewData["PayOptions"] = new SelectList(
                     new List<SelectListItem>
                     {
@@ -60,13 +60,13 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             var payments = _context.Payments.Select(c => new paymentDto
             {
                 PaymentNo = c.PaymentNo,
-                Payment = c.Payment
+                Pay = c.Pay
             }).ToList();
 
             var orderStatuses = _context.OrderStatuses.Select(c => new orderStatusDto
             {
                 OrderStatusNo = c.OrderStatusNo,
-                OrderStatus = c.OrderStatus
+                Status = c.Status
             }).ToList();
 
             var tracks = _context.Tracks.Select(c => new trackDto
@@ -184,10 +184,10 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 OrderCreatedTime = p.OrderCreatedTime,
                 MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name,
                 PaymentNo = p.PaymentNo,
-                Payment = payments.FirstOrDefault(s => s.PaymentNo == p.PaymentNo)?.Payment,
+                Payment = payments.FirstOrDefault(s => s.PaymentNo == p.PaymentNo)?.Pay,
                 AlreadyPaid = p.AlreadyPaid,
                 OrderStatusNo = p.OrderStatusNo,
-                OrderStatus = orderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.OrderStatus,
+                OrderStatus = orderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.Status,
 
                 //TrackingNum = tracks.FirstOrDefault(s => s.OrderSid == p.OrderSid)?.TrackingNum,
                 TrackingNum = tracks.FirstOrDefault(s => s.OrderSid == p.OrderSid)?.TrackingNum,
@@ -214,12 +214,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 OrderCreatedTime = p.OrderCreatedTime,
                 MemberName = members.FirstOrDefault(s => s.MemberSid == p.MemberSid)?.Name,
                 PaymentNo = p.PaymentNo,
-                Payment = payments.FirstOrDefault(s => s.PaymentNo == p.PaymentNo)?.Payment,
+                Payment = payments.FirstOrDefault(s => s.PaymentNo == p.PaymentNo)?.Pay,
                 AlreadyPaid = p.AlreadyPaid,
                 OrderStatusNo = p.OrderStatusNo,                
-                OrderStatus = OrderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.OrderStatus,
+                OrderStatus = OrderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.Status,
                 
-                TrackingNum = OrderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.OrderStatus,
+                TrackingNum = OrderStatuses.FirstOrDefault(s => s.OrderStatusNo == p.OrderStatusNo)?.Status,
                 Price= Coupons.FirstOrDefault(s => s.CouponSid == p.CouponSid)?.CouponTypeNoNavigation.Price,
                 TotalPrice=p.TotalPrice
             });
@@ -235,13 +235,13 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         internal class orderStatusDto
         {
             public int OrderStatusNo { get; set; }
-            public string? OrderStatus { get; set; }
+            public string? Status { get; set; }
         }
 
         internal class paymentDto
         {
             public int PaymentNo { get; set; }
-            public string? Payment { get; set; }
+            public string? Pay { get; set; }
         }
 
         internal class couponsDto
