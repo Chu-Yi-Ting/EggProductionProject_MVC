@@ -28,14 +28,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                         new SelectListItem { Value = "3", Text = "本週"}
                }, "Value", "Text");
 
-            ViewData["OrderStatusNo"] = new SelectList(_context.OrderStatuses, "OrderStatusNo", "OrderStatus");
+            ViewData["OrderStatusNo"] = new SelectList(_context.OrderStatuses, "OrderStatusNo", "Status");
             ViewData["CarrierOptions"] = new SelectList(_context.Carriers, "CarrierNo", "CarrierName");
 
             var carrierWays = _context.CarrierWays
         .Select(c => new
         {
             CarrierWayNo = c.CarrierWayNo,
-            DisplayText = $"{c.CarrierWay} ({c.CarrierNoNavigation.CarrierCode})" 
+            DisplayText = $"{c.Way} ({c.CarrierNoNavigation.CarrierCode})" 
         })
         .ToList();
 
@@ -69,7 +69,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 OrderSid = (int)c.OrderSid,
                 OrderStatusNo = (int)c.OrderStatusNo,
-                OrderStatus = c.OrderStatusNoNavigation.OrderStatus
+                OrderStatus = c.OrderStatusNoNavigation.Status
             }).ToList();
 
             var CarrierAddresses = _context.CarrierAddresses.Select(c => new CarrierAddressesDto
@@ -77,7 +77,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 CarrierAddressSid = (int)c.CarrierAddressSid,
                 CarrierNo = c.CarrierWayNoNavigation.CarrierNoNavigation.CarrierNo,
                 CarrierName = c.CarrierWayNoNavigation.CarrierNoNavigation.CarrierName,
-                CarrierWay = c.CarrierWayNoNavigation.CarrierWay,
+                CarrierWay = c.CarrierWayNoNavigation.Way,
                 CarrierWayNo = c.CarrierWayNoNavigation.CarrierWayNo
             }).ToList();
 

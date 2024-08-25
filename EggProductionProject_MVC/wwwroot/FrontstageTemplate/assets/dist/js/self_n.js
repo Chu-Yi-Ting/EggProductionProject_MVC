@@ -9,7 +9,7 @@ function checkWindowSize() {
             menu.classList.add('show');
         }
     } else {
-        console.error('Element with class "store-leftmenu-n" not found');
+        //console.error('Element with class "store-leftmenu-n" not found');
     }
 }
 

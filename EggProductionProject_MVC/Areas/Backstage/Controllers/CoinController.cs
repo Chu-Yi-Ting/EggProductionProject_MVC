@@ -23,7 +23,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                         new SelectListItem { Value = "3", Text = "本週"}
                }, "Value", "Text");
 
-            ViewData["CoinUseAreaNo"] = new SelectList(_context.CoinUseAreas, "CoinUseAreaNo", "CoinUseArea");
+            ViewData["CoinUseAreaNo"] = new SelectList(_context.CoinUseAreas, "CoinUseAreaNo", "UseArea");
             ViewData["MoveOptions"] = new SelectList(
                     new List<SelectListItem>
                     {
@@ -58,7 +58,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             var coinArea = _context.CoinUseAreas.Select(c => new coinAreaDto
             {
                 CoinUseAreaNo = c.CoinUseAreaNo,
-                CoinUseArea = c.CoinUseArea
+                CoinUseArea = c.UseArea
             }).ToList();
 
 
@@ -203,7 +203,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             var coinArea = _context.CoinUseAreas.Select(c => new coinAreaDto
             {
                 CoinUseAreaNo = c.CoinUseAreaNo,
-                CoinUseArea = c.CoinUseArea
+                CoinUseArea = c.UseArea
             }).ToList();
 
 

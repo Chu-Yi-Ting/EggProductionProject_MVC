@@ -2,10 +2,6 @@
 	Layout = "_FrontLayout_common";
 }
 
-@section Styles {
-    <style>
-    </style>
-}
 <div class="title-bg mb-3">
 	<img class="w-100"
 		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_01.png"
@@ -88,16 +84,18 @@
                                             <div class="d-flex justify-content-center align-items-center me-3">
                                                 <div class="track-info">
                                                     60元
-                                                    <button class="btn light-btn-n" type="button">
-                                                        <p class="p-0 m-0 ">修改</p>
-                                                    </button>
+                                      
+                                                    <a class="btn light-btn-n btn-sm-dbrs"
+                                                       data-bs-toggle="modal"
+                                                       href="#exampleModalToggle2"
+                                                       role="button">修改</a>
                                                 </div>
 
                                             </div>
 
                                         </div>
                                         <div class="carrier-type ">
-                                            <p class="d-flex align-items-center mb-0">7-ELEVEN<span>超商</span></p>
+                                            <p class="d-flex align-items-center mb-2">7-ELEVEN<span>超商</span></p>
                                         </div>
                                         <div class="carrier-address d-flex flex-column flex-xl-row">
                                             <div class="d-flex mt-1 mt-md-0">
@@ -187,16 +185,20 @@
                                             <div class="d-flex justify-content-center align-items-center me-3">
                                                 <div class="track-info">
                                                     60元
-                                                    <button class="btn light-btn-n" type="button">
+                                                  @*   <button class="btn light-btn-n" type="button">
                                                         <p class="p-0 m-0 ">修改</p>
-                                                    </button>
+                                                    </button> *@
+                                                    <a class="btn light-btn-n btn-sm-dbrs"
+                                                       data-bs-toggle="modal"
+                                                       href="#exampleModalToggle2"
+                                                       role="button">修改</a>
                                                 </div>
 
                                             </div>
 
                                         </div>
                                         <div class="carrier-type ">
-                                            <p class="d-flex align-items-center mb-0">7-ELEVEN<span>超商</span></p>
+                                            <p class="d-flex align-items-center mb-2">7-ELEVEN<span>超商</span></p>
                                         </div>
                                         <div class="carrier-address d-flex flex-column flex-xl-row">
                                             <div class="d-flex mt-1 mt-md-0">
@@ -351,6 +353,403 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle2"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    修改物流
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="store-body-outer">
+                        <div class="pagebody-store m-0">
+                            <div class="accordion" id="accordionExample1">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne1"
+                                                aria-expanded="false"
+                                                aria-controls="collapseOne1">
+                                            宅配<img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
+                                                   alt="" />
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne1"
+                                         class="accordion-collapse collapse"
+                                         aria-labelledby="headingOne"
+                                         data-bs-parent="#accordionExample1">
+                                        <div class="accordion-body">
+                                            <div class="scroll">
+                                                <div class="form-check d-flex">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault1" />
+                                                    <label class="form-check-label w-100"
+                                                           for="flexRadioDefault1">
+                                                        <div class="other-info d-flex flex-column flex-lg-row">
+                                                            <div class="w-100 mx-auto">
+                                                                <div class="part form-control-n">
+                                                                    <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                                                        <p class="d-flex align-items-center mb-0">
+                                                                            黑貓宅急便<span>常溫</span>
+                                                                        </p>
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            <div class="track-info">60元</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="carrier-address d-flex flex-column">
+                                                                        <div class="d-flex mt-1 mt-md-0">
+                                                                            <p class="name me-2 m-0">張家豪</p>
+                                                                            <p class="phone me-2 m-0">
+                                                                                0960101028
+                                                                            </p>
+                                                                        </div>
+                                                                        <p class="address me-2 m-0">
+                                                                            <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- <p class="default me-2 m-0 mt-2">預設</p> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+
+                                                <hr class="m-0" />
+                                                <div class="form-check d-flex">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault1" />
+                                                    <label class="form-check-label w-100"
+                                                           for="flexRadioDefault1">
+                                                        <div class="other-info d-flex flex-column flex-lg-row">
+                                                            <div class="w-100 mx-auto">
+                                                                <div class="part form-control-n">
+                                                                    <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                                                        <p class="d-flex align-items-center mb-0">
+                                                                            黑貓宅急便<span>冷藏</span>
+                                                                        </p>
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            <div class="track-info">60元</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="carrier-address d-flex flex-column">
+                                                                        <div class="d-flex mt-1 mt-md-0">
+                                                                            <p class="name me-2 m-0">張家豪</p>
+                                                                            <p class="phone me-2 m-0">
+                                                                                0960101028
+                                                                            </p>
+                                                                        </div>
+                                                                        <p class="address me-2 m-0">
+                                                                            <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                                                        </p>
+                                                                    </div>
+                                                                    <p class="default me-2 m-0 d-none mt-2">
+                                                                        預設
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                @* <hr class="m-0" /> *@
+                                            </div>
+
+                                            <div class="form-control-n pt-2 p-3">
+                                                <a class="btn light-btn-n btn-sm-dbrs"
+                                                   data-bs-toggle="modal"
+                                                   href="#exampleModalToggle4"
+                                                   role="button">新增地址</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item my-4">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseTwo1"
+                                                aria-expanded="false"
+                                                aria-controls="collapseTwo1">
+                                            超商
+                                            <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png"
+                                                 alt="" />
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo1"
+                                         class="accordion-collapse collapse"
+                                         aria-labelledby="headingTwo"
+                                         data-bs-parent="#accordionExample1">
+                                        <div class="accordion-body">
+                                            <div class="scroll">
+                                                <div class="form-check d-flex">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault1" />
+                                                    <label class="form-check-label w-100"
+                                                           for="flexRadioDefault1">
+                                                        <div class="other-info d-flex flex-column flex-lg-row">
+                                                            <div class="w-100 mx-auto">
+                                                                <div class="part form-control-n">
+                                                                    <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                                                        <p class="d-flex align-items-center mb-0">
+                                                                            7-ELEVEN<span>常溫</span>
+                                                                        </p>
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            <div class="track-info">60元</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="carrier-address d-flex flex-column">
+                                                                        <div class="d-flex mt-1 mt-md-0">
+                                                                            <p class="name me-2 m-0">張家豪</p>
+                                                                            <p class="phone me-2 m-0">
+                                                                                0960101028
+                                                                            </p>
+                                                                        </div>
+                                                                        <p class="address me-2 m-0">
+                                                                            <span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- <p class="default me-2 m-0 mt-2">預設</p> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                         @*        <hr class="m-0" /> *@
+                                            </div>
+
+                                            <div class="form-control-n pt-2 p-3">
+                                                <a class="btn light-btn-n btn-sm-dbrs"
+                                                   data-bs-toggle="modal"
+                                                   href="#exampleModalToggle3"
+                                                   role="button">新增地址</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n" type="button">
+                                    確定送出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle3"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    新增宅配
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="form-control-n">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">收貨人姓名<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+                    <div class="form-control-n mt-3">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">聯繫方式<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+
+                    <div class="form-control-n mt-3">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">取貨地址<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+
+                    <div class="cart-card bg-none mt-4">
+                        <div class="cart-card-item p-0">
+                            <input type="checkbox"
+                                   class="hidden-box"
+                                   id="s1_p202409010003"
+                                   checked="" />
+                            <label for="s1_p202409010003"
+                                   class="check--label w-100">
+                                <span class="check--label-box ms-0 me-2"></span>
+                                <div>
+                                    <span class="checktext">
+                                        採用低溫配送服務
+                                        <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg"
+                                             alt=""
+                                             srcset="" />
+                                    </span>
+                                    <span class="checktext text-gray">僅宅配提供</span>
+                                </div>
+                                <p class="m-0 ms-auto checktext-money">$160</p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="w-100 submit mt-4 mb-3">
+                        <button class="btn dark-btn-n" type="button">
+                            確定送出
+                        </button>
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle4"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    新增超商
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="store-body-outer">
+                        <div class="pagebody-store m-0">
+                            <div class="form-control-n">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">收貨人姓名<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       placeholder=""
+                                       aria-label="" />
+                            </div>
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">聯繫方式<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       placeholder=""
+                                       aria-label="" />
+                            </div>
+
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">門市選擇<span></span></div>
+                                </div>
+                                <button class="btn light-btn-n" type="button">
+                                    新增 / 調整地址
+                                </button>
+                            </div>
+                            <div class="accordion-item mt-4">
+                                <div class="accordion-body">
+                                    <div class="other-info d-flex flex-column flex-lg-row py-3">
+                                        <div class="w-100 mx-auto">
+                                            <div class="part form-control-n">
+                                                <div class="carrier-type w-100 d-flex justify-content-between pb-2">
+                                                    <p class="d-flex align-items-center mb-0">
+                                                        7-ELEVEN<span>超商</span>
+                                                    </p>
+                                                </div>
+                                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                                    <p class="address me-2 m-0">
+                                                        <span class="me-1">忠孝東門市 | </span>
+                                                        <span class="me-1 mb-2">225436</span><br />
+                                                        台北市中正區忠孝東路一段72號76號1樓
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cart-card bg-none mt-4">
+                                <div class="cart-card-item p-0">
+                                    <label class="check--label w-100">
+                                        <span class="checktext">
+                                            常溫配送價格
+                                            <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg"
+                                                 alt=""
+                                                 srcset="" />
+                                        </span>
+                                        <p class="m-0 ms-auto checktext-money">$60</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n" type="button">
+                                    確定送出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                        
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 @section Scripts {
 
