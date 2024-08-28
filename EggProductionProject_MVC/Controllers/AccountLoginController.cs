@@ -34,14 +34,14 @@ namespace EggProductionProject_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(MemberLogVM model)
+        public async Task<IActionResult> Login(EmpLog model)
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Members
-                                   .FirstOrDefault(u => u.Email == model.Email && u.PassWord == model.Password);
+                var user = _context.Employees
+                                   .FirstOrDefault(u => u.Account == model.Account && u.Password == model.Password);
                 // 保存Session
-                HttpContext.Session.SetInt32("EmployeeSid", user.MemberSid);
+                HttpContext.Session.SetInt32("EmployeeSid", user.EmployeeSid);
 
                 //    if (user != null)
                 //    {
