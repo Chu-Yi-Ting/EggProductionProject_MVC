@@ -11,6 +11,8 @@ using System.Security.Claims;
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
     [Area("Frontstage")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class ArticlesController : Controller
     {
         private readonly EggPlatformContext _context;
