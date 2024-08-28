@@ -1,0 +1,176 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Article>
+    <style>
+        /* 表格样式 */
+        .table-hover {
+            width: 100%;
+            border-collapse: collapse; /* 合并边框 */
+            font-family: 'Arial', sans-serif; /* 字体族 */
+            font-size: 16px; /* 字体大小 */
+            line-height: 1.6; /* 行高 */
+        }
+
+            /* 表头样式 */
+            .table-hover thead th {
+ /*                background-color: #4169E1; /* 主题颜色 */
+                /* color: #ffffff; */ */
+                padding: 12px; /* 调整内边距 */
+                text-align: left;
+                font-weight: bold;
+                font-size: 18px; /* 增大表头字体 */
+                border: 1px solid #dddddd; /* 表头边框 */
+            }
+
+            /* 表格内容样式 */
+            .table-hover tbody td {
+                padding: 12px; /* 调整内边距 */
+                border: 1px solid #dddddd; /* 单元格边框 */
+                vertical-align: middle;
+            }
+
+            /* 悬停效果 */
+            .table-hover tbody tr:hover {
+                background-color: #f0e68c; /* 淡黃色背景 */
+                color: #333333; /* 深色文字 */
+            }
+    </style>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>文章總數: 共 <span id="total-articles">@ViewData["TotalArticles"]</span> 篇文章</h1>
+
+<!-- 搜尋框和按鈕 -->
+<form id="searchForm" method="get">
+    <div class="input-group mb-3">
+        <input type="text" id="searchString" name="searchString" class="form-control" placeholder="搜尋文章標題" aria-label="搜尋文章標題" aria-describedby="searchButton">
+    </div>
+    <div class="mt-2">
+            <button class="btn btn-primary" type="submit" id="searchButton">搜尋</button>
+        <button class="btn btn-primary" type="submit" id="resetButton">返回文章列表</button>
+            <button id="loadCreateForm" class="btn btn-primary">發布文章</button>
+        </div>
+
+</form>
+<div id="createArticleContainer">
+    <!-- 這裡將動態加載發布文章的表單 -->
+</div>
+
+<div id="articlesList">
+    @await Html.PartialAsync("_ArticlesPartial", Model)
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            // 加載發布文章的表單
+            $('#loadCreateForm').on('click', function (e) {
+                e.preventDefault(); // 阻止默認的按鈕行為
+                var $button = $(this);
+                // 隱藏文章列表
+                $('#articlesList').hide();
+                // 隱藏搜索按鈕和搜索框，但保留返回文章列表按鈕
+                $('#searchButton').hide();
+                $('#searchString').hide();
+
+                $button.prop('disabled', true).text('正在加載...'); // 按發布後禁用按鈕並顯示加載文字
+
+                $.ajax({
+                    url: '@Url.Action("CreatePartial")',
+                    success: function (result) {
+                        $('#createArticleContainer').html(result); // 將加載的表單插入到 createArticleContainer 中
+                        $button.prop('disabled', false).text('發布文章'); // 恢復按鈕狀態
+                    },
+                    error: function () {
+                        $button.prop('disabled', false).text('發布文章'); // 加載失敗後恢復按鈕狀態
+                        alert('加載時出錯，請稍後重試。');
+                    }
+                });
+            });
+
+            // 處理發布文章表單的提交
+            $('#createArticleContainer').on('submit', '#createArticleForm', function (e) {
+                e.preventDefault(); // 阻止默認的表單提交行為
+
+                $.ajax({
+                    url: '@Url.Action("CreatePartial")',
+                    type: 'POST',
+                    data: $(this).serialize(), // 將表單數據序列化為字串
+                    success: function (result) {
+                        if (result.success) {
+                            // 顯示發佈成功消息並添加返回文章列表按鈕
+                            $('#createArticleContainer').html('<p>文章已成功發佈！</p>');
+                            refreshArticleList()
+                        } else {
+                            $('#createArticleContainer').html(result); // 如果有錯誤，重新渲染表單
+                        }
+                    },
+                    error: function () {
+                        alert('發佈時出錯，請稍後重試。');
+                    }
+                });
+            });
+
+            // 處理返回文章列表的按鈕
+            $('#createArticleContainer').on('click', '#showArticleList', function () {
+                $('#articlesList').show(); // 顯示隱藏的文章列表
+                $('#createArticleContainer').html(''); // 清空發佈文章的表單或成功消息
+                // 恢復搜索按鈕和搜索框
+                $('#searchButton').show();
+                $('#searchString').show();
+            });
+
+            // 處理搜尋表單的提交，實現局部刷新
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault(); // 阻止默認的表單提交行為
+
+                var searchString = $('#searchString').val(); // 獲取搜尋字串
+
+                $.ajax({
+                    url: '@Url.Action("SearchPartial")', // 將此動作替換為處理搜尋的動作
+                    data: { searchString: searchString }, // 傳遞搜尋字串
+                    success: function (result) {
+                        $('#articlesList').html(result); // 更新文章列表部分
+                    },
+                    error: function () {
+                        alert('搜尋時出錯，請稍後重試。');
+                    }
+                });
+            });
+
+            // 處理重置按鈕的點擊事件，將其從搜尋表單提交事件中移出
+            $('#resetButton').on('click', function () {
+                $('#searchString').val(''); // 清空搜尋字串
+
+                // 如果在發布文章或編輯文章階段，回到文章列表
+                if ($('#createArticleContainer').children().length > 0 || $('#editContainer').children().length > 0) {
+                    $('#createArticleContainer').html(''); // 清空發佈文章的表單或成功消息
+                    $('#editContainer').html(''); // 清空編輯文章的表單
+                    $('#articlesList').show(); // 顯示文章列表
+                    // 恢復搜索按鈕和搜索框
+                    $('#searchButton').show();
+                    $('#searchString').show();
+                } else {
+                    // 如果不是發布文章或編輯文章階段，則提交表單以重新加載完整的文章列表
+                    $('#searchForm').submit();
+                }
+            });
+            function refreshArticleList() {
+                $.ajax({
+                    url: '@Url.Action("SearchPartial")', // 使用與搜索相同的動作來獲取最新的文章列表
+                    success: function (result) {
+                        $('#articlesList').html(result); // 更新文章列表部分
+                        $('#articlesList').show(); // 顯示文章列表
+                        // 恢復搜索按鈕和搜索框
+                        $('#searchButton').show();
+                        $('#searchString').show();
+                    },
+                    error: function () {
+                        alert('無法更新文章列表，請稍後重試。');
+                    }
+                });
+            }
+        });
+
+    </script>
+}
+
