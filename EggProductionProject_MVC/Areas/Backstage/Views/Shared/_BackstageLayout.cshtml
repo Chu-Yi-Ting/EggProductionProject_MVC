@@ -1,7 +1,25 @@
 ﻿@using EggProductionProject_MVC.Data
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject EggPlatformContext _context
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+
+
+@{
+    int? employeeSid = HttpContextAccessor.HttpContext.Session.GetInt32("EmployeeSid");
+    string userName = "Guest";
+
+    if (employeeSid.HasValue)
+    {
+        var user = _context.Members.FirstOrDefault(u => u.MemberSid == employeeSid.Value);
+        if (user != null)
+        {
+            userName = user.Name;
+        }
+    }
+}
 
 
 
@@ -68,8 +86,9 @@
                             @* <img src="~/BackstageTemplate/production/images/img.jpg" alt="..." class="img-circle profile_img"> *@
                         </div>
                         <div class="profile_info">
-                            
-                                <p>歡迎, @User.Identity?.Name!</p>
+
+                            <p>歡迎, @userName!</p>
+                            @* <p>歡迎, @User.Identity?.Name!</p> *@
                             
                         </div>
                     </div>
