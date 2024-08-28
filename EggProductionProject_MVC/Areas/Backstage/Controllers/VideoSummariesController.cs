@@ -171,18 +171,19 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             {
                 return NotFound();
             }
-            if(MoviePath==null || VideoCoverImage == null)
+            if(MoviePath==null )
             {
                 ModelState.Remove("MoviePath");
+            }
+            
+            if(VideoCoverImage == null)
+            {
                 ModelState.Remove("VideoCoverImage");
-                
             }
             if (ModelState.IsValid)
             {
                 try
                 {
-          
-
                     VideoSummary 資料庫資料 =await _context.VideoSummaries.FindAsync(id);
                     videoSummary.UploadDate = 資料庫資料.UploadDate;
                     videoSummary.TimesWatched = 資料庫資料.TimesWatched;
@@ -201,6 +202,10 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                         }
                         videoSummary.MoviePath = $"/Video/{FileName}";
                     }
+                    else
+                    {
+                            videoSummary.MoviePath = 資料庫資料.MoviePath;
+                    }
                     
                     if(VideoCoverImage !=null && VideoCoverImage.Length > 0)
                     {
@@ -217,13 +222,14 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                         }
                         videoSummary.VideoCoverImage = $"/VideoImage/{FileNameImg}";
                     }
-                   
-                    videoSummary.MoviePath = 資料庫資料.MoviePath;
-                    videoSummary.VideoCoverImage = 資料庫資料.VideoCoverImage;
+                    else
+                    {
+                        videoSummary.VideoCoverImage = 資料庫資料.VideoCoverImage;
+                    }
                     //videoSummary.CreatorS.MemberName =  資料庫資料.CreatorS.MemberName;
                     _context.Entry(資料庫資料).State = EntityState.Detached;
 
-
+               
                     _context.Update(videoSummary);
                     await _context.SaveChangesAsync();
                 }
