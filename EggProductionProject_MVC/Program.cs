@@ -91,6 +91,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseSession();
+
+
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=BkHome}/{action=Index}/{id?}");

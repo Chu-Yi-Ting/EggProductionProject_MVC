@@ -34,7 +34,7 @@ namespace EggProductionProject_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LoginIsRight(EmpLog model)
+        public async Task<IActionResult> Login(MemberLogVM model)
         {
             if (ModelState.IsValid)
             {
