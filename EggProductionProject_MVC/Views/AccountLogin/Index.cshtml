@@ -1,4 +1,4 @@
-﻿@model EggProductionProject_MVC.Models.MemberVM.MemberLogVM
+﻿@model EggProductionProject_MVC.Models.MemberVM.EmpLog
 
 @section Styles{
     <style>
@@ -35,9 +35,9 @@ background-size: auto 100%;
                         <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
 
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <label asp-for="Email" class="form-label" for="form2Example18">信箱</label>
-                            <input asp-for="Email" type="email" id="form2Example18" class="form-control form-control-lg" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <label asp-for="Account" class="form-label" for="form2Example18">帳號</label>
+                            <input asp-for="Account"  id="form2Example18" class="form-control form-control-lg" />
+                            <span asp-validation-for="Account" class="text-danger"></span>
                         </div>
 
                         <div data-mdb-input-init class="form-outline mb-4">
@@ -47,7 +47,7 @@ background-size: auto 100%;
                         </div>
 
                         <div class="pt-1 mb-4">
-                            <button id="btnLogin" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                            <button id="btnLogin" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="button">Login</button>
                         </div>
 
                         <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">忘記密碼?</a></p>
@@ -60,9 +60,7 @@ background-size: auto 100%;
             </div>
             <div class="col-sm-6 px-0 d-none d-sm-block">
                 <img src="~/memberimg/loginegg.jpg" class="w-100 vh-100" style="object-fit: cover; object-position: left;  height:500px" />
-               @*  <img src="~/memberimg/loginegg.jpg" class="w-100 vh-100"  style="object-fit: cover; object-position: left;  height:200px" /> *@
-               @*  <img src="./MemberImg/LoginEgg.jpg"
-                     alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;"> *@
+             
             </div>
         </div>
     </div>

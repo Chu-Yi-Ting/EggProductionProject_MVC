@@ -34,7 +34,7 @@ namespace EggProductionProject_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(MemberLogVM model)
+        public IActionResult LoginIsRight(EmpLog model)
         {
             if (ModelState.IsValid)
             {
@@ -79,11 +79,5 @@ namespace EggProductionProject_MVC.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
     }
 }
