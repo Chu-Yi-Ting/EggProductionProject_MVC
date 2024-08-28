@@ -1,8 +1,8 @@
 ﻿@using EggProductionProject_MVC.Data
 @using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<EggUser> SignInManager
-@inject UserManager<EggUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
     
 <ul class="navbar-nav">
     @if(User.Identity.IsAuthenticated)
