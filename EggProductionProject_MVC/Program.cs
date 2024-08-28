@@ -45,14 +45,19 @@ var authProperties = new AuthenticationProperties
 };
 
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "GoodEgg.Session";
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
+
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+});
 
 
 
 
-
-//builder.Services.AddIdentity<EggUser, IdentityRole<int>>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
 
 
 // �`�U�ۭq�� EmailSender �A��
@@ -89,6 +94,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "areas",

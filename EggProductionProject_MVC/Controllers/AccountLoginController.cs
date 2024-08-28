@@ -34,50 +34,27 @@ namespace EggProductionProject_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(MemberLogVM model)
+        public IActionResult LoginIsRight(EmpLog model)
         {
-            if (ModelState.IsValid)
+
+            var user = _context.Employees
+                               .FirstOrDefault(u => u.Account == model.Account && u.Password == model.Password);
+
+            if (user != null)
             {
-                var user = _context.Members
-                                   .FirstOrDefault(u => u.Email == model.Email && u.PassWord == model.Password);
-
-                if (user != null)
-                {
-                    var claims = new List<Claim>
-                {
-                     new Claim(ClaimTypes.Name, user.Name),  // 將使用者的名稱存入 Claim
-                        new Claim(ClaimTypes.Email, user.Email) // 您仍然可以將電子郵件作為另一個 Claim 存儲
-                };
-
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    var authProperties = new AuthenticationProperties
-                    {
-                        // 在這裡可以自訂選項，例如是否持久化 Cookie
-                    };
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
-
-                    return RedirectToAction("Index", "Members",  new { area = "Backstage" });
-                }
-                else
-                {
-                    
-                    ModelState.AddModelError(string.Empty, "無效的登入嘗試。");
-                }
+                HttpContext.Session.SetInt32("EmployeeSid", user.EmployeeSid);
+                return Json(user);
             }
-            
-            
-            return View(model);
+            else
+            {
+               
+                return NotFound();
+            }
+
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
+
+
+
     }
 }
