@@ -23,7 +23,11 @@ else
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">註冊</a>
     </li>
     <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="AccountLogin" asp-action="Index">登入</a>
-    </li>
+            @* <a class="nav-link text-dark" asp-controller="AccountLogin" asp-action="Index">登入</a> *@
+            
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
 }
 </ul>

@@ -22,11 +22,11 @@ builder.Services.AddDbContext<EggPlatformContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
 });
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
 
 
 //留給前台會員用
