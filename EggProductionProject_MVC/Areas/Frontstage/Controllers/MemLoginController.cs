@@ -23,7 +23,20 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
-        [HttpPost]
+        public IActionResult RegisterPartialView()
+        {
+            return PartialView("memRegisterPV"); // 假設你的 Register Partial View 名為 _RegisterPartialView.cshtml
+        }
+
+		public IActionResult LoginPartialView()
+		{
+			return PartialView("memLoginPV"); 
+		}
+
+
+
+
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(MemberLogVM model)
         {

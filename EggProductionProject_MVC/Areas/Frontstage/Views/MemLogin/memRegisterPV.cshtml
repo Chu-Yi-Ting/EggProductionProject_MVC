@@ -1,11 +1,18 @@
 ﻿@model EggProductionProject_MVC.Models.MemberVM.MemberLogVM
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 left-column"></div>
-            <div class="col-md-6 right-column">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 left-column"></div>
+        <div class="col-md-6 right-column">
+
+
                 <div class="login-box">
-                    <h1>登入</h1>
+                <h1>歡迎回來！</h1>
+                <p>智慧養殖，從掌蛋記錄開始</p>
+                    <p><a id="login-link" href="#">新加入？立即註冊</a></p>
+            </div>
+                <div class="welcome-box">
+                    <h1>註冊</h1>
                     <form asp-controller="MemLogin" asp-action="Login" method="post">
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">帳號</label>
@@ -37,19 +44,9 @@
                         <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
                     </div>
                 </div>
-
-                <div class="welcome-box">
-                    <h1>歡迎回來！</h1>
-                    <p>智慧養殖，從掌蛋記錄開始</p>
-
-                    <p><a id="register-link" href="#">新加入？立即註冊</a></p>
-
-                </div>
-            </div>
         </div>
+
+
     </div>
+</div>
 </body>
-
-
-
-

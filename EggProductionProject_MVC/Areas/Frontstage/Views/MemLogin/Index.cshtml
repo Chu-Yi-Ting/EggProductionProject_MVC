@@ -5,130 +5,142 @@
 <html lang="zh-Hant">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Egg 登入</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Good Egg 登入</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
 
-        .container-fluid {
-            padding: 0;
-        }
 
-        .row {
-            margin: 0;
-        }
+		
 
-        .left-column {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
-            background-size: cover;
-            height: 100vh;
-        }
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f5f5f5;
+		}
 
-        .right-column {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+		.container-fluid {
+			padding: 0;
+		}
 
-        .login-box,
-        .welcome-box {
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
+		.row {
+			margin: 0;
+		}
 
-        .login-box {
-            margin-bottom: 20px;
-        }
+		.left-column {
+			background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+			background-size: cover;
+			height: 100vh;
+		}
 
-            .login-box h1 {
-                color: #b3922c;
-                font-size: 24px;
-                margin-bottom: 20px;
-                text-align: center;
-                background-color:#fff;
-            }
+		.right-column {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			padding: 20px;
+			background-color: #f5f5f5;
+		}
 
-            .login-box label {
-                color: #b3922c;
-            }
+		.login-box,
+		.welcome-box {
+			width: 100%;
+			max-width: 450px;
+			padding: 40px;
+			border-radius: 10px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+		}
 
-            .login-box .btn-primary {
-                background-color: #b3922c;
-                border: none;
-            }
 
-                .login-box .btn-primary:hover {
-                    background-color: #a37e2b;
-                }
 
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-            position: relative;
-        }
+		.login-box {
+			margin-bottom: 20px;
+		}
 
-            .divider::before,
-            .divider::after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                width: 40%;
-                height: 1px;
-                background-color: #ddd;
-            }
+		.login-box a{
+			text-align:center;
+		}
 
-            .divider::before {
-                left: 0;
-            }
 
-            .divider::after {
-                right: 0;
-            }
+			.login-box h1 {
+				color: #b3922c;
+				font-size: 24px;
+				margin-bottom: 20px;
+				text-align: center;
+				background-color: #fff;
+			}
 
-            .divider span {
-                color: #666;
-                background-color: #fff;
-                padding: 0 10px;
-            }
+			.login-box label {
+				color: #b3922c;
+			}
 
-        .welcome-box {
-            background-color: #b3922c;
-            color: #fff;
-            text-align: center;
-        }
+			.login-box .btn-primary {
+				background-color: #b3922c;
+				border: none;
+			}
 
-            .welcome-box h1 {
-                font-size: 24px;
-                margin-bottom: 10px;
-                background-color: #b3922c;
-            }
+				.login-box .btn-primary:hover {
+					background-color: #a37e2b;
+				}
 
-            .welcome-box p {
-                margin-bottom: 20px;
-            }
+		.divider {
+			text-align: center;
+			margin: 20px 0;
+			position: relative;
+		}
 
-            .welcome-box a {
-                color: #fff;
-                text-decoration: underline;
-            }
+			.divider::before,
+			.divider::after {
+				/* content: ""; */
+				position: absolute;
+				top: 50%;
+				width: 40%;
+				height: 1px;
+				background-color: #ddd;
+			}
 
-                .welcome-box a:hover {
-                    text-decoration: none;
-                }
-    </style>
+			.divider::before {
+				left: 0;
+			}
+
+			.divider::after {
+				right: 0;
+			}
+
+			.divider span {
+				color: #666;
+				background-color: #fff;
+				padding: 0 10px;
+			}
+
+		.welcome-box {
+			background-color: #b3922c;
+			color: #fff;
+			text-align: center;
+		}
+
+			.welcome-box h1 {
+				font-size: 24px;
+				margin-bottom: 10px;
+				background-color: #b3922c;
+			}
+
+			.welcome-box p {
+				margin-bottom: 20px;
+			}
+
+			.welcome-box a {
+				color: #fff;
+				text-decoration: underline;
+				text-align: center;
+			}
+
+				.welcome-box a:hover {
+					text-decoration: none;
+				}
+	</style>
 
 
 
@@ -137,206 +149,231 @@
 </head>
 
 <body>
-    @*
-    <header class="">
-        <div class="container_title p-0 m-0">
-            <div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
-                <div class="outer-layout-n">
-                    <a href="#"
-                       class="d-flex align-items-center  text-decoration-none">
-                        賣家中心
-                    </a>
-                    <a href="#"
-                       class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
-                        <h5>
-                        </h5>
-                        <img src="./assets/brand/layout/GOOD_EGG.svg"
-                             class="bi "
-                             width="120"
-                             alt="Bootstrap" />
-                    </a>
+	@*
+	<header class="">
+	<div class="container_title p-0 m-0">
+	<div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
+	<div class="outer-layout-n">
+	<a href="#"
+	class="d-flex align-items-center  text-decoration-none">
+	賣家中心
+	</a>
+	<a href="#"
+	class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
+	<h5>
+	</h5>
+	<img src="./assets/brand/layout/GOOD_EGG.svg"
+	class="bi "
+	width="120"
+	alt="Bootstrap" />
+	</a>
 
-                </div>
-
-
-                <ul class="nav col-12 col-lg-auto  justify-content-center align-items-center d-none d-lg-flex">
-                    <li><a href="#" class="nav-link px-3 link-dark ">蛋雞分析</a></li>
-                    <li><a href="#" class="nav-link px-3 link-dark ">知識討論</a></li>
-                    <li>
-                        <a href="#" class="nav-link px-3 link-dark ">
-                            <img src="./assets/brand/layout/egg-logo-sm.svg"
-                                 class="bi"
-                                 width="35"
-                                 alt="Bootstrap" />
-                        </a>
-                    </li>
-                    <li><a href="#" class="nav-link px-3 link-dark ">影片生活</a></li>
-                    <li><a href="#" class="nav-link px-3 link-dark ">商城購物</a></li>
-                </ul>
-                <div class="nav-right-no-abo mt-3 mt-lg-0">
-                    <a href="#"
-                       class="d-block link-dark text-decoration-none"
-                       aria-expanded="false">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </a>
-
-                    <a href="#"
-                       class="d-block link-dark text-decoration-none"
-                       aria-expanded="false">
-                        <img src="https://github.com/mdo.png"
-                             alt="mdo"
-                             width="28"
-                             height="28"
-                             class="rounded-circle" />
-                    </a>
-
-                    <button class="navbar-toggler link-dark text-decoration-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                    <img src="./assets/brand/layout/egg-logo.svg" alt="">
-
-                </h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-house me-2"></i> 首頁
-                        </a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <span>網站服務</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-chart-line me-2"></i>
-                            每日蛋雞分析
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-feather-pointed me-2"></i>
-                            知識討論
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-clapperboard me-2"></i>
-                            影片生活
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-shop me-2"></i>
-                            商城購物
-                        </a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <span>網站服務</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-user-large me-2"></i>
-                            會員中心
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="offcanvas-footer">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <div class="logoin-user">
-                            <div class="border-img">
-                                <img src="./assets/brand/common/seven-logo.png">
-                            </div>
-                            Alice
-                        </div>
-                    </li>
-                </ul>
-                <button type="button" class="btn ">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
+	</div>
 
 
+	<ul class="nav col-12 col-lg-auto  justify-content-center align-items-center d-none d-lg-flex">
+	<li><a href="#" class="nav-link px-3 link-dark ">蛋雞分析</a></li>
+	<li><a href="#" class="nav-link px-3 link-dark ">知識討論</a></li>
+	<li>
+	<a href="#" class="nav-link px-3 link-dark ">
+	<img src="./assets/brand/layout/egg-logo-sm.svg"
+	class="bi"
+	width="35"
+	alt="Bootstrap" />
+	</a>
+	</li>
+	<li><a href="#" class="nav-link px-3 link-dark ">影片生活</a></li>
+	<li><a href="#" class="nav-link px-3 link-dark ">商城購物</a></li>
+	</ul>
+	<div class="nav-right-no-abo mt-3 mt-lg-0">
+	<a href="#"
+	class="d-block link-dark text-decoration-none"
+	aria-expanded="false">
+	<i class="fa-solid fa-cart-shopping"></i>
+	</a>
 
+	<a href="#"
+	class="d-block link-dark text-decoration-none"
+	aria-expanded="false">
+	<img src="https://github.com/mdo.png"
+	alt="mdo"
+	width="28"
+	height="28"
+	class="rounded-circle" />
+	</a>
 
+	<button class="navbar-toggler link-dark text-decoration-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+	<i class="fa-solid fa-bars"></i>
+	</button>
+	</div>
+	</div>
+	</div>
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+	<div class="offcanvas-header">
+	<h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+	<img src="./assets/brand/layout/egg-logo.svg" alt="">
 
-            </div>
-        </div>
+	</h5>
+	<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-house me-2"></i> 首頁
+	</a>
+	</li>
+	<li class="nav-item mt-2">
+	<span>網站服務</span>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-chart-line me-2"></i>
+	每日蛋雞分析
+	</a>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-feather-pointed me-2"></i>
+	知識討論
+	</a>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-clapperboard me-2"></i>
+	影片生活
+	</a>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-shop me-2"></i>
+	商城購物
+	</a>
+	</li>
+	<li class="nav-item mt-2">
+	<span>網站服務</span>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link active" aria-current="page" href="#">
+	<i class="fa-solid fa-user-large me-2"></i>
+	會員中心
+	</a>
+	</li>
+	</ul>
+	</div>
 
-    </header> *@
+	<div class="offcanvas-footer">
+	<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+	<li class="nav-item">
+	<div class="logoin-user">
+	<div class="border-img">
+	<img src="./assets/brand/common/seven-logo.png">
+	</div>
+	Alice
+	</div>
+	</li>
+	</ul>
+	<button type="button" class="btn ">
+	<i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+	登出
+	</button>
 
 
 
 
 
+	</div>
+	</div>
+
+	</header> *@
 
 
+	@*     <div class="container-fluid">
+	<div class="row">
+	<div class="col-md-6 left-column"></div>
+	<div class="col-md-6 right-column">
+	<div class="login-box">
+	<h1>登入</h1>
+	<form asp-controller="MemLogin" asp-action="Login" method="post">
+	<div class="mb-3">
+	<label asp-for="Email" class="form-label">帳號</label>
+	<input asp-for="Email" type="text" class="form-control" id="account">
+	<span asp-validation-for="Email" class="text-danger"></span>
 
+	</div>
+	<div class="mb-3">
+	<label asp-for="Password" for="password" class="form-label">密碼</label>
+	<input asp-for="Password" type="password" class="form-control" id="password">
+	<span asp-validation-for="Password" class="text-danger"></span>
+	<small><a href="#" class="text-muted">忘記密碼?</a></small>
+	</div>
+	<div class="mb-3">
+	<div class="form-check">
+	<input class="form-check-input" type="checkbox" id="notRobot">
+	<label class="form-check-label" for="notRobot">
+	我不是機器人
+	</label>
+	</div>
+	</div>
+	<button type="submit" class="btn btn-primary w-100">登入</button>
+	</form>
+	<div class="divider">
+	<span>OR</span>
+	</div>
+	<div class="d-flex justify-content-between">
+	<button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+	<button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+	</div>
+	</div>
 
+	<div class="welcome-box">
+	<h1>歡迎回來！</h1>
+	<p>智慧養殖，從掌蛋記錄開始</p>
+	<p><a asp-action="Register">新加入？立即註冊</a></p>
+	</div>
+	</div>
+	</div>
+	</div> *@
 
+	<div id="partialViewContainer">
+		@* 這裡放置 LoginPartialView 的內容 *@
+	<partial name="memLoginPV" />
+	</div>
 
-
-
-
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 left-column"></div>
-            <div class="col-md-6 right-column">
-                <div class="login-box">
-                    <h1>登入</h1>
-                    <form asp-controller="MemLogin" asp-action="Login" method="post">
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">帳號</label>
-                            <input asp-for="Email" type="text" class="form-control" id="account">
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Password" for="password" class="form-label">密碼</label>
-                            <input asp-for="Password" type="password" class="form-control" id="password">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                            <small><a href="#" class="text-muted">忘記密碼?</a></small>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="notRobot">
-                                <label class="form-check-label" for="notRobot">
-                                    我不是機器人
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">登入</button>
-                    </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
-                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
-                    </div>
-                </div>
-
-                <div class="welcome-box">
-                    <h1>歡迎回來！</h1>
-                    <p>智慧養殖，從掌蛋記錄開始</p>
-                    <p><a  asp-action="Register" >新加入？立即註冊</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+
+@section Scripts {
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// 綁定註冊鏈接
+			$(document).on('click', 'a#register-link', function (e) {
+				e.preventDefault(); // 防止默認行為
+				$.ajax({
+					url: '@Url.Action("RegisterPartialView", "MemLogin")',
+					type: 'GET',
+					success: function (result) {
+						$("#partialViewContainer").html(result); // 替換部分視圖的容器內容
+					}
+				});
+			});
+
+			// 綁定登錄鏈接
+			$(document).on('click', 'a#login-link', function (e) {
+				e.preventDefault(); // 防止默認行為
+				$.ajax({
+					url: '@Url.Action("LoginPartialView", "MemLogin")',
+					type: 'GET',
+					success: function (result) {
+						$("#partialViewContainer").html(result); // 替換部分視圖的容器內容
+					}
+				});
+			});
+		});
+
+
+	</script>
+}
