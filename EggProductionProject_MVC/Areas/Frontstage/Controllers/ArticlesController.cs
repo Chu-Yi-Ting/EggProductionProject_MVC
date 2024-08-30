@@ -155,90 +155,23 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
-       
-
-        //public async Task<IActionResult> GetArticles()
-        //{
-        //    var articles = await _context.Articles
-        //        .Select(a => new
-        //        {
-        //            a.ArticleSid,
-        //            a.ArticleTitle,
-        //            a.ArticleInfo,
-        //            a.ArticleCreaterSid,
-        //            a.ArticleCategoriesSid,
-        //            a.ArticleDate
-        //        })
-        //        .ToListAsync();
-
-        //    return Ok(articles);
-        //}
-        ////返回
-        //[HttpGet("GetCategories")]
-        //public async Task<IActionResult> GetCategories()
-        //{
-        //    var categories = await _context.ArticleCategories
-        //        .Select(c => new
-        //        {
-        //            c.ArticleCategoriesSid,
-        //            c.ArticleCategories,
-        //            ArticleCategoriesImg = c.ArticleCategoriesImg != null ? Convert.ToBase64String(c.ArticleCategoriesImg) : null
-        //        })
-        //        .ToListAsync();
-
-        //    return Ok(categories);
-        //}
-        ////文章內頁
-        //[HttpGet("GetArticleJson/{id}")]
-        //public async Task<IActionResult> GetArticleJson(int id)
-        //{
-        //    var article = await _context.Articles
-        //        .Include(a => a.ArticleCategoriesS)
-        //        .Include(a => a.ArticleCreaterS)
-        //        .Include(a => a.PublicStatusNoNavigation)
-        //        .Where(a => a.ArticleSid == id)
-        //        .Select(a => new
-        //        {
-        //            a.ArticleSid,
-        //            a.ArticleTitle,
-        //            a.ArticleInfo,
-        //            a.ArticleCreaterSid,
-        //            ArticleCreaterName = a.ArticleCreaterS.Name,
-        //            a.ArticleCategoriesSid,
-        //            CategoryName = a.ArticleCategoriesS.ArticleCategories,
-        //            a.ArticleDate,
-        //            a.PublicStatusNoNavigation.StatusDescription
-        //        })
-        //        .FirstOrDefaultAsync();
-
-        //    if (article == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(article);
-        //}
 
         // 文章分類詳細
-        //[HttpGet("GetCategoryJson/{id}")]
-        //public async Task<IActionResult> GetCategoryJson(int id)
-        //{
-        //    var category = await _context.ArticleCategories
-        //        .Where(c => c.ArticleCategoriesSid == id)
-        //        .Select(c => new
-        //        {
-        //            c.ArticleCategoriesSid,
-        //            c.ArticleCategories,
-        //            ArticleCategoriesImg = c.ArticleCategoriesImg != null ? Convert.ToBase64String(c.ArticleCategoriesImg) : null
-        //        })
-        //        .FirstOrDefaultAsync();
+        [HttpGet("GetCategories")]
+        public async Task<ActionResult<IEnumerable<ArticleCategoryDto>>> GetCategories()
+        {
+            var categories = await _context.ArticleCategories
+                .Select(c => new ArticleCategoryDto
+                {
+                    ArticleCategoriesSid = c.ArticleCategoriesSid,
+                    ArticleCategories = c.ArticleCategories,
+                    ArticleCategoriesImg = c.ArticleCategoriesImg != null
+                        ? Convert.ToBase64String(c.ArticleCategoriesImg)
+                        : null
+                })
+                .ToListAsync();
 
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(category);
-        //}
+            return Ok(categories);
+        }
     }
 }
