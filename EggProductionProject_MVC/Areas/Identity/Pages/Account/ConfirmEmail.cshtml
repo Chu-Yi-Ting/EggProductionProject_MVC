@@ -2,7 +2,19 @@
 @model ConfirmEmailModel
 @{
     ViewData["Title"] = "Confirm email";
+    var userId = TempData["UserId"] as string;
 }
 
 <h2>@ViewData["Title"]</h2>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+@if (!string.IsNullOrEmpty(userId))
+{
+    @* <p> 5秒鐘後將重新導向至會員資料頁面...</p> *@
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            window.location.href = '@Url.Action("MemberPage", "Members", new { userId = userId }, protocol: Request.Scheme)';
+        }, 5000);
+    </script>
+}

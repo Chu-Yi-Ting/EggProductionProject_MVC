@@ -102,6 +102,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
+
                     }
                 }
                 foreach (var error in result.Errors)

@@ -1,0 +1,93 @@
+﻿@model EggProductionProject_MVC.Models.Member
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Member</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsChickFarm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsChickFarm)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PassWord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PassWord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfilePic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProfilePic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsBlocked)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsBlocked)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Chickcode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Chickcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AspUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AspUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ShoppingRankNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShoppingRankNoNavigation.ShoppingRankNo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MemberSid" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

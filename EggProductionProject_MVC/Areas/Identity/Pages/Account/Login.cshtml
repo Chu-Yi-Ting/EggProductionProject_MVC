@@ -1,12 +1,62 @@
 ﻿@page
 @model LoginModel
 
-@{
-    ViewData["Title"] = "Log in";
-}
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <div class="login-box">
+                    <h1>登入</h1>
+                    <form id="account" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">帳號</label>
+                            <input asp-for="Input.Email" type="text" class="form-control" id="account">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" for="password" class="form-label">密碼</label>
+                            <input asp-for="Input.Password" type="password" class="form-control" id="password">
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                           @*  <small><a href="#" class="text-muted">忘記密碼?</a></small> *@
+                            <a id="forgot-password" asp-page="./ForgotPassword">忘記密碼?</a>
+                        </div>
+                        <div class="mb-3">
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登入</button>
+                    </form>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                    </div>
+                </div>
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+
+                    <p><a id="register-link" href="#">新加入？立即註冊</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@* <div class="row">
     <div class="col-md-4">
         <section>
             <form id="account" method="post">
@@ -78,8 +128,144 @@
             }
         </section>
     </div>
-</div>
+</div> *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+@section Styles{
+    <style>
+
+
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .left-column {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .login-box,
+        .welcome-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+
+
+        .login-box {
+            margin-bottom: 20px;
+        }
+
+            .login-box a {
+                text-align: center;
+            }
+
+
+            .login-box h1 {
+                color: #b3922c;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+                background-color: #fff;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+            .divider::before,
+            .divider::after {
+                /* content: ""; */
+                position: absolute;
+                top: 50%;
+                width: 40%;
+                height: 1px;
+                background-color: #ddd;
+            }
+
+            .divider::before {
+                left: 0;
+            }
+
+            .divider::after {
+                right: 0;
+            }
+
+            .divider span {
+                color: #666;
+                background-color: #fff;
+                padding: 0 10px;
+            }
+
+        .welcome-box {
+            background-color: #b3922c;
+            color: #fff;
+            text-align: center;
+        }
+
+            .welcome-box h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+                background-color: #b3922c;
+            }
+
+            .welcome-box p {
+                margin-bottom: 20px;
+            }
+
+            .welcome-box a {
+                color: #fff;
+                text-decoration: underline;
+                text-align: center;
+            }
+
+                .welcome-box a:hover {
+                    text-decoration: none;
+                }
+    </style>
+}
+
