@@ -191,5 +191,21 @@
 		});
 
 
+
+
+		//註冊密碼必須一致
+		function validatePasswords() {
+			var password = document.getElementById("password").value;
+			var confirmPassword = document.getElementById("confirm-password").value;
+			var errorSpan = document.getElementById("password-error");
+
+			if (password !== confirmPassword) {
+				errorSpan.style.display = "inline";
+			} else {
+				errorSpan.style.display = "none";
+			}
+		}
+	
+
 	</script>
 }
