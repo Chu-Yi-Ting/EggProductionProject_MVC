@@ -4,49 +4,43 @@
     <div class="row">
         <div class="col-md-6 left-column"></div>
         <div class="col-md-6 right-column">
+            <div class="login-box">
+                <h1>註冊</h1>
+                <form>
+                    <div class="mb-3">
+                        <label for="account" class="form-label">帳號</label>
+                        <input type="text" class="form-control" id="account">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">密碼</label>
+                        <input type="password" class="form-control" id="password">
 
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notRobot">
+                            <label class="form-check-label" for="notRobot">
+                                我不是機器人
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">提交</button>
+                </form>
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                    <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                </div>
+            </div>
 
-                <div class="login-box">
+            <div class="welcome-box">
                 <h1>歡迎回來！</h1>
                 <p>智慧養殖，從掌蛋記錄開始</p>
-                    <p><a id="login-link" href="#">新加入？立即註冊</a></p>
+                <p><a href="http://127.0.0.1:5500/myLogin.html">已有帳號？立即登入</a></p>
             </div>
-                <div class="welcome-box">
-                    <h1>註冊</h1>
-                    <form asp-controller="MemLogin" asp-action="Login" method="post">
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">帳號</label>
-                            <input asp-for="Email" type="text" class="form-control" id="account">
-                            <span asp-validation-for="Email" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Password" for="password" class="form-label">密碼</label>
-                            <input asp-for="Password" type="password" class="form-control" id="password">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                            <small><a href="#" class="text-muted">忘記密碼?</a></small>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="notRobot">
-                                <label class="form-check-label" for="notRobot">
-                                    我不是機器人
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">登入</button>
-                    </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
-                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
-                    </div>
-                </div>
         </div>
-
-
     </div>
 </div>
 </body>
