@@ -71,10 +71,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[ChickLotNo]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[CoinUseAreas]",
          "ObjectType": 0
       },
@@ -148,10 +144,6 @@
       },
       {
          "Name": "[dbo].[LogicalDeletion]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Manure]",
          "ObjectType": 0
       },
       {
@@ -279,14 +271,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Vaccinate]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[VaccineTable]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[VideoSummary]",
          "ObjectType": 0
       },
@@ -297,6 +281,18 @@
       {
          "Name": "[dbo].[DailyChickAmountsRate]",
          "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GetDailyData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEventsForMember]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertCalendar]",
+         "ObjectType": 1
       }
    ],
    "UiHint": null,

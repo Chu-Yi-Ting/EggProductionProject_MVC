@@ -1,0 +1,583 @@
+﻿@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <style>
+        .custom-tab {
+            color: #d4af37; /* 標籤的文字顏色 */
+            background-color: #f9f9f9; /* 標籤的背景色 */
+            border: 1px solid #d4af37; /* 邊框顏色 */
+            border-radius: 0; /* 移除邊框圓角 */
+            padding: 10px 20px; /* 調整內邊距 */
+            margin-right: 5px; /* 調整標籤之間的間距 */
+        }
+
+        .custom-tab.active {
+            background-color: #d4af37; /* 活躍標籤的背景色 */
+            color: #ffffff; /* 活躍標籤的文字顏色 */
+        }
+
+        .custom-nav-border {
+            border: 2px solid #d4af37; /* 邊框顏色 */
+            border-radius: 50px; /* 創建橢圓形邊框 */
+            padding: 1px; /* 邊框內間距 */
+            display: inline-block;
+        }
+
+        .nav-pills {
+            justify-content: center; /* 確保標籤置中 */
+        }
+
+        /* 更改所有事件的文字顏色 */
+        .fc .fc-event {
+            color: #ffffff; /* 白色文字 */
+            background-color: #d4af37; /* 按鈕背景顏色 */
+            border: none; /* 去除邊框 */
+        }
+
+        /* 改變特定日期的文字顏色 */
+        .fc .fc-daygrid-day-number {
+            color: #333; /* 更改日期數字的顏色 */
+        }
+
+        /* 更改今天的背景色和文字顏色 */
+        .fc .fc-day-today {
+            background-color: #d4af37; 
+            color: #000; /* 黑色文字 */
+        }
+
+        .custom-day-hover:hover {
+            background-color: #f0f8ff !important; /* 修改為你想要的顏色 */
+            cursor: pointer; /* 改變鼠標樣式 */
+        }
+
+    </style>
+}
+
+<body>
+    <header class="">
+        <div class="offcanvas offcanvas-end"
+             tabindex="-1"
+             id="offcanvasNavbar"
+             aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                    <img src="./assets/brand/layout/egg-logo.svg" alt="" />
+                </h5>
+                <button type="button"
+                        class="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-house me-2"></i> 首頁
+                        </a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <span>網站服務</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-chart-line me-2"></i>
+                            每日蛋雞分析
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-feather-pointed me-2"></i>
+                            知識討論
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-clapperboard me-2"></i>
+                            影片生活
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-shop me-2"></i>
+                            商城購物
+                        </a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <span>網站服務</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fa-solid fa-user-large me-2"></i>
+                            會員中心
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="offcanvas-footer">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <div class="logoin-user">
+                            <div class="border-img">
+                                <img src="./assets/brand/common/seven-logo.png" />
+                            </div>
+                            Alice
+                        </div>
+                    </li>
+                </ul>
+                <button type="button" class="btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+                    登出
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="title-bg mb-3">
+            <img class="w-100" src="~/frontstagetemplate/assets/brand/layout/banners/banner_18.png" />
+        </div>
+
+        <div class="w-100 mt-3 mt-md-5">
+            <div class="d-flex justify-content-center">
+                <div class="custom-nav-border">
+                    <ul class="nav nav-pills mb-1 tab-controll-n justify-content-center"
+                        id="pills-tab"
+                        role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active custom-tab"
+                                    id="pills-one-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-one"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="pills-one"
+                                    aria-selected="true">
+                                蛋雞分析
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link custom-tab"
+                                    id="pills-two-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-two"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="pills-two"
+                                    aria-selected="false">
+                                行事曆
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+            <!-- 頁面一的內容 -->
+            <div class="tab-pane fade show active"
+                 id="pills-one"
+                 role="tabpanel"
+                 aria-labelledby="pills-one-tab">
+                <div class="container mt-5">
+                    <div class="row">
+                        <div class="col-md-9">
+                        <h3>蛋雞紀錄分析</h3>
+                            <canvas id="myChart" style="height: 500px; margin-bottom: 80px"></canvas>
+                        </div>
+                        <div class="col-md-3">
+                            <h4>篩選條件</h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="displayOption" class="form-label">顯示</label>
+                                            <select class="form-select" id="displayOption">
+                                                <option>近半年</option>
+                                                <option>近兩週</option>
+                                                <option>近七日</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="farmSelect" class="form-label">雞舍</label>
+                                            <select class="form-select" id="farmSelect"></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dateRange" class="form-label">時間</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="dateRange"
+                                                   placeholder="選擇日期範圍" />
+                                        </div>
+                                        <br />
+                                        <button class="btn btn-primary w-50">篩選</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 頁面二的內容 -->
+            <div class="tab-pane fade"
+                 id="pills-two"
+                 role="tabpanel"
+                 aria-labelledby="pills-two-tab">
+                <div class="container mt-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>行事曆</h3>
+                            <div id="calendar" class="border p-3 rounded shadow-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal 事件新增彈出視窗 -->
+            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">新增事件</h5>
+                            <button type="button" class="close" aria-label="Close" onclick="closeAddModal()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addEventForm">
+                                <div class="form-group">
+                                    <label for="addEventTitle">標題</label>
+                                    <input type="text" class="form-control" id="addEventTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addEventTodoList">敘述</label>
+                                    <textarea class="form-control" id="addEventTodoList" required></textarea>
+                                </div>
+                                <input type="hidden" id="addEventDate">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeAddModal()">取消</button>
+                            <button type="button" class="btn btn-primary" onclick="submitEvent()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal 事件修改彈出視窗 -->
+            <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">事件詳細</h5>
+                            <button type="button" class="close" aria-label="Close" onclick="closeEditModal()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editEventForm">
+                                <div class="form-group">
+                                    <label for="editEventTitle">標題</label>
+                                    <input type="text" class="form-control" id="editEventTitle" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEventTodoList">敘述</label>
+                                    <textarea class="form-control" id="editEventTodoList" readonly></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEventFinished">是否完成</label>
+                                    <select class="form-control" id="editEventFinished" disabled>
+                                        <option value="0">未完成</option>
+                                        <option value="1">已完成</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" id="editEventId">
+                                <input type="hidden" id="editEventDate">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">取消</button>
+                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteEvent()">刪除</button>
+                            <button type="button" class="btn btn-warning" id="editEventBtn" onclick="enableEdit()">修改</button>
+                            <button type="button" class="btn btn-primary" id="saveEventBtn" onclick="updateEvent()" style="display: none;">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var calendar; // 定義行事曆變數
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // 監聽標籤頁切換事件
+            var tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
+            if (tabElement) {
+                tabElement.addEventListener('shown.bs.tab', function (e) {
+                    if (!calendar) { // 如果行事曆尚未初始化
+                        var calendarEl = document.getElementById('calendar');
+                        if (calendarEl) {
+                            calendar = new FullCalendar.Calendar(calendarEl, {
+                                initialView: 'dayGridMonth',
+                                locale: 'zh-tw',
+                                dateClick: function (info) {
+                                    // 顯示新增事件的彈出視窗
+                                    new bootstrap.Modal(document.getElementById('addEventModal')).show();
+
+                                    // 填充日期訊息
+                                    document.getElementById('addEventDate').value = info.dateStr;
+                                },
+                                events: '/Frontstage/DataApi/GetCalendarEvents',
+                                eventContent: function (arg) {
+                                    // 創建一個新的 span 元素來表示事件的完成狀態
+                                    var completedEl = document.createElement('span');
+                                    completedEl.id = `completed-${arg.event.id}`; // 動態 ID，基於事件 ID
+                                    completedEl.innerHTML = (arg.event.extendedProps.finished === 1 ? '✅' : '❌'); // 標示已完成或未完成
+
+                                    // 創建一個新的 span 元素來顯示事件的標題
+                                    var titleEl = document.createElement('span');
+                                    titleEl.id = `title-${arg.event.id}`; // 動態 ID，基於事件 ID
+                                    titleEl.innerHTML = '標題: ' + arg.event.title;
+
+                                    // 將事件的標題和完成狀態組合為一個陣列
+                                    var arrayOfDomNodes = [titleEl, completedEl];
+
+                                    // 返回要顯示的 DOM 節點
+                                    return { domNodes: arrayOfDomNodes };
+                                },
+                                eventDidMount: function (info) {
+                                    if (info.event.extendedProps.finished === 1) {
+                                        info.el.style.backgroundColor = 'lightgreen';
+                                    } else {
+                                        info.el.style.backgroundColor = 'lightcoral';
+                                    }
+
+                                    // 添加點擊事件來顯示事件詳細信息
+                                    info.el.addEventListener('click', function () {
+                                        showEventDetails(info.event);
+                                    });
+                                },
+                                headerToolbar: {
+                                    right: 'prev,next today',
+                                    left: 'title',
+                                },
+                                dayCellClassNames: function (dateInfo) {
+                                    return ['custom-day-hover'];
+                                },
+                                themeSystem: 'bootstrap',
+                                dayMaxEvents: true,
+                                editable: true,
+                                selectable: true,
+                            });
+                            calendar.render(); // 初始化並渲染行事曆
+                        }
+                    }
+                });
+            }
+//-------------------------------------------------------------------------------------
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // 建立折線圖
+            const myChart = new Chart(ctx, {
+                type: 'line', // 圖表類型
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'], // X 軸標籤
+                    datasets: [{
+                        label: 'Sales Data', // 數據集標籤
+                        data: [65, 59, 80, 81, 56, 55, 40], // Y 軸數據
+                        fill: false, // 是否填充線下的區域
+                        borderColor: 'rgb(75, 192, 192)', // 線條顏色
+                        tension: 0.1 // 線條張力 (0.1 = 稍微平滑)
+                    }]
+                },
+                options: {
+                    responsive: true, // 自適應畫布大小
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top' // 標籤位置
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true, // 顯示 X 軸
+                            title: {
+                                display: true,
+                                text: 'Month' // X 軸標題
+                            }
+                        },
+                        y: {
+                            display: true, // 顯示 Y 軸
+                            title: {
+                                display: true,
+                                text: 'Sales' // Y 軸標題
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+//------------------------------------------行事曆code----------------------------------------------------------
+
+        // 當點擊日曆中的事件時顯示詳細的彈出視窗
+        function showEventDetails(event) {
+            document.getElementById('editEventTitle').value = event.title;
+            document.getElementById('editEventTodoList').value = event.extendedProps.description;
+            document.getElementById('editEventFinished').value = event.extendedProps.finished;
+            document.getElementById('editEventId').value = event.id;
+
+            // 禁用編輯狀態
+            document.getElementById('editEventTitle').readOnly = true;
+            document.getElementById('editEventTodoList').readOnly = true;
+            document.getElementById('editEventFinished').disabled = true;
+
+            // 根據事件的完成狀態顯示或隱藏按鈕
+            if (event.extendedProps.finished === 1) {
+                document.getElementById('editEventBtn').style.display = 'none';
+                document.getElementById('saveEventBtn').style.display = 'none';
+                document.getElementById('confirmDeleteBtn').style.display = 'none'; // 假設刪除按鈕 ID 為 confirmDeleteBtn
+            } else {
+                document.getElementById('editEventBtn').style.display = 'inline-block';
+                document.getElementById('confirmDeleteBtn').style.display = 'inline-block';
+            }
+
+            new bootstrap.Modal(document.getElementById('editEventModal')).show();
+        }
+
+        // 關閉事件新增的彈出視窗
+        function closeAddModal() {
+            bootstrap.Modal.getInstance(document.getElementById('addEventModal')).hide();
+        }
+
+        // 關閉事件修改的彈出視窗
+        function closeEditModal() {
+            bootstrap.Modal.getInstance(document.getElementById('editEventModal')).hide();
+        }
+
+        // 啟用編輯模式
+        function enableEdit() {
+            document.getElementById('editEventTodoList').readOnly = false;
+            document.getElementById('editEventFinished').disabled = false;
+            document.getElementById('editEventBtn').style.display = 'none';
+            document.getElementById('saveEventBtn').style.display = 'inline-block';
+        }
+
+        // 保存新事件
+        async function submitEvent() {
+            var eventTitle = document.getElementById('addEventTitle').value;
+            var eventTodoList = document.getElementById('addEventTodoList').value;
+            var eventDate = document.getElementById('addEventDate').value;
+
+            var eventData = {
+                Title: eventTitle,
+                TodoList: eventTodoList,
+                StartDate: eventDate
+            };
+
+            try {
+                const response = await fetch('/Frontstage/DataApi/InsertCalendar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Success:', data);
+                    closeAddModal();
+                    reloadCalendarEvents();
+                } else {
+                    alert('Error: ' + (data.message || '無法儲存事件'));
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        // 更新現有事件
+        async function updateEvent() {
+            var eventId = document.getElementById('editEventId').value;
+            var eventTitle = document.getElementById('editEventTitle').value;
+            var eventTodoList = document.getElementById('editEventTodoList').value;
+            var eventFinished = document.getElementById('editEventFinished').value;
+
+            var eventData = {
+                Id: eventId,
+                Title: eventTitle,
+                TodoList: eventTodoList,
+                Finished: eventFinished
+            };
+
+            try {
+                const response = await fetch(`/Frontstage/DataApi/UpdateCalendar/${eventId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Success:', data);
+                    closeEditModal();
+                    reloadCalendarEvents();
+                } else {
+                    alert('Error: ' + (data.message || '無法更新事件'));
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        // 確認刪除事件
+        function confirmDeleteEvent() {
+            if (confirm('確定要刪除這個事件嗎？')) {
+                deleteEvent();
+            }
+        }
+
+        // 刪除事件
+        async function deleteEvent() {
+            var eventId = document.getElementById('editEventId').value;
+
+            try {
+                const response = await fetch(`/Frontstage/DataApi/DeleteCalendar/${eventId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Success:', data);
+                    closeEditModal();
+                    reloadCalendarEvents();
+                } else {
+                    alert('Error: ' + (data.message || '無法刪除事件'));
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        function reloadCalendarEvents() {
+            if (calendar) {
+                calendar.refetchEvents(); // 重新得到事件
+            }
+        }
+//------------------------------------------行事曆code----------------------------------------------------------
+    </script>
+}
