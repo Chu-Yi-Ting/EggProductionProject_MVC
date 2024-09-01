@@ -54,9 +54,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         {
                             ArticleCategoriesSid = article.ArticleCategoriesS.ArticleCategoriesSid,
                             ArticleCategories = article.ArticleCategoriesS.ArticleCategories,
-                            ArticleCategoriesImg = article.ArticleCategoriesS.ArticleCategoriesImg != null
-                                ? Convert.ToBase64String(article.ArticleCategoriesS.ArticleCategoriesImg)
-                                : null
                         }
                         : null,
                     PublicStatus = article.PublicStatusNoNavigation != null
