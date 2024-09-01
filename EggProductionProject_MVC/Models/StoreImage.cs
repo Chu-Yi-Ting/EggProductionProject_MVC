@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class EcImage
+public partial class StoreImage
 {
-    public int EcImgSid { get; set; }
-
-    public byte[] EcImg { get; set; }
-
-    public int? ProductSid { get; set; }
+    public int StoreImageSid { get; set; }
 
     public int? StoreSid { get; set; }
 
-    public virtual Product ProductS { get; set; }
+    public byte[] ShopImage { get; set; }
+
+    public string ImageDescription { get; set; }
+
+    public DateTime? UploadTime { get; set; }
 
     public virtual Store StoreS { get; set; }
 }
