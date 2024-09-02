@@ -9,6 +9,9 @@ using EggProductionProject_MVC.Models;
 using System.Security.Claims;
 using EggProductionProject_MVC.Areas.Frontstage.Controllers;
 using static EggProductionProject_MVC.Areas.Frontstage.Controllers.ArticlesDTOController;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -155,20 +158,65 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
         // 文章分類詳細
         [HttpGet("GetCategories")]
+        //public async Task<ActionResult<IEnumerable<ArticleCategoryDto>>> GetCategories()
+        //{
+        //    var categories = await _context.ArticleCategories
+        //        .Select(c => new ArticleCategoryDto
+        //        {
+        //            ArticleCategoriesSid = c.ArticleCategoriesSid,
+        //            ArticleCategories = c.ArticleCategories,
+        //            ArticleCategoriesImg = c.ArticleCategoriesImg != null
+        //                ? Convert.ToBase64String(c.ArticleCategoriesImg)
+        //                : null
+        //        })
+        //        .ToListAsync();
+
+        //    return Ok(categories);
+        //}
+
+        //測試壓縮圖片 裝了nuget套件SixLabors.ImageSharp
         public async Task<ActionResult<IEnumerable<ArticleCategoryDto>>> GetCategories()
         {
-            var categories = await _context.ArticleCategories
-                .Select(c => new ArticleCategoryDto
-                {
-                    ArticleCategoriesSid = c.ArticleCategoriesSid,
-                    ArticleCategories = c.ArticleCategories,
-                    ArticleCategoriesImg = c.ArticleCategoriesImg != null
-                        ? Convert.ToBase64String(c.ArticleCategoriesImg)
-                        : null
-                })
-                .ToListAsync();
+            var categories = await _context.ArticleCategories.ToListAsync();
 
-            return Ok(categories);
+            var categoryDtos = new List<ArticleCategoryDto>();
+
+            foreach (var category in categories)
+            {
+                var dto = new ArticleCategoryDto
+                {
+                    ArticleCategoriesSid = category.ArticleCategoriesSid,
+                    ArticleCategories = category.ArticleCategories,
+                    ArticleCategoriesImg = category.ArticleCategoriesImg != null
+                        ? await CompressImageAsync(category.ArticleCategoriesImg)
+                        : null
+                };
+                categoryDtos.Add(dto);
+            }
+            return Ok(categoryDtos);
+        }
+        private async Task<string> CompressImageAsync(byte[] imageBytes)
+        {
+            using (var inputStream = new MemoryStream(imageBytes))
+            using (var image = await Image.LoadAsync(inputStream))
+            {
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(800, 0), // 調整寬度，保持比例
+                    Mode = ResizeMode.Max
+                }));
+
+                using (var outputStream = new MemoryStream())
+                {
+                    var jpegEncoder = new JpegEncoder
+                    {
+                        Quality = 75 // 設定壓縮質量（0-100）
+                    };
+                    await image.SaveAsync(outputStream, jpegEncoder);
+
+                    return Convert.ToBase64String(outputStream.ToArray());
+                }
+            }
         }
     }
 }
