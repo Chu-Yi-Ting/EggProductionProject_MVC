@@ -12,9 +12,9 @@
 {
     @* <p> 5秒鐘後將重新導向至會員資料頁面...</p> *@
 
-    <script type="text/javascript">
+   @*  <script type="text/javascript">
         setTimeout(function () {
             window.location.href = '@Url.Action("MemberPage", "Members", new { userId = userId }, protocol: Request.Scheme)';
         }, 5000);
-    </script>
+    </script> *@
 }
