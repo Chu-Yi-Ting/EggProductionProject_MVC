@@ -1,5 +1,6 @@
 ﻿@section Styles{
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <style>
         .custom-tab {
             color: #d4af37; /* 標籤的文字顏色 */
@@ -60,7 +61,7 @@
              aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                    <img src="./assets/brand/layout/egg-logo.svg" alt="" />
+                    <img src="~/frontstagetemplate/assets/brand/layout/egg-logo.svg" />
                 </h5>
                 <button type="button"
                         class="btn-close text-reset"
@@ -118,7 +119,7 @@
                     <li class="nav-item">
                         <div class="logoin-user">
                             <div class="border-img">
-                                <img src="./assets/brand/common/seven-logo.png" />
+                                <img src="~/frontstagetemplate/assets/brand/common/seven-logo.png" />
                             </div>
                             Alice
                         </div>
@@ -173,7 +174,7 @@
         </div>
 
         <div class="tab-content" id="pills-tabContent">
-            <!-- 頁面一的內容 -->
+            <!-- 折線圖的內容 -->
             <div class="tab-pane fade show active"
                  id="pills-one"
                  role="tabpanel"
@@ -188,36 +189,35 @@
                             <h4>篩選條件</h4>
                             <div class="card">
                                 <div class="card-body">
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="displayOption" class="form-label">顯示</label>
-                                            <select class="form-select" id="displayOption">
-                                                <option>近半年</option>
-                                                <option>近兩週</option>
-                                                <option>近七日</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="farmSelect" class="form-label">雞舍</label>
-                                            <select class="form-select" id="farmSelect"></select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="dateRange" class="form-label">時間</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id="dateRange"
-                                                   placeholder="選擇日期範圍" />
-                                        </div>
-                                        <br />
-                                        <button class="btn btn-primary w-50">篩選</button>
-                                    </form>
+                                    <div class="mb-3">
+                                        <label for="ChickHouse_Selected" class="form-label">雞舍</label>
+                                        <select class="form-select" id="ChickHouse_Selected"></select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Rate_Selected" class="form-label">資料型態</label>
+                                        <select class="form-select" id="Rate_Selected">
+                                            <option value=1>產蛋合格率</option>
+                                            <option value=2>不合格率</option>
+                                            <option value=3>雞隻死亡率</option>
+                                            <option value=4>飼料成本</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dateRange" class="form-label">時間</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="dateRange"
+                                               placeholder="選擇日期範圍" />
+                                    </div>
+                                    <br />
+                                    <button type="button" class="btn btn-primary w-50" id="filter">篩選</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- 頁面二的內容 -->
+            <!-- 行事曆的內容 -->
             <div class="tab-pane fade"
                  id="pills-two"
                  role="tabpanel"
@@ -309,18 +309,18 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script>
-        var calendar; // 定義行事曆變數
-
+        let myChart;
         document.addEventListener('DOMContentLoaded', function () {
-
-            // 監聽標籤頁切換事件
-            var tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
+            var calendar; // 定義行事曆變數
+            // 監聽標籤頁切換事件 初始化行事曆
+            const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
             if (tabElement) {
                 tabElement.addEventListener('shown.bs.tab', function (e) {
                     if (!calendar) { // 如果行事曆尚未初始化
-                        var calendarEl = document.getElementById('calendar');
+                        const calendarEl = document.getElementById('calendar');
                         if (calendarEl) {
                             calendar = new FullCalendar.Calendar(calendarEl, {
                                 initialView: 'dayGridMonth',
@@ -379,45 +379,46 @@
                     }
                 });
             }
-//-------------------------------------------------------------------------------------
-            const ctx = document.getElementById('myChart').getContext('2d');
+//-------------------------初始化折線圖------------------------------------------------------------
+            
+            //1.load雞舍
+            loadHouse();
+            //2.初始化日期選擇器
+            let isDateSet = false; // 用來追蹤日期是否已設置
 
-            // 建立折線圖
-            const myChart = new Chart(ctx, {
-                type: 'line', // 圖表類型
+            flatpickr('#dateRange', {
+                mode: 'range',
+                dateFormat: 'Y-m-d',
+                onOpen: function (selectedDates, dateStr, instance) {
+                    instance.clear();
+                    if (!isDateSet) {
+                        const today = new Date();
+                        const defaultStartDate = new Date();
+                        defaultStartDate.setHours(0, 0, 0, 0); // 當天的開始時間
+                        isDateSet = true; // 標記日期已設置
+                    }
+                }
+            });
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'], // X 軸標籤
+                    labels: [],
                     datasets: [{
-                        label: 'Sales Data', // 數據集標籤
-                        data: [65, 59, 80, 81, 56, 55, 40], // Y 軸數據
-                        fill: false, // 是否填充線下的區域
-                        borderColor: 'rgb(75, 192, 192)', // 線條顏色
-                        tension: 0.1 // 線條張力 (0.1 = 稍微平滑)
+                        label: '數據值',
+                        data: [],
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
                     }]
                 },
                 options: {
-                    responsive: true, // 自適應畫布大小
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top' // 標籤位置
-                        }
-                    },
+                    responsive: true,
+                    plugins: { legend: { display: true, position: 'top' } },
                     scales: {
-                        x: {
-                            display: true, // 顯示 X 軸
-                            title: {
-                                display: true,
-                                text: 'Month' // X 軸標題
-                            }
-                        },
-                        y: {
-                            display: true, // 顯示 Y 軸
-                            title: {
-                                display: true,
-                                text: 'Sales' // Y 軸標題
-                            }
-                        }
+                        x: { display: true, title: { display: true, text: '日期' } },
+                        y: { display: true, title: { display: true, text: '值' } }
                     }
                 }
             });
@@ -491,15 +492,15 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    console.log('Success:', data);
-                    closeAddModal();
-                    reloadCalendarEvents();
-                } else {
+                if (!response.ok) {
                     alert('Error: ' + (data.message || '無法儲存事件'));
+                    return;
                 }
+
+                closeEditModal();
+                reloadCalendarEvents();
             } catch (e) {
-                alert(e.message);
+                alert('Error:' + e.message);
             }
         }
 
@@ -528,15 +529,15 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    console.log('Success:', data);
-                    closeEditModal();
-                    reloadCalendarEvents();
-                } else {
+                if (!response.ok) {
                     alert('Error: ' + (data.message || '無法更新事件'));
+                    return;
                 }
+
+                closeEditModal();
+                reloadCalendarEvents();
             } catch (e) {
-                alert(e.message);
+                alert('Error:' + e.message);
             }
         }
 
@@ -561,15 +562,15 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    console.log('Success:', data);
-                    closeEditModal();
-                    reloadCalendarEvents();
-                } else {
+                if (!response.ok) {
                     alert('Error: ' + (data.message || '無法刪除事件'));
+                    return;
                 }
+
+                closeEditModal();
+                reloadCalendarEvents();
             } catch (e) {
-                alert(e.message);
+                alert('Error:'+e.message);
             }
         }
 
@@ -578,6 +579,86 @@
                 calendar.refetchEvents(); // 重新得到事件
             }
         }
-//------------------------------------------行事曆code----------------------------------------------------------
+
+//------------------------------------------折線圖code----------------------------------------------------------
+
+        async function loadHouse() {
+            const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
+            try {
+                // 發送 GET 請求到後端 API
+                const response = await fetch('/Frontstage/DataApi/Get_House', {
+                    method: 'GET',
+                });
+                
+                if (!response.ok) {
+                    alert(`HTTP error! status: ${response.status}`);
+                    return;
+                }
+
+                const data = await response.json();// 將返回的數據解析為 JSON 格式
+                ChickHouseSelected.innerHTML = ''; // 清空選單內容
+                let options = '';// 遍歷數據並創建選項
+
+                data.forEach(item => {
+                    options += `<option value="${item.value}">${item.text}</option>`;
+                });
+
+                // 更新下拉選單內容
+                ChickHouseSelected.innerHTML = options;
+            } catch (error) {
+                alert('加載選單時發生錯誤:', error);
+            }
+        }
+
+        document.getElementById('filter').addEventListener('click', function () {
+            // 獲取輸入框的值
+            const dateRangeInput = document.getElementById('dateRange').value;
+            const Rate_Selected = document.getElementById('Rate_Selected');
+            const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
+
+            const houseSid = ChickHouseSelected.value; // 從下拉選單獲取選定的 HouseSid
+            const Judge = Rate_Selected.value; // 從下拉選單獲取選定的 Judge
+            const memberSid = 1; // 固定為 1
+
+            if (!dateRangeInput) {
+                // 如果是空值，執行相應操作（例如使用默認篩選條件或顯示所有資料）
+                updateChart(memberSid, Judge, houseSid, null, null); // 用 null 表示沒有選擇的日期範圍
+            } else {
+                // 如果有日期範圍值，繼續處理
+                const [startDate, endDate] = dateRangeInput.split(' to ');
+                updateChart(memberSid, Judge, houseSid, startDate, endDate);
+            }
+        });
+
+        async function updateChart(memberSid, Judge, houseSid, startDate, endDate) {
+            try {
+                // 發送 GET 請求到後端 API
+                const response = await fetch(`/Frontstage/DataApi/Update_Chart?memberSid=${memberSid}&houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
+                    method: 'GET',
+                });
+
+                if (!response.ok) {
+                    alert(`HTTP error! status: ${response.status}`);
+                    return;
+                }
+
+                // 將返回的數據解析為 JSON 格式
+                const data = await response.json();
+
+                console.log(data);
+                const labels = data.rate.map(item => item.date); // 從 rate 數組中提取日期
+                const values = data.rate.map(item => item.value); // 從 rate 數組中提取數據值
+
+
+                myChart.data.labels = labels;
+                myChart.data.datasets[0].data = values;
+                myChart.update(); // 更新圖表
+            } catch (error) {
+                console.error('更新圖表時發生錯誤:', error);
+            }
+         }
+
+
+
     </script>
 }
