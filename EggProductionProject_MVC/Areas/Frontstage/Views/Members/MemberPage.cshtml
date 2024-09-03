@@ -561,7 +561,7 @@
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
                             1.
-                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post">
+                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data">
                             <div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
 
                                
@@ -572,7 +572,7 @@
                                                     <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
                                                 @* <button>上傳照片</button> *@
                                                     <br />
-                                                    <input class="form-control" type="file" id="profilePic" name="UserPhoto" asp-for="ProfilePic">
+                                                    <input class="form-control" type="file" id="profilePic" name="ProfilePic" asp-for="ProfilePic">
                                             </div>
 
                                             <div style="padding-left: 20px;">
@@ -580,9 +580,9 @@
                                                 <div class="form-group">
                                                     <label for="username">會員名稱</label>
                                                         <span> &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                       
-                                                        
-                                                    <input type="text" id="username" name="username" asp-for="Name">
+
+
+                                                        <input type="text" id="username" name="Name" asp-for="Name">
                                                 </div>
                                                 <br>
                                                 <div class="form-group">
@@ -590,7 +590,7 @@
                                                         <label for="email">電子郵件</label>
                                                         <span class="required-tag">必填</span>
                                                     </span>
-                                                    <input type="email" id="email" name="email" asp-for="Email" style="width: 370px;" required>
+                                                        <input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
                                                 </div>
                                                 <br>
                                                 <div class="form-group">
@@ -599,7 +599,7 @@
                                                             <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                         @* <span class="required-tag">必填</span> *@
                                                     </span>
-                                                    <input type="text" id="phone" name="phone" asp-for="Phone" required>
+                                                        <input type="text" id="phone" name="Phone" asp-for="Phone" required>
                                                 </div>
                                                 <br>
                                                 <div class="form-group">
@@ -607,7 +607,7 @@
                                                         <label for="birthdate">出生日期</label>
                                                         <span class="required-tag">必填</span>
                                                     </span>
-                                                    <input type="date" id="birthdate" name="birthdate" asp-for="BirthDate" required>
+                                                        <input type="date" id="birthdate" name="BirthDate" asp-for="BirthDate" required>
                                                 </div>
                                                 <br>
 
@@ -639,7 +639,7 @@
                                                                         <label for="chickCode">輸入五碼牧場證號</label>
 
                                                                     </span>
-                                                                    <input type="text" id="chickCode" name="chickCode" asp-for="Chickcode" required>
+                                                                        <input type="text" id="chickCode" name="Chickcode" asp-for="Chickcode">
                                                                 </div>
 
 
@@ -684,7 +684,7 @@
                                 </div>
                             </div> <div class="buttons">
                                 <button class="cancel">取消</button>
-                                    <button id="btnSubmit" type="button">確定</button>
+                                    <button id="btnSubmit" type="submit">確定</button>
                             </div>
                             </form>
 
@@ -931,6 +931,7 @@
             });
 
             // 預設點擊第一個按鈕，顯示第一個內容
+
             tabButtons[0].click();
         });
 
@@ -939,27 +940,32 @@
 
         btnSubmit.addEventListener("click", async (event) => {
             event.preventDefault()
-            // const Name = document.querySelector("#Name").value;
-            // const Email = document.querySelector("#Email").value;
-            // const Age = document.querySelector("#Age").value;
 
-            const dataForm = new FormData(document.querySelector('#dataForm'));
+
+            const dataForm = new FormData(document.querySelector('#UserDataForm'));
             for (const pair of dataForm.entries()) {
                 console.log(pair[0])
                 console.log(pair[1])
             }
 
-            const api = `@Url.Content("~/Members/UpdateMemberPage")`
-            const response = await fetch(api, {
-                method: "POST",
-                body: dataForm
-            })
+            try {
+                // 發送 AJAX 請求
+                const response = await fetch('/Frontstage/Members/MemberPageUpdate', {
+                    method: 'POST',  // POST 方法用於提交資料
+                    
+                    body: dataForm  
+                });
 
+                // 處理後端的回應
+                const result = await response.json();
+                console.log('Success:', result);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            
 
-            // const api = `@Url.Content("~/api/register/?")username=${Name}&userEmail=${Email}&userage=${Age}`
-            // const response = await fetch(api)
-            const data = await response.text()
-            showDiv.innerHTML = `<h2>${data}</h2>`
+            alert('用戶資料更新成功!')
+
         })
 
         

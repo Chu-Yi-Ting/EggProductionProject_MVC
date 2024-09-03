@@ -50,15 +50,58 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 _context.Members.Add(user);
                 await _context.SaveChangesAsync();
             }
+           
                 return View(user);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> MemberPageUpdate([FromForm] Member member)
+        public async Task<IActionResult> MemberPageUpdate([FromForm] UserDTO _user)
         {
-           
+            
+            // 查詢要更新的 Member 資料
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == _user.AspUserId);
+            if (member == null)
+            {
+                return NotFound("Member not found");
+            }
+
+            // 更新屬性
+            member.Name = _user.Name;
+            member.Email = _user.Email;
+            member.BirthDate = _user.BirthDate;
+            member.Phone = _user.Phone;
+            member.Chickcode = _user.Chickcode;
+
+            // 如果有上傳檔案，則處理檔案更新
+            if (_user.UserPhoto != null)
+            {
+                // 檔案上傳路徑
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", _user.UserPhoto.FileName);
+
+                // 將檔案上傳到指定路徑
+                using (var filestream = new FileStream(path, FileMode.Create))
+                {
+                    _user.UserPhoto.CopyTo(filestream);
+                }
+
+                // 將上傳的檔案轉為二進位格式並存儲在資料庫中
+                byte[] imgByte = null;
+                using (var memoryStream = new MemoryStream())
+                {
+                    _user.UserPhoto.CopyTo(memoryStream);
+                    imgByte = memoryStream.ToArray();
+                }
+                member.ProfilePic = imgByte;
+            }
+
+            _context.Members.Update(member);
+            // 儲存更新後的資料
+            _context.SaveChanges();
+
+            // 回傳更新後的檔案儲存的路徑或其他資訊
+            return Json(new { success = true, message = "Member updated successfully" });
         }
+        
 
         // GET: Frontstage/Members/Edit/5
         public async Task<IActionResult> Edit(int? id)
