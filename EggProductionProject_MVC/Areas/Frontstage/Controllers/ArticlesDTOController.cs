@@ -32,7 +32,19 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public List<GoodorBadDto> GoodorBads { get; set; } = new();
             public List<ReplyDto> Replies { get; set; } = new();
         }
-
+        public class ArticleDetailDto
+        {
+            public int ArticleSid { get; set; }
+            public string? ArticleTitle { get; set; }
+            public string ArticleInfo { get; set; }
+            public DateTime? ArticleDate { get; set; }
+            public ArticleCategoryDto? ArticleCategory { get; set; }
+            public MemberDto? ArticleCreator { get; set; }
+            public PublicStatusDto? PublicStatus { get; set; }
+            public List<EditDto> Edits { get; set; }
+            public List<GoodorBadDto> GoodorBads { get; set; }
+            public List<ReplyDto> Replies { get; set; }
+        }
         public class ArticleCategoryDto
         {
             public int ArticleCategoriesSid { get; set; }
@@ -67,6 +79,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public class GoodorBadDto
         {
             public int GorBsid { get; set; }
+            public int? MemberNo { get; set; }
             public DateOnly? GorBdate { get; set; }
             public int GorBtype { get; set; }
         }
