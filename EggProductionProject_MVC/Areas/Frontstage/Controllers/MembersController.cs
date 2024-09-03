@@ -27,7 +27,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpGet]
         //[Route("Members/MemberPage/{userId}")]
         // GET: Frontstage/Members
-        public async Task<IActionResult> MemberPage(Member member)
+        public async Task<IActionResult> MemberPage()
         {
             
             string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -43,16 +43,31 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 user =  new Member
                 {
                     AspUserId = aspuserId,
-                    Email = aspuseEmail
+                    Email = aspuseEmail,
+                    IsBlocked = 0,
+                    IsChickFarm = 0,
                 };
 
                 
                 _context.Members.Add(user);
                 await _context.SaveChangesAsync();
+                return View(user);
+            }
+            else
+            {
+                var member = await _context.Members
+               .Include(m => m.AspUser)
+               .Include(m => m.ShoppingRankNoNavigation)
+               .FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
+                return View(member);
             }
            
-                return View(user);
+                
         }
+
+        
+
+
 
         [HttpPost]
         public async Task<IActionResult> MemberPageUpdate([FromForm] UserDTO _user)

@@ -235,6 +235,33 @@
             .nav-pills {
                 justify-content: center; /* 確保標籤置中 */
             }
+
+            #scrollToTopBtn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: rgba(139, 69, 19, 0.8); /* 棕色半透明 */
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+                cursor: pointer;
+                display: none; /* 預設隱藏 */
+                justify-content: center;
+                align-items: center;
+                transition: opacity 0.3s ease;
+                opacity : 0.5;
+                line-height: 1.2; /* 調整行高，讓文字居中對齊 */
+                padding : 10px;
+                
+            }
+
+                /* 當按鈕顯示時的樣式 */
+                #scrollToTopBtn.show {
+                    display: flex;
+                }
         </style>
     }
 
@@ -423,7 +450,11 @@
                             <div class="border-img">
                                 <img src="./assets/brand/common/seven-logo.png">
                             </div>
-                            Alice
+
+
+                            
+                        
+                        
                         </div>
                     </li>
                 </ul>
@@ -867,7 +898,7 @@
     </main>
 
 
-
+    <button id="scrollToTopBtn">↑ Top</button>
 
 
 
@@ -935,6 +966,27 @@
             tabButtons[0].click();
         });
 
+        //----------------------滾動按鈕-------------------------------
+        // 獲取按鈕元素
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // 當滾動超過一定距離時，顯示按鈕
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        // 點擊按鈕後滾動到頂部
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 平滑滾動效果
+            });
+        });
+
 
         //-----------------------更新會員資料-----------------------
 
@@ -968,7 +1020,22 @@
 
         })
 
-        
+        //-----------------------------會員頭像預覽----------------------------------------
+        document.getElementById('ProfilePic').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.getElementById('img1');
+                    img.src = e.target.result;  // 設置圖片的來源為上傳的文件
+                    img.style.display = 'block';  // 顯示圖片
+                }
+
+                reader.readAsDataURL(file);  // 讀取文件並在完成後觸發 onload
+            }
+        });
 
 
     </script>
