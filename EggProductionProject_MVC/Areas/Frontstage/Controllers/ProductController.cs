@@ -15,10 +15,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public IActionResult OnlineShop()
         {
