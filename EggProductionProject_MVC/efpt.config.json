@@ -35,6 +35,34 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[AspNetRoleClaims]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserClaims]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserLogins]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUsers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserTokens]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Calendar]",
          "ObjectType": 0
       },
@@ -68,10 +96,6 @@
       },
       {
          "Name": "[dbo].[ChickHouse]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ChickLotNo]",
          "ObjectType": 0
       },
       {
@@ -151,10 +175,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Manure]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Member]",
          "ObjectType": 0
       },
@@ -200,6 +220,10 @@
       },
       {
          "Name": "[dbo].[ProductCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductImages]",
          "ObjectType": 0
       },
       {
@@ -255,6 +279,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[StoreImages]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Stores]",
          "ObjectType": 0
       },
@@ -279,14 +307,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Vaccinate]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[VaccineTable]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[VideoSummary]",
          "ObjectType": 0
       },
@@ -297,6 +317,14 @@
       {
          "Name": "[dbo].[DailyChickAmountsRate]",
          "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GetDailyData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertCalendar]",
+         "ObjectType": 1
       }
    ],
    "UiHint": null,
