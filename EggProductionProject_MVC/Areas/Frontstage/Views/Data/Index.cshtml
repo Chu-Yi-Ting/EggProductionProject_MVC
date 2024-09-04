@@ -313,7 +313,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         let myChart;
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
             var calendar; // 定義行事曆變數
             // 監聽標籤頁切換事件 初始化行事曆
             const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
@@ -380,9 +380,11 @@
                 });
             }
 //-------------------------初始化折線圖------------------------------------------------------------
+
+            const defaultMemberSid = 1;//需抓瀏覽器Sid
             
             //1.load雞舍
-            loadHouse();
+            await loadHouse(defaultMemberSid);
             //2.初始化日期選擇器
             let isDateSet = false; // 用來追蹤日期是否已設置
 
@@ -422,6 +424,16 @@
                     }
                 }
             });
+
+            const defaultJudge = 1; // 設置預設的 Judge 值
+            const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
+            const defaultStartDate = null; // 初始無開始日期
+            const defaultEndDate = null; // 初始無結束日期
+
+            //console.log()
+
+            // 調用 updateChart 來設置初始數據
+            updateChart(defaultMemberSid, defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
 
         });
 //------------------------------------------行事曆code----------------------------------------------------------
@@ -582,11 +594,11 @@
 
 //------------------------------------------折線圖code----------------------------------------------------------
 
-        async function loadHouse() {
+        async function loadHouse(defalutMemberSid) {
             const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
             try {
                 // 發送 GET 請求到後端 API
-                const response = await fetch('/Frontstage/DataApi/Get_House', {
+                const response = await fetch(`/Frontstage/DataApi/Get_House?memberSid=${defalutMemberSid}`, {
                     method: 'GET',
                 });
                 

@@ -135,10 +135,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 //---------------------------------圖表--------------------------------------------------
 
         [HttpGet]
-        public async Task<IActionResult> Get_House()
+        public async Task<IActionResult> Get_House(int memberSid)
         {
             var House = await ((from m in _context.ChickHouses
-                                where m.MemberSid == 1 //需抓瀏覽器session的id
+                                where m.MemberSid == memberSid //需抓瀏覽器session的id
                                 select new
                                 {
                                     value = m.HouseSid,
