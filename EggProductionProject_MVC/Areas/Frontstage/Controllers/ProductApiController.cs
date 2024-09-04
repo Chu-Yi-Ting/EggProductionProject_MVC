@@ -18,10 +18,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _context = context;
             _hostingEnvironment = hostingEnvironment;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpPost]
         public IActionResult Products([FromBody] SearchProductDTO _searchProductDTO)
@@ -146,5 +142,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Json(pagingDTO);
         }
+
     }
 }

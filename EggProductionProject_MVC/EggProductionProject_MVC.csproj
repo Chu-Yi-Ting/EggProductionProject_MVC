@@ -15,6 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\Frontstage\Views\Product\Create.cshtml" />
+    <Content Remove="Areas\Frontstage\Views\Product\Delete.cshtml" />
+    <Content Remove="Areas\Frontstage\Views\Product\Details.cshtml" />
+    <Content Remove="Areas\Frontstage\Views\Product\Edit.cshtml" />
+    <Content Remove="Areas\Frontstage\Views\Product\Index.cshtml" />
     <Content Remove="bundleconfig.json" />
     <Content Remove="wwwroot\BackstageTemplate\production\chartjs.html" />
     <Content Remove="wwwroot\BackstageTemplate\production\chartjs2.html" />

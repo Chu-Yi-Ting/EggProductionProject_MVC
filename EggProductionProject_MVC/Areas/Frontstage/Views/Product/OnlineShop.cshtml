@@ -552,6 +552,10 @@
                         </div>
                     </div> *@
                     <!-- 複製上方的整個block程式碼，就可以複製卡片了 -->
+                    <!-- 隱藏表單要將上方商品卡片的productSid提交給後端API -->
+                    <form id="productForm" action="/Product/Details" method="post" style="display:none;">
+                        <input type="hidden" name="productSid" id="productSid" />
+                    </form>
                 </div>
             </div>
 
@@ -741,7 +745,6 @@
             loadProducts();
         }
 
-
         //searchProductData的JSON物件以POST方式請求給API，載入商品資料
         const loadProducts = async () => {
             const api = '@Url.Content("~/ProductApi/Products")'
@@ -760,13 +763,13 @@
                 const { productSid, productName, price, stock, subcategoryNo, storeSid, productImagePath, imageDescription } = product
                 return (`
                            <div class="col-lg-4">
-                              <div class="product-card">
+                              <div class="product-card" onclick="window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'">
                                  <img src="${productImagePath}" alt = "${imageDescription}">
                                  <div class="card-body">
                                     <h5 class="card-title">${productName} </h5>
                                     <div class="price-and-button">
                                        <p class="price"> $${price * 0.8} <span class="old-price"> $${price} </span></p>
-                                       <button class="btn" > 查看更多 </button>
+                                               <button class="btn" onclick="event.stopPropagation(); window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'"> 查看更多 </button>
                                     </div>
                                  </div>
                               </div>
@@ -800,6 +803,12 @@
         }
 
         loadProducts()
+
+        //提交商品卡片的ProductSid給後端API
+        // function submitProductForm(productSid) {
+        //     document.getElementById('productSid').value = productSid;
+        //     document.getElementById('productForm').submit();
+        // }
     </script>
 
 }

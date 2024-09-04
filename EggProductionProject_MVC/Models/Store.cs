@@ -15,7 +15,7 @@ public partial class Store
 
     public DateOnly? EstablishDate { get; set; }
 
-    public byte[] StoreImg { get; set; }
+    public string StoreImagePath { get; set; }
 
     public string StoreIntroduction { get; set; }
 
