@@ -196,10 +196,9 @@
                                     <div class="mb-3">
                                         <label for="Rate_Selected" class="form-label">資料型態</label>
                                         <select class="form-select" id="Rate_Selected">
-                                            <option value=1>產蛋合格率</option>
-                                            <option value=2>不合格率</option>
+                                            <option value=1>產蛋率</option>
+                                            <option value=2>蛋不合格率</option>
                                             <option value=3>雞隻死亡率</option>
-                                            <option value=4>飼料成本</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -407,13 +406,29 @@
                 type: 'line',
                 data: {
                     labels: [],
-                    datasets: [{
-                        label: '數據值',
-                        data: [],
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
+                    datasets: [
+                        {
+                            label: '', // 實際數據集的標籤
+                            data: [],
+                            fill: false,
+                            borderColor: 'rgb(0, 0, 255)', // 深藍色
+                            borderWidth: 3, // 增加線條寬度
+                            pointBackgroundColor: 'rgb(0, 0, 255)', // 點的顏色
+                            pointRadius: 4, // 增加點的大小
+                            tension: 0.1
+                        },
+                        {
+                            label: '標準化值', // 標準化數據集的標籤
+                            data: [],
+                            fill: false,
+                            borderColor: 'rgb(255, 99, 132)', // 紅色
+                            borderDash: [5, 5], // 使用虛線
+                            borderWidth: 2, // 保持標準寬度
+                            pointBackgroundColor: 'rgb(255, 99, 132)', // 點的顏色
+                            pointRadius: 4, // 增加點的大小
+                            tension: 0.1
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
@@ -424,6 +439,7 @@
                     }
                 }
             });
+
 
             const defaultJudge = 1; // 設置預設的 Judge 值
             const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
@@ -629,7 +645,7 @@
             const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
 
             const houseSid = ChickHouseSelected.value; // 從下拉選單獲取選定的 HouseSid
-            const Judge = Rate_Selected.value; // 從下拉選單獲取選定的 Judge
+            const Judge = Number(Rate_Selected.value); // 從下拉選單獲取選定的 Judge
             const memberSid = 1; // 固定為 1
 
             if (!dateRangeInput) {
@@ -644,7 +660,6 @@
 
         async function updateChart(memberSid, Judge, houseSid, startDate, endDate) {
             try {
-                // 發送 GET 請求到後端 API
                 const response = await fetch(`/Frontstage/DataApi/Update_Chart?memberSid=${memberSid}&houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
                     method: 'GET',
                 });
@@ -654,16 +669,42 @@
                     return;
                 }
 
-                // 將返回的數據解析為 JSON 格式
                 const data = await response.json();
 
-                console.log(data);
-                const labels = data.rate.map(item => item.date); // 從 rate 數組中提取日期
-                const values = data.rate.map(item => item.value); // 從 rate 數組中提取數據值
+                
 
-
+                // 動態設置圖表數據
+                const labels = data.rate.map(item => item.date); // 提取日期
                 myChart.data.labels = labels;
-                myChart.data.datasets[0].data = values;
+
+                if (Judge === 1) {
+                    // 當 Judge 為 1 時，設置蛋率的數據
+                    const actualValues = data.rate.map(item => item.actualValue); // 實際蛋率
+                    const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化蛋率
+
+                    myChart.data.datasets[0].data = actualValues; // 設置實際蛋率
+                    myChart.data.datasets[1].data = normalizedValues; // 設置標準化蛋率
+                    myChart.data.datasets[0].label = '實際蛋率';
+                    myChart.data.datasets[1].label = '標準化蛋率';
+                } else if (Judge === 2) {
+                    // 當 Judge 為 2 時，設置不合格率的數據
+                    const values = data.rate.map(item => item.value); // 不合格率
+
+                    myChart.data.datasets[0].data = values; // 設置不合格率
+                    myChart.data.datasets[0].label = '不合格率';
+                    myChart.data.datasets[1].data = []; // 清空另一條數據
+                    myChart.data.datasets[1].label = '';
+                } else if (Judge===3){
+                    // 當 Judge 為其他值時，設置死亡率的數據
+                    const actualValues = data.rate.map(item => item.actualValue); // 實際死亡率
+                    const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化死亡率
+
+                    myChart.data.datasets[0].data = actualValues; // 設置實際死亡率
+                    myChart.data.datasets[1].data = normalizedValues; // 設置標準化死亡率
+                    myChart.data.datasets[0].label = '實際死亡率';
+                    myChart.data.datasets[1].label = '標準化死亡率';
+                }
+
                 myChart.update(); // 更新圖表
             } catch (error) {
                 console.error('更新圖表時發生錯誤:', error);

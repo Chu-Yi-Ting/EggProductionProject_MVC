@@ -148,12 +148,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
             return Json(House);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Update_Chart(int memberSid,int Judge,int HouseSid,string StartDate, string EndDate)
         {
             var result = new EggProductionReport();
-            try { 
+            try {
                 using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("GetDailyData", conn))
@@ -171,20 +170,40 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
                         {
                             while (reader.Read())
                             {
-                                // 設置標題（生產總類）為第一行的值
+                                // 設置標題（生產總類）
                                 result.Title = reader["生產總類"].ToString();
 
-                                // 添加每行數據到數據列表
-                                result.Rate.Add(new
+                                // 判斷根據 Judge 參數返回的結果集類型，並添加對應的數據
+                                if (Judge == 1)
                                 {
-                                    date = reader["日期"].ToString(),
-                                    value = Convert.ToDouble(reader["Result"]) // 確保轉換為數值格式
-                                });
+                                    result.Rate.Add(new
+                                    {
+                                        date = reader["Date"].ToString(),
+                                        actualValue = reader["ActualEggRate"],
+                                        normalizedValue = reader["NormalizedEggRate"]
+                                    });
+                                }
+                                else if (Judge == 2)
+                                {
+                                    result.Rate.Add(new
+                                    {
+                                        date = reader["日期"].ToString(),
+                                        value = reader["UnQRate"]
+                                    });
+                                }
+                                else
+                                {
+                                    result.Rate.Add(new
+                                    {
+                                        date = reader["Date"].ToString(),
+                                        actualValue = reader["ActualDeathRate"],
+                                        normalizedValue = reader["NormalizedDeathRate"]
+                                    });
+                                }
                             }
                         }
                     }
                 }
-
                 return Json(result);
             }catch (Exception ex) {
                 return StatusCode(500, ex);
