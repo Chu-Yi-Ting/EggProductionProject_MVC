@@ -26,6 +26,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var replies = await _context.Replies
                 .Where(reply => reply.ArticleSid == id)
                 .Include(reply => reply.ArticleCreaterS)
+                .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
                 {
                     ReplySid = reply.ReplySid,

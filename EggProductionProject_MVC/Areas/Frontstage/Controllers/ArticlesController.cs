@@ -53,6 +53,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         ? new ArticleCategoryDto
                         {
                             ArticleCategoriesSid = article.ArticleCategoriesS.ArticleCategoriesSid,
+                            ArticleCategories = article.ArticleCategoriesS.ArticleCategories
                         }
                         : null,
                     PublicStatus = article.PublicStatusNoNavigation != null
