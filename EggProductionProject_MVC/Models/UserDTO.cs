@@ -20,6 +20,6 @@
 
         public string AspUserId { get; set; }
 
-        public IFormFile? UserPhoto { get; set; }
+        public IFormFile? ProfilePic { get; set; }
     }
 }

@@ -94,6 +94,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         $"此步驟是要驗證您用來登入GoodEgg好蛋雞農整合平台的電子郵件位址。若要完成建立帳戶，請按右方的[驗證連結]以進入網站。" +
                         $"<a  href='{HtmlEncoder.Default.Encode(callbackUrl)}'>驗證帳戶</a>");
 
+
+                    // 設定 ViewData 變數來觸發 Modal
+                    ViewData["ShowModal"] = true;
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

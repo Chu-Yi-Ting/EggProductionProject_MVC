@@ -32,10 +32,21 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
             string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            // 從 Session 取得 memberSid
+            var userAspId  = HttpContext.Session.GetString("userId");
 
+            //if (userAspId == null)
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
 
-            var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
             
+            var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
+           
+            // 將 Name 傳遞到視圖
+            ViewBag.UserName = user.Name;
+            
+
             //如果==null代表剛註冊好，還不是會員
             if (user == null)
             {
@@ -65,7 +76,37 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 
         }
 
-        
+
+        [HttpPost]
+        public async Task<IActionResult> MemberbecomeChickFarm([FromBody] UserDTO _user)
+        {
+            string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+            // 查詢要更新的 Member 資料
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspuserId);
+            if (member == null)
+            {
+                return NotFound("Member not found");
+            }
+
+
+            if (_user.Chickcode != null) 
+            {
+                // 更新雞農驗證碼，會員變成雞農
+                member.Chickcode = _user.Chickcode;
+                member.IsChickFarm = 1;
+            }
+           
+            _context.Members.Update(member);
+            // 儲存更新後的資料
+             _context.SaveChanges();
+
+            // 回傳更新後的檔案儲存的路徑或其他資訊
+            return Json(new { success = true, message = "Member updated successfully" });
+        }
+
+
 
 
 
@@ -85,28 +126,31 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             member.Email = _user.Email;
             member.BirthDate = _user.BirthDate;
             member.Phone = _user.Phone;
-            member.Chickcode = _user.Chickcode;
+           
+            
 
             // 如果有上傳檔案，則處理檔案更新
-            if (_user.UserPhoto != null)
+            if (_user.ProfilePic != null)
             {
                 // 檔案上傳路徑
-                string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", _user.UserPhoto.FileName);
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", _user.ProfilePic.FileName);
 
                 // 將檔案上傳到指定路徑
                 using (var filestream = new FileStream(path, FileMode.Create))
                 {
-                    _user.UserPhoto.CopyTo(filestream);
+                    _user.ProfilePic.CopyTo(filestream);
                 }
 
                 // 將上傳的檔案轉為二進位格式並存儲在資料庫中
                 byte[] imgByte = null;
                 using (var memoryStream = new MemoryStream())
                 {
-                    _user.UserPhoto.CopyTo(memoryStream);
+                    _user.ProfilePic.CopyTo(memoryStream);
                     imgByte = memoryStream.ToArray();
+                    member.ProfilePic = imgByte;
                 }
-                member.ProfilePic = imgByte;
+                Console.WriteLine($"Image byte array length: {imgByte.Length}"); // 检查图像大小
+               
             }
 
             _context.Members.Update(member);

@@ -94,6 +94,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     var userEmail = user.Email;
                     HttpContext.Session.SetString("userId", user.Id);
+                    
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -110,6 +111,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
+
                 }
             }
 
