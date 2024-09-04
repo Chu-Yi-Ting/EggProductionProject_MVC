@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
+using EggProductionProject_MVC.ViewModels;
+using Azure.Messaging;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -34,6 +36,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(v => v.NatureS)
                 .Include(v => v.PublicStatusNoNavigation)
                 .Include(v => v.ScreenTextS)
+                .Where(v => v.PublicStatusNoNavigation.PublicStatusNo == 1)
                 .Select(x => new VideoSummaryDTO
                 {
                     VideoSid = x.VideoSid,
@@ -50,6 +53,24 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 });
 
             return Json(show);
+        }
+
+        public async Task<IActionResult> GetMessage(int videoid)
+        {
+            var Message = _context.Messages
+                .Where(M => M.VideoSid == videoid)
+                .Select(M => new VideoMessageDTO
+                {
+                    VideoSid = M.VideoSid,
+                    MessageSid = M.MessageSid,
+                    MessageContent = M.MessageContent,
+                    MessageLikes = M.MessageLikes,
+                    MessageDate = M.MessageDate,
+                    MessageNumber = M.MessageNumber
+                });
+                
+            return Json(Message);
+                
         }
 
         // GET: Frontstage/VideoSummaries/Details/5
