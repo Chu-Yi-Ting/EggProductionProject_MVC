@@ -103,7 +103,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
              _context.SaveChanges();
 
             // 回傳更新後的檔案儲存的路徑或其他資訊
-            return Json(new { success = true, message = "Member updated successfully" });
+            return Json(new { success = true, message = "ChickCode updated successfully" });
         }
 
 
