@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Include="bundleconfig.json" />
+    <None Include="efpt.config.json.user" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Frontstage\Models\" />
     <Folder Include="wwwroot\FrontstageTemplate\" />
     <Folder Include="wwwroot\Imgs\" />
     <Folder Include="wwwroot\Video\" />

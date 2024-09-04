@@ -1,0 +1,108 @@
+﻿@model EggProductionProject_MVC.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Stock)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Stock)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Origin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Origin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quanitity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quanitity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Component)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Component)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LaunchTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LaunchTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountPercent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPercent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicStatusNoNavigation.PublicStatusNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StoreS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StoreS.StoreSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubcategoryNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubcategoryNoNavigation.SubcategoryNo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProductSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

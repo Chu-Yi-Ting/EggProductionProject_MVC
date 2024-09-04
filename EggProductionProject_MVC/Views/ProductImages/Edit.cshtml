@@ -1,0 +1,89 @@
+﻿@model EggProductionProject_MVC.Models.ProductImage
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>ProductImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="ProductImages" asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductImageSid" />
+            <div class="form-group">
+                <label asp-for="ProductSid" class="control-label"></label>
+                <select asp-for="ProductSid" class="form-control" asp-items="ViewBag.ProductSid"></select>
+                <span asp-validation-for="ProductSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductImagePath" class="control-label"></label>
+                <partial name="_ProductImagePartial" />               
+                <input type="file" asp-for="ProductImagePath" class="form-control" accept="image/*" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageDescription" class="control-label"></label>
+                <input asp-for="ImageDescription" class="form-control" />
+                <span asp-validation-for="ImageDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploadTime" class="control-label"></label>
+                <input asp-for="UploadTime" class="form-control" />
+                <span asp-validation-for="UploadTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="btnUpdate" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // 偵測到picture的input值發生改變的時候會觸發previewImage方法
+        document.getElementById("Image").addEventListener("change", function () {
+            previewImage(this);
+        });
+
+        function previewImage(inputFile) {
+            var file = inputFile.files[0];
+            // 當上傳檔案不為空值執行下面程式碼
+            if (file != null) {
+                // 限制檔案類型為圖片
+                var allowType = "image/*";
+                // 當上傳檔案類型符合執行下方程式碼
+                if (file.type.match(allowType)) {
+                    // 預覽
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // 用input的相對位置方式取得partial view的img標籤
+                        var imgElement = inputFile.previousElementSibling;
+                        if (imgElement) {
+                            imgElement.src = e.target.result;
+                            imgElement.title = file.name;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                    // 幫input按鈕取一個id為btnUpdate
+                    document.getElementById("btnUpdate").disabled = false;
+                } else {
+                    // 如果上傳檔案格式不符合會跳出提醒且按鈕不能按
+                    alert("不允許的檔案上傳格式");
+                    document.getElementById("btnUpdate").disabled = true;
+                    // 檔案格式不符合會把input內的文字清除
+                    inputFile.value = "";
+                }
+            }
+        }
+    </script>
+}
+

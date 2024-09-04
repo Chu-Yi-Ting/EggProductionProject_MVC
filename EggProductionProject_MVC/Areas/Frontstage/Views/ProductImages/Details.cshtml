@@ -1,0 +1,42 @@
+﻿@model EggProductionProject_MVC.Models.ProductImage
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductImage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductImagePath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductImagePath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UploadTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UploadTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductS.ProductSid)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProductImageSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

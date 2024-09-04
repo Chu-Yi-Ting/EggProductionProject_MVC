@@ -1,0 +1,83 @@
+﻿@model EggProductionProject_MVC.Models.ProductImage
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>ProductImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="ProductImages" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductSid" class="control-label"></label>
+                <select asp-for="ProductSid" class ="form-control" asp-items="ViewBag.ProductSid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductImagePath" class="control-label"></label>
+                <img id="previewImage" src="@Url.Content("~/Images/NoImage.jpg")" alt="尚未選擇圖片" style="width:480px"/>
+                <input type="file" asp-for="ProductImagePath" class="form-control" accept="image/*" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageDescription" class="control-label"></label>
+                <input asp-for="ImageDescription" class="form-control" />
+                <span asp-validation-for="ImageDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploadTime" class="control-label"></label>
+                <input asp-for="UploadTime" class="form-control" />
+                <span asp-validation-for="UploadTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="btnInsert" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.getElementById("Image").addEventListener("change", function () {
+            previewImage(this);
+        });
+        function previewImage(inputFile) {
+            var file = inputFile.files[0];
+            // 當上傳檔案不為空值時執行下面程式碼
+            if (file != null) {
+                // 限制檔案類型為圖片
+                var allowType = "image/*";
+                // 當上傳檔案類型符合時執行下方程式碼
+                if (file.type.match(allowType)) {
+                    // 預覽
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var previewImage = document.getElementById("previewImage");
+                        previewImage.src = e.target.result;
+                        previewImage.title = file.name;
+                    };
+                    reader.readAsDataURL(file);
+
+                    var btnInsert = document.getElementById("btnInsert");
+                    btnInsert.disabled = false;
+                } else {
+                    // 如果上傳檔案格式不符合會跳出提醒且按鈕不能按
+                    alert("不允許的檔案上傳格式");
+
+                    var btnInsert = document.getElementById("btnInsert");
+                    btnInsert.disabled = true;
+                    inputFile.value = "";
+                }
+            }
+        }
+    </script>
+
+}

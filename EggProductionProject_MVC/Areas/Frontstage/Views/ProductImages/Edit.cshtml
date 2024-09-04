@@ -1,0 +1,49 @@
+﻿@model EggProductionProject_MVC.Models.ProductImage
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>ProductImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductImageSid" />
+            <div class="form-group">
+                <label asp-for="ProductSid" class="control-label"></label>
+                <select asp-for="ProductSid" class="form-control" asp-items="ViewBag.ProductSid"></select>
+                <span asp-validation-for="ProductSid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductImagePath" class="control-label"></label>
+                <input asp-for="ProductImagePath" class="form-control" />
+                <span asp-validation-for="ProductImagePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageDescription" class="control-label"></label>
+                <input asp-for="ImageDescription" class="form-control" />
+                <span asp-validation-for="ImageDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploadTime" class="control-label"></label>
+                <input asp-for="UploadTime" class="form-control" />
+                <span asp-validation-for="UploadTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

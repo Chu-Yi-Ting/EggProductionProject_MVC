@@ -1,0 +1,12 @@
+﻿@model ProductImage
+
+@if (Model.ProductImagePath != null)
+{
+    <img src="@Url.Action("GetPicture", "ProductImages", new {id=Model.ProductImageSid})"
+         alt="@Html.DisplayFor(model => model.ImageDescription)" style="width: 360px;"/>
+}
+else
+{
+    <img src="~/Images/Noimage.jpg" asp-append-version="true" title="尚無圖片" />
+    //如果沒有圖片就顯示替代圖案
+}

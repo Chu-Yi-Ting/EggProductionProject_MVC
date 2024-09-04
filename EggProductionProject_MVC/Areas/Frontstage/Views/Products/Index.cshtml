@@ -1,0 +1,123 @@
+﻿@model IEnumerable<EggProductionProject_MVC.Models.Product>
+
+@{
+    Layout = "_Layout";
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Origin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quanitity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Component)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LaunchTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubcategoryNoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quanitity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Component)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LaunchTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicStatusNoNavigation.PublicStatusNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreS.StoreSid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubcategoryNoNavigation.SubcategoryNo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductSid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductSid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductSid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

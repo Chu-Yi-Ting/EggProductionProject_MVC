@@ -39,5 +39,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return View();
         }
 
+        public IActionResult OnlineShop()
+        {
+            return View();
+        }
+
     }
 }
