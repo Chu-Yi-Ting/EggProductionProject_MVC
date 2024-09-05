@@ -1274,21 +1274,21 @@
         });
 
         //-----------------------------會員頭像預覽----------------------------------------
-        // document.getElementById('ProfilePic').addEventListener('change', function (event) {
-        //     const file = event.target.files[0];
+        document.getElementById('ProfilePic').addEventListener('change', function (event) {
+            const file = event.target.files[0];
 
-        //     if (file) {
-        //         const reader = new FileReader();
+            if (file) {
+                const reader = new FileReader();
 
-        //         reader.onload = function (e) {
-        //             const img = document.getElementById('img1');
-        //             img.src = e.target.result;  // 設置圖片的來源為上傳的文件
-        //             img.style.display = 'block';  // 顯示圖片
-        //         }
+                reader.onload = function (e) {
+                    const img = document.getElementById('img1');
+                    img.src = e.target.result;  // 設置圖片的來源為上傳的文件
+                    img.style.display = 'block';  // 顯示圖片
+                }
 
-        //         reader.readAsDataURL(file);  // 讀取文件並在完成後觸發 onload
-        //     }
-        // });
+                reader.readAsDataURL(file);  // 讀取文件並在完成後觸發 onload
+            }
+        });
 
 
         //------------------------會員開通雞農--------------------------------------------------
