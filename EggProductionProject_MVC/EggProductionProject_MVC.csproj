@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Backstage\Models\**" />
+    <Compile Remove="Areas\Frontstage\Controllers\NewFolder1\**" />
     <Content Remove="Areas\Backstage\Models\**" />
+    <Content Remove="Areas\Frontstage\Controllers\NewFolder1\**" />
     <EmbeddedResource Remove="Areas\Backstage\Models\**" />
+    <EmbeddedResource Remove="Areas\Frontstage\Controllers\NewFolder1\**" />
     <None Remove="Areas\Backstage\Models\**" />
+    <None Remove="Areas\Frontstage\Controllers\NewFolder1\**" />
   </ItemGroup>
 
   <ItemGroup>
