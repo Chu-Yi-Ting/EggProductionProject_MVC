@@ -9,6 +9,7 @@ using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.ViewModels;
 using Azure.Messaging;
 using System.Diagnostics.Metrics;
+using System.ComponentModel.DataAnnotations;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -75,13 +76,25 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 
             return Json(Message);
         }
-        //public async Task<IActionResult> GetOneVideo(int videoid)
-        //{
-        //    var video = _context.VideoSummaries
-        //        .
 
-        //}
-        
+        public async Task<IActionResult> GetOneVideo(int videoid)
+        {
+            var video = _context.VideoSummaries
+                .Where(M => M.VideoSid == videoid)
+                .Select(M => new OneVideoDTO
+                {
+                    
+                 VideoTitle = M.VideoTitle,
+                    TimesWatched = M.TimesWatched,
+                    MoviePath = M.MoviePath,
+                    InformationColumn = M.InformationColumn,
+                    UploadDate = M.UploadDate,
+                });
+
+            return Json(video);
+
+        }
+
 
         // GET: Frontstage/VideoSummaries/Create
         public IActionResult Create()
