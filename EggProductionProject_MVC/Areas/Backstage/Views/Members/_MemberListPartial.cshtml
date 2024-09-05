@@ -29,8 +29,8 @@
 
                 <td>
                     @* <a asp-action="Details" asp-route-id="@item.MemberSid">Details</a> | *@
-                    <a asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> |
-                    <a asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a> |
+                    <a class="edit-member-btn btn btn-secondary btn-sm" asp-controller="Friends" asp-action="index" asp-route-id="@item.MemberSid">好友查詢</a> 
+                    <a class="edit-member-btn btn btn-secondary btn-sm" asp-controller="Logs" asp-action="index" asp-route-id="@item.MemberSid">登入查詢</a> 
 
                     <button class="edit-member-btn btn btn-secondary btn-sm" data-member-id="@item.MemberSid">修改</button>
                    

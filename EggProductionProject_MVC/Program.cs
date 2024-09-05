@@ -22,37 +22,38 @@ builder.Services.AddDbContext<EggPlatformContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
 });
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 
+//留給前台會員用
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//            .AddCookie(options =>
+//            {
+//                options.LoginPath = "/AccountLogin/Login"; // �n�J�������|
+//                options.LogoutPath = "/AccountLogin/Logout"; // �n�X�������|
+//            });
+
+//        builder.Services.AddControllersWithViews();
+//var authProperties = new AuthenticationProperties
+//{
+//    //IsPersistent = true, // �O�_���[�� Cookie
+//    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // �]�m Cookie �L���ɶ�
+//};
 
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/AccountLogin/Login"; // �n�J�������|
-                options.LogoutPath = "/AccountLogin/Logout"; // �n�X�������|
-            });
-
-        builder.Services.AddControllersWithViews();
-var authProperties = new AuthenticationProperties
+builder.Services.AddSession(options =>
 {
-    IsPersistent = true, // �O�_���[�� Cookie
-    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // �]�m Cookie �L���ɶ�
-};
+    options.Cookie.Name = "GoodEgg.Session";
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+});
 
-
-
-
-
-
-
-//builder.Services.AddIdentity<EggUser, IdentityRole<int>>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
 
 
 // �`�U�ۭq�� EmailSender �A��
@@ -89,6 +90,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "areas",

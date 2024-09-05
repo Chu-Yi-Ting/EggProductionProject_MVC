@@ -39,7 +39,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "驗證完成！五秒後將重新跳轉至會員頁面" : "Error confirming your email.";
+            TempData["UserId"] = userId;   // 將 userId 存入 TempData，以便在視圖中使用
             return Page();
         }
     }

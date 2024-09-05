@@ -48,6 +48,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\FrontstageTemplate\" />
     <Folder Include="wwwroot\Imgs\" />
+    <Folder Include="wwwroot\memProfilePic\" />
     <Folder Include="wwwroot\Video\" />
   </ItemGroup>
 

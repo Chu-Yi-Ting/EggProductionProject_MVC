@@ -1,0 +1,70 @@
+﻿@* @model EggProductionProject_MVC.Models.MemberVM.MemberLogVM *@
+@model EggProductionProject_MVC.Areas.Identity.Pages.Account.LoginModel
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <div class="login-box">
+                    <h1>登入</h1>
+                    <form id="account" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">帳號</label>
+                            <input asp-for="Input.Email" type="text" class="form-control" id="account">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            
+
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" for="password" class="form-label">密碼</label>
+                            <input asp-for="Input.Password" type="password" class="form-control" id="password">
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <small><a href="#" class="text-muted">忘記密碼?</a></small>
+                            
+                        </div>
+                        <div class="mb-3">
+                            @* <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notRobot">
+                                <label class="form-check-label" for="notRobot">
+                                    我不是機器人
+                                </label>
+                            </div> *@
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登入</button>
+                    </form>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                    </div>
+                </div>
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+
+                    <p><a id="register-link" href="#">新加入？立即註冊</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+

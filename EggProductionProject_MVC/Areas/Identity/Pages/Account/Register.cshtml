@@ -2,12 +2,78 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    bool showModal = ViewData["ShowModal"] != null && (bool)ViewData["ShowModal"];
 }
 
-<h2>@ViewData["Title"]</h2>
 
 <div class="row">
-    <div class="col-md-4">
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <br />
+                <br />
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+                    <p>
+
+                        <a asp-area="Identity" asp-controller="Account" asp-action="Login">已有帳號？立即登入</a>
+                    </p>
+                </div>
+                <br />
+                <div class="login-box">
+                    <h1>註冊</h1>
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.Email">信箱</label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.Password">密碼</label>
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.ConfirmPassword">確認密碼</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                            <span id="password-error" class="text-danger" style="display: none;">密碼必須一致！</span>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notRobot">
+                                <label class="form-check-label" for="notRobot">
+                                    我已閱讀並同意<span><a>GoodEgg會員條款</a></span> 及 <span><a>個人資料保護條款</a></span>。
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">註冊</button>
+                    </form>
+                    @*     <div class="divider">
+                    <span>OR</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                    <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+@*     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
             <hr />
@@ -29,7 +95,7 @@
             </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>
-    </div>
+    </div> *@
     <div class="col-md-6 col-md-offset-2">
         <section>
             <h4>Use another service to register.</h4>
@@ -62,6 +128,171 @@
     </div>
 </div>
 
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">註冊成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                註冊成功！請至信箱確認您的電子郵件。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            var showModal = '@(showModal)';
+
+            if (showModal === "True") {
+                $('#successModal').modal('show');
+            }
+        });
+    </script>
+}
+@section Styles {
+    <style>
+
+
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .left-column {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .login-box,
+        .welcome-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+
+
+        .login-box {
+            margin-bottom: 20px;
+        }
+
+            .login-box a {
+                text-align: center;
+            }
+
+
+            .login-box h1 {
+                color: #b3922c;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+                background-color: #fff;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+            .divider::before,
+            .divider::after {
+                /* content: ""; */
+                position: absolute;
+                top: 50%;
+                width: 40%;
+                height: 1px;
+                background-color: #ddd;
+            }
+
+            .divider::before {
+                left: 0;
+            }
+
+            .divider::after {
+                right: 0;
+            }
+
+            .divider span {
+                color: #666;
+                background-color: #fff;
+                padding: 0 10px;
+            }
+
+        .welcome-box {
+            background-color: #b3922c;
+            color: #fff;
+            text-align: center;
+        }
+
+            .welcome-box h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+                background-color: #b3922c;
+            }
+
+            .welcome-box p {
+                margin-bottom: 20px;
+            }
+
+            .welcome-box a {
+                color: #fff;
+                text-decoration: underline;
+                text-align: center;
+            }
+
+                .welcome-box a:hover {
+                    text-decoration: none;
+                }
+    </style>
 }

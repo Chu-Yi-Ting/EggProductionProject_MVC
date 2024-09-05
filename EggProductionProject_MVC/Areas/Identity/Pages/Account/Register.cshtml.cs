@@ -88,8 +88,15 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //修改寄件內容
+                    await _emailSender.SendEmailAsync(Input.Email, "建立GoodEgg帳戶",
+                        "<h2>驗證您的電子郵件位址</h2>" +
+                        $"此步驟是要驗證您用來登入GoodEgg好蛋雞農整合平台的電子郵件位址。若要完成建立帳戶，請按右方的[驗證連結]以進入網站。" +
+                        $"<a  href='{HtmlEncoder.Default.Encode(callbackUrl)}'>驗證帳戶</a>");
+
+
+                    // 設定 ViewData 變數來觸發 Modal
+                    ViewData["ShowModal"] = true;
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -99,6 +106,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
+
                     }
                 }
                 foreach (var error in result.Errors)

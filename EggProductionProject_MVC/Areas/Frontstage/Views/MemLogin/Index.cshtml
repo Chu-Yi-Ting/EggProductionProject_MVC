@@ -1,0 +1,211 @@
+﻿@model EggProductionProject_MVC.Models.MemberVM.MemberLogVM
+
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Good Egg 登入</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+
+
+		
+
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f5f5f5;
+		}
+
+		.container-fluid {
+			padding: 0;
+		}
+
+		.row {
+			margin: 0;
+		}
+
+		.left-column {
+			background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+			background-size: cover;
+			height: 100vh;
+		}
+
+		.right-column {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			padding: 20px;
+			background-color: #f5f5f5;
+		}
+
+		.login-box,
+		.welcome-box {
+			width: 100%;
+			max-width: 450px;
+			padding: 40px;
+			border-radius: 10px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+		}
+
+
+
+		.login-box {
+			margin-bottom: 20px;
+		}
+
+		.login-box a{
+			text-align:center;
+		}
+
+
+			.login-box h1 {
+				color: #b3922c;
+				font-size: 24px;
+				margin-bottom: 20px;
+				text-align: center;
+				background-color: #fff;
+			}
+
+			.login-box label {
+				color: #b3922c;
+			}
+
+			.login-box .btn-primary {
+				background-color: #b3922c;
+				border: none;
+			}
+
+				.login-box .btn-primary:hover {
+					background-color: #a37e2b;
+				}
+
+		.divider {
+			text-align: center;
+			margin: 20px 0;
+			position: relative;
+		}
+
+			.divider::before,
+			.divider::after {
+				/* content: ""; */
+				position: absolute;
+				top: 50%;
+				width: 40%;
+				height: 1px;
+				background-color: #ddd;
+			}
+
+			.divider::before {
+				left: 0;
+			}
+
+			.divider::after {
+				right: 0;
+			}
+
+			.divider span {
+				color: #666;
+				background-color: #fff;
+				padding: 0 10px;
+			}
+
+		.welcome-box {
+			background-color: #b3922c;
+			color: #fff;
+			text-align: center;
+		}
+
+			.welcome-box h1 {
+				font-size: 24px;
+				margin-bottom: 10px;
+				background-color: #b3922c;
+			}
+
+			.welcome-box p {
+				margin-bottom: 20px;
+			}
+
+			.welcome-box a {
+				color: #fff;
+				text-decoration: underline;
+				text-align: center;
+			}
+
+				.welcome-box a:hover {
+					text-decoration: none;
+				}
+	</style>
+
+
+
+
+
+</head>
+
+<body>
+
+
+	<div id="partialViewContainer">
+		@* 這裡放置 LoginPartialView 的內容 *@
+	<partial name="memLoginPV" />
+	</div>
+
+</body>
+
+</html>
+
+@section Scripts {
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// 綁定註冊鏈接
+			$(document).on('click', 'a#register-link', function (e) {
+				e.preventDefault(); // 防止默認行為
+				$.ajax({
+					url: '@Url.Action("RegisterPartialView", "MemLogin")',
+					type: 'GET',
+					success: function (result) {
+						$("#partialViewContainer").html(result); // 替換部分視圖的容器內容
+					}
+				});
+			});
+
+			// 綁定登錄鏈接
+			$(document).on('click', 'a#login-link', function (e) {
+				e.preventDefault(); // 防止默認行為
+				$.ajax({
+					url: '@Url.Action("LoginPartialView", "MemLogin")',
+					type: 'GET',
+					success: function (result) {
+						$("#partialViewContainer").html(result); // 替換部分視圖的容器內容
+					}
+				});
+			});
+		});
+
+
+
+
+		//註冊密碼必須一致
+		function validatePasswords() {
+			var password = document.getElementById("password").value;
+			var confirmPassword = document.getElementById("confirm-password").value;
+			var errorSpan = document.getElementById("password-error");
+
+			if (password !== confirmPassword) {
+				errorSpan.style.display = "inline";
+			} else {
+				errorSpan.style.display = "none";
+			}
+		}
+	
+
+	</script>
+}
