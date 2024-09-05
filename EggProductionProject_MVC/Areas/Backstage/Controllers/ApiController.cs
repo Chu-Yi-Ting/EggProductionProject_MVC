@@ -3,6 +3,7 @@ using EggProductionProject_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Data;
@@ -21,32 +22,33 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get_Member()
+        public async Task<IActionResult> Get_Member()
         {
-            var Name = from m in _context.Members
+            
+            var Name = await (from m in _context.Members
                        where m.IsChickFarm == 1
                        select new
                        {
                            value = m.MemberSid,
                            text = m.Name
-                       };
+                       }).ToListAsync();
                         
             return Json(Name);
         }
         [HttpGet]
-        public IActionResult Get_House(int Sid)
+        public async Task<IActionResult> Get_House(int Sid)
         {
-            var House = (from m in _context.ChickHouses
+            var House = await((from m in _context.ChickHouses
                         where m.MemberSid == Sid
                         select new
                         {
                             value = m.HouseSid,
                             text = m.HouseName
-                        }).Distinct();
+                        }).Distinct()).ToListAsync();
 
             return Json(House);
         }
-
+        [HttpGet]
         public IActionResult Export(int Sid, int HouseSid)
         {
             try
