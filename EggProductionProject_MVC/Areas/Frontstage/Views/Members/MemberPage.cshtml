@@ -67,6 +67,8 @@
                     border: 2px solid #855206;
                 }
 
+         
+
                 .nav-tabs {
                     display: flex;
                     justify-content: center;
@@ -234,6 +236,7 @@
 
                 .nav-pills {
                     justify-content: center; /* 確保標籤置中 */
+                    
                 }
 
                 #scrollToTopBtn {
@@ -609,7 +612,7 @@
                                     color: #a57c42;
                                     font-size: 16px;
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
-                                        <button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">基本資料修改</button>
+                                    <button  class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">基本資料修改</button>
                                     </li>
                                     <li style="            border: none;
                                     padding: 10px 30px;
@@ -1249,6 +1252,8 @@
 
 
             const dataForm = new FormData(document.querySelector('#UserDataForm'));
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            dataForm.append('__RequestVerificationToken', token);
             for (const pair of dataForm.entries()) {
                 console.log(pair[0])
                 console.log(pair[1])

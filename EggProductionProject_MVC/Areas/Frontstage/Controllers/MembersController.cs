@@ -44,8 +44,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
            
             // 將 Name 傳遞到視圖
-            ViewBag.UserName = user.Name;
             
+           
 
             //如果==null代表剛註冊好，還不是會員
             if (user == null)
@@ -58,8 +58,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     IsBlocked = 0,
                     IsChickFarm = 0,
                 };
+                ViewBag.UserName = user.Name;
 
-                
                 _context.Members.Add(user);
                 await _context.SaveChangesAsync();
                 return View(user);
@@ -70,6 +70,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                .Include(m => m.AspUser)
                .Include(m => m.ShoppingRankNoNavigation)
                .FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
+
+                ViewBag.UserName = user.Name;
                 return View(member);
             }
            
@@ -107,7 +109,29 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
+        //private async Task<string> CompressImageAsync(byte[] imageBytes)
+        //{
+        //    using (var inputStream = new MemoryStream(imageBytes))
+        //    using (var image = await Image.LoadAsync(inputStream))
+        //    {
+        //        image.Mutate(x => x.Resize(new ResizeOptions
+        //        {
+        //            Size = new Size(400, 0), // 調整寬度，保持比例
+        //            Mode = ResizeMode.Max
+        //        }));
 
+        //        using (var outputStream = new MemoryStream())
+        //        {
+        //            var jpegEncoder = new JpegEncoder
+        //            {
+        //                Quality = 1 // 設定壓縮質量（0-100）
+        //            };
+        //            await image.SaveAsync(outputStream, jpegEncoder);
+
+        //            return Convert.ToBase64String(outputStream.ToArray());
+        //        }
+        //    }
+        //}
 
 
         [HttpPost]
@@ -133,7 +157,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             if (_user.ProfilePic != null)
             {
                 // 檔案上傳路徑
-                string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", _user.ProfilePic.FileName);
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
 
                 // 將檔案上傳到指定路徑
                 using (var filestream = new FileStream(path, FileMode.Create))
@@ -147,6 +171,14 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     _user.ProfilePic.CopyTo(memoryStream);
                     imgByte = memoryStream.ToArray();
+
+                    
+
+                    //壓縮圖片應該是寫在這裡
+                   
+
+
+
                     member.ProfilePic = imgByte;
                 }
                 Console.WriteLine($"Image byte array length: {imgByte.Length}"); // 检查图像大小
