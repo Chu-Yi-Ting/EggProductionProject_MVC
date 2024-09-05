@@ -41,7 +41,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             }
 
             var reply = await _context.Replies
-                .Include(r => r.ArticleCreaterS)
+                .Include(r => r.ArticleCreatorS)
                 .Include(r => r.ArticleS)
                 .Include(r => r.PublicStatusNoNavigation)
                 .FirstOrDefaultAsync(m => m.ReplySid == id);
@@ -227,7 +227,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             }
 
             var reply = await _context.Replies
-                .Include(r => r.ArticleCreaterS)
+                .Include(r => r.ArticleCreatorS)
                 .Include(r => r.ArticleS)
                 .Include(r => r.PublicStatusNoNavigation)
                 .FirstOrDefaultAsync(m => m.ReplySid == id);
@@ -269,7 +269,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         private IQueryable<Reply> GetFilteredReplies(string searchString)
         {
             var replies = _context.Replies
-                                  .Include(r => r.ArticleCreaterS)
+                                  .Include(r => r.ArticleCreatorS)
                                   .Include(r => r.ArticleS)
                                   .Include(r => r.PublicStatusNoNavigation)
                                   .AsQueryable();

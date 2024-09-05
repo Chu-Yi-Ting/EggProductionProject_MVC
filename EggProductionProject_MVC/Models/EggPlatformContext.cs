@@ -994,7 +994,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ReplyInfo).IsRequired();
             entity.Property(e => e.ReplyUpdate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.ArticleCreaterS).WithMany(p => p.Replies)
+            entity.HasOne(d => d.ArticleCreatorS).WithMany(p => p.Replies)
                 .HasForeignKey(d => d.ArticleCreaterSid)
                 .HasConstraintName("FK_Reply_Member");
 

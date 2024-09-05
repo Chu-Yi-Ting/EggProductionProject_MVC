@@ -1,0 +1,78 @@
+﻿@model EggProductionProject_MVC.Models.Article
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Article</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleUpdate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleUpdate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EditCountTimes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EditCountTimes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TagMemberNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TagMemberNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeleteOrNot)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeleteOrNot)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleCategoriesS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleCategoriesS.ArticleCategoriesSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArticleCreaterS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArticleCreaterS.MemberSid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicStatusNoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicStatusNoNavigation.PublicStatusNo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ArticleSid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

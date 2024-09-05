@@ -14,6 +14,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+//跨域測試
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+//跨域測試
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -85,7 +93,17 @@ else
 }
 
 app.UseHttpsRedirection();
+//跨域測試
+app.UseCors("AllowAll");
+//跨域測試
 app.UseStaticFiles();
+
+
+
+
+
+
+
 
 app.UseRouting();
 

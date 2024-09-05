@@ -27,7 +27,7 @@ public partial class Reply
 
     public bool? DeleteOrNot { get; set; }
 
-    public virtual Member ArticleCreaterS { get; set; }
+    public virtual Member? ArticleCreatorS { get; set; }
 
     public virtual Article ArticleS { get; set; }
 

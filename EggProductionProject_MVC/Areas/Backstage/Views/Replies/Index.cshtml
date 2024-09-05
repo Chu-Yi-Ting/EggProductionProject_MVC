@@ -50,29 +50,31 @@
     @await Html.PartialAsync("_ReplyPartial", Model)
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#searchForm').on('submit', function (e) {
-            e.preventDefault(); // 阻止表单的默认提交行为
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault(); // 阻止表单的默认提交行为
 
-            var searchString = $('input[name="searchString"]').val();
+                var searchString = $('input[name="searchString"]').val();
 
-            $.ajax({
-                url: '@Url.Action("SearchPartial", "Replies", new { area = "Backstage" })',
-                data: { searchString: searchString },
-                success: function (result) {
-                    $('#articlesList').html(result); // 更新文章列表部分
-                },
-                error: function () {
-                    alert('搜尋時出錯，請稍後重試。');
-                }
+                $.ajax({
+                    url: '@Url.Action("SearchPartial", "Replies", new { area = "Backstage" })',
+                    data: { searchString: searchString },
+                    success: function (result) {
+                        $('#articlesList').html(result); // 更新文章列表部分
+                    },
+                    error: function () {
+                        alert('搜尋時出錯，請稍後重試。');
+                    }
+                });
+            });
+            $('#resetButton').on('click', function () {
+                $('input[name="searchString"]').val(''); // 清空搜索框内容
+                $('#searchForm').trigger('submit'); // 触发表单提交，重新加载数据
             });
         });
-        $('#resetButton').on('click', function () {
-            $('input[name="searchString"]').val(''); // 清空搜索框内容
-            $('#searchForm').trigger('submit'); // 触发表单提交，重新加载数据
-        });
-    });
-</script>
+    </script>
+}
+
 
