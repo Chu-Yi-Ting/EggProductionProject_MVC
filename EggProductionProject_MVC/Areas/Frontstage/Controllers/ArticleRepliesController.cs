@@ -25,7 +25,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             var replies = await _context.Replies
                 .Where(reply => reply.ArticleSid == id)
-                .Include(reply => reply.ArticleCreaterS)
+                .Include(reply => reply.ArticleCreatorS)
                 .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
                 {
@@ -33,11 +33,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     ReplyInfo = reply.ReplyInfo,
                     ReplyDate = reply.ReplyDate,
                     EditTimes = reply.EditTimes,
-                    ArticleCreater = reply.ArticleCreaterS != null
+                    ArticleCreator = reply.ArticleCreatorS != null
                         ? new MemberDto
                         {
-                            MemberSid = reply.ArticleCreaterS.MemberSid,
-                            Name = reply.ArticleCreaterS.Name
+                            MemberSid = reply.ArticleCreatorS.MemberSid,
+                            Name = reply.ArticleCreatorS.Name
                         }
                         : null
                 })

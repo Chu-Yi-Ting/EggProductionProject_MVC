@@ -90,7 +90,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public string ReplyInfo { get; set; } = null!;
             public DateTime? ReplyDate { get; set; }
             public int? EditTimes { get; set; }
-            public MemberDto? ArticleCreater { get; set; }
+            public MemberDto? ArticleCreator { get; set; }
         }
     }
 }
