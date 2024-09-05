@@ -1,0 +1,900 @@
+﻿@{
+    Layout = "_FrontLayout_store";
+}
+
+@section Styles {
+    <style>
+        .cart-card .cart-card-owner .all-choose {
+            color: var(--main-color);
+        }
+
+        .hasCarriers {
+            display: none
+        }
+
+        .noCarriers {
+            font-weight: 600
+        }
+
+        .store-body-outer .pagebody-store .accordion-item .accordion-body .other-info .default {
+            font-size: 10px;
+            color: #d8b45c;
+            font-weight: 700;
+            border: none;
+            border-radius: 40px;
+            padding: 0px;
+        }
+
+        .change_address {
+            padding: 0px 5px;
+        }
+
+
+
+        .accordion-item .accordion-button.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+
+        .store-body-outer .pagebody-store .accordion-item .accordion-button.disabled::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23b8860b'%3e%3ccircle cx='8' cy='8' r='7' stroke='%23b8860b' stroke-width='1' fill='none'/%3e%3cline x1='4' y1='4' x2='12' y2='12' stroke='%23b8860b' stroke-width='1'/%3e%3cline x1='12' y1='4' x2='4' y2='12' stroke='%23b8860b' stroke-width='1'/%3e%3c/svg%3e");
+        }
+
+    </style>
+}
+
+<div class="col-12">
+    <div class="page-title">
+        <h5 class="mb-3 d-flex justify-content-between w-100">
+            物流設定
+            <span class="d-flex">
+                <a class="btn light-btn-n btn-sm-dbrs" data-bs-toggle="modal" href="#exampleModalToggle5" role="button">物流開放</a>
+                <a class="btn  light-btn-n btn-sm-dbrs ms-3" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
+            </span>
+        </h5>
+    </div>
+</div>
+<div class="col-lg-12 mt-3 " id="accordionExample1">
+    <div class="accordion" id="accordionExample">
+       @*  <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne"
+                        aria-expanded="true"
+                        aria-controls="collapseOne">
+                    宅配<img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
+                           alt="" />
+                </button>
+            </h2>
+            <div id="collapseOne"
+                 class="accordion-collapse collapse show"
+                 aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        黑貓宅急便<span>常溫</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="m-0" />
+             <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        黑貓宅急便<span>冷藏</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0 d-none">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item mt-5">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="collapseTwo">
+                    超商
+                    <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png" alt="" />
+                </button>
+            </h2>
+            <div id="collapseTwo"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingTwo"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                   <div class="other-info d-flex flex-column flex-lg-row">
+                        <div class="w-100 mx-auto">
+                            <div class="part form-control-n">
+                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                    <p class="d-flex align-items-center mb-0">
+                                        7-ELEVEN<span>常溫</span>
+                                    </p>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button class="btn track-info p-0">刪除</button>
+                                        <button class="btn track-info ms-3 p-0">
+                                            編輯
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                    <div class="d-flex mt-1 mt-md-0">
+                                        <p class="name me-2 m-0">張家豪</p>
+                                        <p class="phone me-2 m-0">0960101028</p>
+                                    </div>
+                                    <p class="address me-2 m-0">
+                                        <span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                    </p>
+                                </div>
+                                <p class="default me-2 m-0">預設</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> *@
+    </div>
+</div>
+
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title" id="exampleModalToggleLabel">
+                    新增物流
+                    <span class="ms-3">
+                        <nav class="nav">
+                            <ul class="nav tab_n" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active"
+                                       id="home-tab"
+                                       data-bs-toggle="tab"
+                                       href="#home"
+                                       role="tab"
+                                       aria-controls="home"
+                                       aria-selected="true">新增超商</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link"
+                                       id="profile-tab"
+                                       data-bs-toggle="tab"
+                                       href="#profile"
+                                       role="tab"
+                                       aria-controls="profile"
+                                       aria-selected="false">新增宅配</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
+                        <div class="form-control-n">
+                            <div class="title mb-2 d-flex justify-content-between">
+                                <div class="allcoin">收貨人姓名<span></span></div>
+                            </div>
+                            <input class="form-control form-control-sm"
+                                   type="text"
+                                   placeholder=""
+                                   aria-label="" />
+                        </div>
+                        <div class="form-control-n mt-3">
+                            <div class="title mb-2 d-flex justify-content-between">
+                                <div class="allcoin">聯繫方式<span></span></div>
+                            </div>
+                            <input class="form-control form-control-sm"
+                                   type="text"
+                                   placeholder=""
+                                   aria-label="" />
+                        </div>
+
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active"
+                                 id="home"
+                                 role="tabpanel"
+                                 aria-labelledby="home-tab">
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">門市選擇<span></span></div>
+                                    </div>
+                                    <button class="btn light-btn-n" type="button">
+                                        新增 / 調整地址
+                                    </button>
+                                </div>
+                                <div class="accordion-item mt-4">
+                                    <div class="accordion-body">
+                                        <div class="other-info d-flex flex-column flex-lg-row py-3">
+                                            <div class="w-100 mx-auto">
+                                                <div class="part form-control-n">
+                                                    <div class="carrier-type w-100 d-flex justify-content-between pb-2">
+                                                        <p class="d-flex align-items-center mb-0">
+                                                            7-ELEVEN<span>超商</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="carrier-address d-flex flex-column flex-xl-row">
+                                                        <p class="address me-2 m-0">
+                                                            <span class="me-1">
+                                                                忠孝東門市 |
+                                                            </span>
+                                                            <span class="me-1 mb-2">225436</span><br />
+                                                            台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade"
+                                 id="profile"
+                                 role="tabpanel"
+                                 aria-labelledby="profile-tab">
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">取貨地址<span></span></div>
+                                    </div>
+                                    <input class="form-control form-control-sm"
+                                           type="text"
+                                           placeholder=""
+                                           aria-label="" />
+                                </div>
+                                <div class="form-control-n mt-3">
+                                    <div class="title mb-2 d-flex justify-content-between">
+                                        <div class="allcoin">配送服務<span></span></div>
+                                    </div>
+                                    <select class="select-n" name="state">
+                                        <option value="AL">常溫</option>
+
+                                        <option value="WY">低溫</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-card bg-none mt-4">
+                            <div class="cart-card-item p-0">
+                                <input type="checkbox"
+                                       class="hidden-box"
+                                       id="s1_p202409010003"
+                                       checked="" />
+                                <label for="s1_p202409010003" class="check--label">
+                                    <span class="check--label-box ms-0 me-2"></span>
+                                    <span class="checktext">設為預設地址</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="w-100 submit mt-4 mb-3">
+                            <button class="btn dark-btn-n" type="button" id="updateAddress">
+                                確定新增
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle5"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    物流開放設定
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="d-flex carries_open mt-2">
+                        <div class="d-flex w-100 align-items-center">
+                            <p class="m-0">宅配</p>
+                            <img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
+                                 alt="" />
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="flexSwitchCheckChecked"
+                                   checked />
+                        </div>
+                    </div>
+
+                    <div class="d-flex carries_open my-4">
+                        <div class="d-flex w-100 align-items-center">
+                            <p class="m-0">超商</p>
+                            <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png"
+                                 alt="" />
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="flexSwitchCheckChecked"
+                                   checked />
+                        </div>
+                    </div>
+
+                    <div class="w-100 submit pt-2 mb-3">
+                        <button class="btn dark-btn-n" type="button">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle3"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    新增宅配
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="form-control-n">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">收貨人姓名<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+                    <div class="form-control-n mt-3">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">聯繫方式<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+
+                    <div class="form-control-n mt-3">
+                        <div class="title mb-2 d-flex justify-content-between">
+                            <div class="allcoin">取貨地址<span></span></div>
+                        </div>
+                        <input class="form-control form-control-sm"
+                               type="text"
+                               placeholder=""
+                               aria-label="" />
+                    </div>
+
+                    <div class="cart-card bg-none mt-4">
+                        <div class="cart-card-item p-0">
+                            <input type="checkbox"
+                                   class="hidden-box"
+                                   id="s1_p202409010003"
+                                   checked="" />
+                            <label for="s1_p202409010003"
+                                   class="check--label w-100">
+                                <span class="check--label-box ms-0 me-2"></span>
+                                <div>
+                                    <span class="checktext">
+                                        採用低溫配送服務
+                                        <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg"
+                                             alt=""
+                                             srcset="" />
+                                    </span>
+                                    <span class="checktext text-gray">僅宅配提供</span>
+                                </div>
+                                <p class="m-0 ms-auto checktext-money">$160</p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="w-100 submit mt-4 mb-3">
+                        <button class="btn dark-btn-n" type="button">
+                            確定送出
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle4"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    新增超商
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="store-body-outer">
+                        <div class="pagebody-store m-0">
+                            <div class="form-control-n">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">收貨人姓名<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       placeholder=""
+                                       aria-label="" />
+                            </div>
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">聯繫方式<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       placeholder=""
+                                       aria-label="" />
+                            </div>
+
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">門市選擇<span></span></div>
+                                </div>
+                                <button class="btn light-btn-n" type="button">
+                                    新增 / 調整地址
+                                </button>
+                            </div>
+                            <div class="accordion-item mt-4">
+                                <div class="accordion-body">
+                                    <div class="other-info d-flex flex-column flex-lg-row py-3">
+                                        <div class="w-100 mx-auto">
+                                            <div class="part form-control-n">
+                                                <div class="carrier-type w-100 d-flex justify-content-between pb-2">
+                                                    <p class="d-flex align-items-center mb-0">
+                                                        7-ELEVEN<span>超商</span>
+                                                    </p>
+                                                </div>
+                                                <div class="carrier-address d-flex flex-column flex-xl-row">
+                                                    <p class="address me-2 m-0">
+                                                        <span class="me-1">忠孝東門市 | </span>
+                                                        <span class="me-1 mb-2">225436</span><br />
+                                                        台北市中正區忠孝東路一段72號76號1樓
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cart-card bg-none mt-4">
+                                <div class="cart-card-item p-0">
+                                    <label class="check--label w-100">
+                                        <span class="checktext">
+                                            常溫配送價格
+                                            <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg"
+                                                 alt=""
+                                                 srcset="" />
+                                        </span>
+                                        <p class="m-0 ms-auto checktext-money">$60</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n" type="button">
+                                    確定送出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts {
+    <script>
+        //更改select樣式
+        document.addEventListener("DOMContentLoaded", function () {
+            const elements = document.querySelectorAll(".select-n");
+            elements.forEach(function (element) {
+                new Choices(element, {
+                    searchEnabled: false,
+                    itemSelectText: "",
+                });
+            });
+        });
+
+
+        $(document).ready(function () {
+
+            //主畫面列出當前所有資料
+            const loadBuyCarts1 = async (storeId) => {
+                const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
+                const BuyData1 = {
+                    "Msid": 1,
+                    "storeSid": storeId
+                };
+
+                try {
+                    const response = await fetch(api, {
+                        method: 'POST',
+                        body: JSON.stringify(BuyData1),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+
+
+                    const data = await response.json();
+                    console.log("data",data)
+
+                    const generateProductsHtml = (addresses) => {
+                        return addresses.map(address => {
+                            const storeNameClass = address.storeName ? '' : 'd-none';
+                            const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+                            const storeSid = BuyData1.storeSid;
+
+
+                            // const storeNameClass = address.storeName ? '' : 'd-none';
+                            const showFirstButton = address.storeName ? '' : 'd-none';
+                            const showSecondButton = address.storeName ? 'd-none' : '';
+
+                            return `
+                                                
+
+                                        <div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}>
+                                <div class="w-100 mx-auto">
+                                            <div class="part form-control-n w-100">
+                                        <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                            <p class="d-flex align-items-center mb-0">
+                                                                ${address.carrierName}<span>${address.way}</span>
+                                            </p>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <button class="btn track-info p-0">刪除</button>
+
+
+                                                                                    <a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
+                        <a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="carrier-address d-flex flex-column flex-xl-row">
+                                            <div class="d-flex mt-1 mt-md-0">
+                                                        <p class="name me-2 m-0">${address.recordName}</p>
+                                                        <p class="phone me-2 m-0">${address.recordPhone}</p>
+                                            </div>
+                                           
+                                                    <p class="address me-2 m-0">
+                                                                                            <span class="me-1 ${storeNameClass}">${address.storeName}  | </span>${address.adress}
+                                                                                        </p>
+                                        </div>
+                                                <p class="default me-2 m-0 ${defaultClass}">預設</p>
+                                    </div>
+                                </div>
+                       
+
+                                        `;
+                        }).join('<hr class="m-0" />');
+                    };
+
+                    const defaultCarriers = [
+                        { carrierNo: 1, displayText: '宅配', imageSrc: '../../FrontstageTemplate/assets/brand/common/blackcat_logo.svg', addresses: [] },
+                        { carrierNo: 2, displayText: '超商', imageSrc: '../../FrontstageTemplate/assets/brand/common/seven-logo.png', addresses: [] }
+                    ];
+
+
+
+
+                    const generateStoresHtml1 = (data) => {
+                        const carriersMap = defaultCarriers.reduce((map, carrier) => {
+                            map[carrier.carrierNo] = carrier;
+                            return map;
+                        }, {});
+
+                        data.forEach(store => {
+                            if (carriersMap[store.carrierNo]) {
+                                carriersMap[store.carrierNo].addresses = store.addresses;
+                            }
+                        });
+
+                        return Object.values(carriersMap).map(store => {
+                            const hasAddresses = store.addresses.length > 0;
+                            const buttonClass = hasAddresses ? 'accordion-button collapsed' : 'accordion-button collapsed disabled';
+                            const productsHtml = hasAddresses ? generateProductsHtml(store.addresses) : '';
+
+
+
+
+
+                            return `
+                                                    <div class="accordion-item mb-4 ">
+                                        <h2 class="accordion-header" id="heading${store.carrierNo}">
+                                            <button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
+                                                ${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
+                                            </button>
+                                        </h2>
+                                        <div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
+                                            <div class="accordion-body">
+                                         
+                                                    ${productsHtml}
+                                                
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                `;
+                        }).join('');
+                    };
+
+
+                    const divSpots1 = document.getElementById('accordionExample1');
+                    divSpots1.innerHTML = generateStoresHtml1(data);
+
+
+                        const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
+
+selectElements.forEach(element => {
+  element.addEventListener('click', (event) => {
+    // 獲取 href 的值
+    const modalTarget = element.getAttribute('href');
+    console.log("modalTarget:", modalTarget);
+
+    // 獲取 data-edit 屬性的值
+    const dataEditValue = element.getAttribute('data-edit');
+    console.log("data-edit:", dataEditValue);
+             const addressSid = dataEditValue.split('_')[1];
+            console.log("Carrier Address SID:", addressSid);
+  });
+});
+                   
+
+
+
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
+            };
+            loadBuyCarts1(1);
+
+
+           //   const selectElement = document.querySelectorAll('#accordionExample1 .track-info');
+
+           // selectElement.addEventListener('click', (event) => {
+           //      // const modalTarget = this.getAttribute('href'); 
+           // console.log("modalTarget")
+           // });
+
+       
+
+
+
+
+            const loadAddressData = async (CarrierAddressSid) => {
+              const api = '@Url.Content("~/Frontstage/StoreCentersAPI/AddressOne")';
+const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
+
+
+                try {
+                    const response = await fetch(apiFilter, {
+                        method: 'Get',
+                        // body: JSON.stringify(BuyData1),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+
+
+                    const data = await response.json();
+                    console.log("data", data)
+
+               
+
+
+
+                    // const divSpots1 = document.getElementById('accordionExample1');
+                    // divSpots1.innerHTML = generateStoresHtml1(data);
+
+
+
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
+            };
+             loadAddressData(41);
+
+          //    document.querySelectorAll('.track-info').forEach(button => {
+          //   button.addEventListener('click', function(event) {
+          //     const modalTarget = this.getAttribute('href');  // 獲取 href 的值
+          //     const editMode = this.getAttribute('data-edit'); // 獲取 data-edit 屬性的值
+
+          //     if (modalTarget === '#exampleModalToggle3') {
+          //       console.log('exampleModalToggle3', 'edit mode:', editMode);
+          //     } else if (modalTarget === '#exampleModalToggle4') {
+          //       console.log('exampleModalToggle4', 'edit mode:', editMode);
+          //     }
+          //   });
+          // });
+
+      
+          
+
+
+
+            function updateSubmitData() {
+                // const discountText = document.querySelector('#part-2 .percent_discount span').textContent.trim();
+                // submitdata.combo = discountText === '無' ? 1 : 0.9;
+
+                // const coinText = document.querySelector('#part-2 .coin_use span').textContent.replace(/[^0-9]/g, '').trim();
+                // submitdata.usecoin = parseInt(coinText, 10) || 0; // 确保是整数
+            }
+
+            //新增宅配物流
+            const submitdata = {
+                CarrierAddressSid: 0,
+                MemberSid: 1,
+                AddressFirst: 0,
+                RecordName: "sss123",
+                RecordPhone: "0930102090",
+                CarrierWayNo: 1,
+                Adress: "新北市三芝區中正路一段61號63號1樓",
+                StoreId: "",
+                StoreName: "",
+                PublicStatusNo: 1
+            }
+
+            //新增超商物流
+            const submitdata2 = {
+                CarrierAddressSid: 0,
+                MemberSid: 1,
+                AddressFirst: 0,
+                RecordName: "sss123",
+                RecordPhone: "0930102090",
+                CarrierWayNo: 1,
+                Adress: "新北市三芝區中正路一段61號63號1樓",
+                StoreId: "252377",
+                StoreName: "7-11忠孝東",
+                PublicStatusNo: 1
+            }
+
+            //新增更改資料
+            const updatePrices = async () => {
+                const apiUrl = 'https://localhost:7080/Frontstage/StoreCentersAPI/CarrierAddress/Save';
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(submitdata)
+                    });
+
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+
+                    const result = await response.json();
+                    console.log('Success:', result);
+
+                    $('.modal-n').modal('hide');
+                    await loadBuyCarts1(data.MemberSid);
+
+                } catch (error) {
+
+                    console.error("Error occurred:", error.message);
+                    console.log("nonono");
+                }
+            };
+
+            document.getElementById('updateAddress').addEventListener('click', updatePrices);
+
+
+
+        });
+
+       
+
+    </script>
+}

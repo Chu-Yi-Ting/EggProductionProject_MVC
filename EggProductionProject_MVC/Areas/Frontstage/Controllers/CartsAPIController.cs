@@ -1107,10 +1107,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		}
 
 
-
-
-
-
 	}
 }
 
