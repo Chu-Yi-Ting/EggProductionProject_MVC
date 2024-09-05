@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace EggProductionProject_MVC.Models;
 
-public partial class Log
+public partial class ChatRoom
 {
-    public int LogSid { get; set; }
+    public int ChatSid { get; set; }
 
-    public int? MemberSid { get; set; }
+    public int MemberSid { get; set; }
 
-    public byte? IsLogSuccess { get; set; }
+    public DateTime? ChatTime { get; set; }
 
-    public DateTime? LogTime { get; set; }
+    public string ChatContent { get; set; }
 
     public virtual Member MemberS { get; set; }
 }

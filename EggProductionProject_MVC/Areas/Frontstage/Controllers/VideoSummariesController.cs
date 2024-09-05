@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.ViewModels;
 using Azure.Messaging;
+using System.Diagnostics.Metrics;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -58,42 +59,29 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public async Task<IActionResult> GetMessage(int videoid)
         {
             var Message = _context.Messages
+                .Include(M =>M.MemberS)
                 .Where(M => M.VideoSid == videoid)
                 .Select(M => new VideoMessageDTO
                 {
+                    NumberName = M.MemberS.Name,
                     VideoSid = M.VideoSid,
                     MessageSid = M.MessageSid,
                     MessageContent = M.MessageContent,
                     MessageLikes = M.MessageLikes,
                     MessageDate = M.MessageDate,
-                    MessageNumber = M.MessageNumber
+                    MessageNumber = M.MessageNumber,
+                                     
                 });
                 
             return Json(Message);
-                
         }
+        //public async Task<IActionResult> GetOneVideo(int videoid)
+        //{
+        //    var video = _context.VideoSummaries
+        //        .
 
-        // GET: Frontstage/VideoSummaries/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var videoSummary = await _context.VideoSummaries
-                .Include(v => v.CreatorS)
-                .Include(v => v.NatureS)
-                .Include(v => v.PublicStatusNoNavigation)
-                .Include(v => v.ScreenTextS)
-                .FirstOrDefaultAsync(m => m.VideoSid == id);
-            if (videoSummary == null)
-            {
-                return NotFound();
-            }
-
-            return View(videoSummary);
-        }
+        //}
+        
 
         // GET: Frontstage/VideoSummaries/Create
         public IActionResult Create()

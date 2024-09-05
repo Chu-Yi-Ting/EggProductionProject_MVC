@@ -21,7 +21,10 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "再留言")]
         public int? MessageNumber { get; set; }
 
+        [Display(Name ="留言總數")]
+        public int? MessageLength { get; set; }
         
+        public string NumberName { get; set; }
 
     }
 }
