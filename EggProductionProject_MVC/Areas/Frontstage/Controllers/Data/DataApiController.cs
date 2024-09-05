@@ -26,7 +26,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         
 //-----------------------------------行事曆------------------------------------------------
         [HttpPost]
-        public async Task<IActionResult> InsertCalendar([FromBody] Models.Calendar Calendar)
+        public async Task<IActionResult> InsertCalendar([FromBody] EggProductionProject_MVC.Models.Calendar Calendar)
         {
             if(!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "提供的資料無效。" });
@@ -89,7 +89,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCalendar(int id, [FromBody] Models.Calendar updatedEvent)
+        public async Task<IActionResult> UpdateCalendar(int id, [FromBody] EggProductionProject_MVC.Models.Calendar updatedEvent)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "提供的數據無效。" });
