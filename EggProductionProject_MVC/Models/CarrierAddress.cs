@@ -11,7 +11,7 @@ public partial class CarrierAddress
 
     public int? MemberSid { get; set; }
 
-    public int? StoreUsed { get; set; }
+    public int? AddressFirst { get; set; }
 
     public string RecordName { get; set; }
 
