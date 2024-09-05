@@ -95,6 +95,22 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
         }
 
+        public async Task<IActionResult> TotalVideo(int videoid)
+        {
+            var TotalVideo = _context.VideoSummaries
+                .Include(M => M.CreatorS)
+                .Where(M => M.VideoSid != videoid)
+                .Select(M => new TotalVideoDTO
+                {
+
+                    VideoTitle = M.VideoTitle,
+                    TimesWatched = M.TimesWatched,
+                    MoviePath = M.MoviePath,
+                    UploadDate = M.UploadDate,
+                    NumberName = M.CreatorS.MemberName,
+                });
+            return Json(TotalVideo);
+        }
 
         // GET: Frontstage/VideoSummaries/Create
         public IActionResult Create()
