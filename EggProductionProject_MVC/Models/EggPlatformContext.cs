@@ -49,6 +49,8 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<Certification> Certifications { get; set; }
 
+    public virtual DbSet<ChatRoom> ChatRooms { get; set; }
+
     public virtual DbSet<ChickDeath> ChickDeaths { get; set; }
 
     public virtual DbSet<ChickHouse> ChickHouses { get; set; }
@@ -412,6 +414,21 @@ public partial class EggPlatformContext : DbContext
             entity.HasOne(d => d.MemberS).WithMany(p => p.Certifications)
                 .HasForeignKey(d => d.MemberSid)
                 .HasConstraintName("FK_Certification_Member");
+        });
+
+        modelBuilder.Entity<ChatRoom>(entity =>
+        {
+            entity.HasKey(e => e.ChatSid);
+
+            entity.ToTable("ChatRoom");
+
+            entity.Property(e => e.ChatContent).HasColumnName("chatContent");
+            entity.Property(e => e.ChatTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.MemberS).WithMany(p => p.ChatRooms)
+                .HasForeignKey(d => d.MemberSid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ChatRoom_Member");
         });
 
         modelBuilder.Entity<ChickDeath>(entity =>
@@ -780,6 +797,10 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.MessageContent).HasMaxLength(100);
             entity.Property(e => e.MessageDate).HasColumnType("datetime");
             entity.Property(e => e.MessageDelete).HasDefaultValue(false);
+
+            entity.HasOne(d => d.MemberS).WithMany(p => p.Messages)
+                .HasForeignKey(d => d.MemberSid)
+                .HasConstraintName("FK_Message_Member");
 
             entity.HasOne(d => d.VideoS).WithMany(p => p.Messages)
                 .HasForeignKey(d => d.VideoSid)

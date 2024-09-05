@@ -23,5 +23,7 @@ public partial class Message
 
     public int? MessageNumber { get; set; }
 
+    public virtual Member MemberS { get; set; }
+
     public virtual VideoSummary VideoS { get; set; }
 }

@@ -45,6 +45,8 @@ public partial class Member
 
     public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
 
+    public virtual ICollection<ChatRoom> ChatRooms { get; set; } = new List<ChatRoom>();
+
     public virtual ICollection<Creator> Creators { get; set; } = new List<Creator>();
 
     public virtual ICollection<Friend> Friends { get; set; } = new List<Friend>();
@@ -54,6 +56,8 @@ public partial class Member
     public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
 
     public virtual ICollection<MemberArea> MemberAreas { get; set; } = new List<MemberArea>();
+
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public virtual ICollection<Notify> Notifies { get; set; } = new List<Notify>();
 

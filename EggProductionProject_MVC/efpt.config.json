@@ -91,6 +91,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[ChatRoom]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ChickDeath]",
          "ObjectType": 0
       },
