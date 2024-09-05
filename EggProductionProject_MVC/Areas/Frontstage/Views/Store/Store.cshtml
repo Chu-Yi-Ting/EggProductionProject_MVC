@@ -139,7 +139,8 @@
 
             .product-card img {
                 width: 100%;
-                height: auto;
+                height: 200px; /* 固定圖片高度 */
+                object-fit: cover; /* 確保圖片在固定高度時保持比例裁剪 */
             }
 
             .product-card:hover {
@@ -289,81 +290,24 @@
     </div>
 
     <!-- Product Grid -->
-    <div class="row g-3">
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
+    <div class="row g-3">      
+        @foreach (var product in Model.products)
+        {
+            <div class="col-lg-4">
+                <div class="product-card">
+                    <img src="@product.productImagePath" alt="@product.productName">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.productName</h5>
+                        <div class="price-and-button">
+                            <p class="price">$@(product.price.HasValue ? (product.price.Value * 0.8m).ToString("0") : "價格不詳") 
+                                <span class="old-price">$@(product.price.HasValue ? product.price.Value.ToString("0") : "價格不詳")</span></p>
+                            <button class="btn" onclick="window.location.href='/Frontstage/Product/ProductDetail?productSid=@product.productSid'">查看更多</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
         <!-- 複製上方的整個block程式碼，就可以複製卡片了 -->
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300" alt="Product Image">
-                <div class="card-body ">
-                    <h5 class="card-title">《福崙生態農場》牧場雞蛋</h5>
-                    <div class="price-and-button">
-                        <p class="price">$200 <span class="old-price">$200</span></p>
-                        <button class="btn">查看更多</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
         <!-- Pagination -->
         <nav class="mt-md-5">
@@ -383,22 +327,21 @@
                 </li>
             </ul>
         </nav>
-
+    </div>
     </div>
 
+@section Scripts {
 
-    @section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+           const elements = document.querySelectorAll('.select-n');
+              elements.forEach(function (element) {
+                 new Choices(element, {
+                    searchEnabled: false,
+                    itemSelectText: ''
+                 });
+              });
+        });
+    </script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const elements = document.querySelectorAll('.select-n');
-                elements.forEach(function (element) {
-                    new Choices(element, {
-                        searchEnabled: false,
-                        itemSelectText: ''
-                    });
-                });
-            });
-        </script>
-
-    }
+}

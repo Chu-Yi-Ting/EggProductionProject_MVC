@@ -14,38 +14,49 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _context = context;
         }
         public IActionResult Store(int storeSid)
-        {            
-            // 查詢商品以及賣家資訊
-            var productsAndStore = _context.Products
+        {
+            var storeInfo = _context.Stores
+                .Where(s => s.StoreSid == storeSid)
+                .Select(s => new StoreViewModel
+                {
+                    storeSid = s.StoreSid,
+                    memberSid = s.MemberSid,
+                    storeImagePath = s.StoreImagePath,
+                    storeName = s.Company,
+                    establishDate = s.EstablishDate,
+                    storeIntroduction = s.StoreIntroduction,
+                    productCount = _context.Products.Where(p => p.StoreSid == s.StoreSid).Count()
+                })
+                .FirstOrDefault();
+
+            if (storeInfo == null)
+            {
+                return NotFound();
+            }
+
+            // 查詢該賣家的所有商品
+            var products = _context.Products
                 .Where(p => p.StoreSid == storeSid)
-                .Select(p => new ProductAndStoreViewModel
+                .Select(p => new ProductViewModel
                 {
                     productSid = p.ProductSid,
                     productImagePath = _context.ProductImages
                         .Where(img => img.ProductSid == p.ProductSid)
                         .Select(img => img.ProductImagePath)
                         .FirstOrDefault(),
-                    productName = p.ProductName,                   
-                    price = p.Price,                                                    
-                    storeInfo = _context.Stores
-                        .Where(s => s.StoreSid == p.StoreSid)
-                        .Select(s => new StoreViewModel
-                        {
-                            storeSid = s.StoreSid,
-                            memberSid = s.MemberSid,
-                            storeImagePath = s.StoreImagePath,
-                            storeName = s.Company,
-                            establishDate = s.EstablishDate,
-                            storeIntroduction = s.StoreIntroduction,
-                            productCount = _context.Products.Where(p => p.StoreSid == s.StoreSid).Count()
-                        }).FirstOrDefault()
-                }).FirstOrDefault();
+                    productName = p.ProductName,
+                    price = p.Price
+                })
+                .ToList();
 
-            if (productsAndStore == null)
+            // 組合商品及賣家資訊
+            var ProductInStore = new ProductAndStoreViewModel
             {
-                return NotFound();
-            }
-            return View(productsAndStore);
+                storeInfo = storeInfo,
+                products = products
+            };
+
+            return View(ProductInStore);
         }
     }
 }
