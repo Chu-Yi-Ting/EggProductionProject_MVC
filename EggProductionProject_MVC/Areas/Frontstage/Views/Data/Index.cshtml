@@ -1,6 +1,11 @@
-﻿@section Styles{
+﻿@{
+    Layout = "_FrontLayout_light";
+}
+
+@section Styles{
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    
     <style>
         .custom-tab {
             color: #d4af37; /* 標籤的文字顏色 */
@@ -54,85 +59,6 @@
 }
 
 <body>
-    <header class="">
-        <div class="offcanvas offcanvas-end"
-             tabindex="-1"
-             id="offcanvasNavbar"
-             aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                    <img src="~/frontstagetemplate/assets/brand/layout/egg-logo.svg" />
-                </h5>
-                <button type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-house me-2"></i> 首頁
-                        </a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <span>網站服務</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-chart-line me-2"></i>
-                            每日蛋雞分析
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-feather-pointed me-2"></i>
-                            知識討論
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-clapperboard me-2"></i>
-                            影片生活
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-shop me-2"></i>
-                            商城購物
-                        </a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <span>網站服務</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="fa-solid fa-user-large me-2"></i>
-                            會員中心
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="offcanvas-footer">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <div class="logoin-user">
-                            <div class="border-img">
-                                <img src="~/frontstagetemplate/assets/brand/common/seven-logo.png" />
-                            </div>
-                            Alice
-                        </div>
-                    </li>
-                </ul>
-                <button type="button" class="btn">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
-            </div>
-        </div>
-    </header>
-
     <main>
         <div class="title-bg mb-3">
             <img class="w-100" src="~/frontstagetemplate/assets/brand/layout/banners/banner_18.png" />
