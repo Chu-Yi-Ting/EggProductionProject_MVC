@@ -311,9 +311,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script>
+        let calendar; // 定義行事曆變數
         let myChart;
         document.addEventListener('DOMContentLoaded', async function () {
-            var calendar; // 定義行事曆變數
             // 監聽標籤頁切換事件 初始化行事曆
             const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
             if (tabElement) {
@@ -525,8 +525,8 @@
                     return;
                 }
 
-                closeEditModal();
-                reloadCalendarEvents();
+                closeAddModal();
+                reloadCalendarEvents()
             } catch (e) {
                 alert('Error:' + e.message);
             }
@@ -563,7 +563,7 @@
                 }
 
                 closeEditModal();
-                reloadCalendarEvents();
+                reloadCalendarEvents()
             } catch (e) {
                 alert('Error:' + e.message);
             }
@@ -596,7 +596,7 @@
                 }
 
                 closeEditModal();
-                reloadCalendarEvents();
+                reloadCalendarEvents()
             } catch (e) {
                 alert('Error:'+e.message);
             }
