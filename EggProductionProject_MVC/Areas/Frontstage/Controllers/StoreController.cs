@@ -58,5 +58,18 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return View(ProductInStore);
         }
+
+        //SellerInformation動作函式生賣家中心基本資料畫面
+        public IActionResult SellerInformation()
+        {
+            return View();
+        }
+
+        public IActionResult ProductLaunch()
+        {
+            return View();
+        }
+
+
     }
 }

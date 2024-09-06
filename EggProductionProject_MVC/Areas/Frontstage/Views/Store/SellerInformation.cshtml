@@ -1,0 +1,228 @@
+﻿@{
+    Layout = "_FrontLayout_store";
+}
+
+@section Styles {
+
+    <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    .custom-separator {
+      border: none;
+      border-top: 2px solid #ba8f6a;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .custom-button {
+      background-color: #b8860b;
+      border: 2px solid #b8860b;
+      color: white;
+      border-radius: 20px;
+      padding: 5px 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .custom-button-outline {
+      background-color: transparent;
+      border: 2px solid #b8860b;
+      color: #b8860b;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .custom-button-outline:hover {
+      background-color: #b8860b;
+      /* 棕色背景 */
+      color: white;
+      /* 白色字體 */
+      border-color: #b8860b;
+      /* 邊框變成棕色 */
+    }
+
+    .form-label {
+      color: black;
+      font-size: 16px;
+    }
+
+    .form-label-required:after {
+      content: "(必填)";
+      color: #ba8f6a;
+      margin-left: 5px;
+    }
+
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #f8f9fa;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .image-preview-small {
+      width: 100px;
+      height: 50px;
+      background-position: center;
+      background-size: cover;
+      margin-right: 10px;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .solid-coffee-btn {
+      background-color: #b8860b;
+      /* 设置按钮的背景颜色为咖啡色 */
+      color: white;
+      /* 设置按钮文字颜色为白色 */
+      border: 2px solid #b8860b;
+      /* 设置边框为与背景一致的咖啡色 */
+      border-radius: 5px;
+      /* 设置圆角边框 */
+      padding: 5px 15px;
+      /* 调整内边距 */
+      font-size: 16px;
+      /* 设置字体大小 */
+      font-weight: bold;
+      /* 设置字体加粗 */
+    }
+
+    .form-control {
+      border: 1px solid #b8860b;
+      /* 設置邊框顏色為咖啡色 */
+      border-radius: 5px;
+      /* 設置邊框圓角 */
+      box-shadow: none;
+      /* 移除輸入框的陰影 */
+    }
+
+    .preview-text {
+      display: block;
+      font-size: 16px;
+      /* 字體變小 */
+      color: #6c757d;
+      /* 字體變成灰色 */
+      margin-top: 10px;
+      /* 與圖片之間留一些距離 */
+      margin-bottom: 10px;
+      /* 與按鈕之間留一些距離 */
+    }
+    </style>
+
+}
+
+<div class="w-100 mt-3 mt-md-5" style="overflow: auto">
+    <div class="row pagebody-store">
+        <div class="col-12">
+            <div class="page-title">
+                <h5 class="mb-3 d-flex justify-content-between w-100">
+                    賣場基本資料
+                    <span class="d-flex">
+                        <a href="mystore_shop.html" class="btn light-btn-n">
+                            前往賣場
+                        </a>
+                    </span>
+                </h5>
+            </div>
+        </div>
+        <hr style="border: 2px solid #b8860b" />
+        <div class="col-lg-12 mt-3">
+            <!-- 賣場資訊表單 -->
+            <form>
+                <div class="row mb-3 align-items-center">
+                    <!-- 左側圖片預覽 -->
+                    <div class="col-md-3 text-center">
+                        <!-- 大头照图片 -->
+                        <div class="image-preview mx-auto"
+                             style="background-image: url('https://images.unsplash.com/photo-1462027076063-1ceabb252dbd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        </div>
+                        <!-- 顯示預覽文字 -->
+                        <p class="preview-text">顯示預覽</p>
+                        <!-- 上傳照片按鈕 -->
+                        <button type="button" class="btn custom-button-outline mt-3">上傳照片</button>
+                    </div>
+
+                    <!-- 右側部分 -->
+                    <div class="col-md-9">
+                        <div class="row ">
+                            <!-- 左側標籤 -->
+                            <div class="col-md-3">
+                                <div class="mb-3 text-center">
+                                    <label for="storeName" class="form-label form-label-required">賣場名稱</label>
+                                </div>
+                                <div class="mb-5 text-center">
+                                    <label for="storeIntroduction" class="form-label form-label-required">賣場簡介</label>
+                                </div>
+                                <div class="mt-auto text-center">
+                                    <label class="form-label">賣場視覺</label>
+                                </div>
+                            </div>
+                            <!-- 右側輸入框 -->
+                            <div class="col-md-9">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="storeName" placeholder="請輸入賣場名稱" />
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="storeIntroduction" rows="3" placeholder="請輸入賣場簡介"></textarea>
+                                </div>
+                                <div class="upload-btn d-flex align-items-center">
+                                    <button type="button" class="btn custom-button-outline">上傳圖片</button>
+                                    <span class="ms-2 preview-text">123fewrwe.jpg, egg-but.png, egg-go-go.png</span>
+                                    <button type="button" class="btn btn-light border rounded-circle ms-2">i</button>
+                                </div>
+                                <span class="preview-text">顯示預覽</span>
+                                <div class="d-flex mt-3">
+                                    <div class="image-preview-small"
+                                         style="background-image: url('https://images.unsplash.com/photo-1617054175880-d1e4fa753bd3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                                    </div>
+                                    <div class="image-preview-small ms-2"
+                                         style="background-image: url('https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                                    </div>
+                                    <div class="image-preview-small ms-2"
+                                         style="background-image: url('https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 下方圖片上傳及預覽 -->
+                        <div class="mt-4">
+                        </div>
+                    </div>
+                </div>
+                <hr style="border: 2px solid #b8860b" />
+                <div class="d-flex justify-content-end">
+                    <button class="btn solid-coffee-btn" type="button">取消</button>
+                    <button class="btn solid-coffee-btn ms-3" type="button">儲存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>
+
+@section Scripts {
+
+    <script>
+                $(document).ready(function () {
+                    var table = $("#example").DataTable({
+                        scrollX: true, // 启用水平滚动
+                        fixedHeader: true, // 启用固定表头
+                    });
+                });
+    </script>
+
+}
