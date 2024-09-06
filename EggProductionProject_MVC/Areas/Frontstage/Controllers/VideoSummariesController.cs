@@ -13,8 +13,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
-    [Route("/api/[controller]/[Action]")]
+
     [Area("Frontstage")]
+    [Route("api/[controller]/[Action]")]
+    [ApiController]
     public class VideoSummariesController : Controller
     {
         private readonly EggPlatformContext _context;
@@ -51,7 +53,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     InformationColumn = x.InformationColumn,
                     VideoCoverImage = x.VideoCoverImage,
                     UploadDate = x.UploadDate,
-                    ViedoNature= x.NatureS.ViedoNature
+                    ViedoNature = x.NatureS.ViedoNature
                 });
 
             return Json(show);
@@ -60,7 +62,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public async Task<IActionResult> GetMessage(int videoid)
         {
             var Message = _context.Messages
-                .Include(M =>M.MemberS)
+                .Include(M => M.MemberS)
                 .Where(M => M.VideoSid == videoid)
                 .Select(M => new VideoMessageDTO
                 {
@@ -71,9 +73,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MessageLikes = M.MessageLikes,
                     MessageDate = M.MessageDate,
                     MessageNumber = M.MessageNumber,
-                                     
                 });
-                
+
             return Json(Message);
         }
 
@@ -83,8 +84,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Where(M => M.VideoSid == videoid)
                 .Select(M => new OneVideoDTO
                 {
-                    
-                 VideoTitle = M.VideoTitle,
+
+                    VideoTitle = M.VideoTitle,
                     TimesWatched = M.TimesWatched,
                     MoviePath = M.MoviePath,
                     InformationColumn = M.InformationColumn,
@@ -102,7 +103,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Where(M => M.VideoSid != videoid)
                 .Select(M => new TotalVideoDTO
                 {
-
+                    VideoSid = M.VideoSid,
                     VideoTitle = M.VideoTitle,
                     TimesWatched = M.TimesWatched,
                     MoviePath = M.MoviePath,
@@ -112,135 +113,26 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(TotalVideo);
         }
 
-        // GET: Frontstage/VideoSummaries/Create
-        public IActionResult Create()
-        {
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid");
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid");
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo");
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid");
-            return View();
-        }
-
-        // POST: Frontstage/VideoSummaries/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,AdSource,Advertised,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
+        public async Task<IActionResult> MessageLike([FromForm] int messageId)
         {
-            if (ModelState.IsValid)
+            var message = await _context.Messages.FindAsync(messageId);
+            if (message == null)
             {
-                _context.Add(videoSummary);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", videoSummary.PublicStatusNo);
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            return View(videoSummary);
-        }
-
-        // GET: Frontstage/VideoSummaries/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return NotFound("Message not found");
             }
 
-            var videoSummary = await _context.VideoSummaries.FindAsync(id);
-            if (videoSummary == null)
-            {
-                return NotFound();
-            }
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", videoSummary.PublicStatusNo);
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            return View(videoSummary);
-        }
-
-        // POST: Frontstage/VideoSummaries/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VideoSid,CreatorSid,VideoDuration,VideoTitle,NatureSid,InformationColumn,UploadDate,TimesWatched,ScreenTextSid,MoviePath,AdSource,Advertised,PublicStatusNo,VideoCoverImage")] VideoSummary videoSummary)
-        {
-            if (id != videoSummary.VideoSid)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(videoSummary);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VideoSummaryExists(videoSummary.VideoSid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CreatorSid"] = new SelectList(_context.Creators, "CreatorSid", "CreatorSid", videoSummary.CreatorSid);
-            ViewData["NatureSid"] = new SelectList(_context.Natures, "NatureSid", "NatureSid", videoSummary.NatureSid);
-            ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", videoSummary.PublicStatusNo);
-            ViewData["ScreenTextSid"] = new SelectList(_context.ScreenSummaries, "ScreenTextSid", "ScreenTextSid", videoSummary.ScreenTextSid);
-            return View(videoSummary);
-        }
-
-        // GET: Frontstage/VideoSummaries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var videoSummary = await _context.VideoSummaries
-                .Include(v => v.CreatorS)
-                .Include(v => v.NatureS)
-                .Include(v => v.PublicStatusNoNavigation)
-                .Include(v => v.ScreenTextS)
-                .FirstOrDefaultAsync(m => m.VideoSid == id);
-            if (videoSummary == null)
-            {
-                return NotFound();
-            }
-
-            return View(videoSummary);
-        }
-
-        // POST: Frontstage/VideoSummaries/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var videoSummary = await _context.VideoSummaries.FindAsync(id);
-            if (videoSummary != null)
-            {
-                _context.VideoSummaries.Remove(videoSummary);
-            }
+            message.MessageLikes += 1;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // 返回更新後的留言
+            return Json(new MessageLikeDTO
+            {
+                MessageLikes = message.MessageLikes,
+                MessageSid = messageId,
+            });
         }
 
-        private bool VideoSummaryExists(int id)
-        {
-            return _context.VideoSummaries.Any(e => e.VideoSid == id);
-        }
     }
 }

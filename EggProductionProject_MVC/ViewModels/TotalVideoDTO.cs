@@ -4,6 +4,8 @@ namespace EggProductionProject_MVC.ViewModels
 {
     public class TotalVideoDTO
     {
+        public int VideoSid { get; set; }
+
         [Display(Name = "影片標題")]
         public string? VideoTitle { get; set; }
 
