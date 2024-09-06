@@ -33,7 +33,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var articles = await _context.Articles
                 .Include(a => a.ArticleCreaterS)
                 .Include(a => a.ArticleCategoriesS)
-                .Include(a => a.PublicStatusNoNavigation)
+                .Where(a => a.PublicStatusNoNavigation != null && a.PublicStatusNoNavigation.PublicStatusNo == 1)//只傳公開的文章
                 .Select(article => new ArticleDto
                 {
                     ArticleSid = article.ArticleSid,
@@ -66,6 +66,55 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .ToListAsync();
 
             return Ok(articles);
+        }
+        //接收文章寫入資料庫
+        // POST: api/Articles/PostArticle
+        [HttpPost("PostArticle")]
+        public async Task<ActionResult<Article>> PostArticle([FromForm] ArticleDto articleDto)
+        {
+            // 輸出 DTO 的內容以確認是否成功接收到資料
+            Console.WriteLine("Received ArticleTitle: " + articleDto.ArticleTitle);
+            Console.WriteLine("Received ArticleInfo: " + articleDto.ArticleInfo);
+            // 將接收的 DTO 資料轉換為資料庫模型
+            var newArticle = new Article
+            {
+                ArticleTitle = articleDto.ArticleTitle,
+                ArticleInfo = articleDto.ArticleInfo,
+                ArticleDate = DateTime.UtcNow, // 以當前時間作為創建時間
+                ArticleUpdate = DateTime.UtcNow,//當前時間
+                ArticleCategoriesSid = articleDto.ArticleCategory?.ArticleCategoriesSid, // 確保傳遞了分類SID
+                ArticleCreaterSid = articleDto.ArticleCreator?.MemberSid, // 確保有會員ID
+                PublicStatusNo = articleDto.PublicStatus?.PublicStatusNo, // 公開狀態
+                EditCountTimes = 0,
+                DeleteOrNot = false // 預設不刪除
+            };
+
+            // 將新文章加入資料庫
+            _context.Articles.Add(newArticle);
+            await _context.SaveChangesAsync(); // 寫入資料庫
+
+            return CreatedAtAction("GetArticleDetails", new { id = newArticle.ArticleSid }, newArticle);
+        }
+
+        //刪除文章
+        [HttpPost("SoftDeleteArticle/{id}")]
+        public async Task<IActionResult> SoftDeleteArticle([FromForm] int articleId)
+        {
+            Console.WriteLine(articleId);
+            // 將接收的 DTO 資料轉換為資料庫模型
+            var article = await _context.Articles.FindAsync(articleId);
+            if (article == null)
+            {
+                return NotFound(); // 如果文章不存在，返回404
+            }
+            article.DeleteOrNot = true;
+
+            // 只更新指定的字段
+            _context.Entry(article).Property(a => a.DeleteOrNot).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // 返回无内容
         }
 
         // GET: api/Articles/5
