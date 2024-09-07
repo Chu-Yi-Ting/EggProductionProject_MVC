@@ -47,7 +47,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		{
 			public int StoreSid { get; set; }
 			public string Company { get; set; }
-			//public byte[] StoreImg { get; set; }
+			public string StoreImagePath { get; set; }
 			public List<ProductDto> Products { get; set; }
 		}
 
@@ -59,7 +59,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			public int Qty { get; set; }
 			public string ProductNo { get; set; }
 			public string ProductName { get; set; }
-			public decimal Price { get; set; }
+
+            public string ProductImagePath { get; set; }
+            public decimal Price { get; set; }
 			public int Stock { get; set; }
 			public decimal? DiscountPercent { get; set; }
 
@@ -67,73 +69,171 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			public string SubcategoryName { get; set; }
 		}
 
+		//    [HttpPost]
+		//    public IActionResult CartsList([FromBody] MemberFilterDto filter)
+		//    {
+		//        // 查詢 Carts
+		//        var query = _context.Carts.AsQueryable();
+
+		//        query = query.Where(c => c.MemberSid == filter.Msid);
+
+		//        if (filter.CartSids != null && filter.CartSids.Length > 0)
+		//        {
+		//            query = query.Where(c => filter.CartSids.Contains(c.CartSid));
+		//        }
+
+		//        // 加入 Products 和 Stores 表，並添加 ProductImages
+		//        var cartsWithProducts = query
+		//            .Join(_context.Products,
+		//                  cart => cart.ProductSid,
+		//                  product => product.ProductSid,
+		//                  (cart, product) => new { cart, product })
+		//            .Join(_context.Stores,
+		//                  combined => combined.product.StoreSid,
+		//                  store => store.StoreSid,
+		//                  (combined, store) => new { combined.cart, combined.product, store })
+		//            .Join(_context.ProductSubcategories,
+		//                  combined => combined.product.SubcategoryNo,
+		//                  subcategory => subcategory.SubcategoryNo,
+		//                  (combined, subcategory) => new
+		//                  {
+		//                      combined.store,
+		//                      combined.product,
+		//                      combined.cart,
+		//                      subcategory.SubcategoryName
+		//                  })
+		//            .Join(_context.ProductImages,
+		//                  combined => combined.product.ProductSid,
+		//                  image => image.ProductSid,
+		//                  (combined, image) => new
+		//                  {
+		//                      combined.store,
+		//                      combined.product,
+		//                      combined.cart,
+		//                      combined.SubcategoryName,
+		//                      image.ProductImagePath
+		//                  })
+		////.Join(_context.StoreImages,
+		////	  combined => combined.store.StoreSid,
+		////	  image => image.StoreSid,
+		////	  (combined, imageshop) => new
+		////	  {
+		////		  combined.store,
+		////		  combined.product,
+		////		  combined.cart,
+		////		  combined.SubcategoryName,
+		////		  combined.ProductImagePath,
+		////		  imageshop.ShopImagePath
+		////	  })
+		//.ToList();
+
+
+		//        var groupedByStore = cartsWithProducts
+		//            .GroupBy(x => new
+		//            {
+		//                x.store.StoreSid,
+		//                x.store.Company,
+		//	//x.ShopImagePath
+		//            })
+		//            .Select(g => new StoreDto
+		//            {
+		//                StoreSid = g.Key.StoreSid,
+		//                Company = g.Key.Company,
+		//	//ShopImagePath = g.Key.ShopImagePath,
+		//	Products = g.Select(x => new ProductDto
+		//                {
+		//                    CartSid = x.cart.CartSid,
+		//                    MemberSid = (int)x.cart.MemberSid,
+		//                    ProductSid = x.product.ProductSid,
+		//                    ProductImagePath = x.ProductImagePath, // 修正為正確的 ProductImagePath
+		//                    Qty = (int)x.cart.Qty,
+		//                    ProductNo = x.product.ProductNo,
+		//                    ProductName = x.product.ProductName,
+		//                    Price = (decimal)x.product.Price,
+		//                    Stock = (int)x.product.Stock,
+		//                    DiscountPercent = x.product.DiscountPercent,
+		//                    SubcategoryNo = x.product.SubcategoryNo,
+		//                    SubcategoryName = x.SubcategoryName
+		//                }).ToList()
+		//            }).ToList();
+
+		//        return Json(groupedByStore);
+		//    }
+
 		[HttpPost]
 		public IActionResult CartsList([FromBody] MemberFilterDto filter)
 		{
-
-
+			// 查詢 Carts
 			var query = _context.Carts.AsQueryable();
-
 
 			query = query.Where(c => c.MemberSid == filter.Msid);
 
-
 			if (filter.CartSids != null && filter.CartSids.Length > 0)
 			{
-				query = query.Where(c => c.MemberSid == filter.Msid && filter.CartSids.Contains(c.CartSid));
+				query = query.Where(c => filter.CartSids.Contains(c.CartSid));
 			}
 
-
-
+			// 加入 Products、Stores 和 ProductImages 表，並添加 StoreImages
 			var cartsWithProducts = query
-											.Join(_context.Products,
-												  cart => cart.ProductSid,
-												  product => product.ProductSid,
-												  (cart, product) => new { cart, product })
-											.Join(_context.Stores,
-												  combined => combined.product.StoreSid,
-												  store => store.StoreSid,
-												  (combined, store) => new { combined.cart, combined.product, store })
-											.Join(_context.ProductSubcategories,
-												  combined => combined.product.SubcategoryNo,
-												  subcategory => subcategory.SubcategoryNo,
-												  (combined, subcategory) => new
-												  {
-													  combined.store,
-													  combined.product,
-													  combined.cart,
-													  subcategory.SubcategoryName
-												  })
-											.ToList();
-
+				.Join(_context.Products,
+					  cart => cart.ProductSid,
+					  product => product.ProductSid,
+					  (cart, product) => new { cart, product })
+				.Join(_context.Stores,
+					  combined => combined.product.StoreSid,
+					  store => store.StoreSid,
+					  (combined, store) => new { combined.cart, combined.product, store })
+				.Join(_context.ProductSubcategories,
+					  combined => combined.product.SubcategoryNo,
+					  subcategory => subcategory.SubcategoryNo,
+					  (combined, subcategory) => new
+					  {
+						  combined.store,
+						  combined.product,
+						  combined.cart,
+						  subcategory.SubcategoryName
+					  })
+				.Join(_context.ProductImages,
+					  combined => combined.product.ProductSid,
+					  image => image.ProductSid,
+					  (combined, image) => new
+					  {
+						  combined.store,
+						  combined.product,
+						  combined.cart,
+						  combined.SubcategoryName,
+						  image.ProductImagePath
+					  })
+				.ToList();
 
 			var groupedByStore = cartsWithProducts
-								  .GroupBy(x => new
-								  {
-									  x.store.StoreSid,
-									  x.store.Company,
-									  //x.store.StoreImg
-								  })
-								  .Select(g => new StoreDto
-								  {
-									  StoreSid = g.Key.StoreSid,
-									  Company = g.Key.Company,
-									  //StoreImg = g.Key.StoreImg,
-									  Products = g.Select(x => new ProductDto
-									  {
-										  CartSid = x.cart.CartSid,
-										  MemberSid = (int)x.cart.MemberSid,
-										  ProductSid = x.product.ProductSid,
-										  Qty = (int)x.cart.Qty,
-										  ProductNo = x.product.ProductNo,
-										  ProductName = x.product.ProductName,
-										  Price = (decimal)x.product.Price,
-										  Stock = (int)x.product.Stock,
-										  DiscountPercent = x.product.DiscountPercent,
-										  SubcategoryNo = x.product.SubcategoryNo,
-										  SubcategoryName = x.SubcategoryName
-									  }).ToList()
-								  }).ToList();
+				.GroupBy(x => new
+				{
+					x.store.StoreSid,
+					x.store.Company,
+					x.store.StoreImagePath  // 包含商店圖片路徑
+				})
+				.Select(g => new StoreDto
+				{
+					StoreSid = g.Key.StoreSid,
+					Company = g.Key.Company,
+					StoreImagePath = g.Key.StoreImagePath,  // 設置商店圖片路徑
+					Products = g.Select(x => new ProductDto
+					{
+						CartSid = x.cart.CartSid,
+						MemberSid = (int)x.cart.MemberSid,
+						ProductSid = x.product.ProductSid,
+						ProductImagePath = x.ProductImagePath, // 修正為正確的 ProductImagePath
+						Qty = (int)x.cart.Qty,
+						ProductNo = x.product.ProductNo,
+						ProductName = x.product.ProductName,
+						Price = (decimal)x.product.Price,
+						Stock = (int)x.product.Stock,
+						DiscountPercent = x.product.DiscountPercent,
+						SubcategoryNo = x.product.SubcategoryNo,
+						SubcategoryName = x.SubcategoryName
+					}).ToList()
+				}).ToList();
 
 			return Json(groupedByStore);
 		}
@@ -911,8 +1011,15 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 						_context.OrderDetails.Add(orderDetail);
 
+                        var product = cart.ProductS;
+                        if (product != null)
+                        {
+                            product.Stock -= cart.Qty;
+                            _context.Products.Update(product); // 標記產品為已更新
+                        }
 
-						cartSidsToDelete.Add(cart.CartSid);
+
+                        cartSidsToDelete.Add(cart.CartSid);
 					}
 				}
 
@@ -926,8 +1033,20 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 				_context.Tracks.Add(track);
 
+                await _context.SaveChangesAsync();
 
-				if (store.Usecoin > 0)
+           
+                var trackTime = new TrackTime
+                {
+                    TrackSid = track.TrackSid, 
+                    TrackStatusNo = 1, 
+                };
+
+
+                _context.TrackTimes.Add(trackTime);
+
+
+                if (store.Usecoin > 0)
 				{
 					var storeCoinUse = new StoreCoin
 					{
@@ -1024,190 +1143,198 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		{
 			public int StoreSid { get; set; }
 			public string Company { get; set; }
+
+			public string StoreImagePath { get; set; }
+			
 		}
 
 
-		//        [HttpPost]
-		//public IActionResult GetOrdersByNumbers([FromBody] List<string> orderNumbers)
-		//{
-		//            var query = _context.Orders
-		//        .Where(o => orderNumbers.Contains(o.OrderNo))
-		//        .AsQueryable();
+        //        [HttpPost]
+        //public IActionResult GetOrdersByNumbers([FromBody] List<string> orderNumbers)
+        //{
+        //            var query = _context.Orders
+        //        .Where(o => orderNumbers.Contains(o.OrderNo))
+        //        .AsQueryable();
 
-		//            // 查询数据并连接相关表
-		//         var ordersWithDetails = query
-		//    .Join(_context.OrderDetails,
-		//          o => o.OrderSid,
-		//          od => od.OrderSid,
-		//          (o, od) => new { o, od })
-		//    .Join(_context.Products,
-		//          o_od => o_od.od.ProductSid,
-		//          p => p.ProductSid,
-		//          (o_od, p) => new { o_od.o, o_od.od, p })
-		//    .Join(_context.Stores,
-		//          o_od_p => o_od_p.p.StoreSid,
-		//          s => s.StoreSid,
-		//          (o_od_p, s) => new
-		//          {
-		//              Order = o_od_p.o,
-		//              OrderDetail = o_od_p.od,
-		//              Product = o_od_p.p,
-		//              Store = s
-		//          })
-		//    .GroupBy(result => new
-		//    {
-		//        result.Order.OrderSid,
-		//        result.Order.OrderNo,
-		//        result.Order.OrderCreatedTime,
-		//        result.Order.PaymentNo,
-		//        result.Order.AlreadyPaid,
-		//        result.Order.TotalPrice,
-		//        result.Store.StoreSid,
-		//        result.Store.Company,
-		//        result.Order.CouponSid // Including CouponSid in the grouping
-		//    })
-		//    .Select(g => new
-		//    {
-		//        OrderSid = g.Key.OrderSid,
-		//        OrderNo = g.Key.OrderNo,
-		//        OrderCreatedTime = g.Key.OrderCreatedTime,
-		//        PaymentNo = g.Key.PaymentNo,
-		//        AlreadyPaid = g.Key.AlreadyPaid,
-		//        TotalPrice = g.Key.TotalPrice,
-		//        StoreSid = g.Key.StoreSid,
-		//        Company = g.Key.Company,
-		//        CouponSid = g.Key.CouponSid,
-		//        OrderDetails = g.Select(x => new
-		//        {
-		//            OrderDetailSid = x.OrderDetail.OrderDetailSid,
-		//            PName = x.Product.ProductName,
-		//            PSName = x.Product.SubcategoryNoNavigation.SubcategoryName,
-		//            BuyPrice = x.OrderDetail.BuyPrice,
-		//            Qty = x.OrderDetail.Qty,
-		//        }).ToList()
-		//    })
-		//    .ToList();
+        //            // 查询数据并连接相关表
+        //         var ordersWithDetails = query
+        //    .Join(_context.OrderDetails,
+        //          o => o.OrderSid,
+        //          od => od.OrderSid,
+        //          (o, od) => new { o, od })
+        //    .Join(_context.Products,
+        //          o_od => o_od.od.ProductSid,
+        //          p => p.ProductSid,
+        //          (o_od, p) => new { o_od.o, o_od.od, p })
+        //    .Join(_context.Stores,
+        //          o_od_p => o_od_p.p.StoreSid,
+        //          s => s.StoreSid,
+        //          (o_od_p, s) => new
+        //          {
+        //              Order = o_od_p.o,
+        //              OrderDetail = o_od_p.od,
+        //              Product = o_od_p.p,
+        //              Store = s
+        //          })
+        //    .GroupBy(result => new
+        //    {
+        //        result.Order.OrderSid,
+        //        result.Order.OrderNo,
+        //        result.Order.OrderCreatedTime,
+        //        result.Order.PaymentNo,
+        //        result.Order.AlreadyPaid,
+        //        result.Order.TotalPrice,
+        //        result.Store.StoreSid,
+        //        result.Store.Company,
+        //        result.Order.CouponSid // Including CouponSid in the grouping
+        //    })
+        //    .Select(g => new
+        //    {
+        //        OrderSid = g.Key.OrderSid,
+        //        OrderNo = g.Key.OrderNo,
+        //        OrderCreatedTime = g.Key.OrderCreatedTime,
+        //        PaymentNo = g.Key.PaymentNo,
+        //        AlreadyPaid = g.Key.AlreadyPaid,
+        //        TotalPrice = g.Key.TotalPrice,
+        //        StoreSid = g.Key.StoreSid,
+        //        Company = g.Key.Company,
+        //        CouponSid = g.Key.CouponSid,
+        //        OrderDetails = g.Select(x => new
+        //        {
+        //            OrderDetailSid = x.OrderDetail.OrderDetailSid,
+        //            PName = x.Product.ProductName,
+        //            PSName = x.Product.SubcategoryNoNavigation.SubcategoryName,
+        //            BuyPrice = x.OrderDetail.BuyPrice,
+        //            Qty = x.OrderDetail.Qty,
+        //        }).ToList()
+        //    })
+        //    .ToList();
 
-		//// Calculating total order price
-		//decimal? allPrice = ordersWithDetails.Sum(o => o.TotalPrice);
+        //// Calculating total order price
+        //decimal? allPrice = ordersWithDetails.Sum(o => o.TotalPrice);
 
-		//// Retrieving total coupon price
-		//decimal? couponprice = ordersWithDetails.Sum(o => 
-		//    _context.Coupons
-		//        .Where(c => c.CouponSid == o.CouponSid)
-		//        .Select(c => c.CouponTypeNoNavigation.Price)
-		//        .FirstOrDefault() ?? 0
-		//);
+        //// Retrieving total coupon price
+        //decimal? couponprice = ordersWithDetails.Sum(o => 
+        //    _context.Coupons
+        //        .Where(c => c.CouponSid == o.CouponSid)
+        //        .Select(c => c.CouponTypeNoNavigation.Price)
+        //        .FirstOrDefault() ?? 0
+        //);
 
-		//// Returning result with allPrice and couponprice
-		//var result = new
-		//{
-		//    Orders = ordersWithDetails,
-		//    AllPrice = allPrice,
-		//    CouponPrice = couponprice
-		//};
-
-
-		//            return Ok(result);
+        //// Returning result with allPrice and couponprice
+        //var result = new
+        //{
+        //    Orders = ordersWithDetails,
+        //    AllPrice = allPrice,
+        //    CouponPrice = couponprice
+        //};
 
 
+        //            return Ok(result);
 
 
-		//        }
-
-		[HttpPost]
-		public IActionResult GetOrdersByNumbers([FromBody] List<string> orderNumbers)
-		{
-
-			var orderSids = _context.Orders
-				.Where(o => orderNumbers.Contains(o.OrderNo))
-				.Select(o => o.OrderSid)
-				.ToList();
 
 
-			var ordersWithDetails = _context.Orders
-				.Where(o => orderNumbers.Contains(o.OrderNo))
-				.Join(_context.OrderDetails,
-					  o => o.OrderSid,
-					  od => od.OrderSid,
-					  (o, od) => new { o, od })
-				.Join(_context.Products,
-					  o_od => o_od.od.ProductSid,
-					  p => p.ProductSid,
-					  (o_od, p) => new { o_od.o, o_od.od, p })
-				.Join(_context.Stores,
-					  o_od_p => o_od_p.p.StoreSid,
-					  s => s.StoreSid,
-					  (o_od_p, s) => new
-					  {
-						  Order = o_od_p.o,
-						  OrderDetail = o_od_p.od,
-						  Product = o_od_p.p,
-						  Store = s
-					  })
-				.GroupBy(result => new
-				{
-					result.Order.OrderSid,
-					result.Order.OrderNo,
-					result.Order.OrderCreatedTime,
-					result.Order.PaymentNo,
-					result.Order.AlreadyPaid,
-					result.Order.TotalPrice,
-					result.Store.StoreSid,
-					result.Store.Company,
+        //        }
+
+        [HttpPost]
+        public IActionResult GetOrdersByNumbers([FromBody] List<string> orderNumbers)
+        {
+            var orderSids = _context.Orders
+                .Where(o => orderNumbers.Contains(o.OrderNo))
+                .Select(o => o.OrderSid)
+                .ToList();
+
+            var ordersWithDetails = _context.Orders
+                .Where(o => orderNumbers.Contains(o.OrderNo))
+                .Join(_context.OrderDetails,
+                      o => o.OrderSid,
+                      od => od.OrderSid,
+                      (o, od) => new { o, od })
+                .Join(_context.Products,
+                      o_od => o_od.od.ProductSid,
+                      p => p.ProductSid,
+                      (o_od, p) => new { o_od.o, o_od.od, p })
+                .Join(_context.Stores,
+                      o_od_p => o_od_p.p.StoreSid,
+                      s => s.StoreSid,
+                      (o_od_p, s) => new { o_od_p.o, o_od_p.od, o_od_p.p, s })
+                .Join(_context.ProductImages,
+                      o_od_p_s => o_od_p_s.p.ProductSid,
+                      img => img.ProductSid,
+                      (o_od_p_s, img) => new
+                      {
+                          Order = o_od_p_s.o,
+                          OrderDetail = o_od_p_s.od,
+                          Product = o_od_p_s.p,
+                          Store = o_od_p_s.s,
+                          ProductImagePath = img.ProductImagePath
+                      })
+                .GroupBy(result => new
+                {
+                    result.Order.OrderSid,
+                    result.Order.OrderNo,
+                    result.Order.OrderCreatedTime,
+                    result.Order.PaymentNo,
+                    result.Order.AlreadyPaid,
+                    result.Order.TotalPrice,
+                    result.Store.StoreSid,
+                    result.Store.Company,
+					result.Store.StoreImagePath,
 					result.Order.CouponSid
-				})
-				.Select(g => new
-				{
-					OrderSid = g.Key.OrderSid,
-					OrderNo = g.Key.OrderNo,
-					OrderCreatedTime = g.Key.OrderCreatedTime,
-					PaymentNo = g.Key.PaymentNo,
-					AlreadyPaid = g.Key.AlreadyPaid,
-					TotalPrice = g.Key.TotalPrice,
-					StoreSid = g.Key.StoreSid,
-					Company = g.Key.Company,
+					
+                })
+                .Select(g => new
+                {
+                    OrderSid = g.Key.OrderSid,
+                    OrderNo = g.Key.OrderNo,
+                    OrderCreatedTime = g.Key.OrderCreatedTime,
+                    PaymentNo = g.Key.PaymentNo,
+                    AlreadyPaid = g.Key.AlreadyPaid,
+                    TotalPrice = g.Key.TotalPrice,
+                    StoreSid = g.Key.StoreSid,
+                    Company = g.Key.Company,
+					StoreImagePath=g.Key.StoreImagePath,
 					CouponSid = g.Key.CouponSid,
-					OrderDetails = g.Select(x => new
-					{
-						OrderDetailSid = x.OrderDetail.OrderDetailSid,
-						PName = x.Product.ProductName,
-						PSName = x.Product.SubcategoryNoNavigation.SubcategoryName,
-						BuyPrice = x.OrderDetail.BuyPrice,
-						Qty = x.OrderDetail.Qty,
-					}).ToList()
-				})
-				.ToList();
+                    OrderDetails = g.Select(x => new
+                    {
+                        OrderDetailSid = x.OrderDetail.OrderDetailSid,
+                        PName = x.Product.ProductName,
+                        PSName = x.Product.SubcategoryNoNavigation.SubcategoryName,
+                        BuyPrice = x.OrderDetail.BuyPrice,
+                        Qty = x.OrderDetail.Qty,
+                        ProductImagePath = x.ProductImagePath // 包含圖片路徑
+                    }).ToList()
+                })
+                .ToList();
+
+            decimal? allPrice = ordersWithDetails.Sum(o => o.TotalPrice);
+
+            decimal? couponprice = ordersWithDetails
+                .Select(o => _context.Coupons
+                    .Where(c => c.CouponSid == o.CouponSid)
+                    .Select(c => c.CouponTypeNoNavigation.Price)
+                    .FirstOrDefault() ?? 0
+                )
+                .FirstOrDefault();
+
+            decimal? totalStoreCoin = _context.StoreCoins
+                .Where(sc => orderSids.Contains(sc.AreaSid ?? 0) && sc.IsPositive == 1)
+                .Sum(sc => sc.Money) ?? 0;
+
+            var result = new
+            {
+                Orders = ordersWithDetails,
+                AllPrice = allPrice,
+                CouponPrice = couponprice,
+                TotalStoreCoin = totalStoreCoin
+            };
+
+            return Ok(result);
+        }
 
 
-			decimal? allPrice = ordersWithDetails.Sum(o => o.TotalPrice);
 
-			decimal? couponprice = ordersWithDetails
-		.Select(o => _context.Coupons
-			.Where(c => c.CouponSid == o.CouponSid)
-			.Select(c => c.CouponTypeNoNavigation.Price)
-			.FirstOrDefault() ?? 0
-		)
-		.FirstOrDefault();
-
-
-			decimal? totalStoreCoin = _context.StoreCoins
-				.Where(sc => orderSids.Contains(sc.AreaSid ?? 0) && sc.IsPositive == 1)
-				.Sum(sc => sc.Money) ?? 0;
-
-
-			var result = new
-			{
-				Orders = ordersWithDetails,
-				AllPrice = allPrice,
-				CouponPrice = couponprice,
-				TotalStoreCoin = totalStoreCoin
-			};
-
-			return Ok(result);
-		}
-
-
-	}
+    }
 }
 

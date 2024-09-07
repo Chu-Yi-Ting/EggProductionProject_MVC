@@ -3,6 +3,26 @@
 	int orderCount = Model.OrderNumbers.Count;
 }
 
+@section Styles {
+	<style>
+
+		.cart-card .cart-card-owner .img-outer {
+			width: 30px;
+			margin: 0px 16px;
+			height: 30px;
+			border-radius: 50%;
+			overflow: hidden;
+		}
+
+		.cart-card .cart-card-owner .img-outer img {
+			width: 100%;
+			height: 100%;
+			vertical-align: baseline;
+		}
+
+	</style>
+}
+
 <div class="title-bg mb-3">
 	<img class="w-100"
 		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_01.png"
@@ -325,7 +345,7 @@
 							<div class="card-body-img d-flex w-100 px-3">
 								<div class="d-flex flex-column">
 									<div class="img_box">
-										<img src="${'../../FrontstageTemplate/assets/brand/page/cart/profuct_1.png'}" />
+												<img  src="${orderDetails[0].productImagePath}"  />
 									</div>
 								</div>
 								<div class="card-body flex-row align-items-center">
@@ -362,8 +382,7 @@
 								<div class="cart-card-owner">
 									<div class="ck-farm d-flex align-items-center">
 										<div class="img-outer">
-											<img src="../../FrontstageTemplate/assets/brand/layout/mug.png" alt="" />
-
+																	<img  src="${order.storeImagePath}"  />
 										</div>
 										<p class="ck-farm-name p-0 m-0">${order.company}</p>
 									</div>
