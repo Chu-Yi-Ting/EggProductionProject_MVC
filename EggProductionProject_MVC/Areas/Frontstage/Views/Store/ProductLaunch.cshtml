@@ -1,4 +1,7 @@
-﻿@{
+﻿@model EggProductionProject_MVC.Areas.Frontstage.ViewModels.ProductViewModel
+
+
+@{
     Layout = "_FrontLayout_store";
 }
 
@@ -95,16 +98,17 @@
 
 	<!-- bootstrap的tab樣式，點擊導覽列會切換不同分頁-->
 	<div class="tab-content" id="pills-tabContent">
-		<!-- 導覽列第一頁 -->
+		<!-- 導覽列第一頁 當前上架-->
 		<div class="tab-pane fade show active" id="pills-one" role="tabpanel"
 			 aria-labelledby="pills-one-tab">
 			<div class="d-flex justify-content-between align-items-center mb-3">
 				<div class="notify-title d-flex align-items-center">
-					<img src="./assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
+                    <img src="~/assets/brand/common/loudspeaker.svg" alt="loudspeaker" style="width: 24px;">					
 					<span style="font-size: 14px;">流程提醒 : 完成新增後，經GOOD EGG官方審核，產品將自動上架!!</span>
 				</div>
 				<div class="search-box d-flex justify-content-end align-items-center mb-3">
-					<button class="btn-custom me-2">新增</button>
+					<!-- 新增商品的彈跳視窗按鈕 -->
+					<button class="btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">新增</button>
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="輸入商品名稱"
 							   aria-label="輸入商品名稱" aria-describedby="button-addon2">
@@ -114,7 +118,7 @@
 					</div>
 				</div>
 			</div>
-			<table class="table">
+	@* 		<table class="table">
 				<thead>
 					<tr>
 						<th>商品名稱</th>
@@ -159,9 +163,176 @@
 						<td><button class="btn-custom">編輯</button></td>
 					</tr>
 				</tbody>
-			</table>
-		</div>
-		<!-- 導覽列第二頁 -->
+			</table> *@
+
+			<!-- 商品新增的彈跳視窗 -->
+			<form asp-action ="ProductLaunch" method="post" enctype="multipart/form-data">				
+			<div class="modal modal-n fade"
+				 id="exampleModalToggle"
+				 aria-hidden="true"
+				 aria-labelledby="exampleModalToggleLabel"
+				 tabindex="-1">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header px-4 mx-4 pb-0 mt-2">
+							<h5 class="modal-title" id="exampleModalToggleLabel">新增商品</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="col-lg-12">
+								<div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
+									<!-- 商品名稱 -->
+									<div class="form-control-n">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">商品名稱<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="text"
+											   id="productName"
+											   name="productName"
+											   placeholder="請輸入商品名稱"
+											   aria-label="商品名稱" />
+									</div>
+
+									<!-- 商品價格 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">商品價格<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="number"
+											   id="price"
+											   name="price"
+											   placeholder="請輸入商品價格"
+											   aria-label="商品價格" />
+									</div>
+
+									<!-- 庫存數量 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">庫存數量<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="number"
+											   id="stock"
+											   name="stock"
+											   placeholder="請輸入庫存數量"
+											   aria-label="庫存數量" />
+									</div>
+
+									<!-- 商品分類 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">商品分類<span></span></div>
+										</div>
+										<select class="form-select"
+											    id="subcategoryNo"
+												name="subcategoryNo">
+											<!-- 動態生成選項 -->
+											@foreach (var subcategory in ViewBag.Subcategories)
+											{
+												<option value="@subcategory.SubcategoryNo">@subcategory.SubcategoryName</option>
+											}
+										</select>
+									</div>
+
+									<!-- 品項分類 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">品項分類<span></span></div>
+										</div>
+										<select class="form-select"
+												id="itemNo"
+												name="itemNo">
+										    <!-- 動態生成選項 -->
+												@foreach (var item in ViewBag.Items)
+											{
+													<option value="@item.ItemNo">@item.ItemName</option>
+											}
+										</select>
+									</div>
+
+									<!-- 商品描述 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">商品描述<span></span></div>
+										</div>
+										<textarea class="form-control form-control-sm"
+												  id="description"
+												  name="description"
+												  rows="3"
+												  placeholder="請輸入商品描述"
+												  aria-label="商品描述"></textarea>
+									</div>
+
+									<!-- 單位數量 -->
+									<div class="form-control-n mt-3">
+									   	<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">單位數量<span></span></div>
+											</div>
+											<input class="form-control form-control-sm"
+												   type="number"
+												   id="quantity"
+												   name="quantity"
+												   placeholder="請輸入商品單位數量"
+												   aria-label="單位數量" />
+										</div>
+
+									<!-- 重量 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">重量(g)<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="number"
+											   id="weight"
+											   name="weight"
+											   placeholder="請輸入商品重量"
+											   aria-label="重量" />
+									</div>
+
+									<!-- 成分 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">成分<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="text"
+											   id="component"
+											   name="component"
+											   placeholder="請輸入商品成分"
+											   aria-label="成分" />
+									</div>
+
+									<!-- 折扣百分比 -->
+									<div class="form-control-n mt-3">
+										<div class="title mb-2 d-flex justify-content-between">
+											<div class="allcoin">折扣比率<span></span></div>
+										</div>
+										<input class="form-control form-control-sm"
+											   type="number"
+											   step="0.01"  
+											   min="0" max="1"  
+											   id="discountPercent"
+											   name="discountPercent"
+											   placeholder="請輸入折扣比率"
+											   aria-label="折扣比率" />
+									</div>
+
+									<!-- 送出按鈕 -->
+									<div class="w-100 submit mt-4 mb-3">
+											<button class="btn dark-btn-n" type="submit" id="confirmSubmitButton">
+											送出
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</form>
+		<!-- 導覽列第二頁 審核中 -->
 		<div class="tab-pane fade" id="pills-three" role="tabpanel"
 			 aria-labelledby="pills-three-tab">
 			<div class="d-flex justify-content-between align-items-center mb-3">
@@ -190,7 +361,29 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+						@foreach (var product in Model.products.Where(p => p.publicStatusNo == 2)) // 2 表示審核中
+						{
+							<tr>
+								<td>@product.productName</td>
+								<td>$@product.price</td>
+								<td>@product.stock</td>
+								<td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
+								<td>
+									<div class="dropdown">
+										<button class="btn btn-custom dropdown-toggle" type="button"
+												id="dropdownMenuButton" data-bs-toggle="dropdown"
+												aria-expanded="false" style="width: 100px;">
+											編輯
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<li><a class="dropdown-item" href="#">編輯</a></li>
+											<li><a class="dropdown-item" href="#">取消審核</a></li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+						}
+					@* <tr>
 						<td>美美鮮雞蛋...</td>
 						<td>$1,200</td>
 						<td>20</td>
@@ -208,45 +401,7 @@
 								</ul>
 							</div>
 						</td>
-					</tr>
-					<tr>
-						<td>美美鮮雞蛋...</td>
-						<td>$1,200</td>
-						<td>20</td>
-						<td>2024-08-17 23:10:00</td>
-						<td>
-							<div class="dropdown">
-								<button class="btn btn-custom dropdown-toggle" type="button"
-										id="dropdownMenuButton" data-bs-toggle="dropdown"
-										aria-expanded="false" style="width: 100px;">
-									編輯
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<li><a class="dropdown-item" href="#">編輯</a></li>
-									<li><a class="dropdown-item" href="#">取消審核</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>美美鮮雞蛋...</td>
-						<td>$1,200</td>
-						<td>20</td>
-						<td>2024-08-17 23:10:00</td>
-						<td>
-							<div class="dropdown">
-								<button class="btn btn-custom dropdown-toggle" type="button"
-										id="dropdownMenuButton" data-bs-toggle="dropdown"
-										aria-expanded="false" style="width: 100px;">
-									編輯
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<li><a class="dropdown-item" href="#">編輯</a></li>
-									<li><a class="dropdown-item" href="#">取消審核</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
+					</tr>		 *@		
 				</tbody>
 			</table>
 		</div>
@@ -261,6 +416,21 @@
 			var table = $('#example').DataTable({
 				scrollX: true, // 启用水平滚动
 				fixedHeader: true, // 启用固定表头
+			});
+		});
+
+		//商品上架表單再次確認功能
+		$(document).ready(function () {
+			$('#confirmSubmitButton').click(function (e) {
+				e.preventDefault();  // 防止表單的默認提交行為
+				var result = confirm("確定是否要送出?");
+				if (result) {
+					// 若使用者按下 "是"，則提交表單
+					$('form').submit();
+				} else {
+					// 若使用者按下 "否"，則不做任何事（關閉彈跳視窗）
+					$('#exampleModalToggle').modal('hide');
+				}
 			});
 		});
     </script>

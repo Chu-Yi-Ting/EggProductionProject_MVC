@@ -1,4 +1,6 @@
-﻿@{
+﻿@model EggProductionProject_MVC.Areas.Frontstage.ViewModels.StoreViewModel
+
+@{
     Layout = "_FrontLayout_store";
 }
 
@@ -132,7 +134,7 @@
                 <h5 class="mb-3 d-flex justify-content-between w-100">
                     賣場基本資料
                     <span class="d-flex">
-                        <a href="mystore_shop.html" class="btn light-btn-n">
+                        <a class="btn light-btn-n" onclick="window.location.href='/Frontstage/Store/Store?storeSid=@Model.storeSid'">
                             前往賣場
                         </a>
                     </span>
@@ -142,18 +144,18 @@
         <hr style="border: 2px solid #b8860b" />
         <div class="col-lg-12 mt-3">
             <!-- 賣場資訊表單 -->
-            <form>
+            <form asp-action="SellerInformation" enctype="multipart/form-data" method="post">
                 <div class="row mb-3 align-items-center">
                     <!-- 左側圖片預覽 -->
                     <div class="col-md-3 text-center">
                         <!-- 大头照图片 -->
                         <div class="image-preview mx-auto"
-                             style="background-image: url('https://images.unsplash.com/photo-1462027076063-1ceabb252dbd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                             style="background-image: url('@Model.storeImagePath');" id="imagePreview">
                         </div>
                         <!-- 顯示預覽文字 -->
                         <p class="preview-text">顯示預覽</p>
                         <!-- 上傳照片按鈕 -->
-                        <button type="button" class="btn custom-button-outline mt-3">上傳照片</button>
+                        <input type="file" class="form-control mt-3" id="storeImage" name="storeImage" onchange="previewImage(event)" />
                     </div>
 
                     <!-- 右側部分 -->
@@ -167,20 +169,20 @@
                                 <div class="mb-5 text-center">
                                     <label for="storeIntroduction" class="form-label form-label-required">賣場簡介</label>
                                 </div>
-                                <div class="mt-auto text-center">
+                                @* <div class="mt-auto text-center">
                                     <label class="form-label">賣場視覺</label>
-                                </div>
+                                </div> *@
                             </div>
                             <!-- 右側輸入框 -->
                             <div class="col-md-9">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" id="storeName" placeholder="請輸入賣場名稱" />
+                                    <input type="text" class="form-control" id="storeName" name="storeName" placeholder="請輸入賣場名稱" value="@Model.storeName" />
                                 </div>
                                 <div class="mb-3">
-                                    <textarea class="form-control" id="storeIntroduction" rows="3" placeholder="請輸入賣場簡介"></textarea>
+                                    <textarea class="form-control" id="storeIntroduction" name="storeIntroduction" rows="3" placeholder="請輸入賣場簡介">@Model.storeIntroduction</textarea>
                                 </div>
-                                <div class="upload-btn d-flex align-items-center">
-                                    <button type="button" class="btn custom-button-outline">上傳圖片</button>
+                               @*  <div class="upload-btn d-flex align-items-center">
+                                    <button type="button" class="btn custom-button-outline">選擇圖片</button>
                                     <span class="ms-2 preview-text">123fewrwe.jpg, egg-but.png, egg-go-go.png</span>
                                     <button type="button" class="btn btn-light border rounded-circle ms-2">i</button>
                                 </div>
@@ -195,7 +197,7 @@
                                     <div class="image-preview-small ms-2"
                                          style="background-image: url('https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
 
@@ -207,7 +209,7 @@
                 <hr style="border: 2px solid #b8860b" />
                 <div class="d-flex justify-content-end">
                     <button class="btn solid-coffee-btn" type="button">取消</button>
-                    <button class="btn solid-coffee-btn ms-3" type="button">儲存</button>
+                    <button class="btn solid-coffee-btn ms-3" type="submit">儲存</button>
                 </div>
             </form>
         </div>
@@ -217,12 +219,24 @@
 @section Scripts {
 
     <script>
-                $(document).ready(function () {
-                    var table = $("#example").DataTable({
-                        scrollX: true, // 启用水平滚动
-                        fixedHeader: true, // 启用固定表头
-                    });
-                });
+        $(document).ready(function () {
+            var table = $("#example").DataTable({
+                scrollX: true, // 启用水平滚动
+                fixedHeader: true, // 启用固定表头
+            });
+        });
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var imagePreview = document.getElementById('imagePreview');
+                imagePreview.style.backgroundImage = 'url(' + reader.result + ')';
+                var fileName = document.getElementById('fileName');
+                fileName.textContent = event.target.files[0].name;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
     </script>
 
 }
