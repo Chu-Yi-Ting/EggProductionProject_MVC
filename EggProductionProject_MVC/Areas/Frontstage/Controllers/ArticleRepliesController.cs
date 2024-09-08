@@ -23,6 +23,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpGet("GetArticleReplies/{id}")]
         public async Task<ActionResult<List<ReplyDto>>> GetArticleReplies(int id)
         {
+            // 查询回复
             var replies = await _context.Replies
                 .Where(reply => reply.ArticleSid == id)
                 .Include(reply => reply.ArticleCreatorS)
@@ -39,34 +40,34 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                             MemberSid = reply.ArticleCreatorS.MemberSid,
                             Name = reply.ArticleCreatorS.Name
                         }
-                        : null,
-                    LikeCount = _context.GoodorBads
-                        .Where(g => g.ReplySid == reply.ReplySid && g.GorBtype == 1)
-                        .Count(),
-                    DislikeCount = _context.GoodorBads
-                        .Where(g => g.ReplySid == reply.ReplySid && g.GorBtype == 0)
-                        .Count(),
-                    Reactions = _context.GoodorBads
-                        .Where(g => g.ReplySid == reply.ReplySid)
-                        .Select(g => new GoodorBadDto
-                        {
-                            GorBsid = g.GorBsid,
-                            MemberNo = g.MemberNo,
-                            Member = g.MemberNoNavigation != null
-                                ? new MemberDto
-                                {
-                                    MemberSid = g.MemberNoNavigation.MemberSid,
-                                    Name = g.MemberNoNavigation.Name
-                                }
-                                : null,
-                            GorBtype = g.GorBtype
-                        })
-                        .ToList()
+                        : null
                 })
                 .ToListAsync();
 
+            // 查询每个回复的按赞和点噓数
+            var reactions = await _context.GoodorBads
+                .Where(g => g.ReplySid.HasValue && replies.Select(r => r.ReplySid).Contains(g.ReplySid.Value))
+                .GroupBy(g => g.ReplySid)
+                .Select(g => new ReplyReactionCountDto
+                {
+                    ReplySid = g.Key.Value,  // 确保 ReplySid 非空
+                    LikeCount = g.Count(gb => gb.GorBtype == 1),
+                    DislikeCount = g.Count(gb => gb.GorBtype == 0)
+                })
+                .ToListAsync();
+
+            // 将 reactions 信息合并到 replies 中
+            foreach (var reply in replies)
+            {
+                var reaction = reactions.FirstOrDefault(r => r.ReplySid == reply.ReplySid);
+                if (reaction != null)
+                {
+                    reply.LikeCount = reaction.LikeCount;
+                    reply.DislikeCount = reaction.DislikeCount;
+                }
+            }
+
             return Ok(replies);
         }
-
     }
 }

@@ -109,8 +109,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             public int ReplySid { get; set; }
             public int LikeCount { get; set; }
-            public int DislikeCount { get; set; }
-            public List<GoodorBadDto> Reactions { get; set; }
+            public int DislikeCount { get; set; }        
         }
     }
 }
