@@ -166,20 +166,42 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             };
             return Ok(articleDto);
         }
+        //這邊處理按讚跟噓
+        [HttpGet("GetArticlesReactionCounts")]
+        public async Task<ActionResult<List<ArticleReactionCountDto>>> GetArticlesReactionCounts()
+        {
+            var reactionCounts = await _context.GoodorBads
+                .GroupBy(gb => gb.ArticleSid)
+                .Select(g => new ArticleReactionCountDto
+                {
+                    ArticleSid = g.Key?? 0,
+                    LikeCount = g.Count(gb => gb.GorBtype == 1),  // 計算按讚的數量
+                    DislikeCount = g.Count(gb => gb.GorBtype == 0)  // 計算不喜歡的數量
+                })
+                .ToListAsync();
+
+            return Ok(reactionCounts);
+        }
         [HttpGet("GetArticleReactions/{id}")]
         public async Task<ActionResult<List<GoodorBadDto>>> GetArticleReactions(int id)
         {
             var reactions = await _context.GoodorBads
+                .AsNoTracking()  // 提升查詢性能，避免不必要的變更跟蹤 使用在只讀不變更資料
                 .Where(gb => gb.ArticleSid == id)
                 .Select(gb => new GoodorBadDto
                 {
                     GorBsid = gb.GorBsid,
                     MemberNo = gb.MemberNo,
                     GorBdate = gb.GorBdate,
-                    GorBtype = gb.GorBtype
+                    GorBtype = gb.GorBtype,
+                    ArticleSid = gb.ArticleSid,
+                    ReplySid = gb.ReplySid,
                 })
                 .ToListAsync();
-
+            if (reactions == null || !reactions.Any())
+            {
+                return NotFound("沒有找到此文章");
+            }
             return Ok(reactions);
         }
         [HttpGet("GetArticleEdits/{id}")]

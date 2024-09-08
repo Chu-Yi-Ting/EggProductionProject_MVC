@@ -80,10 +80,17 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             public int GorBsid { get; set; }
             public int? MemberNo { get; set; }
+            public int? ArticleSid { get; set; }  // 新增文章 ID
+            public int? ReplySid { get; set; }    // 新增回覆 ID
             public DateOnly? GorBdate { get; set; }
             public int GorBtype { get; set; }
         }
-
+        public class ArticleReactionCountDto
+        {
+            public int ArticleSid { get; set; }
+            public int LikeCount { get; set; }
+            public int DislikeCount { get; set; }
+        }
         public class ReplyDto
         {
             public int ReplySid { get; set; }
