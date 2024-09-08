@@ -217,7 +217,10 @@
 								<td>$@product.price</td>
 								<td>@product.stock</td>
 								<td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
-								<td><button class="btn btn-custom">編輯</button></td>
+								<td>
+								    <button class="btn btn-custom me-2">編輯</button>
+								    <button class="btn btn-custom">取消審核</button>
+								</td>
 							</tr>
 						}
 				</tbody>
@@ -227,7 +230,7 @@
 </div>
 
 <!-- 商品新增的彈跳視窗 -->
-<form asp-action="ProductLaunch" method="post" enctype="multipart/form-data">
+<form asp-action="ProductLaunch" method="post" enctype="multipart/form-data" id="productForm">
 	<div class="modal modal-n fade"
 		 id="exampleModalToggle"
 		 aria-hidden="true"

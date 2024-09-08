@@ -233,6 +233,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			// 驗證輸入的資料
 			if (ModelState.IsValid)
 			{
+				// 處理資料邏輯
+				TempData["success"] = "商品已成功送出審核!";
+
 				// 查詢登錄的用戶對應的賣場
 				var aspUserId = _userManager.GetUserId(User);
 				var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
@@ -261,14 +264,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 					// 保存商品到資料庫
 					_context.Products.Add(product);
-					_context.SaveChanges();
-
-					// 重定向到審核中Tab頁面
-					return RedirectToAction("ProductLaunch");
+					_context.SaveChanges();					
 				}
 			}
-
-			return View(model);
+			// 重定向到審核中Tab頁面
+			return RedirectToAction("ProductLaunch");
+			//return View(model);
 		}
 	}
 }
