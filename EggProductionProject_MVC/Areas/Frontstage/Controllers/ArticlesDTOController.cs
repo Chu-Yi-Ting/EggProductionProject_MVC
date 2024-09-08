@@ -103,7 +103,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public int GorBtype { get; set; }
             public int LikeCount { get; set; }    // 新增按讚數
             public int DislikeCount { get; set; } // 新增點噓數
-            public List<GoodorBadDto> Reactions { get; set; } = new();
+            public List<MemberDto> LikedByUsers { get; set; } // 点赞的用户
+            public List<MemberDto> DislikedByUsers { get; set; } // 点噓的用户
         }
         public class ReplyReactionCountDto
         {

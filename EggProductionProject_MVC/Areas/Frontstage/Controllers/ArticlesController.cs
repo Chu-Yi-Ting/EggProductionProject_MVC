@@ -185,39 +185,38 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
         //文章內頁的讚噓
         [HttpGet("GetArticleReactions/{id}")]
-        public async Task<ActionResult<List<GoodorBadDto>>> GetArticleReactions(int id)
+        public async Task<ActionResult<ArticleReactionCountDto>> GetArticleReactions(int id)
         {
-            // 首先，獲取按讚和點噓的數量
+            // 获取按赞和点噓的用户信息
             var reactionCounts = await _context.GoodorBads
                 .Where(gb => gb.ArticleSid == id && gb.ReplySid == null)
                 .GroupBy(gb => gb.ArticleSid)
                 .Select(g => new ArticleReactionCountDto
                 {
                     ArticleSid = g.Key ?? 0,
-                    LikeCount = g.Count(gb => gb.GorBtype == 1),  // 計算按讚的數量
-                    DislikeCount = g.Count(gb => gb.GorBtype == 0),  // 計算點噓的數量
+                    LikeCount = g.Count(gb => gb.GorBtype == 1),  // 计算按赞数量
+                    DislikeCount = g.Count(gb => gb.GorBtype == 0),  // 计算点噓数量
                     Reactions = g.Select(gb => new GoodorBadDto
                     {
                         GorBsid = gb.GorBsid,
                         MemberNo = gb.MemberNo,
                         Member = gb.MemberNoNavigation != null
-                    ? new MemberDto
-                    {
-                        MemberSid = gb.MemberNoNavigation.MemberSid,
-                        Name = gb.MemberNoNavigation.Name,
-                        //ProfilePic = gb.MemberNoNavigation.ProfilePic
-                    }:null,
+                            ? new MemberDto
+                            {
+                                MemberSid = gb.MemberNoNavigation.MemberSid,
+                                Name = gb.MemberNoNavigation.Name
+                            } : null,
                         GorBdate = gb.GorBdate,
                         GorBtype = gb.GorBtype,
                         ArticleSid = gb.ArticleSid,
                         ReplySid = gb.ReplySid
-                    }).ToList()  // 返回每個用戶的按讚或點噓詳細信息
+                    }).ToList()  // 返回用户的详细信息
                 })
                 .FirstOrDefaultAsync();
 
             if (reactionCounts == null)
             {
-                return NotFound("沒有找到此文章的反應資料");
+                return NotFound("没有找到该文章的反应数据");
             }
 
             return Ok(reactionCounts);

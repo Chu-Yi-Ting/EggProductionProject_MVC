@@ -40,19 +40,37 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                             MemberSid = reply.ArticleCreatorS.MemberSid,
                             Name = reply.ArticleCreatorS.Name
                         }
-                        : null
+                        : null,
+                    LikeCount = 0, // 初始化，稍后将填充
+                    DislikeCount = 0, // 初始化，稍后将填充
+                    LikedByUsers = new List<MemberDto>(), // 初始化点赞用户
+                    DislikedByUsers = new List<MemberDto>() // 初始化点噓用户
                 })
                 .ToListAsync();
 
-            // 查询每个回复的按赞和点噓数
+            // 查询每个回复的按赞和点噓数以及点赞、点噓的用户信息
             var reactions = await _context.GoodorBads
                 .Where(g => g.ReplySid.HasValue && replies.Select(r => r.ReplySid).Contains(g.ReplySid.Value))
                 .GroupBy(g => g.ReplySid)
-                .Select(g => new ReplyReactionCountDto
+                .Select(g => new
                 {
-                    ReplySid = g.Key.Value,  // 确保 ReplySid 非空
+                    ReplySid = g.Key.Value,
                     LikeCount = g.Count(gb => gb.GorBtype == 1),
-                    DislikeCount = g.Count(gb => gb.GorBtype == 0)
+                    DislikeCount = g.Count(gb => gb.GorBtype == 0),
+                    LikedByUsers = g
+                        .Where(gb => gb.GorBtype == 1)
+                        .Select(gb => new MemberDto
+                        {
+                            MemberSid = gb.MemberNoNavigation.MemberSid,
+                            Name = gb.MemberNoNavigation.Name
+                        }).ToList(),
+                    DislikedByUsers = g
+                        .Where(gb => gb.GorBtype == 0)
+                        .Select(gb => new MemberDto
+                        {
+                            MemberSid = gb.MemberNoNavigation.MemberSid,
+                            Name = gb.MemberNoNavigation.Name
+                        }).ToList()
                 })
                 .ToListAsync();
 
@@ -64,6 +82,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     reply.LikeCount = reaction.LikeCount;
                     reply.DislikeCount = reaction.DislikeCount;
+                    reply.LikedByUsers = reaction.LikedByUsers;
+                    reply.DislikedByUsers = reaction.DislikedByUsers;
                 }
             }
 
