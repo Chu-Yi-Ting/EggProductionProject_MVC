@@ -18,7 +18,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public string? VideoTitle { get; set; }
 
         [Display(Name = "會員名稱")]
-        public string? MemberName { get; set; }
+        public string MemberName { get; set; }
 
         [Display(Name = "觀看次數")]
         public int? TimesWatched { get; set; }

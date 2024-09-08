@@ -7,20 +7,9 @@ namespace EggProductionProject_MVC.Models
 {
     public partial class GetDailyDataResult
     {
-        public string 會員名字 { get; set; }
-        public string 雞舍名字 { get; set; }
-        [Column("死亡率(%)")]
-        public double? 死亡率 { get; set; }
-        [Column("產蛋率(%)")]
-        public double? 產蛋率 { get; set; }
-        [Column("蛋不合格率(%)")]
-        public double? 蛋不合格率 { get; set; }
-        public int? 剩餘雞隻 { get; set; }
-        public int? 死亡數 { get; set; }
-        public int? 當日產蛋數 { get; set; }
-        public int? 當日不合格蛋數 { get; set; }
         public string 生產總類 { get; set; }
-        public int? 週齡 { get; set; }
-        public string 日期 { get; set; }
+        public string Date { get; set; }
+        public double? ActualEggRate { get; set; }
+        public double? NormalizedEggRate { get; set; }
     }
 }

@@ -163,8 +163,6 @@ public partial class EggPlatformContext : DbContext
 
     public virtual DbSet<VideoSummary> VideoSummaries { get; set; }
 
-    public virtual DbSet<WebSiteType> WebSiteTypes { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Advertisment>(entity =>
@@ -471,10 +469,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.CollectSid);
 
             entity.ToTable("Collect");
-
-            entity.HasOne(d => d.WebSiteTypeS).WithMany(p => p.Collects)
-                .HasForeignKey(d => d.WebSiteTypeSid)
-                .HasConstraintName("FK_Collect_WebSiteType");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
@@ -521,10 +515,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.CreatorSid);
 
             entity.ToTable("Creator");
-
-            entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.MemberName).HasMaxLength(50);
-            entity.Property(e => e.PersonalProfile).HasMaxLength(50);
 
             entity.HasOne(d => d.MemberS).WithMany(p => p.Creators)
                 .HasForeignKey(d => d.MemberSid)
@@ -702,7 +692,9 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("GoodorBad");
 
             entity.Property(e => e.GorBsid).HasColumnName("GorBSid");
-            entity.Property(e => e.GorBdate).HasColumnName("GorBDate");
+            entity.Property(e => e.GorBdate)
+                .HasColumnType("datetime")
+                .HasColumnName("GorBDate");
             entity.Property(e => e.GorBtype).HasColumnName("GorBType");
 
             entity.HasOne(d => d.ArticleS).WithMany(p => p.GoodorBads)
@@ -836,10 +828,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasOne(d => d.NotifyTypeS).WithMany(p => p.Notifies)
                 .HasForeignKey(d => d.NotifyTypeSid)
                 .HasConstraintName("FK_Notify_NotifyType");
-
-            entity.HasOne(d => d.WebSiteTypeS).WithMany(p => p.Notifies)
-                .HasForeignKey(d => d.WebSiteTypeSid)
-                .HasConstraintName("FK_Notify_WebSiteType");
         });
 
         modelBuilder.Entity<NotifyType>(entity =>
@@ -1015,7 +1003,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ReplyInfo).IsRequired();
             entity.Property(e => e.ReplyUpdate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.ArticleCreatorS).WithMany(p => p.Replies)
+            entity.HasOne(d => d.ArticleCreaterS).WithMany(p => p.Replies)
                 .HasForeignKey(d => d.ArticleCreaterSid)
                 .HasConstraintName("FK_Reply_Member");
 
@@ -1039,10 +1027,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasOne(d => d.ReportReasonS).WithMany()
                 .HasForeignKey(d => d.ReportReasonSid)
                 .HasConstraintName("FK_Reprot_ReportReason");
-
-            entity.HasOne(d => d.WebSiteTypeS).WithMany()
-                .HasForeignKey(d => d.WebSiteTypeSid)
-                .HasConstraintName("FK_Reprot_WebSiteType");
         });
 
         modelBuilder.Entity<ReportReason>(entity =>
@@ -1223,9 +1207,7 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("VideoSummary");
 
             entity.Property(e => e.AdSource).HasDefaultValue(false);
-            entity.Property(e => e.InformationColumn).HasMaxLength(50);
             entity.Property(e => e.UploadDate).HasColumnType("datetime");
-            entity.Property(e => e.VideoTitle).HasMaxLength(50);
 
             entity.HasOne(d => d.CreatorS).WithMany(p => p.VideoSummaries)
                 .HasForeignKey(d => d.CreatorSid)
@@ -1242,18 +1224,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasOne(d => d.ScreenTextS).WithMany(p => p.VideoSummaries)
                 .HasForeignKey(d => d.ScreenTextSid)
                 .HasConstraintName("FK_VideoSummary_ScreenSummary");
-        });
-
-        modelBuilder.Entity<WebSiteType>(entity =>
-        {
-            entity.HasKey(e => e.WebSiteTypeSid);
-
-            entity.ToTable("WebSiteType");
-
-            entity.Property(e => e.WebSiteType1)
-                .HasMaxLength(2)
-                .IsFixedLength()
-                .HasColumnName("WebSiteType");
         });
 
         OnModelCreatingPartial(modelBuilder);

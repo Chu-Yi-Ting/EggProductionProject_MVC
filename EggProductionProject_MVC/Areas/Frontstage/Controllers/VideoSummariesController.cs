@@ -10,6 +10,7 @@ using EggProductionProject_MVC.ViewModels;
 using Azure.Messaging;
 using System.Diagnostics.Metrics;
 using System.ComponentModel.DataAnnotations;
+using NuGet.Protocol;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -40,6 +41,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(v => v.NatureS)
                 .Include(v => v.PublicStatusNoNavigation)
                 .Include(v => v.ScreenTextS)
+                .Include(v => v.CreatorS.MemberS) //UserName是帳號
                 .Where(v => v.PublicStatusNoNavigation.PublicStatusNo == 1)
                 .Select(x => new VideoSummaryDTO
                 {
@@ -47,7 +49,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     CreatorSid = x.CreatorSid,
                     VideoDuration = x.VideoDuration,
                     VideoTitle = x.VideoTitle,
-                    MemberName = x.CreatorS.MemberName,
+                    MemberName = x.CreatorS.MemberS.Name,
                     TimesWatched = x.TimesWatched,
                     MoviePath = x.MoviePath,
                     InformationColumn = x.InformationColumn,
@@ -100,6 +102,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             var TotalVideo = _context.VideoSummaries
                 .Include(M => M.CreatorS)
+                .Include(M=> M.CreatorS.MemberS)
                 .Where(M => M.VideoSid != videoid)
                 .Select(M => new TotalVideoDTO
                 {
@@ -108,7 +111,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     TimesWatched = M.TimesWatched,
                     MoviePath = M.MoviePath,
                     UploadDate = M.UploadDate,
-                    NumberName = M.CreatorS.MemberName,
+                    NumberName = M.CreatorS.MemberS.Name,
                 });
             return Json(TotalVideo);
         }

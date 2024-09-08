@@ -315,10 +315,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[GetEventsForMember]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[DailyChickAmountsRate]",
          "ObjectType": 3
       },

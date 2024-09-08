@@ -22,6 +22,4 @@ public partial class Notify
     public virtual Member NotifyReciever { get; set; }
 
     public virtual NotifyType NotifyTypeS { get; set; }
-
-    public virtual WebSiteType WebSiteTypeS { get; set; }
 }
