@@ -80,6 +80,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             public int GorBsid { get; set; }
             public int? MemberNo { get; set; }
+            public MemberDto? Member { get; set; } // 添加MemberDto以显示用户信息
             public int? ArticleSid { get; set; }  // 新增文章 ID
             public int? ReplySid { get; set; }    // 新增回覆 ID
             public DateOnly? GorBdate { get; set; }
@@ -90,6 +91,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public int ArticleSid { get; set; }
             public int LikeCount { get; set; }
             public int DislikeCount { get; set; }
+            public List<GoodorBadDto> Reactions { get; set; }
         }
         public class ReplyDto
         {
@@ -98,6 +100,17 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public DateTime? ReplyDate { get; set; }
             public int? EditTimes { get; set; }
             public MemberDto? ArticleCreator { get; set; }
+            public int GorBtype { get; set; }
+            public int LikeCount { get; set; }    // 新增按讚數
+            public int DislikeCount { get; set; } // 新增點噓數
+            public List<GoodorBadDto> Reactions { get; set; } = new();
+        }
+        public class ReplyReactionCountDto
+        {
+            public int ReplySid { get; set; }
+            public int LikeCount { get; set; }
+            public int DislikeCount { get; set; }
+            public List<GoodorBadDto> Reactions { get; set; }
         }
     }
 }

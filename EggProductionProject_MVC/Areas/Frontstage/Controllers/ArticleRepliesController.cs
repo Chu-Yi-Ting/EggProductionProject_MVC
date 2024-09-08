@@ -39,11 +39,34 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                             MemberSid = reply.ArticleCreatorS.MemberSid,
                             Name = reply.ArticleCreatorS.Name
                         }
-                        : null
+                        : null,
+                    LikeCount = _context.GoodorBads
+                        .Where(g => g.ReplySid == reply.ReplySid && g.GorBtype == 1)
+                        .Count(),
+                    DislikeCount = _context.GoodorBads
+                        .Where(g => g.ReplySid == reply.ReplySid && g.GorBtype == 0)
+                        .Count(),
+                    Reactions = _context.GoodorBads
+                        .Where(g => g.ReplySid == reply.ReplySid)
+                        .Select(g => new GoodorBadDto
+                        {
+                            GorBsid = g.GorBsid,
+                            MemberNo = g.MemberNo,
+                            Member = g.MemberNoNavigation != null
+                                ? new MemberDto
+                                {
+                                    MemberSid = g.MemberNoNavigation.MemberSid,
+                                    Name = g.MemberNoNavigation.Name
+                                }
+                                : null,
+                            GorBtype = g.GorBtype
+                        })
+                        .ToList()
                 })
                 .ToListAsync();
 
             return Ok(replies);
         }
+
     }
 }

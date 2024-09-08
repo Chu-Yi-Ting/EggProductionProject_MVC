@@ -34,6 +34,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(a => a.ArticleCreaterS)
                 .Include(a => a.ArticleCategoriesS)
                 .Where(a => a.PublicStatusNoNavigation != null && a.PublicStatusNoNavigation.PublicStatusNo == 1)//只傳公開的文章
+                .Where(a =>a.DeleteOrNot !=null && a.DeleteOrNot ==false) //只傳未被刪除的文章
                 .Select(article => new ArticleDto
                 {
                     ArticleSid = article.ArticleSid,
@@ -166,7 +167,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             };
             return Ok(articleDto);
         }
-        //這邊處理按讚跟噓
+        //這邊處理文章列表按讚跟噓
         [HttpGet("GetArticlesReactionCounts")]
         public async Task<ActionResult<List<ArticleReactionCountDto>>> GetArticlesReactionCounts()
         {
@@ -182,27 +183,44 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(reactionCounts);
         }
+        //文章內頁的讚噓
         [HttpGet("GetArticleReactions/{id}")]
         public async Task<ActionResult<List<GoodorBadDto>>> GetArticleReactions(int id)
         {
-            var reactions = await _context.GoodorBads
-                .AsNoTracking()  // 提升查詢性能，避免不必要的變更跟蹤 使用在只讀不變更資料
-                .Where(gb => gb.ArticleSid == id)
-                .Select(gb => new GoodorBadDto
+            // 首先，獲取按讚和點噓的數量
+            var reactionCounts = await _context.GoodorBads
+                .Where(gb => gb.ArticleSid == id && gb.ReplySid == null)
+                .GroupBy(gb => gb.ArticleSid)
+                .Select(g => new ArticleReactionCountDto
                 {
-                    GorBsid = gb.GorBsid,
-                    MemberNo = gb.MemberNo,
-                    GorBdate = gb.GorBdate,
-                    GorBtype = gb.GorBtype,
-                    ArticleSid = gb.ArticleSid,
-                    ReplySid = gb.ReplySid,
+                    ArticleSid = g.Key ?? 0,
+                    LikeCount = g.Count(gb => gb.GorBtype == 1),  // 計算按讚的數量
+                    DislikeCount = g.Count(gb => gb.GorBtype == 0),  // 計算點噓的數量
+                    Reactions = g.Select(gb => new GoodorBadDto
+                    {
+                        GorBsid = gb.GorBsid,
+                        MemberNo = gb.MemberNo,
+                        Member = gb.MemberNoNavigation != null
+                    ? new MemberDto
+                    {
+                        MemberSid = gb.MemberNoNavigation.MemberSid,
+                        Name = gb.MemberNoNavigation.Name,
+                        //ProfilePic = gb.MemberNoNavigation.ProfilePic
+                    }:null,
+                        GorBdate = gb.GorBdate,
+                        GorBtype = gb.GorBtype,
+                        ArticleSid = gb.ArticleSid,
+                        ReplySid = gb.ReplySid
+                    }).ToList()  // 返回每個用戶的按讚或點噓詳細信息
                 })
-                .ToListAsync();
-            if (reactions == null || !reactions.Any())
+                .FirstOrDefaultAsync();
+
+            if (reactionCounts == null)
             {
-                return NotFound("沒有找到此文章");
+                return NotFound("沒有找到此文章的反應資料");
             }
-            return Ok(reactions);
+
+            return Ok(reactionCounts);
         }
         [HttpGet("GetArticleEdits/{id}")]
         public async Task<ActionResult<List<EditDto>>> GetArticleEdits(int id)
