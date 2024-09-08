@@ -173,21 +173,43 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		//ProductLaunch動作函式生賣家中心商品上架畫面
 		public IActionResult ProductLaunch()
         {
-			var model = new ProductViewModel();
+			// 查詢當前登入用戶的 StoreSid
+			var aspUserId = _userManager.GetUserId(User);
+			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
+			var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
-			// 查詢所有產品並賦值給 Products 屬性
-			model.products = _context.Products
-				.Where(p => p.PublicStatusNo == 2) // 假設 2 是審核中的產品
-				.Select(p => new ProductViewModel
-				{
-					productSid = p.ProductSid,
-					productName = p.ProductName,
-					price = p.Price,
-					stock = p.Stock,
-					launchTime = p.LaunchTime,
-					publicStatusNo = p.PublicStatusNo
-				})
-				.ToList();
+			var model = new ProductLaunchViewModel();
+
+			if (store != null)
+			{
+				// 查詢該賣家的當前上架產品 (PublicStatusNo = 1)
+				model.CurrentProducts = _context.Products
+					.Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
+					.Select(p => new ProductViewModel
+					{
+						productSid = p.ProductSid,
+						productName = p.ProductName,
+						price = p.Price,
+						stock = p.Stock,
+						launchTime = p.LaunchTime,
+						publicStatusNo = p.PublicStatusNo
+					})
+					.ToList();
+
+				// 查詢該賣家的審核中產品 (PublicStatusNo = 2)
+				model.ReviewingProducts = _context.Products
+					.Where(p => p.PublicStatusNo == 2 && p.StoreSid == store.StoreSid)
+					.Select(p => new ProductViewModel
+					{
+						productSid = p.ProductSid,
+						productName = p.ProductName,
+						price = p.Price,
+						stock = p.Stock,
+						launchTime = p.LaunchTime,
+						publicStatusNo = p.PublicStatusNo
+					})
+					.ToList();
+			}
 
 			// 查詢所有子分類並傳送到前端
 			ViewBag.Subcategories = _context.ProductSubcategories.Select(s => new
