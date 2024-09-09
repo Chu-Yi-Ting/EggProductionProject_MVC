@@ -20,4 +20,6 @@ public partial class Report
     public int? ReportReasonSid { get; set; }
 
     public virtual ReportReason ReportReasonS { get; set; }
+
+    public virtual WebSiteType WebSiteTypeS { get; set; }
 }

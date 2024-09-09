@@ -11,6 +11,7 @@ using Azure.Messaging;
 using System.Diagnostics.Metrics;
 using System.ComponentModel.DataAnnotations;
 using NuGet.Protocol;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -22,9 +23,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
     {
         private readonly EggPlatformContext _context;
 
-        public VideoSummariesController(EggPlatformContext context)
+        public VideoSummariesController(EggPlatformContext _context)
         {
-            _context = context;
+            this._context = _context;
         }
 
         // GET: Frontstage/VideoSummaries
@@ -135,6 +136,27 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 MessageLikes = message.MessageLikes,
                 MessageSid = messageId,
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMessage([FromBody] AddMessageDTO message)
+        {
+
+            var newmessage = new EggProductionProject_MVC.Models.Message
+            {
+                VideoSid = message.VideoSid,
+                MemberSid = message.MemberSid,
+                MessageContent = message.MessageContent,
+                MessageNumber = message.MessageNumber,
+                MessageDate = message.MessageDate,
+                MessageLikes = message.MessageLikes,
+                MessageDelete = false,
+            };
+            
+            _context.Messages.Add(newmessage);
+            _context.SaveChanges();
+
+            return Json(newmessage);
         }
 
     }

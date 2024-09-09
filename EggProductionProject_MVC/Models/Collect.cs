@@ -14,4 +14,6 @@ public partial class Collect
     public int? CollectObjectTypeSid { get; set; }
 
     public int? CollectorSid { get; set; }
+
+    public virtual WebSiteType WebSiteTypeS { get; set; }
 }

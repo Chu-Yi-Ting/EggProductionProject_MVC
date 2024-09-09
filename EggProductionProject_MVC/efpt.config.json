@@ -315,6 +315,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[WebSiteType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[DailyChickAmountsRate]",
          "ObjectType": 3
       },
