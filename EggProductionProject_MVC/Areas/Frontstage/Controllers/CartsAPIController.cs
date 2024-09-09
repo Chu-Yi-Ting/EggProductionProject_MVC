@@ -281,103 +281,204 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		{
 			public int Msid { get; set; }
 			public int storeSid { get; set; }
-		}
+            public int CarrierWayNo { get; set; }
+        }
 
 
 
-	//	[HttpPost]
-	//	public IActionResult AddressList([FromBody] CarrierFilterDto filter)
-	//	{
-	//		var store = _context.CarrierOpens
-	//			.Where(c => c.StoreSid == filter.storeSid)
-	//			.Select(x => new CarrierOpenDto
-	//			{
-	//				StoreSid = (int)x.StoreSid,
-	//				StoreOpen = x.StoreOpen,
-	//				HouseOpen = (int)x.HouseOpen,
-	//			})
-	//			.ToList();
+        //	[HttpPost]
+        //	public IActionResult AddressList([FromBody] CarrierFilterDto filter)
+        //	{
+        //		var store = _context.CarrierOpens
+        //			.Where(c => c.StoreSid == filter.storeSid)
+        //			.Select(x => new CarrierOpenDto
+        //			{
+        //				StoreSid = (int)x.StoreSid,
+        //				StoreOpen = x.StoreOpen,
+        //				HouseOpen = (int)x.HouseOpen,
+        //			})
+        //			.ToList();
 
-	//		var query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
+        //		var query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
 
-	//		if (store.Any())
-	//		{
-	//			var item = store.FirstOrDefault();
+        //		if (store.Any())
+        //		{
+        //			var item = store.FirstOrDefault();
 
-	//			if (item.StoreOpen == 1 && item.HouseOpen == 1)
-	//			{
-	//				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
-	//			}
-	//			else if (item.StoreOpen == 1 && item.HouseOpen == 0)
-	//			{
-	//				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 1);
-	//			}
-	//			else if (item.StoreOpen == 0 && item.HouseOpen == 1)
-	//			{
-	//				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 2);
-	//			}
-	//		}
+        //			if (item.StoreOpen == 1 && item.HouseOpen == 1)
+        //			{
+        //				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
+        //			}
+        //			else if (item.StoreOpen == 1 && item.HouseOpen == 0)
+        //			{
+        //				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 1);
+        //			}
+        //			else if (item.StoreOpen == 0 && item.HouseOpen == 1)
+        //			{
+        //				query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 2);
+        //			}
+        //		}
 
-	//		var cartsWithProducts = query
-	//			.Join(_context.CarrierWays,
-	//				ad => ad.CarrierWayNo,
-	//				way => way.CarrierWayNo,
-	//				(ad, way) => new { ad, way })
-	//			.Join(_context.PublicStatuses,
-	//				combined => combined.ad.PublicStatusNo,
-	//				ps => ps.PublicStatusNo,
-	//				(combined, ps) => new { combined.ad, combined.way, ps })
-	//			.Join(_context.Carriers,
-	//				combined => combined.way.CarrierNo,
-	//				c => c.CarrierNo,
-	//				(combined, c) => new { combined.ad, combined.way, combined.ps, c })
-	//			.Select(x => new AddressDto
-	//			{
-	//				CarrierAddressSid = x.ad.CarrierAddressSid,
-	//				MemberSid = (int)x.ad.MemberSid,
-	//				AddressFirst = (int)x.ad.AddressFirst,
-	//				CarrierWayNo = (int)x.ad.CarrierWayNo,
-	//				CarrierNo = (int)x.c.CarrierNo,
-	//				CarrierCode = x.c.CarrierCode.ToString(),
-	//				CarrierName = x.c.CarrierName.ToString(),
-	//				Way = x.way.Way.ToString(),
-	//				Price = (decimal)x.way.Price,
-	//				RecordName = x.ad.RecordName,
-	//				RecordPhone = x.ad.RecordPhone,
-	//				Adress = x.ad.Adress,
-	//				StoreId = x.ad.StoreId,
-	//				StoreName = x.ad.StoreName,
+        //		var cartsWithProducts = query
+        //			.Join(_context.CarrierWays,
+        //				ad => ad.CarrierWayNo,
+        //				way => way.CarrierWayNo,
+        //				(ad, way) => new { ad, way })
+        //			.Join(_context.PublicStatuses,
+        //				combined => combined.ad.PublicStatusNo,
+        //				ps => ps.PublicStatusNo,
+        //				(combined, ps) => new { combined.ad, combined.way, ps })
+        //			.Join(_context.Carriers,
+        //				combined => combined.way.CarrierNo,
+        //				c => c.CarrierNo,
+        //				(combined, c) => new { combined.ad, combined.way, combined.ps, c })
+        //			.Select(x => new AddressDto
+        //			{
+        //				CarrierAddressSid = x.ad.CarrierAddressSid,
+        //				MemberSid = (int)x.ad.MemberSid,
+        //				AddressFirst = (int)x.ad.AddressFirst,
+        //				CarrierWayNo = (int)x.ad.CarrierWayNo,
+        //				CarrierNo = (int)x.c.CarrierNo,
+        //				CarrierCode = x.c.CarrierCode.ToString(),
+        //				CarrierName = x.c.CarrierName.ToString(),
+        //				Way = x.way.Way.ToString(),
+        //				Price = (decimal)x.way.Price,
+        //				RecordName = x.ad.RecordName,
+        //				RecordPhone = x.ad.RecordPhone,
+        //				Adress = x.ad.Adress,
+        //				StoreId = x.ad.StoreId,
+        //				StoreName = x.ad.StoreName,
 
-	//			}).ToList();
+        //			}).ToList();
 
 
-	//		var groupedByStore = cartsWithProducts
-	//.GroupBy(x => x.CarrierNo)
-	//.Select(g => new CarrierDto
-	//{
-	//	CarrierNo = g.Key,
-	//	CarrierCode = g.First().CarrierCode,
+        //		var groupedByStore = cartsWithProducts
+        //.GroupBy(x => x.CarrierNo)
+        //.Select(g => new CarrierDto
+        //{
+        //	CarrierNo = g.Key,
+        //	CarrierCode = g.First().CarrierCode,
 
-	//	Addresses = g.Select(x => new AddressfilterDto
-	//	{
-	//		CarrierAddressSid = x.CarrierAddressSid,
-	//		CarrierName = x.CarrierName,
-	//		MemberSid = x.MemberSid,
-	//		AddressFirst = x.AddressFirst,
-	//		CarrierWayNo = x.CarrierWayNo,
-	//		Way = x.Way,
-	//		Price = x.Price,
-	//		RecordName = x.RecordName,
-	//		RecordPhone = x.RecordPhone,
-	//		Adress = x.Adress,
-	//		StoreId = x.StoreId,
-	//		StoreName = x.StoreName,
-	//	}).ToList()
-	//}).ToList();
+        //	Addresses = g.Select(x => new AddressfilterDto
+        //	{
+        //		CarrierAddressSid = x.CarrierAddressSid,
+        //		CarrierName = x.CarrierName,
+        //		MemberSid = x.MemberSid,
+        //		AddressFirst = x.AddressFirst,
+        //		CarrierWayNo = x.CarrierWayNo,
+        //		Way = x.Way,
+        //		Price = x.Price,
+        //		RecordName = x.RecordName,
+        //		RecordPhone = x.RecordPhone,
+        //		Adress = x.Adress,
+        //		StoreId = x.StoreId,
+        //		StoreName = x.StoreName,
+        //	}).ToList()
+        //}).ToList();
 
-	//		return Json(groupedByStore);
-	//	}
+        //		return Json(groupedByStore);
+        //	}
 
+
+        //[HttpPost]
+        //public IActionResult AddressList([FromBody] CarrierFilterDto filter)
+        //{
+        //    var store = _context.CarrierOpens
+        //        .Where(c => c.StoreSid == filter.storeSid)
+        //        .Select(x => new CarrierOpenDto
+        //        {
+        //            StoreSid = (int)x.StoreSid,
+        //            StoreOpen = x.StoreOpen,
+        //            HouseOpen = (int)x.HouseOpen,
+        //        })
+        //        .ToList();
+
+        //    var query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
+
+        //    if (store.Any())
+        //    {
+        //        var item = store.FirstOrDefault();
+
+        //        if (item.StoreOpen == 1 && item.HouseOpen == 1)
+        //        {
+        //            query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid);
+        //        }
+        //        else if (item.StoreOpen == 0 && item.HouseOpen == 1)
+        //        {
+        //            query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 1);
+        //        }
+        //        else if (item.StoreOpen == 1 && item.HouseOpen == 0)
+        //        {
+        //            query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 2);
+        //        }
+        //        else if (item.StoreOpen == 0 && item.HouseOpen == 0)
+        //        {
+        //            query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 3);
+        //        }
+        //    }
+
+        //    var cartsWithProducts = query
+        //        .Join(_context.CarrierWays,
+        //            ad => ad.CarrierWayNo,
+        //            way => way.CarrierWayNo,
+        //            (ad, way) => new { ad, way })
+        //        .Join(_context.PublicStatuses,
+        //            combined => combined.ad.PublicStatusNo,
+        //            ps => ps.PublicStatusNo,
+        //            (combined, ps) => new { combined.ad, combined.way, ps })
+        //        .Join(_context.Carriers,
+        //            combined => combined.way.CarrierNo,
+        //            c => c.CarrierNo,
+        //            (combined, c) => new { combined.ad, combined.way, combined.ps, c })
+        //        .Where(x => x.ps.PublicStatusNo == 1)
+        //        .Select(x => new AddressDto
+        //        {
+        //            CarrierAddressSid = x.ad.CarrierAddressSid,
+        //            MemberSid = (int)x.ad.MemberSid,
+        //            AddressFirst = (int)x.ad.AddressFirst,
+        //            CarrierWayNo = (int)x.ad.CarrierWayNo,
+        //            CarrierNo = (int)x.c.CarrierNo,
+        //            CarrierCode = x.c.CarrierCode.ToString(),
+        //            CarrierName = x.c.CarrierName.ToString(),
+        //            Way = x.way.Way.ToString(),
+        //            Price = (decimal)x.way.Price,
+        //            RecordName = x.ad.RecordName,
+        //            RecordPhone = x.ad.RecordPhone,
+        //            Adress = x.ad.Adress,
+        //            StoreId = x.ad.StoreId,
+        //            StoreName = x.ad.StoreName,
+
+        //        }).ToList();
+
+        //    var groupedByStore = cartsWithProducts
+        //        .GroupBy(x => x.CarrierNo)
+        //        .Select(g => new CarrierDto
+        //        {
+        //            CarrierNo = g.Key,
+        //            CarrierCode = g.First().CarrierCode,
+
+        //            Addresses = g.Select(x => new AddressfilterDto
+        //            {
+        //                CarrierAddressSid = x.CarrierAddressSid,
+        //                CarrierName = x.CarrierName,
+        //                MemberSid = x.MemberSid,
+        //                AddressFirst = x.AddressFirst,
+        //                CarrierWayNo = x.CarrierWayNo,
+        //                Way = x.Way,
+        //                Price = x.Price,
+        //                RecordName = x.RecordName,
+        //                RecordPhone = x.RecordPhone,
+        //                Adress = x.Adress,
+        //                StoreId = x.StoreId,
+        //                StoreName = x.StoreName,
+        //            })
+        //            // Sort so that AddressFirst == 1 comes first
+        //            .OrderByDescending(x => x.AddressFirst)
+        //            .ToList()
+        //        }).ToList();
+
+        //    return Json(groupedByStore);
+        //}
 
         [HttpPost]
         public IActionResult AddressList([FromBody] CarrierFilterDto filter)
@@ -414,6 +515,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     query = _context.CarrierAddresses.Where(c => c.MemberSid == filter.Msid && c.CarrierWayNoNavigation.CarrierNo == 3);
                 }
+            }
+
+            // 如果传入了有效的 CarrierWayNo，则筛选特定的 CarrierWayNo
+            if (filter.CarrierWayNo > 0)
+            {
+                query = query.Where(c => c.CarrierWayNo == filter.CarrierWayNo);
             }
 
             var cartsWithProducts = query

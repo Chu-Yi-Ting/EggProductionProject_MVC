@@ -1,6 +1,95 @@
 ﻿@{
 	Layout = "_FrontLayout_store";
 }
+
+@{
+	var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+
+@section Styles {
+
+	<link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+	<!-- FixedHeader 样式 -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    @* <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.2" rel="stylesheet" /> *@
+	<style>
+        table {
+            caption-side: bottom;
+            border-collapse: separate;
+        }
+
+        .table > thead {
+            vertical-align: bottom;
+            border-bottom: 1px solid;
+        }
+
+        table.dataTable thead > tr > th {
+            color: #909090;
+            font-size: 14px;
+            border-bottom: 1px solid #B8860B;
+            text-align: center;
+            min-width: 106px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-accent-bg: var(--bs-table-striped-bg);
+            color: #696969;
+        }
+
+        .table {
+            --bs-table-striped-bg: rgba(0, 0, 0, 0);
+        }
+
+        tbody, td, tfoot, th, thead, tr {
+            text-align: center;
+            font-size: 15px;
+            color: #696969;
+        }
+
+        table.dataTable > tbody > tr > td {
+            padding: 16px 10px;
+            vertical-align: middle;
+        }
+
+        table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+            text-align: center;
+        }
+
+        div.dt-container.dt-empty-footer .dt-scroll-body {
+            border-bottom: transparent;
+        }
+
+        .store-body-outer .notify-title .input-group-n .btn:hover {
+            background-color: #fff;
+        }
+
+        .store-body-outer .pagebody-store .accordion-item .accordion-body .other-info .default {
+            font-size: 10px;
+            color: #d8b45c;
+            font-weight: 700;
+            border: none;
+            border-radius: 40px;
+            padding: 0px;
+        }
+
+        .dt-search:has(.dt-input) {
+            display:none;
+        }
+
+        .dt-scroll-headInner{
+            width:100%!important;
+        }
+
+    /*     .accordion .table > :not(caption) > * > * {
+      
+            border-bottom-width: 0px;
+
+        } */
+
+	</style>
+}
+
+
 <div class=" col-12">
 	<div class="page-title">
 		<h5 class="mb-3">訂單管理</h5>
@@ -24,16 +113,775 @@
 			</li>
 		</ul>
 	</div>
+    <div class="notify-title d-lg-flex justify-content-between align-items-center my-4">
+        <div>
+            <img src="~/FrontstageTemplate/assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
+            <span style="font-size: 14px;">流程提醒 : 按下出貨按紐後，請於7天內完成出貨，以免影響賣場評分!!</span>
+        </div>
+
+        <div class="input-group input-group-n input-group-sm" style="max-width: 250px;">
+            <input type="text" id="track-input" class="form-control" placeholder="" aria-label="Track No" aria-describedby="button-addon2">
+            <button class="btn light-btn-n" type="button" id="button-addon2" style="width: 40px;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+
 	<div class="tab-content" id="pills-tabContent">
 		<div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
-			<div class="notify-title">
-				<img src="~/FrontstageTemplate/assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
-				<span style="font-size: 14px;">流程提醒 : 按下出貨按紐後，請於7天內完成出貨，以免影響賣場評分!!</span>
-			</div>
+			
+         
+            <table id="tableList" class="table table-striped table-hover w-100">
+                <thead class="">
+                </thead>
+            </table>
+
 		</div>
-		<div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">..2.</div>
-		<div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">.3..</div>
-		<div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">..4.</div>
-		<div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">.5..</div>
+		<div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+            <table id="tableList2" class="table table-striped table-hover w-100">
+                <thead class="">
+                </thead>
+            </table>
+        </div>
+		<div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
+            <table id="tableList3" class="table table-striped table-hover w-100">
+                <thead class="">
+                </thead>
+            </table>
+        </div>
+		<div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
+            <table id="tableList4" class="table table-striped table-hover w-100">
+                <thead class="">
+                </thead>
+            </table>
+        </div>
+		<div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
+            <table id="tableList5" class="table table-striped table-hover w-100">
+                <thead class="">
+                </thead>
+            </table>
+        </div>
 	</div>
 </div>
+
+<div class="modal modal-n fade"
+     id="exampleModalToggle2"
+     aria-hidden="true"
+     aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                <h5 class="modal-title mb-2" id="exampleModalToggleLabel">
+                    修改物流
+                    <span class="ms-3"> </span>
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-2">
+                <div class="col-lg-12">
+                    <div class="store-body-outer">
+                        <div class="pagebody-store m-0">
+                            <div class="accordion" id="accordionExample1">
+                                                      <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed py-2"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne1"
+                                aria-expanded="false"
+                                                aria-controls="collapseOne1" style="font-size: small;">
+                                            出貨商品列表
+                                </button>
+                                </h2>
+                                <div id="collapseOne1"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample1">
+                                <div class="accordion-body">
+                                            <div class="scroll" style="background: #fff;" id="detailOuter">
+                                                <table class="table">
+                                                 
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>E202406070001</td>
+                                                            <td>超神奇蛋捲</td>
+                                                            <td>x1</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>E202406070002</td>
+                                                            <td>金山鮮雞蛋</td>
+                                                            <td>x2</td>
+                                                        </tr>                                                     
+                                                    </tbody>
+                                                </table>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="accordion-item my-4">
+                                <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed py-2"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo1"
+                                aria-expanded="false"
+                                                aria-controls="collapseTwo1" style="font-size: small;">
+                                            賣家出貨地址
+                                </button>
+                                </h2>
+                                <div id="collapseTwo1"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="headingTwo"
+                               >
+                                <div class="accordion-body">
+                                            <div class="scroll " id="AddressOuter">
+         
+                                </div>
+
+                                <div class="form-control-n pt-2 p-3">
+                                <a class="btn light-btn-n btn-sm-dbrs"
+                                data-bs-toggle="modal"
+                                href="#exampleModalToggle3"
+                                role="button">新增地址</a>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n " id="updateState" type="button">
+                                    確定送出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/lib/datatables.net/datatables.min.js"></script > 
+
+    <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+    <script src="~/js/common.js"></script>
+    <script>
+ 
+        const nowId = 3;
+        let store;
+        let nowOrderSid;
+
+        function handleButtonClick(encodedRow) {
+            const row = JSON.parse(decodeURIComponent(encodedRow));
+            findData(row.orderSid);
+            loadBuyCarts1(row.storeSid, row.carrierWayNo);
+            nowOrderSid = row.orderSid;
+            console.log("nowOrderSid", nowOrderSid)
+            
+        }
+
+        const loadBuyCarts1 = async (storeId, CarrierWayNo) => {
+            const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
+            const BuyData1 = {
+                "Msid": nowId,
+                "storeSid": storeId,
+                "CarrierWayNo": CarrierWayNo
+            };
+
+            try {
+                const response = await fetch(api, {
+                    method: 'POST',
+                    body: JSON.stringify(BuyData1),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                console.log("data1", data);
+
+                const generateProductsHtml = (addresses) => {
+                    return addresses.map(address => {
+                        const storeNameClass = address.storeName ? '' : 'd-none';
+                        const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+                        const storeSid = BuyData1.storeSid;
+
+                        return `
+                                            <div class="form-check d-flex s_${storeSid}">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.carrierAddressSid}">
+                                                <label class="form-check-label w-100" for="flexRadioDefault${address.carrierAddressSid}">
+                                                    <div class="other-info d-flex flex-column flex-lg-row">
+                                                        <div class="w-100 mx-auto">
+                                                            <div class="part form-control-n">
+                                                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                                                    <p class="d-flex align-items-center mb-0">
+                                                                        ${address.carrierName}<span>${address.way}</span>
+                                                                        <span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
+                                                                    </p>
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                        <div class="track-info">${address.price}元</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="carrier-address d-flex flex-column">
+                                                                    <div class="d-flex mt-1 mt-md-0">
+                                                                        <p class="name me-2 m-0">${address.recordName}</p>
+                                                                        <p class="phone me-2 m-0">${address.recordPhone}</p>
+                                                                    </div>
+                                                                    <p class="address me-2 m-0">
+                                                                        <span class="me-1 ${storeNameClass}">${address.storeName ? address.storeName + ' | ' : ''}</span>${address.adress}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <hr class="m-0" />
+                                        `;
+                    }).join('');
+                };
+
+                const divSpots1 = document.getElementById('AddressOuter');
+                divSpots1.innerHTML = generateProductsHtml(data[0].addresses);
+
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        };
+
+        
+
+
+
+        function findData(OrderSid) {
+            $.ajax({
+                url: 'https://localhost:7080/Frontstage/StoreCentersAPI/ProductDetailList',
+                method: 'GET',
+                data: { OrderSid: OrderSid },
+                success: function (response) {
+       
+                    const html = generateProductsHtml(response);
+                    const divSpots1 = document.getElementById('detailOuter');
+                    divSpots1.innerHTML = html;
+                },
+                error: function (error) {
+                    console.error('Error fetching track info:', error);
+                }
+            });
+        }
+
+
+        function generateProductsHtml(products) {
+            let rows = '';
+
+            products.forEach((product, index) => {
+                rows += `
+                            <tr>
+                                <th scope="row">${index + 1}</th>
+                                <td>${product.productNo}</td>
+                                <td>${product.productName}</td>
+                                <td>x${product.qty}</td>
+                            </tr>
+                        `;
+            });
+
+            return `
+                        <table class="table">
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    `;
+        }
+
+
+
+
+        $(document).ready(function () {
+
+            let tabContentId = '#pills-one';
+
+  
+            $('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+                var activeTabId = $(e.target).attr('id');
+                var activeTabText = $(e.target).text();
+
+                tabContentId = $(e.target).attr('data-bs-target');
+         
+                var tableSelector = `${tabContentId} table`;
+                var table = $(tableSelector).DataTable();
+
+                if (table) {
+                    table.ajax.reload();
+                    table.columns.adjust().draw();
+                } else {
+                    console.error("No DataTable found.");
+                }
+            });
+
+          
+            $('button.navbar-toggler').on('click', function () {
+                var tableSelector = `${tabContentId} table`;
+                var table = $(tableSelector).DataTable();
+
+                setTimeout(function () {
+                    if (table) {
+                        table.ajax.reload(null, false);
+                        table.columns.adjust().draw();
+                    } else {
+                        console.error("Unable to find DataTable associated with the tab.");
+                    }
+                }, 300); 
+            });
+
+
+
+            $("#tableList").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Frontstage/StoreCentersAPI/OrderList",
+                    data: function () {
+           
+                        const jsonObject = {
+                            memberSid: nowId,
+                            OrderStatusNo: 1
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+                columnDefs: [
+                    {
+                        targets: -1,
+                        render: function (data, type, row) {
+                            const rowData = encodeURIComponent(JSON.stringify(row));
+                            return `
+                                      <a class="btn dark-btn-n btn-sm-dbrs change_address mx-auto"
+                               id="store_${row.carrierWayNo}"
+                               data-bs-toggle="modal"
+                               href="#exampleModalToggle2"
+                               role="button"
+                               style="max-width: 65px;"
+                                                       onclick="handleButtonClick('${rowData}')">
+                               出貨
+                            </a>
+                                              `;
+                        }
+                    },
+                ],
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "已付款" : "未付款";
+                        }
+                    },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "carrierWayNo", "width": "auto", "title": "狀態", "visible": false },
+                    { "data": "storeSid", "width": "auto", "title": "商店序號", "visible": false },
+                    { "data": "", "width": "auto", "title": "操作" },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+                paging: false,      
+                ordering: false,    
+                info: false,     
+                searching: true
+            })
+
+           
+
+
+            $("#tableList2").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Frontstage/StoreCentersAPI/OrderList",
+                    data: function () {
+               
+                        const jsonObject = {
+                            memberSid: nowId,
+                            OrderStatusNo: 2
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "已付款" : "未付款";
+                        }
+                    },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    {
+                        "data": "trackStatus",
+                        "width": "auto",
+                        "title": "狀態",
+                        "render": function (data, type, row) {
+                            return '<span style="color: #B8860B;">等待出貨</span>';  
+                        }
+                    }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+                paging: false,   
+                ordering: false,   
+                info: false,      
+                searching: true
+            })
+
+            $("#tableList3").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Frontstage/StoreCentersAPI/OrderList",
+                    data: function () {
+          
+                        const jsonObject = {
+                            memberSid: nowId,
+                            OrderStatusNo: 3
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "已付款" : "未付款";
+                        }
+                    },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    {
+                        "data": "trackStatus",
+                        "width": "auto",
+                        "title": "狀態",
+                        "render": function (data, type, row) {
+                            return '<span style="color: #B8860B;">已寄件成功</span>';  
+                        }
+                    }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+                paging: false,   
+                ordering: false,  
+                info: false,  
+                searching: true
+            })
+
+            $("#tableList4").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Frontstage/StoreCentersAPI/OrderList",
+                    data: function () {
+            
+                        const jsonObject = {
+                            memberSid: nowId,
+                            OrderStatusNo: 4
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "已付款" : "未付款";
+                        }
+                    },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    {
+                        "data": "trackStatus",
+                        "width": "auto",
+                        "title": "狀態",
+                        "render": function (data, type, row) {
+                            return '<span style="color: #B8860B;">買家取件成功</span>'; 
+                        }
+                    }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+                paging: false,    
+                ordering: false,    
+                info: false,       
+                searching: true
+            })
+
+
+            $("#tableList5").dataTable({
+                scrollX: "auto",
+                ajax: {
+                    type: "POST",
+                    url: "/Frontstage/StoreCentersAPI/OrderList",
+                    data: function () {
+      
+                        const jsonObject = {
+                            memberSid: nowId,
+                            OrderStatusNo: 5
+                        };
+                        return JSON.stringify(jsonObject);
+                    },
+
+                    dataSrc: function (json) {
+                        return preprocessData(json);
+                    },
+                    contentType: "application/json",
+                    error: function (xhr, error, thrown) {
+                        console.error("Ajax request failed:", error);
+                        console.error("XHR object:", xhr);
+                    }
+                },
+
+                lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+                fixedColumns: {
+                    start: 0,
+                    end: 1
+                },
+                columns: [
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    {
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "render": function (data, type, row) {
+                            return data == 1 ? "已付款" : "未付款";
+                        }
+                    },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    {
+                        "data": "trackStatus",
+                        "width": "auto",
+                        "title": "狀態",
+                        "render": function (data, type, row) {
+                            return '<span style="color: #B8860B;">退貨中</span>';
+                        }
+                    }
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+                paging: false,     
+                ordering: false,   
+                info: false,      
+                searching: true
+            })
+
+
+            const preprocessData = (data) => {
+                return data.map(item => {
+                    const keys = Object.keys(item);
+                    return keys.reduce((acc, key) => {
+                        acc[key] = item[key] || '';
+                        return acc;
+                    }, {});
+                });
+            };
+
+
+            $('#button-addon2').on('click', function () {
+
+                var trackNo = $('#track-input').val();
+
+
+                $('.dt-search .dt-input').val(trackNo);
+
+      
+                $('.dt-search .dt-input').trigger('input');
+
+                console.log("追蹤號碼已同步: " + trackNo);
+            });
+
+
+
+                const elementopen = document.querySelector('#updateState');
+
+                elementopen.addEventListener('click', async () => {
+                    try {
+             
+                        const radioButtons = document.querySelectorAll('input[name="flexRadioDefault"]');
+
+            
+                        const anyChecked = Array.from(radioButtons).some(radio => radio.checked);
+
+                        if (!anyChecked) {
+      
+                            alert("至少勾選一項");
+                        } else {
+                  
+                            radioButtons.forEach(radio => {
+                                if (radio.checked) {
+                                    const numericId = handleRadioChange(radio.id);
+                                    console.log("nowOrderSid", nowOrderSid);
+                                    console.log('Selected Radio ID:', numericId);
+                                    updateOrderAndTrack(nowOrderSid, numericId)
+
+                             
+                                }
+                            });
+                        }
+
+                    } catch (error) {
+                        console.error('Error fetching open data:', error);
+                    }
+                });
+
+            
+                function handleRadioChange(id) {
+                    return id.replace('flexRadioDefault', '');
+                }
+
+
+
+
+
+
+            const updateOrderAndTrack = async (orderSid, sendSourceSid) => {
+                const api = '@Url.Content("~/Frontstage/StoreCentersAPI/UpdateOrderAndTrack")';
+                const data = {
+                    OrderSid: orderSid,
+                    SendSouceSid: sendSourceSid
+                };
+
+                try {
+                    const response = await fetch(api, {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.error) {
+                        console.error('Error:', result.error);
+                    } else {
+                        console.log('Success:', result.message);
+                        var table = $("#tableList").DataTable();
+                        table.ajax.reload();
+                        $('.modal-n').modal('hide');
+                    }
+
+                    return result;
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    throw error;
+                }
+            };
+
+     
+            
+
+        });
+
+
+    </script>
+
+}

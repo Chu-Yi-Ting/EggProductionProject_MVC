@@ -511,11 +511,13 @@
 
         $(document).ready(function () {
 
+        const nowId=3;
+
             //主畫面列出當前所有資料
             const loadBuyCarts1 = async (storeId) => {
                 const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
                 const BuyData1 = {
-                    "Msid": 1,
+                    "Msid": nowId,
                     "storeSid": storeId
                 };
 
@@ -683,7 +685,7 @@
             $(document).on('click', `${modalId} .dark-btn-n`, function () {
                 const submitdata = {
                     CarrierAddressSid: addressData[0].carrierAddressSid,
-                    MemberSid: 1,
+                    MemberSid: nowId,
                     RecordName: nameInput.value,
                     RecordPhone: phoneInput.value,
                     Adress: addressInput ? addressInput.value : address.textContent,
@@ -700,7 +702,7 @@
         
                 const submitdata = {
                     CarrierAddressSid: modalId,
-                    MemberSid: 1,
+                    MemberSid: nowId,
                     PublicStatusNo:2
                 };
                 updateCallback(submitdata);
@@ -710,7 +712,7 @@
         
                 const submitdata = {
                     CarrierAddressSid: modalId,
-                    MemberSid: 1,
+                    MemberSid: nowId,
                     AddressFirst:1,
                     CarrierWayNo:wayNo
                 };
@@ -736,7 +738,7 @@
 
             let submitdata = {
                 CarrierAddressSid: 0,
-                MemberSid: 1,
+                MemberSid: nowId,
                 RecordName: nameInput ? nameInput.value.trim() : '',
                 RecordPhone: phoneInput ? phoneInput.value.trim() : '',
                 AddressFirst: checkbox ? (checkbox.checked ? 1 : 0) : 0,
@@ -899,7 +901,7 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
                     console.error('There has been a problem with your fetch operation:', error);
                 }
             };
-            loadBuyCarts1(1);
+            loadBuyCarts1(nowId);
 
                      const checkbox = document.querySelector('#exampleModalToggle3 .hidden-box');
              const priceElement = document.querySelector('#exampleModalToggle3 .checktext-money');

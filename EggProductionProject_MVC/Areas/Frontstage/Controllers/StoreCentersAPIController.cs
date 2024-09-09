@@ -1,7 +1,11 @@
-﻿using EggProductionProject_MVC.Models;
+﻿using EggProductionProject_MVC.Areas.Backstage.ViewModels;
+using EggProductionProject_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using static EggProductionProject_MVC.Areas.Backstage.Controllers.CouponTypesController;
 using static EggProductionProject_MVC.Areas.Frontstage.Controllers.CartsAPIController;
+using static EggProductionProject_MVC.Areas.Frontstage.Controllers.StoreCentersAPIController;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -312,7 +316,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             {
                 trackTimes = _context.TrackTimes
                     .Where(tt => tt.TrackSid == track.TrackSid)
-                    .Include(tt => tt.TrackStatusNoNavigation) 
+                    .Include(tt => tt.TrackStatusNoNavigation)
+                    .OrderByDescending(tt => tt.CreatedTime)
                     .Select(tt => new
                     {
                         TrackTimeSid = tt.TrackTimeSid,
@@ -360,6 +365,217 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
+
+        public class OrderSec
+        {
+            public int? memberSid  { get; set; }
+            public int? OrderStatusNo { get; set; }
+ 
+        }
+
+
+
+
+
+        [HttpPost]
+        public JsonResult OrderList([FromBody] OrderSec sec)
+        {
+           
+            if (!sec.memberSid.HasValue)
+            {
+                return Json(new { error = "memberSid is required." });
+            }
+
+         
+            var orders = _context.Orders
+     .Join(_context.OrderDetails,
+           order => order.OrderSid,
+           detail => detail.OrderSid,
+           (order, detail) => new { order, detail })
+     .Where(od => od.detail.ProductS.StoreS.MemberSid == sec.memberSid)
+     .Where(od => !sec.OrderStatusNo.HasValue || od.order.OrderStatusNo == sec.OrderStatusNo) 
+     .Select(od => new
+     {
+         od.order,               
+         StoreSid = od.detail.ProductS.StoreSid 
+     })
+     .Distinct() 
+     .ToList();
+
+            var payments = _context.Payments.Select(c => new
+            {
+                c.PaymentNo,
+                c.Pay
+            }).ToList();
+
+            var orderStatuses = _context.OrderStatuses.Select(s => new
+            {
+                s.OrderStatusNo,
+                s.Status
+            }).ToList();
+
+            var tracks = _context.Tracks
+                .Include(t => t.TrackTimes)
+                .ThenInclude(tt => tt.TrackStatusNoNavigation) 
+                .Select(t => new
+                {
+                    t.OrderSid,
+                    CarrierName = t.ReceiveSourceS.CarrierWayNoNavigation.CarrierNoNavigation.CarrierName,
+                    WayNo = t.ReceiveSourceS.CarrierWayNoNavigation.CarrierWayNo,
+                    Way = t.ReceiveSourceS.CarrierWayNoNavigation.Way,
+                    t.TrackingNum,
+                    LatestTrackStatus = t.TrackTimes.OrderByDescending(tt => tt.TrackTimeSid) 
+                                                .Select(tt => tt.TrackStatusNoNavigation.Status)
+                                                .FirstOrDefault() 
+                }).ToList();
+
+            // Map the filtered orders to DTOs
+            var orderViewModels = orders.Select(p => new OrderViewModel
+            {
+                OrderSid = p.order.OrderSid,
+                OrderNo = p.order.OrderNo,
+                TotalPrice = p.order.TotalPrice,
+                AlreadyPaid = p.order.AlreadyPaid,
+
+                // Map Payment data using PaymentNo
+                Payment = payments.FirstOrDefault(s => s.PaymentNo == p.order.PaymentNo)?.Pay,
+
+                CarrierWayNo = tracks.FirstOrDefault(s => s.OrderSid == p.order.OrderSid)?.WayNo,
+                // Map CarrierNameWay with custom logic
+                CarrierNameWay = GetCarrierNameWay(
+                    tracks.FirstOrDefault(s => s.OrderSid == p.order.OrderSid)?.CarrierName,
+                    tracks.FirstOrDefault(s => s.OrderSid == p.order.OrderSid)?.Way),
+
+                TrackingNum = tracks.FirstOrDefault(s => s.OrderSid == p.order.OrderSid)?.TrackingNum,
+
+                // Map the latest TrackStatus
+                TrackStatus = tracks.FirstOrDefault(s => s.OrderSid == p.order.OrderSid)?.LatestTrackStatus,
+
+                // Map Order Status
+                OrderStatusNo = p.order.OrderStatusNo,
+
+                StoreSid=p.StoreSid
+
+            }).ToList();
+
+            // Return the filtered DTO data as JSON
+            return Json(orderViewModels);
+        }
+
+        // Helper method to handle the CarrierName logic
+        private static string GetCarrierNameWay(string carrierName, string way)
+        {
+            if (carrierName == "黑貓宅急便")
+            {
+                return "黑貓" + way;
+            }
+            else if (carrierName == "7-ELEVEN")
+            {
+                return "7-11" + way;
+            }
+            else
+            {
+                return carrierName + way;
+            }
+        }
+
+        public class OrderViewModel
+        {
+            public int OrderSid { get; set; }
+
+            public string? OrderNo { get; set; }
+
+            public decimal? TotalPrice { get; set; }
+
+            public int? AlreadyPaid { get; set; }
+
+            public string? Payment { get; set; }
+
+            public int? CarrierWayNo { get; set; }
+            public string? CarrierNameWay { get; set; }
+
+              public string? TrackingNum { get; set; }
+
+            public int? OrderStatusNo { get; set; }
+            
+            public string? TrackStatus { get; set; }
+
+            public int? StoreSid { get; set; }
+
+        }
+
+
+
+        public class CarrierViewModel
+        {
+            public int No { get; set; }
+            public string ProductNo { get; set; }
+            public string ProductName { get; set; }
+            public int Qty { get; set; }
+
+        }
+
+        public JsonResult ProductDetailList(int OrderSid)
+        {
+            var orderDetails = _context.OrderDetails
+                .Where(od => od.OrderSid == OrderSid)
+                .Join(_context.Products,
+                      detail => detail.ProductSid,
+                      product => product.ProductSid,
+                      (detail, product) => new CarrierViewModel
+                      {
+                          No = detail.OrderDetailSid,
+                          ProductNo = product.ProductNo,
+                          ProductName = product.ProductName,
+                          Qty = detail.Qty ?? 0 
+                      })
+
+                .ToList();
+
+            return Json(orderDetails);
+        }
+
+
+        public class OrderAndTrackUpdateDto
+        {
+            public int OrderSid { get; set; }
+            public int? SendSouceSid { get; set; }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateOrderAndTrack([FromBody] OrderAndTrackUpdateDto dto)
+        {
+ 
+            if (dto == null || dto.OrderSid <= 0 || !dto.SendSouceSid.HasValue)
+            {
+                return BadRequest(new { error = "OrderSid and SendSouceSid are required and should be valid." });
+            }
+
+
+            var order = _context.Orders.FirstOrDefault(o => o.OrderSid == dto.OrderSid);
+
+            if (order == null)
+            {
+   
+                return NotFound(new { error = "Order not found." });
+            }
+
+ 
+            var track = _context.Tracks.FirstOrDefault(t => t.OrderSid == dto.OrderSid);
+
+            if (track == null)
+            {
+                return NotFound(new { error = "No track found for the given OrderSid." });
+            }
+
+            order.OrderStatusNo = 2;
+
+            track.SendSouceSid = dto.SendSouceSid;
+
+            _context.SaveChanges();
+
+            return Ok(new { message = "Order and Track updated successfully." });
+        }
 
 
     }
