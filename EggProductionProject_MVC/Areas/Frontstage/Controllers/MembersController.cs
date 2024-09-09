@@ -126,26 +126,46 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             member.Email = _user.Email;
             member.BirthDate = _user.BirthDate;
             member.Phone = _user.Phone;
-           
-            
 
-            // 如果有上傳檔案，則處理檔案更新
-            if (_user.ProfilePic != null)
-            {
-                // 檔案上傳路徑
-                string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
 
-                // 將檔案上傳到指定路徑
-                using (var filestream = new FileStream(path, FileMode.Create))
-                {
-                    _user.ProfilePic.CopyTo(filestream);
-                }
 
-                
-               
-            }
+			//// 如果有上傳檔案，則處理檔案更新
+			//if (_user.ProfilePic != null)
+			//{
+			//    // 檔案上傳路徑
+			//    string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
 
-            _context.Members.Update(member);
+			//    // 將檔案上傳到指定路徑
+			//    using (var filestream = new FileStream(path, FileMode.Create))
+			//    {
+			//        _user.ProfilePic.CopyTo(filestream);
+			//    }
+
+
+
+			//}
+
+
+			// 如果有上傳檔案，則處理檔案更新
+			if (_user.ProfilePic != null)
+			{
+				// 檔案名稱處理，避免重名
+				string uniqueFileName = Guid.NewGuid().ToString() + "_" + _user.ProfilePic.FileName;
+				// 檔案上傳路徑
+				string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
+
+				// 將檔案上傳到指定路徑
+				using (var filestream = new FileStream(path, FileMode.Create))
+				{
+					_user.ProfilePic.CopyTo(filestream);
+				}
+
+				// 儲存相對路徑到資料庫
+				member.ProfilePic = "/memProfilePic/" + _user.ProfilePic.FileName;
+
+			}
+
+			_context.Members.Update(member);
             // 儲存更新後的資料
             _context.SaveChanges();
 

@@ -112,7 +112,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 else
                 {
                     
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "帳號密碼錯誤");
                     return Page();
 
                 }

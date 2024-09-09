@@ -670,7 +670,19 @@
                                         <div class="form-container d-flex justify-content-center align-items-center">
                                             <div class="d-flex" style="flex-direction: row;">
                                                 <div class="profile-pic" style="padding: 20px;">
-                                                        <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+                                                    @{
+                                                        if (Model.ProfilePic == null)
+                                                        {
+                                                            <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img id="img1" src="@Model.ProfilePic" alt="會員照片">
+
+                                                        }
+
+                                                        }
+                                                        
                                                     @* <button>上傳照片</button> *@
                                                         <br />
                                                         <input class="form-control" type="file" id="ProfilePic" name="ProfilePic" asp-for="ProfilePic">
