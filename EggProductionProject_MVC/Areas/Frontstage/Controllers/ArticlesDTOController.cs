@@ -95,6 +95,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
         public class ReplyDto
         {
+            public int ArticleSid { get; set; }
             public int ReplySid { get; set; }
             public string ReplyInfo { get; set; } = null!;
             public DateTime? ReplyDate { get; set; }
@@ -103,6 +104,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public int GorBtype { get; set; }
             public int LikeCount { get; set; }    // 新增按讚數
             public int DislikeCount { get; set; } // 新增點噓數
+            public PublicStatusDto? PublicStatus { get; set; }
             public List<MemberDto> LikedByUsers { get; set; } // 点赞的用户
             public List<MemberDto> DislikedByUsers { get; set; } // 点噓的用户
         }

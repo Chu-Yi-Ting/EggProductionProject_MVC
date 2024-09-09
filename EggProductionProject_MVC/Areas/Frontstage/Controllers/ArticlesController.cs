@@ -69,7 +69,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(articles);
         }
-        //接收文章寫入資料庫
+        //發文 接收文章寫入資料庫
         // POST: api/Articles/PostArticle
         [HttpPost("PostArticle")]
         public async Task<ActionResult<Article>> PostArticle([FromForm] ArticleDto articleDto)
@@ -219,7 +219,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             if (reactionCounts == null)
             {
-                return NotFound("没有找到该文章的反应数据");
+                reactionCounts = new ArticleReactionCountDto
+                {
+                    ArticleSid = id,
+                    LikeCount = 0,
+                    DislikeCount = 0,
+                    Reactions = new List<GoodorBadDto>()
+                };
             }
 
             return Ok(reactionCounts);

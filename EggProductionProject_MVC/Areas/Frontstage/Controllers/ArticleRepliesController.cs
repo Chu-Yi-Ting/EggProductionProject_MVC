@@ -20,6 +20,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             _context = context;
         }
+
+        //取得回覆
         [HttpGet("GetArticleReplies/{id}")]
         public async Task<ActionResult<List<ReplyDto>>> GetArticleReplies(int id)
         {
@@ -90,7 +92,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(replies);
         }
-        // 按讚回复
+        // 對回覆按讚
         [HttpPost("LikeReply/{replyId}")]
         public async Task<IActionResult> LikeReply(int replyId)
         {
@@ -135,7 +137,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Ok(new { message = "已成功按讚" });
         }
 
-        // 點噓回复
+        // 對回覆按噓
         [HttpPost("DislikeReply/{replyId}")]
         public async Task<IActionResult> DislikeReply(int replyId)
         {
@@ -199,6 +201,38 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent(); // 返回无内容
+        }
+
+        //發表回覆
+        [HttpPost("PostReply")]
+        public async Task<ActionResult<Reply>> PostReply([FromForm] ReplyDto replyDto)
+        {
+            // 輸出 DTO 的內容以確認是否成功接收到資料
+            Console.WriteLine("Received ArticleInfo: " + replyDto.ReplyInfo);
+            // 將接收的 DTO 資料轉換為資料庫模型
+            var newReply = new Reply
+            {
+                ArticleSid = replyDto.ArticleSid,
+                ReplyInfo = replyDto.ReplyInfo,
+                ReplyDate = DateTime.UtcNow, // 以當前時間作為創建時間
+                ReplyUpdate = DateTime.UtcNow,//當前時間
+                ArticleCreaterSid = replyDto.ArticleCreator?.MemberSid, // 確保有會員ID
+                PublicStatusNo = replyDto.PublicStatus?.PublicStatusNo, // 公開狀態
+                EditTimes = 0,
+                DeleteOrNot = false // 預設不刪除
+            };
+            try
+            {
+                _context.Replies.Add(newReply);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // 处理异常，返回错误信息
+                return StatusCode(500, "An error occurred while saving the reply: " + ex.Message);
+            }
+            // 將新文章加入資料庫
+            return CreatedAtAction("GetReplyDetails", new { id = newReply.ReplySid }, newReply);
         }
     }
 }
