@@ -83,7 +83,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public MemberDto? Member { get; set; } // 添加MemberDto以显示用户信息
             public int? ArticleSid { get; set; }  // 新增文章 ID
             public int? ReplySid { get; set; }    // 新增回覆 ID
-            public DateOnly? GorBdate { get; set; }
+            public DateTime? GorBdate { get; set; }
             public int GorBtype { get; set; }
         }
         public class ArticleReactionCountDto

@@ -25,7 +25,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             // 查询回复
             var replies = await _context.Replies
-                .Where(reply => reply.ArticleSid == id)
+                .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot ==false && reply.PublicStatusNo==1)
                 .Include(reply => reply.ArticleCreatorS)
                 .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
@@ -38,7 +38,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         ? new MemberDto
                         {
                             MemberSid = reply.ArticleCreatorS.MemberSid,
-                            Name = reply.ArticleCreatorS.Name
+                            Name = reply.ArticleCreatorS.Name,
+                            ProfilePic = reply.ArticleCreatorS.ProfilePic,
                         }
                         : null,
                     LikeCount = 0, // 初始化，稍后将填充
@@ -88,6 +89,116 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             }
 
             return Ok(replies);
+        }
+        // 按讚回复
+        [HttpPost("LikeReply/{replyId}")]
+        public async Task<IActionResult> LikeReply(int replyId)
+        {
+            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+
+            if (memberNo == null)
+            {
+                return Unauthorized("用戶未登入");
+            }
+
+            var existingReaction = await _context.GoodorBads
+                .FirstOrDefaultAsync(g => g.ReplySid == replyId && g.MemberNo == memberNo);
+
+            if (existingReaction != null)
+            {
+                if (existingReaction.GorBtype == 1)
+                {
+                    return BadRequest("您已經對這則回覆按過讚");
+                }
+                else
+                {
+                    // 如果之前点了噓，现在切换为按赞
+                    existingReaction.GorBtype = 1; // 更新为按讚
+                    existingReaction.GorBdate = DateTime.Now;
+                }
+            }
+            else
+            {
+                // 新增按赞
+                var newReaction = new GoodorBad
+                {
+                    MemberNo = memberNo,
+                    ReplySid = replyId,
+                    GorBtype = 1, // 1 代表按讚
+                    GorBdate = DateTime.Now
+                };
+
+                _context.GoodorBads.Add(newReaction);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "已成功按讚" });
+        }
+
+        // 點噓回复
+        [HttpPost("DislikeReply/{replyId}")]
+        public async Task<IActionResult> DislikeReply(int replyId)
+        {
+            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+
+            if (memberNo == null)
+            {
+                return Unauthorized("用戶未登入");
+            }
+
+            var existingReaction = await _context.GoodorBads
+                .FirstOrDefaultAsync(g => g.ReplySid == replyId && g.MemberNo == memberNo);
+
+            if (existingReaction != null)
+            {
+                if (existingReaction.GorBtype == 0)
+                {
+                    return BadRequest("您已經對這則回覆點過噓");
+                }
+                else
+                {
+                    // 如果之前点了赞，现在切换为点噓
+                    existingReaction.GorBtype = 0; // 更新为点噓
+                    existingReaction.GorBdate = DateTime.Now;
+                }
+            }
+            else
+            {
+                // 新增点噓
+                var newReaction = new GoodorBad
+                {
+                    MemberNo = memberNo,
+                    ReplySid = replyId,
+                    GorBtype = 0, // 0 代表点噓
+                    GorBdate = DateTime.Now
+                };
+
+                _context.GoodorBads.Add(newReaction);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "已成功點噓" });
+        }
+
+        //刪除回復
+        [HttpPost("SoftDeleteReply/{id}")]
+        public async Task<IActionResult> SoftDeleteReply([FromRoute] int id)
+        {
+            Console.WriteLine(id);
+            // 將接收的 DTO 資料轉換為資料庫模型
+            var reply = await _context.Replies.FindAsync(id);
+            if (reply == null)
+            {
+                return NotFound(); // 如果文章不存在，返回404
+            }
+            reply.DeleteOrNot = true;
+
+            // 只更新指定的字段
+            _context.Entry(reply).Property(a => a.DeleteOrNot).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // 返回无内容
         }
     }
 }

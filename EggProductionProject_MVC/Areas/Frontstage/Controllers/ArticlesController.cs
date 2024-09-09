@@ -35,6 +35,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(a => a.ArticleCategoriesS)
                 .Where(a => a.PublicStatusNoNavigation != null && a.PublicStatusNoNavigation.PublicStatusNo == 1)//只傳公開的文章
                 .Where(a =>a.DeleteOrNot !=null && a.DeleteOrNot ==false) //只傳未被刪除的文章
+                .OrderByDescending(a => a.ArticleDate) // 按时间降序排列
                 .Select(article => new ArticleDto
                 {
                     ArticleSid = article.ArticleSid,
@@ -117,7 +118,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return NoContent(); // 返回无内容
         }
-
+        //文章內頁
         // GET: api/Articles/5
         [HttpGet("GetArticleDetails/{id}")]
         public async Task<ActionResult<ArticleDto>> GetArticleDetails(int id)
@@ -154,7 +155,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Phone = article.ArticleCreaterS.Phone,
                         BirthDate = article.ArticleCreaterS.BirthDate,
                         UserName = article.ArticleCreaterS.UserName,
-                        //ProfilePic = article.ArticleCreaterS.ProfilePic
+                        ProfilePic = article.ArticleCreaterS.ProfilePic
                     }
                     : null,
                 PublicStatus = article.PublicStatusNoNavigation != null
@@ -172,6 +173,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public async Task<ActionResult<List<ArticleReactionCountDto>>> GetArticlesReactionCounts()
         {
             var reactionCounts = await _context.GoodorBads
+                .Where(gb => gb.ReplySid == null)  // 排除回复的按赞和点噓
                 .GroupBy(gb => gb.ArticleSid)
                 .Select(g => new ArticleReactionCountDto
                 {
@@ -206,6 +208,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                                 MemberSid = gb.MemberNoNavigation.MemberSid,
                                 Name = gb.MemberNoNavigation.Name
                             } : null,
+                        //反向編譯後要把GoodorBadDto改成datetime
                         GorBdate = gb.GorBdate,
                         GorBtype = gb.GorBtype,
                         ArticleSid = gb.ArticleSid,
@@ -221,6 +224,97 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(reactionCounts);
         }
+        // 按讚
+        [HttpPost("LikeArticle/{articleId}")]
+        public async Task<IActionResult> LikeArticle(int articleId)
+        {
+            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+
+            if (memberNo == null)
+            {
+                return Unauthorized("用戶未登入");
+            }
+
+            var existingReaction = await _context.GoodorBads
+                .FirstOrDefaultAsync(g => g.ArticleSid == articleId && g.MemberNo == memberNo && g.ReplySid == null);
+
+            if (existingReaction != null)
+            {
+                if (existingReaction.GorBtype == 1)
+                {
+                    return BadRequest("您已經對這篇文章按過讚");
+                }
+                else
+                {
+                    // 如果用户之前点过噓，则更新为按赞
+                    existingReaction.GorBtype = 1;
+                    existingReaction.GorBdate = DateTime.Now;
+                }
+            }
+            else
+            {
+                // 如果之前没有记录，添加新的按赞记录
+                var newReaction = new GoodorBad
+                {
+                    MemberNo = memberNo,
+                    ArticleSid = articleId,
+                    GorBtype = 1, // 1 代表按讚
+                    GorBdate = DateTime.Now
+                };
+
+                _context.GoodorBads.Add(newReaction);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { LikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 1), DislikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 0) });
+        }
+
+        // 點噓
+        [HttpPost("DislikeArticle/{articleId}")]
+        public async Task<IActionResult> DislikeArticle(int articleId)
+        {
+            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+
+            if (memberNo == null)
+            {
+                return Unauthorized("用戶未登入");
+            }
+
+            var existingReaction = await _context.GoodorBads
+                .FirstOrDefaultAsync(g => g.ArticleSid == articleId && g.MemberNo == memberNo && g.ReplySid == null);
+
+            if (existingReaction != null)
+            {
+                if (existingReaction.GorBtype == 0)
+                {
+                    return BadRequest("您已經對這篇文章點過噓");
+                }
+                else
+                {
+                    // 如果用户之前按过赞，则更新为点噓
+                    existingReaction.GorBtype = 0;
+                    existingReaction.GorBdate = DateTime.Now;
+                }
+            }
+            else
+            {
+                // 如果之前没有记录，添加新的点噓记录
+                var newReaction = new GoodorBad
+                {
+                    MemberNo = memberNo,
+                    ArticleSid = articleId,
+                    GorBtype = 0, // 0 代表點噓
+                    GorBdate = DateTime.Now
+                };
+
+                _context.GoodorBads.Add(newReaction);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { LikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 1), DislikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 0) });
+        }
+    
+        //編輯 都還沒搞
         [HttpGet("GetArticleEdits/{id}")]
         public async Task<ActionResult<List<EditDto>>> GetArticleEdits(int id)
         {
@@ -253,6 +347,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(categories);
         }
+
 
         //測試壓縮圖片 裝了nuget套件SixLabors.ImageSharp
         //沒有效改善 停止使用
