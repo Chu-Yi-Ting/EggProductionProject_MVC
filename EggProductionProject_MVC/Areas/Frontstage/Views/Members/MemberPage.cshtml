@@ -1,5 +1,5 @@
 ﻿@model EggProductionProject_MVC.Models.Member
-@* @if(Model.IsChickFarm=='1') *@
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -622,7 +622,7 @@
                                     color: #a57c42;
                                     font-size: 16px;
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
-                                        <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">外部連接</button>
+                                        <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">綁定帳號</button>
                                     </li>
                                     <li style="            border: none;
                                     padding: 10px 30px;
@@ -662,10 +662,10 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
                                 1.  @ViewBag.UserName
-                                <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data">
+                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data" novalidate>
                                 <div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
 
-                               
+                                    <span class="text-danger validation-summary-valid" ></span>
                                     <div class="container">
                                         <div class="form-container d-flex justify-content-center align-items-center">
                                             <div class="d-flex" style="flex-direction: row;">
@@ -681,10 +681,10 @@
                                                     <div class="form-group">
                                                             <label for="username">會員名稱</label>
                                                             <span> &nbsp;&nbsp;&nbsp;&nbsp;</span>
-
-
                                                             <input type="text" id="username" name="Name" asp-for="Name">
                                                     </div>
+                                                    <span class="text-danger" asp-validation-for="Name"></span>
+
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
@@ -692,24 +692,28 @@
                                                             <span class="required-tag">必填</span>
                                                         </span>
                                                             <input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
-                                                    </div>
+                                                        </div>
+                                                        <span class="text-danger" asp-validation-for="Email"></span>
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
                                                             <label for="phone">電話號碼</label>
-                                                                <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                            @* <span class="required-tag">必填</span> *@
+                                                              @*   <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+                                                            <span class="required-tag">必填</span>
                                                         </span>
                                                             <input type="text" id="phone" name="Phone" asp-for="Phone" required>
                                                     </div>
+                                                        <span class="text-danger" asp-validation-for="Phone"></span>
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
                                                             <label for="birthdate">出生日期</label>
-                                                            <span class="required-tag">必填</span>
+                                                            @* <span class="required-tag">必填</span> *@
+                                                            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                         </span>
                                                             <input type="date" id="birthdate" name="BirthDate" asp-for="BirthDate" required>
-                                                    </div>
+                                                        </div>
+                                                        <span class="text-danger" asp-validation-for="BirthDate"></span>
                                                     <br>
 
                                                     <br>
@@ -745,7 +749,7 @@
 
                                     </div>
                                 </div> <div class="buttons">
-                                    <button class="cancel">取消</button>
+                                    <button type="reset" class="cancel">取消</button>
                                         <button id="btnSubmit" type="submit">確定</button>
                                 </div>
                                 </form>
@@ -775,7 +779,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
+                                                <button type="reset" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
                                     color: #a57c42;
                                     border: none;
                                   padding: 10px 20px;
@@ -1171,6 +1175,12 @@
     </html>
 
 @section Scripts{
+
+    <!-- 引用jquery來驗證表單的資料輸入是否正確 -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
     <!-- //小分頁切換功能  應該是原本的壞掉了所以改用新的切換功能了 不確定 明天問問別人 -->
     <!-- <script src="/assets/dist/js/bootstrap.bundle.min.js"></script> -->
     <!-- jQuery -->

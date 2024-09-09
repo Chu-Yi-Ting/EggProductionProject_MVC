@@ -42,11 +42,14 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
 
-            [Required]
+            [EmailAddress(ErrorMessage = "請輸入正確的電子郵件地址")]
+            [Required(ErrorMessage = "電子信箱為必填欄位")]
+			//[RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "請輸入有效的電子郵件地址")]
+			public string Email { get; set; }
+
+            [Required(ErrorMessage = "密碼為必填欄位")]
+            [StringLength(100, ErrorMessage = "密碼必須至少為6個英文數字混和並且包含一個特殊符號的組合", MinimumLength = 6)]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

@@ -1,141 +1,6 @@
 ﻿@page
 @model LoginModel
-
-
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 left-column"></div>
-            <div class="col-md-6 right-column">
-                <div class="login-box">
-                    <h1>登入</h1>
-                    <form id="account" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="mb-3">
-                            <label asp-for="Input.Email" class="form-label">帳號</label>
-                            <input asp-for="Input.Email" type="text" class="form-control" id="account">
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-
-
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Input.Password" for="password" class="form-label">密碼</label>
-                            <input asp-for="Input.Password" type="password" class="form-control" id="password">
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                           @*  <small><a href="#" class="text-muted">忘記密碼?</a></small> *@
-                            <a id="forgot-password" asp-page="./ForgotPassword">忘記密碼?</a>
-                        </div>
-                        <div class="mb-3">
-                            <div class="checkbox">
-                                <label asp-for="Input.RememberMe">
-                                    <input asp-for="Input.RememberMe" />
-                                   @*  @Html.DisplayNameFor(m => m.Input.RememberMe) *@
-                                   記得我
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">登入</button>
-                    </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
-                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
-                    </div>
-                </div>
-
-                <div class="welcome-box">
-                    <h1>歡迎回來！</h1>
-                    <p>智慧養殖，從掌蛋記錄開始</p>
-
-                    <p><a id="register-link" asp-area="Identity" asp-controller="Account" asp-action="Register">新加入？立即註冊</a></p>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-
-@* <div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to log in.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div> *@
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-
-@section Styles{
+@section Styles {
     <style>
 
 
@@ -269,4 +134,171 @@
                 }
     </style>
 }
+
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <div class="login-box">
+                    <h1>登入</h1>
+                    <form id="account" method="post" novalidate>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="mb-3">
+
+                            <label asp-for="Input.Email" class="form-label">信箱</label>
+                            <input asp-for="Input.Email" type="text" class="form-control" id="account">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" for="password" class="form-label">密碼</label>
+
+                            <div class="input-group">
+                            <input asp-for="Input.Password" type="password" class="form-control" id="password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                </div>
+                            <div><span asp-validation-for="Input.Password" class="text-danger"></span></div>
+                            
+                           @*  <small><a href="#" class="text-muted">忘記密碼?</a></small> *@
+                            <a id="forgot-password" asp-page="./ForgotPassword">忘記密碼?</a>
+                        </div>
+                        <div class="mb-3">
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                   @*  @Html.DisplayNameFor(m => m.Input.RememberMe) *@
+                                   記得我
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登入</button>
+                    </form>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                    </div>
+                </div>
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+
+                    <p><a id="register-link" asp-area="Identity" asp-controller="Account" asp-action="Register">新加入？立即註冊</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@* <div class="row">
+    <div class="col-md-4">
+        <section>
+            <form id="account" method="post">
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe">
+                            <input asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Log in</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Use another service to log in.</h4>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div> *@
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+	<link href="~/backstagetemplate/docs/fonts/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+
+        //------------------密碼toggle成text型態來讓使用者看到自己輸入的密碼----------------
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            var passwordInput = document.getElementById("password");
+            var icon = this.querySelector("i");
+
+            // 切換密碼欄位的 type 屬性
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+
+    </script>
+}
+
+
 
