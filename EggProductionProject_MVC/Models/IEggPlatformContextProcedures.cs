@@ -13,7 +13,7 @@ namespace EggProductionProject_MVC.Models
 {
     public partial interface IEggPlatformContextProcedures
     {
-        Task<List<GetDailyDataResult>> GetDailyDataAsync(int? MemberSid, int? HouseSid, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<GetDailyDataResult>> GetDailyDataAsync(int? Judge, int? MemberSid, int? HouseSid, string StartDate, string EndDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> InsertCalendarAsync(int? MemberSid, string Title, string TodoList, DateOnly? StartDate, DateOnly? InsertDate, int? Finished, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

@@ -11,13 +11,11 @@ public partial class Creator
 
     public int? MemberSid { get; set; }
 
-    public string MemberName { get; set; }
-
     public string PersonalProfile { get; set; }
 
     public int? SubscriptionSid { get; set; }
 
-    public byte[] Image { get; set; }
+    public string Image { get; set; }
 
     public virtual Member MemberS { get; set; }
 

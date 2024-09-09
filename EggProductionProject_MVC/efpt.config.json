@@ -315,8 +315,8 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[GetEventsForMember]",
-         "ObjectType": 1
+         "Name": "[dbo].[WebSiteType]",
+         "ObjectType": 0
       },
       {
          "Name": "[dbo].[DailyChickAmountsRate]",

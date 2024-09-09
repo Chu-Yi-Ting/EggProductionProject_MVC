@@ -15,7 +15,7 @@ public partial class GoodorBad
 
     public int? ReplySid { get; set; }
 
-    public DateOnly? GorBdate { get; set; }
+    public DateTime? GorBdate { get; set; }
 
     public int GorBtype { get; set; }
 

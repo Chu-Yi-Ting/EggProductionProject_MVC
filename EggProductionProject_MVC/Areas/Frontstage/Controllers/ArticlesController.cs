@@ -126,7 +126,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     GorBsid = gb.GorBsid,
                     MemberNo = gb.MemberNo,
-                    GorBdate = gb.GorBdate,
+                    //GorBdate = gb.GorBdate,
                     GorBtype = gb.GorBtype
                 })
                 .ToListAsync();

@@ -45,7 +45,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     CreatorSid = x.CreatorSid,
                     VideoDuration = x.VideoDuration,
                     VideoTitle = x.VideoTitle,
-                    MemberName = x.CreatorS.MemberName,
+                    MemberName = x.CreatorS.MemberS.Name,
                     TimesWatched = x.TimesWatched,
                     MoviePath = x.MoviePath,
                     InformationColumn = x.InformationColumn,
