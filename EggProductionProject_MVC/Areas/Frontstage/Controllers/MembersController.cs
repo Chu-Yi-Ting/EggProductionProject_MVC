@@ -109,30 +109,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
-        //private async Task<string> CompressImageAsync(byte[] imageBytes)
-        //{
-        //    using (var inputStream = new MemoryStream(imageBytes))
-        //    using (var image = await Image.LoadAsync(inputStream))
-        //    {
-        //        image.Mutate(x => x.Resize(new ResizeOptions
-        //        {
-        //            Size = new Size(400, 0), // 調整寬度，保持比例
-        //            Mode = ResizeMode.Max
-        //        }));
-
-        //        using (var outputStream = new MemoryStream())
-        //        {
-        //            var jpegEncoder = new JpegEncoder
-        //            {
-        //                Quality = 1 // 設定壓縮質量（0-100）
-        //            };
-        //            await image.SaveAsync(outputStream, jpegEncoder);
-
-        //            return Convert.ToBase64String(outputStream.ToArray());
-        //        }
-        //    }
-        //}
-
 
         [HttpPost]
         public async Task<IActionResult> MemberPageUpdate([FromForm] UserDTO _user)
@@ -165,23 +141,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     _user.ProfilePic.CopyTo(filestream);
                 }
 
-                // 將上傳的檔案轉為二進位格式並存儲在資料庫中
-                byte[] imgByte = null;
-                using (var memoryStream = new MemoryStream())
-                {
-                    _user.ProfilePic.CopyTo(memoryStream);
-                    imgByte = memoryStream.ToArray();
-
-                    
-
-                    //壓縮圖片應該是寫在這裡
-                   
-
-
-
-                    member.ProfilePic = imgByte;
-                }
-                Console.WriteLine($"Image byte array length: {imgByte.Length}"); // 检查图像大小
+                
                
             }
 

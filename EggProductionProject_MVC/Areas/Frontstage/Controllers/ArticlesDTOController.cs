@@ -80,7 +80,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             public int GorBsid { get; set; }
             public int? MemberNo { get; set; }
-            public DateOnly GorBdate { get; set; }
+            public DateTime GorBdate { get; set; }
             public int GorBtype { get; set; }
         }
 

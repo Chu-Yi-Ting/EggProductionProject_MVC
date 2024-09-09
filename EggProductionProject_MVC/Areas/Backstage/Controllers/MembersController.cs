@@ -116,8 +116,10 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-        public async Task<IActionResult> CreateSave([FromForm] MemberVM model ,IFormFile profilePic)
+        public async Task<IActionResult> CreateSave([FromForm] UserDTO model)
         {
+            ModelState.Remove("AspUserId");
+            ModelState.Remove("Chickcode");
             if (ModelState.IsValid)
             {
                 var member = await _context.Members.FindAsync(model.MemberSid);
@@ -134,32 +136,23 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 member.IsChickFarm = model.IsChickFarm;
                 member.IsBlocked = model.IsBlocked;
 
-                // 處理上傳的照片
-                if (profilePic != null && profilePic.Length > 0)
+                // 如果有上傳檔案，則處理檔案更新
+                if (model.ProfilePic != null)
                 {
-                    // 確定上傳檔案的目錄
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic");
+                    // 檔案名稱處理，避免重名
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePic.FileName;
+                    // 檔案上傳路徑
+                    string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", model.ProfilePic.FileName);
 
-                    // 檢查資料夾是否存在，不存在則建立
-                    if (!Directory.Exists(uploadsFolder))
+                    // 將檔案上傳到指定路徑
+                    using (var filestream = new FileStream(path, FileMode.Create))
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        model.ProfilePic.CopyTo(filestream);
                     }
 
-                    // 產生唯一的檔案名稱
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(profilePic.FileName);
+                    // 儲存相對路徑到資料庫
+                    member.ProfilePic = "/memProfilePic/" + model.ProfilePic.FileName;
 
-                    // 確定檔案的完整路徑
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    // 儲存檔案至伺服器
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await profilePic.CopyToAsync(fileStream);
-                    }
-
-                    // 儲存檔案路徑到資料庫 (儲存相對路徑)
-                    member.ProfilePic = "/memProfilePic/" + uniqueFileName;
                 }
 
                 try
