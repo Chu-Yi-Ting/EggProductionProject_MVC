@@ -129,17 +129,23 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 foreach (var error in result.Errors)
                 {
                     //ModelState.AddModelError(string.Empty, error.Description);
+
                     if (error.Code == "DuplicateEmail")
                     {
                         // 這裡加入信箱重複的錯誤訊息，傳回前端
                         TempData["DuplicateEmailError"] = "信箱已經存在，請使用其他信箱";
+                        // 回傳信箱重複的 JSON
+                        return new JsonResult(new { success = false, message = "信箱已經存在，請使用其他信箱。" });
                     }
                     
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return Page();
+            //return Page();
+
+            // 如果有其他錯誤，回傳一般錯誤訊息
+            return new JsonResult(new { success = false });
         }
     }
 }

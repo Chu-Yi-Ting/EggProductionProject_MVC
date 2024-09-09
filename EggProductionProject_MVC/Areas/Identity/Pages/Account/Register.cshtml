@@ -161,7 +161,7 @@
                 <br />
                 <div class="login-box">
                     <h1>註冊</h1>
-                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate>
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" id="registerForm" novalidate>
                         <div class="mb-3 form-group">
                             <label asp-for="Input.Email">信箱</label>
                             <input asp-for="Input.Email" class="form-control" />
@@ -372,12 +372,33 @@
             }
         });
 
-        //-----------------檢查頁面載入時候是否有[信箱重複]的viewdata，如果有的話跳出modal顯示-------------
+        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出modal顯示-------------
         $(document).ready(function () {
-            var duplicateEmailError = '@TempData["DuplicateEmailError"]';
-            if (duplicateEmailError) {
-                $('#emailDuplicateModal').modal('show');
-            }
+            // 攔截表單提交事件
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();  // 阻止表單的預設行為（刷新頁面）
+
+                $.ajax({
+                    url: '@Url.Page("/Account/Register")', // 設定提交到的頁面
+                    type: 'POST',
+                    data: $(this).serialize(), // 將表單序列化為資料
+                    success: function (response) {
+                        if (response.isDuplicateEmail) {
+                            // 如果信箱重複，顯示Modal
+                            $('#emailDuplicateModal').modal('show');
+                        } else if (response.success) {
+                            // 如果註冊成功，重定向或顯示成功訊息
+                            window.location.href = response.redirectUrl;
+                        } else if (!response.success) {
+                            // 如果註冊成功，重定向或顯示成功訊息
+                            $('#emailDuplicateModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                        alert('提交失敗，請再試一次');
+                    }
+                });
+            });
         });
     </script>
 }
