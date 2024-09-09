@@ -25,7 +25,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         [HttpGet]
-        //[Route("Members/MemberPage/{userId}")]
         // GET: Frontstage/Members
         public async Task<IActionResult> MemberPage()
         {
@@ -35,45 +34,21 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 從 Session 取得 memberSid
             var userAspId  = HttpContext.Session.GetString("userId");
 
-            //if (userAspId == null)
-            //{
-            //    return RedirectToAction("Login", "Account");
-            //}
-
+            
             
             var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
            
-            // 將 Name 傳遞到視圖
             
-           
+            
+               // var member = await _context.Members
+               //.Include(m => m.AspUser)
+               //.Include(m => m.ShoppingRankNoNavigation)
+               //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
 
-            //如果==null代表剛註冊好，還不是會員
-            if (user == null)
-            {
-                //新創立一個member並且擁有asp的ID與email
-                user =  new Member
-                {
-                    AspUserId = aspuserId,
-                    Email = aspuseEmail,
-                    IsBlocked = 0,
-                    IsChickFarm = 0,
-                };
-                ViewBag.UserName = user.Name;
 
-                _context.Members.Add(user);
-                await _context.SaveChangesAsync();
+            ViewBag.UserName = user.Name;
                 return View(user);
-            }
-            else
-            {
-                var member = await _context.Members
-               .Include(m => m.AspUser)
-               .Include(m => m.ShoppingRankNoNavigation)
-               .FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
-
-                ViewBag.UserName = user.Name;
-                return View(member);
-            }
+            
            
                 
         }

@@ -389,9 +389,8 @@
                         } else if (response.success) {
                             // 如果註冊成功，重定向或顯示成功訊息
                             window.location.href = response.redirectUrl;
-                        } else if (!response.success) {
-                            // 如果註冊成功，重定向或顯示成功訊息
-                            $('#emailDuplicateModal').modal('show');
+                        } else {
+                           alert("註冊失敗，請再式一次")
                         }
                     },
                     error: function () {
