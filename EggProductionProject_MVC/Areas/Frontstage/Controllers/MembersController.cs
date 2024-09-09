@@ -36,7 +36,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             
             
-            var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
+            var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
            
             
             
