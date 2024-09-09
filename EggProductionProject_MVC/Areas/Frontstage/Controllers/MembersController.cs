@@ -31,7 +31,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
             string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
-            // 從 Session 取得 memberSid
+            // 從 Session 取得 memberAspID，不知道有沒有掛掉
             var userAspId  = HttpContext.Session.GetString("userId");
 
             
@@ -39,7 +39,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
            
             
-            
+            //原本的寫法，不知道為什麼掛了
                // var member = await _context.Members
                //.Include(m => m.AspUser)
                //.Include(m => m.ShoppingRankNoNavigation)
