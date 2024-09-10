@@ -97,7 +97,50 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return CreatedAtAction("GetArticleDetails", new { id = newArticle.ArticleSid }, newArticle);
         }
+        // 編輯文章
+        [HttpPut("UpdateArticle/{id}")]
+        public async Task<IActionResult> UpdateArticle(int id, [FromForm] ArticleDto articleDto)
+        {
+            // 查找要更新的文章
+            var existingArticle = await _context.Articles.FindAsync(id);
+            if (existingArticle == null)
+            {
+                return NotFound($"未找到ID為 {id} 的文章");
+            }
 
+            // 輸出 DTO 的內容以確認是否成功接收到資料
+            Console.WriteLine("Received ArticleTitle: " + articleDto.ArticleTitle);
+            Console.WriteLine("Received ArticleInfo: " + articleDto.ArticleInfo);
+
+
+            // 创建一个新的 ArticleEditHistory 记录
+            var editHistory = new Edit
+            {
+                ArticleSid = existingArticle.ArticleSid, // 文章ID
+                EditBefore = existingArticle.ArticleInfo, // 编辑前的内容
+                EditAfter = articleDto.ArticleInfo, // 编辑后的内容
+                EditTime = DateTime.UtcNow, // 编辑时间
+            };
+
+            // 将编辑记录保存到数据库
+            _context.Edits.Add(editHistory);
+
+
+
+            // 更新文章内容，保持創建時間和創建者不變
+            existingArticle.ArticleTitle = articleDto.ArticleTitle;
+            existingArticle.ArticleInfo = articleDto.ArticleInfo;
+            existingArticle.ArticleCategoriesSid = articleDto.ArticleCategory?.ArticleCategoriesSid; // 更新分類
+            existingArticle.PublicStatusNo = articleDto.PublicStatus?.PublicStatusNo; // 更新公開狀態
+            existingArticle.ArticleUpdate = DateTime.UtcNow; // 更新當前時間為最後編輯時間
+            existingArticle.EditCountTimes += 1; // 每次編輯將編輯次數加1
+
+            // 保存變更
+            await _context.SaveChangesAsync();
+
+            // 返回204 No Content表示成功，但無需返回內容
+            return NoContent();
+        }
         //刪除文章
         [HttpPost("SoftDeleteArticle/{id}")]
         public async Task<IActionResult> SoftDeleteArticle([FromForm] int articleId)
