@@ -748,7 +748,7 @@
 
         //searchProductData的JSON物件以POST方式請求給API，載入商品資料
         const loadProducts = async () => {
-            const api = '@Url.Content("~/ProductApi/Products")'
+            const api = '@Url.Content("~/Frontstage/ProductApi/Products")'
             const response = await fetch(api, {
                 method: "post",
                 body: JSON.stringify(searchProductData),
@@ -805,11 +805,6 @@
 
         loadProducts()
 
-        //提交商品卡片的ProductSid給後端API
-        // function submitProductForm(productSid) {
-        //     document.getElementById('productSid').value = productSid;
-        //     document.getElementById('productForm').submit();
-        // }
     </script>
 
 }

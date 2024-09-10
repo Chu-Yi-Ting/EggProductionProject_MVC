@@ -43,7 +43,7 @@ namespace EggProductionProject_MVC.Models
             _context = context;
         }
 
-        public virtual async Task<List<GetDailyDataResult>> GetDailyDataAsync(int? MemberSid, int? HouseSid, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<GetDailyDataResult>> GetDailyDataAsync(int? Judge, int? MemberSid, int? HouseSid, string StartDate, string EndDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -56,6 +56,12 @@ namespace EggProductionProject_MVC.Models
             {
                 new SqlParameter
                 {
+                    ParameterName = "Judge",
+                    Value = Judge ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
                     ParameterName = "MemberSid",
                     Value = MemberSid ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
@@ -66,9 +72,23 @@ namespace EggProductionProject_MVC.Models
                     Value = HouseSid ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "StartDate",
+                    Size = 20,
+                    Value = StartDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "EndDate",
+                    Size = 20,
+                    Value = EndDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<GetDailyDataResult>("EXEC @returnValue = [dbo].[GetDailyData] @MemberSid = @MemberSid, @HouseSid = @HouseSid", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<GetDailyDataResult>("EXEC @returnValue = [dbo].[GetDailyData] @Judge = @Judge, @MemberSid = @MemberSid, @HouseSid = @HouseSid, @StartDate = @StartDate, @EndDate = @EndDate", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

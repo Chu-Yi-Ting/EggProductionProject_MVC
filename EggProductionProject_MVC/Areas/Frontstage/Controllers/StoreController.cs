@@ -175,6 +175,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
 			// 查詢當前登入用戶的 StoreSid
 			var aspUserId = _userManager.GetUserId(User);
+			if (string.IsNullOrEmpty(aspUserId))
+			{
+				return RedirectToAction("Login", "Account", new { area = "Identity" });
+			}
 			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
 			var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
@@ -227,49 +231,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			return View(model);
         }
 
-		[HttpPost]
-		public IActionResult ProductLaunch(ProductViewModel model)
-		{
-			// 驗證輸入的資料
-			if (ModelState.IsValid)
-			{
-				// 處理資料邏輯
-				TempData["success"] = "商品已成功送出審核!";
-
-				// 查詢登錄的用戶對應的賣場
-				var aspUserId = _userManager.GetUserId(User);
-				var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-				var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
-
-				if (store != null)
-				{
-					// 創建新商品資料
-					var product = new Product
-					{
-						ProductName = model.productName,
-						Price = model.price,
-						Stock = model.stock,
-						SubcategoryNo = model.subcategoryNo,
-						ItemNo = model.itemNo,
-						Description = model.description,
-						Origin = "台灣",  // 預設為台灣
-						Quanitity = model.quantity,
-						Weight = model.weight,
-						Component = model.component,
-						StoreSid = store.StoreSid,
-						DiscountPercent = model.discountPercent,
-						LaunchTime = DateOnly.FromDateTime(DateTime.Now),
-						PublicStatusNo = 2  // 預設為非公開
-					};
-
-					// 保存商品到資料庫
-					_context.Products.Add(product);
-					_context.SaveChanges();					
-				}
-			}
-			// 重定向到審核中Tab頁面
-			return RedirectToAction("ProductLaunch");
-			//return View(model);
-		}
+	
 	}
 }

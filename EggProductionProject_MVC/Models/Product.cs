@@ -45,6 +45,8 @@ public partial class Product
 
     public virtual ICollection<FlashSale> FlashSales { get; set; } = new List<FlashSale>();
 
+    public virtual ProductItem ItemNoNavigation { get; set; }
+
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();

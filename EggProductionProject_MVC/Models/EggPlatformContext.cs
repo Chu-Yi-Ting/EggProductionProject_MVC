@@ -923,6 +923,10 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ProductName).HasMaxLength(50);
             entity.Property(e => e.ProductNo).HasMaxLength(50);
 
+            entity.HasOne(d => d.ItemNoNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.ItemNo)
+                .HasConstraintName("FK_Products_ProductItems");
+
             entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.PublicStatusNo)
                 .HasConstraintName("FK_Products_PublicStatus");
@@ -1015,7 +1019,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ReplyInfo).IsRequired();
             entity.Property(e => e.ReplyUpdate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.ArticleCreatorS).WithMany(p => p.Replies)
+            entity.HasOne(d => d.ArticleCreaterS).WithMany(p => p.Replies)
                 .HasForeignKey(d => d.ArticleCreaterSid)
                 .HasConstraintName("FK_Reply_Member");
 

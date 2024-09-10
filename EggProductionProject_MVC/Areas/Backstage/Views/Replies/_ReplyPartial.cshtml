@@ -17,7 +17,7 @@
         {
             <tr style="cursor: pointer;" onclick="location.href='@Url.Action("Edit", new { id = item.ReplySid })'">
                 <td>@Html.DisplayFor(modelItem => item.ArticleS.ArticleTitle)</td>
-                <td>@Html.DisplayFor(modelItem => item.ArticleCreatorS.UserName)</td>
+@*                 <td>@Html.DisplayFor(modelItem => item.ArticleCreatorS.UserName)</td> *@
                 <td>@Html.DisplayFor(modelItem => item.ReplyInfo)</td>
                 <td>
                     @if (item.DeleteOrNot == true)
