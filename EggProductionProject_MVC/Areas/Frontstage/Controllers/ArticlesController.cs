@@ -130,7 +130,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 更新文章内容，保持創建時間和創建者不變
             existingArticle.ArticleTitle = articleDto.ArticleTitle;
             existingArticle.ArticleInfo = articleDto.ArticleInfo;
-            existingArticle.ArticleCategoriesSid = articleDto.ArticleCategory?.ArticleCategoriesSid; // 更新分類
             existingArticle.PublicStatusNo = articleDto.PublicStatus?.PublicStatusNo; // 更新公開狀態
             existingArticle.ArticleUpdate = DateTime.UtcNow; // 更新當前時間為最後編輯時間
             existingArticle.EditCountTimes += 1; // 每次編輯將編輯次數加1
