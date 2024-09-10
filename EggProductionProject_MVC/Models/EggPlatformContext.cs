@@ -198,10 +198,8 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("AreaFeed");
 
             entity.Property(e => e.Cost).HasColumnType("money");
-            entity.Property(e => e.LotNo)
-                .IsRequired()
-                .HasMaxLength(50);
-            entity.Property(e => e.Weight).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.LotNo).IsRequired();
+            entity.Property(e => e.Weight).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.AreaS).WithMany(p => p.AreaFeeds)
                 .HasForeignKey(d => d.AreaSid)
