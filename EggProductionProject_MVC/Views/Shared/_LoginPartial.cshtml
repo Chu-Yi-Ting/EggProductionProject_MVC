@@ -23,10 +23,10 @@
                             }
 
                         </div>
-                        @* Alice *@
+                        
                         @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
                         {
-                            <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                        <p  style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
                         }
                     </div>
                 </li>

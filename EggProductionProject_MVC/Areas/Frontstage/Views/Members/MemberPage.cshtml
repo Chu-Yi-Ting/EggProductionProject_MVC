@@ -266,6 +266,22 @@
                     #scrollToTopBtn.show {
                         display: flex;
                     }
+
+
+            /* 讓 disabled 按鈕顯示為灰色 */
+            button:disabled {
+                background-color: #ccc; /* 灰色背景 */
+                color: #666; /* 灰色文字 */
+                cursor: not-allowed; /* 禁止符號的鼠標樣式 */
+                border-color: #ccc; /* 灰色邊框 */
+            }
+
+                /* 禁用按鈕的 hover 樣式，防止鼠標變成點擊狀態 */
+                button:disabled:hover {
+                    background-color: #ccc;
+                    color: #666;
+                    cursor: not-allowed; /* 確保禁用按鈕不顯示手型 */
+                }
             </style>
         }
 
@@ -594,11 +610,11 @@
                 <div class="tab-content mt-4">
                     <div class="tab-pane fade show active" id="tab-content-basic-info" role="tabpanel" aria-labelledby="tab-basic-info">
                         <!-- 基本資料內容 -->
-                        <p>這裡是基本資料的內容。</p>
+                       @*  <p>這裡是基本資料的內容。</p> *@
 
 
-                        <br>
-                        <h2 class="text-center">個人檔案</h2>
+                        
+                        <h2 class="text-center" style="margin:50px">個人檔案</h2>
 
 
 
@@ -665,11 +681,8 @@
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
-                            1.  @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
-                            {
-                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
-                            }
-                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data" novalidate>
+                           @*  1.  *@
+                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data" >
                                 <div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
 
                                     <span class="text-danger validation-summary-valid" ></span>
@@ -699,7 +712,8 @@
                                                     <input type="hidden" asp-for="AspUserId" />
                                                     <div class="form-group">
                                                             <label for="username">會員名稱</label>
-                                                            <span> &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                            @* <span> &nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+                                                        <span class="required-tag">必填</span>
                                                             <input type="text" id="username" name="Name" asp-for="Name">
                                                     </div>
                                                     <span class="text-danger" asp-validation-for="Name"></span>
@@ -769,7 +783,7 @@
                                     </div>
                                 </div> <div class="buttons">
                                     <button type="reset" class="cancel">取消</button>
-                                        <button id="btnSubmit" type="submit">確定</button>
+                                        <button  id="btnSubmit" type="submit">確定</button>
                                 </div>
                                 </form>
 
@@ -1250,7 +1264,22 @@
             tabButtons[0].click();
         });
 
-       
+       //---------------------設定雞農出生日期合理範圍------------------------
+        // 取得當前日期
+        var today = new Date();
+
+        // 計算出合理的最小日期（假設年齡最大為 120 歲）
+        var minDate = new Date();
+        minDate.setFullYear(today.getFullYear() - 120); // 假設最大年齡為 120 歲
+
+        // 計算出合理的最大日期（今天 - 18 年，假設最小年齡為 18 歲）
+        var maxDate = new Date();
+        maxDate.setFullYear(today.getFullYear() - 18); // 最小年齡 18 歲
+
+        // 設置 input 的 min 和 max 屬性
+        document.getElementById("birthdate").setAttribute("min", minDate.toISOString().split('T')[0]);
+        document.getElementById("birthdate").setAttribute("max", maxDate.toISOString().split('T')[0]);
+
            
 
 
@@ -1274,6 +1303,30 @@
                 behavior: 'smooth' // 平滑滾動效果
             });
         });
+
+        //--------------------驗證會員輸入的資料是否有符合規則-------------------------
+         // 取得表單和提交按鈕
+    const form = document.getElementById('UserDataForm');
+        const submitBtn = document.getElementById('btnSubmit');
+    
+    // 正則表達式驗證
+    var emailPattern = /^[^@@\s]+@@[^@@\s]+\.[^@@\s]+$/;
+    var phonePattern = /^09\d{8}$/;
+
+    // 驗證欄位
+    function validateForm() {
+        var name = document.getElementById('username').value.trim() !== '';
+        var email = emailPattern.test(document.getElementById('email').value);
+        var phone = phonePattern.test(document.getElementById('phone').value);
+        
+        
+
+        // 如果所有欄位都有效，啟用提交按鈕，否則禁用
+        submitBtn.disabled = !(name && email && phone );
+    }
+
+    // 當表單輸入改變時進行驗證
+    form.addEventListener('input', validateForm);
 
 
         //-----------------------更新會員資料-----------------------
