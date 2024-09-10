@@ -76,6 +76,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(new { success = false, message = "提交商品失败，请重试。" });
         }
 
+		//根據商品分類提供相對應品項分類資料
         [HttpGet]
         public IActionResult GetItemsBySubcategory(int subcategoryNo)
         {
@@ -94,68 +95,98 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 
         //取得商品給編輯商品modal使用
+        //      [HttpGet]
+        //public IActionResult GetProductById(int productSid)
+        //{
+        //	var product = (from p in _context.Products
+        //				   join s in _context.ProductSubcategories
+        //				   on p.SubcategoryNo equals s.SubcategoryNo
+        //				   join i in _context.ProductItems
+        //				   on p.ItemNo equals i.ItemNo
+        //				   where p.ProductSid == productSid
+        //				   select new ProductViewModel
+        //				   {
+        //					   productSid = p.ProductSid,
+        //					   productName = p.ProductName,
+        //					   price = p.Price,
+        //					   subcategoryNo = p.SubcategoryNo,
+        //					   subcategoryName = s.SubcategoryName,  // 從聯結的ProductSubcategory表中獲取SubcategoryName
+        //					   itemNo = p.ItemNo,
+        //					   itemName = i.ItemName,  // 從聯結的ProductItems表中獲取ItemName
+        //					   description = p.Description,
+        //					   quantity = p.Quanitity,
+        //					   weight = p.Weight,
+        //					   component = p.Component,
+        //					   discountPercent = p.DiscountPercent
+        //				   }).FirstOrDefault();
+
+        //	if (product != null)
+        //	{
+        //		return Ok(product);
+        //	}
+        //	return NotFound(new { success = false, message = "找不到該商品!!" });
+        //}
+
+        // 根據 productSid 獲取商品資料給編輯商品modal使用
         [HttpGet]
-		public IActionResult GetProductById(int productSid)
-		{
-			var product = (from p in _context.Products
-						   join s in _context.ProductSubcategories
-						   on p.SubcategoryNo equals s.SubcategoryNo
-						   join i in _context.ProductItems
-						   on p.ItemNo equals i.ItemNo
-						   where p.ProductSid == productSid
-						   select new ProductViewModel
-						   {
-							   productSid = p.ProductSid,
-							   productName = p.ProductName,
-							   price = p.Price,
-							   subcategoryNo = p.SubcategoryNo,
-							   subcategoryName = s.SubcategoryName,  // 從聯結的ProductSubcategory表中獲取SubcategoryName
-							   itemNo = p.ItemNo,
-							   itemName = i.ItemName,  // 從聯結的ProductItems表中獲取ItemName
-							   description = p.Description,
-							   quantity = p.Quanitity,
-							   weight = p.Weight,
-							   component = p.Component,
-							   discountPercent = p.DiscountPercent
-						   }).FirstOrDefault();
+        public IActionResult GetProductById(int productSid)
+        {
+            var product = _context.Products
+                .Where(p => p.ProductSid == productSid)
+                .Select(p => new
+                {
+                    p.ProductSid,
+                    p.ProductName,
+                    p.Price,
+                    p.SubcategoryNo,
+                    SubcategoryName = p.SubcategoryNoNavigation.SubcategoryName,  // 假設 Subcategory 是外鍵
+                    p.ItemNo,
+                    ItemName = p.ItemNoNavigation.ItemName,  // 假設 Item 是外鍵
+                    p.Description,
+                    p.Quanitity,
+                    p.Weight,
+                    p.Component,
+                    p.DiscountPercent
+                }).FirstOrDefault();
 
-			if (product != null)
-			{
-				return Ok(product);
-			}
-			return NotFound(new { success = false, message = "找不到該商品!!" });
-		}
+            if (product == null)
+            {
+                return NotFound();
+            }
 
-		//編輯上架商品
-		[HttpPost]
-		public IActionResult EditProduct([FromBody] ProductViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var product = _context.Products.FirstOrDefault(p => p.ProductSid == model.productSid);
-				if (product != null)
-				{
-					// 更新商品資料，保持庫存和上架時間不變
-					product.ProductSid = model.productSid;
-					product.ProductName = model.productName;
-					product.Price = model.price;
-					product.SubcategoryNo = model.subcategoryNo;
-					product.ItemNo = model.itemNo;
-					product.Description = model.description;
-					product.Quanitity = model.quantity;
-					product.Weight = model.weight;
-					product.DiscountPercent = model.discountPercent;
+            return Json(product);
+        }
 
-					_context.SaveChanges();
-					return Ok(new { success = true });
-				}
-				return NotFound(new { success = false, message = "找不到該商品。" });
-			}
-			return BadRequest(new { success = false, message = "無效的資料。" });
-		}
+        //編輯上架商品
+        [HttpPost]
+        public IActionResult EditProduct(ProductViewModel model)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductSid == model.productSid);
 
-		//刪除上架及審核中的商品
-		[HttpPost]
+            if (product == null)
+            {
+                return Json(new { success = false, message = "商品未找到" });
+            }
+
+            // 更新商品資料
+            product.ProductName = model.productName;
+            product.Price = model.price;
+            product.SubcategoryNo = model.subcategoryNo;
+            product.ItemNo = model.itemNo;
+            product.Description = model.description;
+            product.Quanitity = model.quantity;
+            product.Weight = model.weight;
+            product.Component = model.component;
+            product.DiscountPercent = model.discountPercent;
+
+            _context.SaveChanges();
+
+            // 返回更新後的商品資料
+            return Json(new { success = true, updatedProduct = product });
+        }
+
+        //刪除上架及審核中的商品
+        [HttpPost]
 		public IActionResult DeleteProduct([FromBody] DeleteRequestDTO _deleteRequestDTO)
 		{
 			var product = _context.Products.FirstOrDefault(p => p.ProductSid == _deleteRequestDTO.productSid);
