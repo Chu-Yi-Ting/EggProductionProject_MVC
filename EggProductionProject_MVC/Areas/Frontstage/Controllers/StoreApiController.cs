@@ -76,6 +76,22 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(new { success = false, message = "提交商品失败，请重试。" });
         }
 
+        [HttpGet]
+        public IActionResult GetItemsBySubcategory(int subcategoryNo)
+        {
+            // 根據商品分類ID查詢相關的品項分類
+            var items = _context.ProductItems
+                .Where(i => i.SubcategoryNo == subcategoryNo) // 根據分類ID過濾品項
+                .Select(i => new
+                {
+                    i.ItemNo,
+                    i.ItemName
+                })
+                .ToList();
+
+            return Json(items);
+        }
+
 
         //取得商品給編輯商品modal使用
         [HttpGet]

@@ -222,12 +222,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 				s.SubcategoryName
 			}).ToList();
 
-			ViewBag.Items = _context.ProductItems.Select(i => new
-			{
-				i.ItemNo,
-				i.ItemName
-			}).ToList();
-
 			return View(model);
         }
 

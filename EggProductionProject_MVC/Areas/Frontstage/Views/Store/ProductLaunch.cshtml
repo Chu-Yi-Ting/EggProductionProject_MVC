@@ -300,7 +300,9 @@
                                 </div>
                                 <select class="form-select"
                                         id="subcategoryNo"
-                                        name="subcategoryNo">
+                                        name="subcategoryNo" 
+                                        onchange="updateItemOptions()">
+                                    <option value="">請選擇商品分類</option>
                                     <!-- 動態生成選項 -->
                                     @foreach (var subcategory in ViewBag.Subcategories)
                                     {
@@ -317,11 +319,7 @@
                                 <select class="form-select"
                                         id="itemNo"
                                         name="itemNo">
-                                    <!-- 動態生成選項 -->
-                                    @foreach (var item in ViewBag.Items)
-                                    {
-                                        <option value="@item.ItemNo">@item.ItemName</option>
-                                    }
+                                    <!-- 品項選項將根據AJAX請求進行更新 -->                      
                                 </select>
                             </div>
 
@@ -677,6 +675,30 @@
             e.preventDefault(); // 阻止表單的默認提交
             $('#confirmSubmitModal').modal('show');
         });
+
+        //根據商品分類再局部更新品項分類的下拉式選單
+        async function updateItemOptions() {
+            const subcategoryNo = document.getElementById('subcategoryNo').value;
+
+            try {
+                // 發送AJAX請求到後端
+                const api = `@Url.Content("~/Frontstage/StoreApi/GetItemsBySubcategory")?subcategoryNo=${subcategoryNo}`
+                const response = await fetch(api);
+                const data = await response.json();
+                console.log(data);
+                const itemSelect = document.getElementById('itemNo');
+                itemSelect.innerHTML = ''; // 清空現有的選項
+
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.itemNo;
+                    option.text = item.itemName;
+                    itemSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        }
 
         //確認的Modal按下"是"，提交表單給ProductLaunch的API
         document.getElementById('confirmSubmitYes').addEventListener('click', async function () {
