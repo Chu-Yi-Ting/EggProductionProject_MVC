@@ -8,7 +8,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
-    public class ProductApiController : Controller
+	[Area("Frontstage")]
+	public class ProductApiController : Controller
     {
         private readonly EggPlatformContext _context;
         private readonly IWebHostEnvironment _hostingEnvironment;

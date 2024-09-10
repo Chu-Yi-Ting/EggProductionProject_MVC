@@ -151,7 +151,7 @@
 							<p>訂單相關</p>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="nav-link active" aria-current="page">
+							<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index" class="nav-link active" aria-current="page">
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#one"></use></svg>
 								訂單管理
 							</a>
@@ -160,13 +160,13 @@
 							<p>物流相關</p>
 						</li>
 						<li>
-							<a href="#" class="nav-link link-gray">
+							<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="trackSearch" class="nav-link link-gray">
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
 								物流查詢
 							</a>
 						</li>
 						<li>
-							<a href="#" class="nav-link link-gray">
+							<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="trackControl" class="nav-link link-gray">
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
 								物流設定
 							</a>
@@ -175,18 +175,18 @@
 							<p>商城相關</p>
 						</li>
 						<li>
-							<a href="#" class="nav-link link-gray">
+							<a asp-area="Frontstage" asp-controller="Store" asp-action="SellerInformation" class="nav-link link-gray">
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
 								基本資料
 							</a>
 						</li>
 						<li>
-							<a href="#" class="nav-link link-gray">
+							<a asp-area="Frontstage" asp-controller="Store" asp-action="ProductLaunch" class="nav-link link-gray">
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
 								商品上架
 							</a>
 						</li>
-						<li class="nav-item">
+					@* 	<li class="nav-item">
 							<p>廣告相關</p>
 						</li>
 						<li>
@@ -194,7 +194,7 @@
 								<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
 								廣告投放
 							</a>
-						</li>
+						</li> *@
 					</ul>
 					<hr>
 					<div class="dropdown">
@@ -204,7 +204,7 @@
 						</a>
 						<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
 							<li><a class="dropdown-item" href="#">首頁</a></li>
-							<li><a class="dropdown-item" href="#">商城</a></li>
+							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop">商城</a></li>
 							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="#">會員中心</a></li>
 						</ul>

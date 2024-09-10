@@ -15,5 +15,7 @@ public partial class ProductItem
 
     public string ItemDescription { get; set; }
 
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
     public virtual ProductSubcategory SubcategoryNoNavigation { get; set; }
 }

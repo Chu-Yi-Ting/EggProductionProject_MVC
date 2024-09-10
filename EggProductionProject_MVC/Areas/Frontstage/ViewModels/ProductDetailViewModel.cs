@@ -1,6 +1,6 @@
 ﻿namespace EggProductionProject_MVC.Areas.Frontstage.ViewModels
 {
-    internal class ProductDetailViewModel
+    public class ProductDetailViewModel
     {
         public int? productSid { get; set; }
         public string? productImagePath { get; set; }

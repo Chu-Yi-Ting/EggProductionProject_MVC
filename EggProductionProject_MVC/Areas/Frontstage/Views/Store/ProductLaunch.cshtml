@@ -1,0 +1,943 @@
+﻿@model EggProductionProject_MVC.Areas.Frontstage.ViewModels.ProductLaunchViewModel
+
+@{
+    Layout = "_FrontLayout_store";
+}
+
+
+@section Styles {
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .btn-custom {
+            background-color: #b8860b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
+            font-size: 16px;
+        }
+
+            .btn-custom:hover {
+                background-color: #a37006;
+            }
+
+        /* 通用的確認 Modal 樣式（針對新增、編輯、刪除確認的模態框） */
+        .confirm-modal .modal-content {
+            background-color: #fff; /* 背景顏色 */
+            border-radius: 10px; /* 圓角 */
+        }
+
+        .confirm-modal .modal-header {
+            border-bottom: none; /* 去掉邊框 */
+        }
+
+        .confirm-modal .modal-footer {
+            border-top: none; /* 去掉邊框 */
+        }
+
+        .confirm-modal .modal-dialog {
+            max-width: 400px; /* 調整寬度 */
+        }
+
+        /* 按鈕顏色與樣式的對齊 */
+        .confirm-modal .btn-secondary {
+            background-color: #aebcc9;
+            border: none;
+        }
+
+            .confirm-modal .btn-secondary:hover {
+                background-color: #6c757d;
+            }
+
+        .confirm-modal .btn-primary {
+            background-color: #cb9205;
+            border: none;
+        }
+
+            .confirm-modal .btn-primary:hover {
+                background-color: #e0a800;
+            }
+
+        .modal-body {
+            max-height: 70vh; /* 設定最大高度為視窗高度的70% */
+            overflow-y: auto; /* 超出時自動顯示滾動條 */
+        }
+
+        .table th,
+        .table td {
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #b8860b !important;
+            /* 強制應用棕色邊界 */
+            color: #333;
+            padding: 10px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1055;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .search-box input {
+                width: 200px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: 1px solid #dee2e6;
+            }
+    </style>
+
+}
+
+<div class=" col-12">
+    <div class="page-title">
+        <h5 class="mb-3">商品上架</h5>
+    </div>
+
+    <!-- 上方導覽列 -->
+    <div class="tab-see mb-3">
+        <ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one"
+                        aria-selected="true">
+                    當前上架
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-two" type="button" role="tab"
+                        aria-controls="pills-two" aria-selected="false">
+                    審核中
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- bootstrap的tab樣式，點擊導覽列會切換不同分頁-->
+    <div class="tab-content" id="pills-tabContent">
+        <!-- 導覽列第一頁 當前上架-->
+        <div class="tab-pane fade show active" id="pills-one" role="tabpanel"
+             aria-labelledby="pills-one-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="notify-title d-flex align-items-center">
+                    <img src="~/assets/brand/common/loudspeaker.svg" alt="loudspeaker" style="width: 24px;">
+                    <span style="font-size: 14px;">流程提醒 : 完成新增後，經GOOD EGG官方審核，產品將自動上架!!</span>
+                </div>
+                <div class="search-box d-flex justify-content-end align-items-center mb-3">
+                    <!-- 新增商品的彈跳視窗按鈕 -->
+                    <button class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">新增</button>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="輸入商品名稱"
+                               aria-label="輸入商品名稱" aria-describedby="button-addon2">
+                        <button class="btn btn-custom" type="button" id="button-addon2">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>商品名稱</th>
+                        <th>商品售價</th>
+                        <th>庫存(數)</th>
+                        <th>上架日期</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.CurrentProducts)
+                    {
+                        <tr id="product-row-@product.productSid">
+                            <td>@product.productName</td>
+                            <td>$@product.price</td>
+                            <td>@product.stock</td>
+                            <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
+                            <td>
+                                <button class="btn btn-custom"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editProductModal"
+                                        onclick="openEditModal(@product.productSid)">
+                                    編輯
+                                </button>
+                                <button class="btn btn-custom" onclick="openDeleteModal(@product.productSid)">刪除</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 導覽列第二頁 審核中 -->
+        <div class="tab-pane fade" id="pills-two" role="tabpanel"
+             aria-labelledby="pills-three-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="notify-title d-flex align-items-center">
+                    <img src="~/assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
+                    <span style="font-size: 14px;">流程提醒 : 耐心等待GOOD EGG官方審核，商品將自動上架!!</span>
+                </div>
+                <div class="search-box d-flex justify-content-end align-items-center mb-3">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="輸入商品名稱"
+                               aria-label="輸入商品名稱" aria-describedby="button-addon2">
+                        <button class="btn btn-custom" type="button" id="button-addon2">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>商品名稱</th>
+                        <th>商品售價</th>
+                        <th>庫存(數)</th>
+                        <th>申請日期</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.ReviewingProducts)
+                    {
+                        <tr id="product-row-@product.productSid">
+                            <td>@product.productName</td>
+                            <td>$@product.price</td>
+                            <td>@product.stock</td>
+                            <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
+                            <td>
+                                <button class="btn btn-custom me-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editProductModal"
+                                        onclick="openEditModal(@product.productSid)">
+                                    編輯
+                                </button>
+                                <button class="btn btn-custom" onclick="openDeleteModal(@product.productSid)">取消審核</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 商品新增的彈跳視窗 -->
+<form id="productForm" enctype="multipart/form-data">
+    <div class="modal modal-n fade"
+         id="exampleModalToggle"
+         aria-hidden="true"
+         aria-labelledby="exampleModalToggleLabel"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">新增商品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
+                            <!-- 商品名稱 -->
+                            <div class="form-control-n">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品名稱<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="productName"
+                                       name="productName"
+                                       placeholder="請輸入商品名稱"
+                                       aria-label="商品名稱" />
+                            </div>
+
+                            <!-- 商品價格 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品價格<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="price"
+                                       name="price"
+                                       placeholder="請輸入商品價格"
+                                       aria-label="商品價格" />
+                            </div>
+
+                            <!-- 庫存數量 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">庫存數量<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="stock"
+                                       name="stock"
+                                       placeholder="請輸入庫存數量"
+                                       aria-label="庫存數量" />
+                            </div>
+
+                            <!-- 商品分類 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品分類<span></span></div>
+                                </div>
+                                <select class="form-select"
+                                        id="subcategoryNo"
+                                        name="subcategoryNo" 
+                                        onchange="updateItemOptions()">
+                                    <option value="">請選擇商品分類</option>
+                                    <!-- 動態生成選項 -->
+                                    @foreach (var subcategory in ViewBag.Subcategories)
+                                    {
+                                        <option value="@subcategory.SubcategoryNo">@subcategory.SubcategoryName</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- 品項分類 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">品項分類<span></span></div>
+                                </div>
+                                <select class="form-select"
+                                        id="itemNo"
+                                        name="itemNo">
+                                    <!-- 品項選項將根據AJAX請求進行更新 -->                      
+                                </select>
+                            </div>
+
+                            <!-- 商品描述 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品描述<span></span></div>
+                                </div>
+                                <textarea class="form-control form-control-sm"
+                                          id="description"
+                                          name="description"
+                                          rows="3"
+                                          placeholder="請輸入商品描述"
+                                          aria-label="商品描述"></textarea>
+                            </div>
+
+                            <!-- 單位數量 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">單位數量<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="quantity"
+                                       name="quantity"
+                                       placeholder="請輸入商品單位數量"
+                                       aria-label="單位數量" />
+                            </div>
+
+                            <!-- 重量 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">重量(g)<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="weight"
+                                       name="weight"
+                                       placeholder="請輸入商品重量"
+                                       aria-label="重量" />
+                            </div>
+
+                            <!-- 成分 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">成分<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="component"
+                                       name="component"
+                                       placeholder="請輸入商品成分"
+                                       aria-label="成分" />
+                            </div>
+
+                            <!-- 折扣百分比 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">折扣比率<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       step="0.01"
+                                       min="0" max="1"
+                                       id="discountPercent"
+                                       name="discountPercent"
+                                       placeholder="請輸入折扣比率"
+                                       aria-label="折扣比率" />
+                            </div>
+
+                            <!-- 送出按鈕 -->
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n" type="submit" id="confirmSubmitButton">
+                                    送出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- 商品編輯的彈跳視窗 -->
+<form id="editProductForm" enctype="multipart/form-data">
+    <div class="modal modal-n fade"
+         id="editProductModal"         
+         aria-hidden="true"
+         aria-labelledby="editProductModalLabel"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header px-4 mx-4 pb-0 mt-2">
+                    <h5 class="modal-title" id="editProductModalLabel">編輯商品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
+                            <!-- 商品Sid -->
+                            <input type="hidden" id="editProductSid" name="productSid" />
+
+                            <!-- 商品名稱 -->
+                            <div class="form-control-n">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品名稱<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="editProductName"
+                                       name="productName"
+                                       aria-label="商品名稱" />
+                            </div>
+
+                            <!-- 商品價格 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品價格<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="editPrice"
+                                       name="price"
+                                       aria-label="商品價格" />
+                            </div>
+
+                            <!-- 商品分類 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品分類<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="editSubcategoryName"
+                                       name="subcategoryName"
+                                       aria-label="商品分類名稱" readonly />
+
+                                <input type="hidden"
+                                       id="editSubcategoryNo"
+                                       name="subcategoryNo"
+                                       aria-label="商品分類編號" />
+                            </div>
+
+                            <!-- 品項分類 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">品項分類<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="editItemName"
+                                       name="itemName"
+                                       aria-label="品項分類名稱" readonly />
+
+                                <input type="hidden"
+                                       id="editItemNo"
+                                       name="itemNo"
+                                       aria-label="品項分類編號" />
+                            </div>
+
+                            <!-- 商品描述 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品描述<span></span></div>
+                                </div>
+                                <textarea class="form-control form-control-sm"
+                                          id="editDescription"
+                                          name="description"
+                                          rows="3"
+                                          aria-label="商品描述"></textarea>
+                            </div>
+
+                            <!-- 單位數量 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">單位數量(個)<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="editQuantity"
+                                       name="quantity"
+                                       aria-label="單位數量" />
+                            </div>
+
+                            <!-- 重量 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">重量(g)<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       id="editWeight"
+                                       name="weight"
+                                       aria-label="重量" />
+                            </div>
+
+                            <!-- 成分 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">成分<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="text"
+                                       id="editComponent"
+                                       name="component"
+                                       aria-label="成分" />
+                            </div>
+
+                            <!-- 折扣百分比 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">折扣比率<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="number"
+                                       step="0.01"
+                                       min="0" max="1"
+                                       id="editDiscount"
+                                       name="discountPercent"
+                                       aria-label="折扣比率" />
+                            </div>
+
+                            <!-- 保存變更 -->
+                            <div class="w-100 submit mt-4 mb-3">
+                                <button class="btn dark-btn-n" type="submit" id="submitEditButton">
+                                    保存變更
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- 商品上架確認送出的 Modal -->
+<div class="modal fade confirm-modal" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- 調整寬度為小 -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmSubmitModalLabel">確認送出</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                您是否要送出商品上架資料？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmitYes">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 商品編輯確認送出的 Modal -->
+<div class="modal fade confirm-modal" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- 調整寬度為小 -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEditModalLabel">確認變更</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                您是否要變更商品資料？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                <button type="button" class="btn btn-primary" id="confirmEditYes">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 刪除商品確認的 Modal -->
+<div class="modal fade confirm-modal" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <!-- 調整寬度為小 -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                您確定要刪除此商品嗎？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmDeleteYes">確定刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Toast商品上架成功寫入資料庫會發出通知 -->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="createToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+                <strong class="me-auto">通知</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                商品已成功送出審核!
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 編輯成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="editToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            商品已成功編輯資訊!
+        </div>
+    </div>
+</div>
+
+
+<!-- 刪除成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            商品已成功刪除!
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        //-----商品上架功能---------------------------------------------------------------
+        // 商品上架modal送出按鈕綁定事件，顯示確認的Modal
+        $('#confirmSubmitButton').click(function (e) {
+            e.preventDefault(); // 阻止表單的默認提交
+            $('#confirmSubmitModal').modal('show');
+        });
+
+        //根據商品分類再局部更新品項分類的下拉式選單
+        async function updateItemOptions() {
+            const subcategoryNo = document.getElementById('subcategoryNo').value;
+
+            try {
+                // 發送AJAX請求到後端
+                const api = `@Url.Content("~/Frontstage/StoreApi/GetItemsBySubcategory")?subcategoryNo=${subcategoryNo}`
+                const response = await fetch(api);
+                const data = await response.json();
+                console.log(data);
+                const itemSelect = document.getElementById('itemNo');
+                itemSelect.innerHTML = ''; // 清空現有的選項
+
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.itemNo;
+                    option.text = item.itemName;
+                    itemSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        }
+
+        //確認的Modal按下"是"，提交表單給ProductLaunch的API
+        document.getElementById('confirmSubmitYes').addEventListener('click', async function () {
+            // 获取表单元素
+            const form = document.getElementById('productForm');
+            const formData = new FormData(form);
+
+            try {
+                // 使用 fetch API 发送表单数据
+                const api = '@Url.Content("~/Frontstage/StoreApi/ProductLaunch")'
+                const response = await fetch(api, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 显示成功的 Toast 通知
+                    showCreateToast('商品已成功送出審核!');
+
+                    // 清空表单内容
+                    form.reset();
+
+                    // 更新審核中页面的商品列表
+                    addProductToReviewingTab(result.newProduct);
+
+                    // 关闭兩個弹出窗口            
+                    const confirmSubmitModal = bootstrap.Modal.getInstance(document.getElementById('confirmSubmitModal'));
+                    confirmSubmitModal.hide();
+                    const exampleModal = bootstrap.Modal.getInstance(document.getElementById('exampleModalToggle'));
+                    exampleModal.hide();
+                } else {
+                    alert('提交失败: ' + result.message);
+                }
+            } catch (error) {
+                console.error('提交时发生错误:', error);
+                alert('提交时发生错误，请稍后再试。');
+            }
+        });
+
+        //表單資料成功送到後端，返回成功，跳出成功通知toast
+        function showCreateToast(message) {
+            const toastElement = document.getElementById('createToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+            toastBody.textContent = message;
+            const toast = new bootstrap.Toast(toastElement);
+            setTimeout(function () {
+                toast.show();
+            }, 1000);
+        }
+
+        // 更新審核中分頁局部内容
+        function addProductToReviewingTab(product) {
+            const table = document.querySelector('#pills-two tbody');
+            const newRow = `
+                <tr id="product-row-${product.productSid}">
+                    <td>${product.productName}</td>
+                    <td>$${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.launchTime}</td>
+                    <td>
+                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
+                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
+                    </td>
+                </tr>`;
+            table.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        // 當使用者按下 "否" 時，關閉兩個 Modal
+        $('#confirmSubmitModal .btn-secondary').click(function () {
+            $('#confirmSubmitModal').modal('hide'); // 隱藏確認的 Modal
+            $('#exampleModalToggle').modal('hide'); // 同時隱藏商品上架 Modal
+        });
+
+
+        //-----編輯功能---------------------------------------------------------------        
+        // 點擊編輯按鈕，發送請求取得商品資料，並將資料顯示在編輯的modal中
+        async function openEditModal(productSid) {
+            try {
+                const api = `@Url.Content("~/Frontstage/StoreApi/GetProductById")?productSid=${productSid}`;
+                const response = await fetch(api);
+                const product = await response.json();
+
+                // 將資料填入編輯 modal 的表單中
+                document.getElementById('editProductSid').value = product.productSid;
+                document.getElementById('editProductName').value = product.productName;
+                document.getElementById('editPrice').value = product.price;
+                document.getElementById('editSubcategoryNo').value = product.subcategoryNo;
+                document.getElementById('editSubcategoryName').value = product.subcategoryName;
+                document.getElementById('editItemNo').value = product.itemNo;
+                document.getElementById('editItemName').value = product.itemName;
+                document.getElementById('editDescription').value = product.description;
+                document.getElementById('editQuantity').value = product.quantity;
+                document.getElementById('editWeight').value = product.weight;
+                document.getElementById('editComponent').value = product.component;
+                document.getElementById('editDiscount').value = product.discountPercent;
+
+                // 顯示編輯的modal
+                const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                editModal.show();
+            } catch (error) {
+                console.error('獲取商品資料時發生錯誤:', error);
+            }
+        }
+
+        // 編輯商品表單modal中當點擊保存變更送出按鈕時，顯示確認的Modal
+        $('#submitEditButton').click(function (e) {
+            e.preventDefault(); // 阻止表單的默認提交
+            $('#confirmEditModal').modal('show');
+        });
+            
+
+        // 編輯:當使用者按下 "是" 時，提交表單
+        document.getElementById('confirmEditYes').addEventListener('click', async function () {
+
+            const form = document.getElementById('editProductForm');
+            const formData = new FormData(form);
+
+            try {
+                const api = '@Url.Content("~/Frontstage/StoreApi/EditProduct")';
+                const response = await fetch(api, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 显示編輯成功的 Toast 通知
+                    showEditToast('商品已成功編輯資訊!');
+
+                    // 局部更新表格中的商品資料
+                    editProductToLaunchTab(result);
+                   
+
+                    // 隱藏編輯的modal和確認的modal
+                    const confirmEditModal = bootstrap.Modal.getInstance(document.getElementById('confirmEditModal'));
+                    confirmEditModal.hide();
+
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                    editModal.hide();
+
+                    // 手動移除 `.modal-backdrop` 避免遮罩留在頁面上
+                    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                } else {
+                    alert('更新失敗：' + result.message);
+                }
+            } catch (error) {
+                console.error('更新商品資料時發生錯誤:', error);
+                alert('更新失敗，請稍後再試。');
+            }
+        });
+
+        //表單資料成功送到後端，返回成功，跳出成功通知toast
+        function showEditToast(message) {
+            const toastElement = document.getElementById('editToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+            toastBody.textContent = message;
+            const toast = new bootstrap.Toast(toastElement);
+            setTimeout(function () {
+                toast.show();
+            }, 1000);
+        }
+
+        // 更新當前上架中分頁局部内容
+        function editProductToLaunchTab(result) {
+            const row = document.getElementById(`product-row-${result.updatedProduct.productSid}`);
+            row.querySelector('td:nth-child(1)').textContent = result.updatedProduct.productName;
+            row.querySelector('td:nth-child(2)').textContent = `$${result.updatedProduct.price}`;
+            row.querySelector('td:nth-child(3)').textContent = result.updatedProduct.stock;
+            row.querySelector('td:nth-child(4)').textContent = result.updatedProduct.launchTime;
+        }
+
+        // 當使用者按下 "否" 時，關閉兩個 Modal
+        $('#confirmEditModal .btn-secondary').click(function () {
+            $('#confirmEditModal').modal('hide'); // 隱藏確認的 Modal
+            $('#editProductModal').modal('hide'); // 同時隱藏編輯商品Modal
+            // 手動移除 `.modal-backdrop` 避免遮罩留在頁面上
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        });
+
+        //-----刪除鍵功能-----------------------------------------------------------
+        // 按下刪除鍵，顯示刪除確認modal
+        function openDeleteModal(productSid) {
+            selectedProductSid = productSid;
+            console.log("要删除的商品ID:", selectedProductSid);
+            const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            deleteModal.show();
+        }
+
+        // 刪除確認modal的刪除確定按鈕綁定事件
+        let selectedProductSid = null;
+
+        document.getElementById('confirmDeleteYes').addEventListener('click', async function () {
+            if (selectedProductSid !== null) {
+                try {
+                    const api = '@Url.Content("~/Frontstage/StoreApi/DeleteProduct")'
+                    const response = await fetch(api, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productSid: selectedProductSid })
+                    });
+
+                    const data = await response.json();
+                    console.log(data);  // 查看伺服器返回的資料
+
+                    if (data.success) {
+                        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+                        deleteModal.hide();
+                        // 成功刪除後顯示 Toast
+                        showDeleteToast('商品已成功刪除');
+
+                        // 局部更新，移除該商品的行
+                        const productRow = document.getElementById(`product-row-${selectedProductSid}`);
+                        if (productRow) {
+                            productRow.remove(); // 從 DOM 中删除該行
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('刪除失敗，請稍後再試。');
+                }
+            }
+        });
+
+        function showDeleteToast(message) {
+            const toastElement = document.getElementById('deleteToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+            toastBody.textContent = message;
+            const toast = new bootstrap.Toast(toastElement);
+            setTimeout(function () {
+                toast.show();
+            }, 1000);
+        }
+    </script>
+}
