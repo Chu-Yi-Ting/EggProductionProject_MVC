@@ -80,17 +80,39 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             public int GorBsid { get; set; }
             public int? MemberNo { get; set; }
+            public MemberDto? Member { get; set; } // 添加MemberDto以显示用户信息
+            public int? ArticleSid { get; set; }  // 新增文章 ID
+            public int? ReplySid { get; set; }    // 新增回覆 ID
             public DateTime? GorBdate { get; set; }
             public int GorBtype { get; set; }
         }
-
+        public class ArticleReactionCountDto
+        {
+            public int ArticleSid { get; set; }
+            public int LikeCount { get; set; }
+            public int DislikeCount { get; set; }
+            public List<GoodorBadDto> Reactions { get; set; }
+        }
         public class ReplyDto
         {
+            public int ArticleSid { get; set; }
             public int ReplySid { get; set; }
             public string ReplyInfo { get; set; } = null!;
             public DateTime? ReplyDate { get; set; }
             public int? EditTimes { get; set; }
             public MemberDto? ArticleCreator { get; set; }
+            public int GorBtype { get; set; }
+            public int LikeCount { get; set; }    // 新增按讚數
+            public int DislikeCount { get; set; } // 新增點噓數
+            public PublicStatusDto? PublicStatus { get; set; }
+            public List<MemberDto> LikedByUsers { get; set; } // 点赞的用户
+            public List<MemberDto> DislikedByUsers { get; set; } // 点噓的用户
+        }
+        public class ReplyReactionCountDto
+        {
+            public int ReplySid { get; set; }
+            public int LikeCount { get; set; }
+            public int DislikeCount { get; set; }        
         }
     }
 }

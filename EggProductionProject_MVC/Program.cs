@@ -21,7 +21,6 @@ builder.Services.AddCors(option =>
         builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 //跨域測試
-
 //關閉傳送Json駝峰式命名
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
