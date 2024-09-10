@@ -1,41 +1,76 @@
 ﻿@using EggProductionProject_MVC.Data
 @using Microsoft.AspNetCore.Identity
-
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
     
-<ul class="navbar-nav">
+
     @if(User.Identity.IsAuthenticated)
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-       
-    </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Frontstage" asp-controller="Members" asp-action="MemberPage">前往會員頁面</a>
-        </li>
-        <div>
-           
+        <div class="offcanvas-footer">
+
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <div class="logoin-user">
+                        <div class="border-img">
+                            @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                            {
+                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                            }
+                            else
+                            {
+                                <img src="~/memberimg/nopicchick.jpg" />
+                            }
+
+                        </div>
+                        @* Alice *@
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                        {
+                            <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                        }
+                    </div>
+                </li>
+            </ul>
+            
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                    <button type="submit" class="btn ">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                        登出
+                    </button>
+                </form>
+            
+
         </div>
 }
 
 else
 {
-    <li class="nav-item">
-       @*  <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">註冊</a> *@
-    </li>
-    <li class="nav-item">
-            @* <a class="nav-link text-dark" asp-controller="AccountLogin" asp-action="Index">登入</a> *@
-            
-        </li>
-        <li class="nav-item">
-            @* <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a> *@
-        </li>
-        <li class="nav-item">
-            @* <a class="nav-link text-dark" asp-area="Frontstage" asp-controller="MemLogin" asp-action="index">前台登入</a> *@
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">登入/註冊</a>
-        </li>
+        <div class="offcanvas-footer">
+
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <div class="logoin-user">
+                        <div class="border-img">
+							<img src="~/memberimg/nopicchick.jpg" />
+
+                        </div>
+                <li class="nav-item">
+
+                    
+                </li>
+                    </div>
+                </li>
+            </ul>
+            <div>
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">登入/註冊</a>
+    </div>
+        </div>
+
+
+
+
+    
 }
-</ul>
+

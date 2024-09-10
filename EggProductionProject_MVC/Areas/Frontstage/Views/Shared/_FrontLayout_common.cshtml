@@ -45,10 +45,10 @@
                         <i class="fa-solid fa-cart-shopping"></i>
                     </a>
 
-                    <a href="#"
+                    <a href="@(User.Identity.IsAuthenticated? Url.Action("MemberPage", "Members", new { area = "Frontstage" }):Url.Action("Login", "Account", new { area = "Identity" } ))"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
-
+                        
                         @{
                             if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
                             {
@@ -121,7 +121,7 @@
                         <span>網站服務</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="/Members/MemberPage">
                             <i class="fa-solid fa-user-large me-2"></i>
                             會員中心
                         </a>
@@ -129,41 +129,7 @@
                 </ul>
             </div>
 
-            <div class="offcanvas-footer">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <div class="logoin-user">
-                            <div class="border-img">
-                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
-                                {
-                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
-                                }
-                            </div>
-                            @* Alice321 *@
-                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
-                            {
-                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
-                            }
-                        </div>
-                    </li>
-                </ul>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-
-                        <button type="submit" class="btn ">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-
-                            登出
-                        </button>
-                    </form>
-                }
-
-
-
-
-
-            </div>
+           <partial name="_LoginPartial"/>
         </div>
     </header>
 

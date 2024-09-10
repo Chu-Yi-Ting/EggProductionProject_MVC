@@ -129,6 +129,7 @@
             </div>
 
             <div class="offcanvas-footer">
+                
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
                         <div class="logoin-user">
@@ -149,11 +150,14 @@
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button type="button" class="btn ">
-                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
 
-                        登出
-                    </button>
+                        <button type="submit" class="btn ">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                            登出
+                        </button>
+                    </form>
                 }
        
             </div>
