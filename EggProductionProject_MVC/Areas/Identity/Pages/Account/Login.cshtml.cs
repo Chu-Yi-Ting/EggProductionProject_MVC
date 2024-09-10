@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using EggProductionProject_MVC.Models;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -20,14 +21,16 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
+        private readonly EggPlatformContext _context;
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+             EggPlatformContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -95,9 +98,20 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
                     // 這裡你可以存取到 user.Id 或其他使用者資料
                     
-                    var userEmail = user.Email;
-                    HttpContext.Session.SetString("userId", user.Id);
                     
+                    var userEmail = user.Email;
+
+                    //登入的時候如果有找到該名會員(aspid去找)
+                    var member = _context.Members.FirstOrDefault(x => x.AspUserId == user.Id);
+
+                    //登入時儲存使用者名稱、AspID、大頭貼路徑
+                    if (member != null) 
+                    {
+                        HttpContext.Session.SetString("userName", member.Name);
+                        HttpContext.Session.SetString("userProfilePic", member.ProfilePic);
+                    }
+                        HttpContext.Session.SetString("userId", user.Id);
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

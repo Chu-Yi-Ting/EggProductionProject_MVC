@@ -24,6 +24,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+
+
         [HttpGet]
         // GET: Frontstage/Members
         public async Task<IActionResult> MemberPage()
@@ -306,4 +308,5 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return _context.Members.Any(e => e.MemberSid == id);
         }
     }
+   
 }

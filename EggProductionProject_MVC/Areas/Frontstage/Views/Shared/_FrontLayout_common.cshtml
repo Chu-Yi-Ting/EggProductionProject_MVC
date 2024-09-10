@@ -48,11 +48,26 @@
                     <a href="#"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
-                        <img src="https://github.com/mdo.png"
-                             alt="mdo"
-                             width="28"
-                             height="28"
-                             class="rounded-circle" />
+
+                        @{
+                            if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                            {
+                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+                                     alt="mdo"
+                                     width="28"
+                                     height="28"
+                                     class="rounded-circle" />
+                            }
+                            else
+                            {
+                                <img src="~/memberimg/nopicchick.jpg"
+                                     alt="mdo"
+                                     width="28"
+                                     height="28"
+                                     class="rounded-circle" />
+                            }
+                                        
+                        }
                     </a>
                     <button class="navbar-toggler link-dark text-decoration-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i class="fa-solid fa-bars"></i>
@@ -119,16 +134,30 @@
                     <li class="nav-item">
                         <div class="logoin-user">
                             <div class="border-img">
-                                <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png">
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                                {
+                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                }
                             </div>
-                            Alice
+                            @* Alice321 *@
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         </div>
                     </li>
                 </ul>
-                <button type="button" class="btn ">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                        <button type="submit" class="btn ">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                            登出
+                        </button>
+                    </form>
+                }
 
 
 

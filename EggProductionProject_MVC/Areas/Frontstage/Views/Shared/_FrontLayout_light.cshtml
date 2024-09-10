@@ -133,16 +133,29 @@
                     <li class="nav-item">
                         <div class="logoin-user">
                             <div class="border-img">
-                                <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png">
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                                {
+                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                }
+                               
                             </div>
-                            Alice
+                            @* Alice *@
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         </div>
                     </li>
                 </ul>
-                <button type="button" class="btn ">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button type="button" class="btn ">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                        登出
+                    </button>
+                }
+       
             </div>
         </div>
 

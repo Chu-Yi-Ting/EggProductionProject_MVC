@@ -1,4 +1,5 @@
 ﻿@model EggProductionProject_MVC.Models.Member
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 
     <!DOCTYPE html>
@@ -401,7 +402,7 @@
                       d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999zm2.493 8.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.319 1.319 0 0 0-.37.265.301.301 0 0 0-.057.09V14l.002.008a.147.147 0 0 0 .016.033.617.617 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.619.619 0 0 0 .146-.15.148.148 0 0 0 .015-.033L12 14v-.004a.301.301 0 0 0-.057-.09 1.318 1.318 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465-1.281 0-2.462-.172-3.34-.465-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411z" />
             </symbol>
         </svg>
-        <header>
+       @*  <header>
             <div class="container_title p-0 m-0">
                 <div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
                     <div class="outer-layout-n">
@@ -523,7 +524,10 @@
 
 
                                 alice
-                                @ViewBag.UserName
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         
                             </div>
                         </li>
@@ -540,7 +544,7 @@
                 </div>
             </div>
 
-        </header>
+        </header> *@
 
         <main>
             <div class="title-bg mb-3">
@@ -661,7 +665,10 @@
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
-                                1.  @ViewBag.UserName
+                            1.  @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                             <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data" novalidate>
                                 <div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
 
@@ -974,84 +981,84 @@
                             </div>
                             <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
                                 ..4.
-                                @{
-                                    if (Model.Chickcode == null)
-                                    {
-                                        <div>請先開通成為雞農身分!</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="tab-content" id="pills-tabContent">
-                                            <!-- 頁面一的內容 -->
-                                            <div class="form-section">
+                            @{
+                                if (Model.Chickcode == null)
+                                {
+                                    <img src="~/memberimg/chickopenfirst.jpg" />
+                                }
+                                else
+                                {
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <!-- 頁面一的內容 -->
+                                        <div class="form-section">
+                                            <hr />
+                                            <br />
+                                            <form>
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="date" class="form-label me-custom">填寫日期</label>
+                                                        <input type="date"
+                                                        class="form-control w-50"
+                                                        id="date"
+                                                        value="2024-06-18" />
+                                                    </div>
+                                                </div>
+                                                <br />
                                                 <hr />
                                                 <br />
-                                                <form>
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="date" class="form-label me-custom">填寫日期</label>
-                                                            <input type="date"
-                                                                   class="form-control w-50"
-                                                                   id="date"
-                                                                   value="2024-06-18" />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="region" class="form-label me-custom">區域</label>
+                                                        <select class="form-control w-50" id="region"></select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="flock" class="form-label me-custom">雞舍</label>
+                                                        <select class="form-control w-50" id="flock"></select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="production" class="form-label me-custom">產蛋數</label>
+                                                        <input type="number"
+                                                        class="form-control w-50"
+                                                        id="production" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="defective" class="form-label me-custom">不合格數</label>
+                                                        <input type="number"
+                                                        class="form-control w-50"
+                                                        id="defective" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="death" class="form-label me-custom">死亡數</label>
+                                                        <input type="number" class="form-control w-50" id="death" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end">
+                                                        <div class="w-50 d-flex justify-content-end">
+                                                            <button type="submit" class="btn light-btn-n">
+                                                                新增記錄
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <br />
-                                                    <hr />
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="region" class="form-label me-custom">區域</label>
-                                                            <select class="form-control w-50" id="region"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="flock" class="form-label me-custom">雞舍</label>
-                                                            <select class="form-control w-50" id="flock"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="production" class="form-label me-custom">產蛋數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="production" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="defective" class="form-label me-custom">不合格數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="defective" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="death" class="form-label me-custom">死亡數</label>
-                                                            <input type="number" class="form-control w-50" id="death" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end">
-                                                            <div class="w-50 d-flex justify-content-end">
-                                                                <button type="submit" class="btn light-btn-n">
-                                                                    新增記錄
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                    }
+                                    </div>
                                 }
+                            }
                             
                             
 
@@ -1064,7 +1071,9 @@
                                 @{
                                     if (Model.Chickcode == null)
                                     {
-                                        <div>請先開通成為雞農身分!</div>
+									// <div>請先開通成為雞農身分!</div>
+
+									<img src="~/memberimg/chickopenfirst.jpg" />
                                     }
                                     else
                                     {
