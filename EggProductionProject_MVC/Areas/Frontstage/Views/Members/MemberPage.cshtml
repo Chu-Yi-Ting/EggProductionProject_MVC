@@ -670,7 +670,7 @@
                                         <div class="form-container d-flex justify-content-center align-items-center">
                                             <div class="d-flex" style="flex-direction: row;">
                                                 <div class="profile-pic" style="padding: 20px;">
-                                                        <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+                                                        <img id="img1" alt="會員照片">
                                                     @* <button>上傳照片</button> *@
                                                         <br />
                                                         <input class="form-control" type="file" id="ProfilePic" name="ProfilePic" asp-for="ProfilePic">
@@ -957,7 +957,6 @@
                                 3...
                             </div>
                             <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
-                                ..4.
                                 @{
                                     if (Model.Chickcode == null)
                                     {
@@ -965,86 +964,58 @@
                                     }
                                     else
                                     {
-                                        <div class="tab-content" id="pills-tabContent">
-                                            <!-- 頁面一的內容 -->
-                                            <div class="form-section">
-                                                <hr />
-                                                <br />
-                                                <form>
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="date" class="form-label me-custom">填寫日期</label>
-                                                            <input type="date"
-                                                                   class="form-control w-50"
-                                                                   id="date"
-                                                                   value="2024-06-18" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <hr />
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="region" class="form-label me-custom">區域</label>
-                                                            <select class="form-control w-50" id="region"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="flock" class="form-label me-custom">雞舍</label>
-                                                            <select class="form-control w-50" id="flock"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="production" class="form-label me-custom">產蛋數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="production" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="defective" class="form-label me-custom">不合格數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="defective" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="death" class="form-label me-custom">死亡數</label>
-                                                            <input type="number" class="form-control w-50" id="death" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end">
-                                                            <div class="w-50 d-flex justify-content-end">
-                                                                <button type="submit" class="btn light-btn-n">
-                                                                    新增記錄
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="date" class="form-label me-custom">填寫日期</label>
+                                                <input type="date" class="form-control w-50" id="date_1" value="2024-09-28"/>
                                             </div>
                                         </div>
+                                        <hr />
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="ChickHouse_Selected" class="form-label me-custom">雞舍</label>
+                                                <select class="form-control w-50" id="ChickHouse_Selected"></select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="production" class="form-label me-custom">產蛋數</label>
+                                                <input type="number" class="form-control w-50" id="production" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="defective" class="form-label me-custom">不合格數</label>
+                                                <input type="number" class="form-control w-50" id="defective" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="death" class="form-label me-custom">死亡數</label>
+                                                <input type="number" class="form-control w-50" id="death" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end">
+                                                <div class="w-50 d-flex justify-content-end">
+                                                    <button type="submit" class="btn light-btn-n" onclick="Insert_Record1()">
+                                                        新增記錄
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
                                     }
                                 }
-                            
-                            
-
-
-
-
                             </div>
                             <div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
-                                .5.
                                 @{
                                     if (Model.Chickcode == null)
                                     {
@@ -1052,66 +1023,54 @@
                                     }
                                     else
                                     {
-                                        <div class="form-section">
-                                            <hr />
-                                            <br />
-                                            <form>
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                        <label for="date" class="form-label me-custom">填寫日期</label>
-                                                        <input type="date"
-                                                               class="form-control w-50"
-                                                               id="date"
-                                                               value="2024-06-18" />
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <hr />
-                                                <br />
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                        <label for="region" class="form-label me-custom">區域</label>
-                                                        <select class="form-control w-50" id="region"></select>
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                        <label for="weight" class="form-label me-custom">重量</label>
-                                                        <input type="number" class="form-control w-50" id="weight" />
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                        <label for="cost" class="form-label me-custom">成本</label>
-                                                        <input type="number" class="form-control w-50" id="cost" />
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                        <label for="lot" class="form-label me-custom">批號</label>
-                                                        <input type="text" class="form-control w-50" id="lot" />
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <div class="form-row mb-3">
-                                                    <div class="col-md-9 d-flex justify-content-end">
-                                                        <div class="w-50 d-flex justify-content-end">
-                                                            <button type="submit" class="btn light-btn-n">
-                                                                新增記錄
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="date" class="form-label me-custom">填寫日期</label>
+                                                <input type="date" class="form-control w-50" id="date_2" value="2024-09-28" />
+                                            </div>
                                         </div>
+                                        <hr />
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="Area_Selected" class="form-label me-custom">區域</label>
+                                                <select class="form-control w-50" id="Area_Selected"></select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="for m-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="weight" class="form-label me-custom">重量</label>
+                                                <input type="number" class="form-control w-50" id="weight" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="cost" class="form-label me-custom">成本</label>
+                                                <input type="number" class="form-control w-50" id="cost" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                <label for="lot" class="form-label me-custom">批號</label>
+                                                <input type="text" class="form-control w-50" id="lot" required />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-9 d-flex justify-content-end">
+                                                <div class="w-50 d-flex justify-content-end">
+                                                    <button type="submit" class="btn light-btn-n" onclick="Insert_Record2()">
+                                                        新增記錄
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     }
                                 }
-
-                           
-
                             </div>
                         </div>
 
@@ -1136,17 +1095,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
 
         </main>
 
@@ -1186,7 +1134,7 @@
     <!-- <script src="/assets/dist/js/self_n.js"></script> -->
     <!-- Bootstrap JavaScript -->
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script> -->
-
+    <script src="~/js/Data/Data.js"></script>
 
 
     <script>
@@ -1217,10 +1165,17 @@
             // 預設點擊第一個按鈕，顯示第一個內容
 
             tabButtons[0].click();
-        });
 
-       
-           
+
+            //-----------------------------------紀錄邏輯-----------------------------------------
+            const today = new Date().toISOString().split('T')[0];
+            const defaultMemberSid = 1;//需抓瀏覽器Sid
+            document.getElementById('date_1').value = today;
+            document.getElementById('date_2').value = today;
+
+            loadHouse(defaultMemberSid);
+            loadArea(defaultMemberSid);
+        });
 
 
         //----------------------滾動按鈕-------------------------------
@@ -1328,6 +1283,70 @@
             }
 
         });
+
+
+        //-------------------------------雞農每日紀錄--------------------------------------------
+
+        async function Insert_Record1() {
+            const data = {
+                Date: document.getElementById('date_1').value,
+                MemberSid: 1,//抓session登入id
+                HouseSid: document.getElementById('ChickHouse_Selected').value,
+                EggAmount: document.getElementById('production').value,
+                UnQAmount: document.getElementById('defective').value,
+                DeathAmount: document.getElementById('death').value
+            };
+
+            console.log(data);
+
+            try {
+                const response = await fetch('/Frontstage/DataApi/Insert_Record1', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('記錄新增成功');
+                } else {
+                    alert('記錄新增失敗: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error inserting record 1:', error);
+            }
+        }
+
+        async function Insert_Record2() {
+            const data = {
+                Date: document.getElementById('date_2').value,
+                MemberSid: 1,//抓session登入id
+                AreaSid: document.getElementById('Area_Selected').value,
+                Weight: document.getElementById('weight').value,
+                Cost: document.getElementById('cost').value,
+                LotNo: document.getElementById('lot').value
+            };
+
+            try {
+                const response = await fetch('/Frontstage/DataApi/Insert_Record2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('記錄新增成功');
+                } else {
+                    alert('記錄新增失敗: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error inserting record 2:', error);
+            }
+        }
 
     </script>
 }
