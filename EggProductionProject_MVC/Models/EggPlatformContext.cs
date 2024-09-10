@@ -198,10 +198,8 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("AreaFeed");
 
             entity.Property(e => e.Cost).HasColumnType("money");
-            entity.Property(e => e.LotNo)
-                .IsRequired()
-                .HasMaxLength(50);
-            entity.Property(e => e.Weight).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.LotNo).IsRequired();
+            entity.Property(e => e.Weight).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.AreaS).WithMany(p => p.AreaFeeds)
                 .HasForeignKey(d => d.AreaSid)
@@ -522,10 +520,6 @@ public partial class EggPlatformContext : DbContext
 
             entity.ToTable("Creator");
 
-            entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.MemberName).HasMaxLength(50);
-            entity.Property(e => e.PersonalProfile).HasMaxLength(50);
-
             entity.HasOne(d => d.MemberS).WithMany(p => p.Creators)
                 .HasForeignKey(d => d.MemberSid)
                 .HasConstraintName("FK_Creator_Member");
@@ -702,7 +696,9 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("GoodorBad");
 
             entity.Property(e => e.GorBsid).HasColumnName("GorBSid");
-            entity.Property(e => e.GorBdate).HasColumnName("GorBDate");
+            entity.Property(e => e.GorBdate)
+                .HasColumnType("datetime")
+                .HasColumnName("GorBDate");
             entity.Property(e => e.GorBtype).HasColumnName("GorBType");
 
             entity.HasOne(d => d.ArticleS).WithMany(p => p.GoodorBads)
@@ -1015,7 +1011,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.ReplyInfo).IsRequired();
             entity.Property(e => e.ReplyUpdate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.ArticleCreatorS).WithMany(p => p.Replies)
+            entity.HasOne(d => d.ArticleCreaterS).WithMany(p => p.Replies)
                 .HasForeignKey(d => d.ArticleCreaterSid)
                 .HasConstraintName("FK_Reply_Member");
 
@@ -1223,9 +1219,7 @@ public partial class EggPlatformContext : DbContext
             entity.ToTable("VideoSummary");
 
             entity.Property(e => e.AdSource).HasDefaultValue(false);
-            entity.Property(e => e.InformationColumn).HasMaxLength(50);
             entity.Property(e => e.UploadDate).HasColumnType("datetime");
-            entity.Property(e => e.VideoTitle).HasMaxLength(50);
 
             entity.HasOne(d => d.CreatorS).WithMany(p => p.VideoSummaries)
                 .HasForeignKey(d => d.CreatorSid)
