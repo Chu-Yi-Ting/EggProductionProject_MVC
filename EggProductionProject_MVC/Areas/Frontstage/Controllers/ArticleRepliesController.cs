@@ -28,7 +28,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 查询回复
             var replies = await _context.Replies
                 .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot ==false && reply.PublicStatusNo==1)
-                .Include(reply => reply.ArticleCreatorS)
+                .Include(reply => reply.ArticleCreaterS)
                 .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
                 {
@@ -39,9 +39,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     ArticleCreator = reply.ArticleCreaterS != null
                         ? new MemberDto
                         {
-                            MemberSid = reply.ArticleCreatorS.MemberSid,
-                            Name = reply.ArticleCreatorS.Name,
-                            ProfilePic = reply.ArticleCreatorS.ProfilePic,
+                            MemberSid = reply.ArticleCreaterS.MemberSid,
+                            Name = reply.ArticleCreaterS.Name,
+                            ProfilePic = reply.ArticleCreaterS.ProfilePic,
                         }
                         : null,
                     LikeCount = 0, // 初始化，稍后将填充
