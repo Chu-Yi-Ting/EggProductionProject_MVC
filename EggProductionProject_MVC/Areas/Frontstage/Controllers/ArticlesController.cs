@@ -197,7 +197,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Phone = article.ArticleCreaterS.Phone,
                         BirthDate = article.ArticleCreaterS.BirthDate,
                         UserName = article.ArticleCreaterS.UserName,
-                        ProfilePic = article.ArticleCreaterS.ProfilePic
+                        //ProfilePic = article.ArticleCreaterS.ProfilePic
                     }
                     : null,
                 PublicStatus = article.PublicStatusNoNavigation != null
