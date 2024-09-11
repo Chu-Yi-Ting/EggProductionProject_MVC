@@ -204,7 +204,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         //發表回覆
-        [HttpPost("PostReply")]
+        [HttpPost("PostReply/{id}")]
         public async Task<ActionResult<Reply>> PostReply([FromForm] ReplyDto replyDto)
         {
             // 輸出 DTO 的內容以確認是否成功接收到資料
