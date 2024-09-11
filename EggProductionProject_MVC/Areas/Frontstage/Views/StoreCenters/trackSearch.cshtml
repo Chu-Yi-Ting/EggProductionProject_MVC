@@ -11,26 +11,21 @@
     <p class="w-100 d-flex flex-column flex-lg-row justify-content-between title">
         物流號碼
         <span class="description d-none d-lg-inline">
-            ※ 若搜尋多筆，請使用 ”逗號” 隔開，如:
+            ※ 搜尋物流號碼，請使用特定格式，如:
             BL202406080001，BL202406080002
         </span>
     </p>
 
     <div class="input-group input-group-n pb-2">
-        <input type="text"
-               class="form-control"
-               placeholder=""
-               aria-label=""
-               aria-describedby="button-addon2" />
-        <button class="btn light-btn-n"
-                type="button"
-                id="button-addon2">
+        <input type="text" id="track-input" class="form-control" placeholder="" aria-label="Track No" aria-describedby="button-addon2">
+        <button class="btn light-btn-n" type="button" id="button-addon2">
             搜尋
         </button>
     </div>
-    <div class="row mt-4">
+    <div class="row mt-4 d-none" id="searchData" >
         <div class="col col-sm-12">
-            <div class="card shadow-sm cart-card">
+            <div class="card shadow-sm cart-card" style="
+                 min-height: 180px;">
                 <div class="cart-card-item w-100">
                     <div class="card-body-img d-flex flex-column flex-xl-row w-100 px-3">
                         <div class="d-flex mt-2 other-info">
@@ -43,7 +38,7 @@
                                 <small class="mb-0">SE202406080001</small>
                                 <p class="describe carrier-type d-flex align-items-center">
                                     7-ELEVEN
-                                    <span>超商</span>
+                                    <span>常溫</span>
                                 </p>
                             </div>
                         </div>
@@ -97,7 +92,7 @@
             <div class="card shadow-sm cart-card">
                 <div class="other-info d-flex flex-column flex-lg-row mx-3 mx-lg-2 my-4">
                     <div class="w-100 mx-auto mx-lg-4">
-                        <div class="part form-control-n">
+                        <div class="part form-control-n" id="sendInfo">
                             <div class="w-100 d-flex justify-content-between">
                                 <div class="title">
                                     <div class="title-line"></div>
@@ -117,7 +112,7 @@
                         </div>
                     </div>
                     <div class="w-100 mx-auto mx-lg-4 mt-4 mt-lg-0">
-                        <div class="part form-control-n">
+                        <div class="part form-control-n" id="receiveInfo">
                             <div class="w-100 d-flex justify-content-between">
                                 <div class="title">
                                     <div class="title-line"></div>
@@ -140,4 +135,110 @@
             </div>
         </div>
     </div>
+
+
 </div>
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+        
+
+            $('#button-addon2').click(function () {
+                // 获取输入框中的追踪号码
+                var trackNo = $('#track-input').val();
+
+                // 定义正则表达式：前两位必须是英文字母，后面10位必须是数字
+             
+                    findData(trackNo);
+
+              
+            });
+
+            function findData(trackNo) {
+                $.ajax({
+                    url: 'https://localhost:7080/Frontstage/StoreCentersAPI/GetTrackInfo',
+                    method: 'GET',
+                    data: { TrackingNum: trackNo },
+                    success: function (response) {
+                        // 假设 API 返回的数据是 response
+                        populateTrackInfo(response);
+                        $('#searchData').removeClass('d-none');
+                    },
+                    error: function (error) {
+                        console.error('Error fetching track info:', error);
+                    }
+                });
+            }
+
+
+        
+            // 处理数据并将其填充到页面
+            function populateTrackInfo(data) {
+                // 设置追踪号、物流名称和运输方式
+                $('.other-info .mb-0').text(data.trackingNum);
+                $('.carrier-type').html(`${data.carrierName} <span>${data.carrierWay}</span>`);
+
+                // 更新图片
+                $('.img_box img').attr('src', data.productImage);
+
+                const timelineContainer = $('.timeline');
+                timelineContainer.empty(); // 清空现有的条目
+
+                // 获取最早和最晚的条目
+                const lastTrackTimeSid = data.trackTimes[0].trackTimeSid;
+                const firstTrackTimeSid = data.trackTimes[data.trackTimes.length - 1].trackTimeSid;
+
+                data.trackTimes.forEach(function (trackTime) {
+                    // 判断当前条目是否为最早或最晚
+                    const isFirst = (trackTime.trackTimeSid === firstTrackTimeSid) ? 'first' : '';
+                    const isLast = (trackTime.trackTimeSid === lastTrackTimeSid) ? 'last' : '';
+                    const formattedDateTime = trackTime.createdTime.replace('T', ' ');
+
+                    // 生成条目并添加到时间线容器中
+                    timelineContainer.append(`
+                <div class="timeline-entry">
+                    <div class="timeline-date ${isFirst} ${isLast}"></div>
+                    <div class="timeline-content d-flex flex-column flex-sm-row">
+                                <p class="timeline-header">${formattedDateTime}</p>
+                        <p class="timeline-body">${trackTime.status}</p>
+                    </div>
+                </div>
+            `);
+                });
+
+
+                // 更新寄件和收件地址
+                const sendAddress = data.sendReceiveAddresses[0];
+                const receiveAddress = data.sendReceiveAddresses[1];
+                var sendStoreNameHtml = sendAddress.storeName ?
+                    `<span class="me-1">${sendAddress.storeName} | </span>` :
+                    '<span class="me-1 d-none"></span>';
+
+                // 寄件人信息
+                const sendInfo = $('#sendInfo');
+                sendInfo.find('.name').text(sendAddress.recordName);
+                sendInfo.find('.phone').text(sendAddress.recordPhone);
+                sendInfo.find('.address').html(`${sendStoreNameHtml}${sendAddress.adress}`);
+
+                // 构建收件人地址 HTML
+                var receiveStoreNameHtml = receiveAddress.storeName ?
+                    `<span class="me-1">${receiveAddress.storeName} | </span>` :
+                    '<span class="me-1 d-none"></span>';
+
+                // 收件人信息
+                const receiveInfo = $('#receiveInfo');
+                receiveInfo.find('.name').text(receiveAddress.recordName);
+                receiveInfo.find('.phone').text(receiveAddress.recordPhone);
+                receiveInfo.find('.address').html(`${receiveStoreNameHtml}${receiveAddress.adress}`);
+            }
+
+        
+        })
+
+  
+
+   </script>
+}

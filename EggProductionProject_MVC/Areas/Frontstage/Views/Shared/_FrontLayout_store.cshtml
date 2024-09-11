@@ -211,8 +211,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="w-100 mt-3 mt-md-5" style="overflow: auto;">
-				<div class=" row pagebody-store">
+			<div class="w-100 mt-3 mt-md-5 " style="overflow-y: auto; margin: 0px 40px">
+				<div class=" row pagebody-store " style="margin: 40px auto 40px;">
 					
 					@RenderBody()
 
@@ -226,7 +226,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="~/lib/choices.js/choices.min.js"></script>
-	<script src="~/FrontstageTemplate/assets/dist/js/self_n.js"></script>
+	<script src="~/FrontstageTemplate/assets/dist/js/self_n.js?version1.0"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

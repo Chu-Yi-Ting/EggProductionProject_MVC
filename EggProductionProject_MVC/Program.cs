@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using EggProductionProject_MVC.HTTPModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +96,8 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // ���U���v�A��
 builder.Services.AddAuthorization();
+
+builder.Services.AddHttpClient<WebScrapingService>();
 builder.Services.AddControllersWithViews();
 
 
@@ -123,6 +126,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 //跨域測試
 app.UseStaticFiles();
+
 
 
 

@@ -41,6 +41,14 @@
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23b8860b'%3e%3ccircle cx='8' cy='8' r='7' stroke='%23b8860b' stroke-width='1' fill='none'/%3e%3cline x1='4' y1='4' x2='12' y2='12' stroke='%23b8860b' stroke-width='1'/%3e%3cline x1='12' y1='4' x2='4' y2='12' stroke='%23b8860b' stroke-width='1'/%3e%3c/svg%3e");
         }
 
+        .form-control-sm {
+
+    font-size: 12px;
+    font-weight: 500;
+    color: #727272;
+ 
+}
+
     </style>
 }
 
@@ -49,136 +57,37 @@
         <h5 class="mb-3 d-flex justify-content-between w-100">
             物流設定
             <span class="d-flex">
-                <a class="btn light-btn-n btn-sm-dbrs" data-bs-toggle="modal" href="#exampleModalToggle5" role="button">物流開放</a>
-                <a class="btn  light-btn-n btn-sm-dbrs ms-3" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
+                <a class="btn light-btn-n btn-sm-dbrs changeOpen" data-bs-toggle="modal" href="#exampleModalToggle5" role="button">物流開放</a>
+                <a class="btn  light-btn-n btn-sm-dbrs ms-3 addAddress" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
             </span>
         </h5>
     </div>
 </div>
 <div class="col-lg-12 mt-3 " id="accordionExample1">
     <div class="accordion" id="accordionExample">
-       @*  <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne"
-                        aria-expanded="true"
-                        aria-controls="collapseOne">
-                    宅配<img src="~/FrontstageTemplate/assets/brand/common/blackcat_logo.svg"
-                           alt="" />
+        <div class="accordion-item mb-4 ">
+            <h2 class="accordion-header" id="heading1">
+                <button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                    宅配 <img src="../../FrontstageTemplate/assets/brand/common/blackcat_logo.svg" alt="宅配">
                 </button>
             </h2>
-            <div id="collapseOne"
-                 class="accordion-collapse collapse show"
-                 aria-labelledby="headingOne"
-                 data-bs-parent="#accordionExample">
+            <div id="collapse1" class="accordion-collapse collapse disabled" aria-labelledby="heading1" data-bs-parent="#accordionExample1">
                 <div class="accordion-body">
-                    <div class="other-info d-flex flex-column flex-lg-row">
-                        <div class="w-100 mx-auto">
-                            <div class="part form-control-n">
-                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
-                                    <p class="d-flex align-items-center mb-0">
-                                        黑貓宅急便<span>常溫</span>
-                                    </p>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button class="btn track-info p-0">刪除</button>
-                                        <button class="btn track-info ms-3 p-0">
-                                            編輯
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="carrier-address d-flex flex-column flex-xl-row">
-                                    <div class="d-flex mt-1 mt-md-0">
-                                        <p class="name me-2 m-0">張家豪</p>
-                                        <p class="phone me-2 m-0">0960101028</p>
-                                    </div>
-                                    <p class="address me-2 m-0">
-                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
-                                    </p>
-                                </div>
-                                <p class="default me-2 m-0">預設</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="m-0" />
-             <div class="other-info d-flex flex-column flex-lg-row">
-                        <div class="w-100 mx-auto">
-                            <div class="part form-control-n">
-                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
-                                    <p class="d-flex align-items-center mb-0">
-                                        黑貓宅急便<span>冷藏</span>
-                                    </p>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button class="btn track-info p-0">刪除</button>
-                                        <button class="btn track-info ms-3 p-0">
-                                            編輯
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="carrier-address d-flex flex-column flex-xl-row">
-                                    <div class="d-flex mt-1 mt-md-0">
-                                        <p class="name me-2 m-0">張家豪</p>
-                                        <p class="phone me-2 m-0">0960101028</p>
-                                    </div>
-                                    <p class="address me-2 m-0">
-                                        <span class=""></span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
-                                    </p>
-                                </div>
-                                <p class="default me-2 m-0 d-none">預設</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="accordion-item mt-5">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo"
-                        aria-expanded="false"
-                        aria-controls="collapseTwo">
-                    超商
-                    <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png" alt="" />
+        <div class="accordion-item mb-4 ">
+            <h2 class="accordion-header" id="heading2">
+                <button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                    超商 <img src="../../FrontstageTemplate/assets/brand/common/seven-logo.png" alt="超商">
                 </button>
             </h2>
-            <div id="collapseTwo"
-                 class="accordion-collapse collapse"
-                 aria-labelledby="headingTwo"
-                 data-bs-parent="#accordionExample">
+            <div id="collapse2" class="accordion-collapse collapse disabled" aria-labelledby="heading2" data-bs-parent="#accordionExample1">
                 <div class="accordion-body">
-                   <div class="other-info d-flex flex-column flex-lg-row">
-                        <div class="w-100 mx-auto">
-                            <div class="part form-control-n">
-                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
-                                    <p class="d-flex align-items-center mb-0">
-                                        7-ELEVEN<span>常溫</span>
-                                    </p>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button class="btn track-info p-0">刪除</button>
-                                        <button class="btn track-info ms-3 p-0">
-                                            編輯
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="carrier-address d-flex flex-column flex-xl-row">
-                                    <div class="d-flex mt-1 mt-md-0">
-                                        <p class="name me-2 m-0">張家豪</p>
-                                        <p class="phone me-2 m-0">0960101028</p>
-                                    </div>
-                                    <p class="address me-2 m-0">
-                                        <span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
-                                    </p>
-                                </div>
-                                <p class="default me-2 m-0">預設</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div> *@
+        </div>
+   
     </div>
 </div>
 
@@ -227,7 +136,7 @@
             <div class="modal-body">
                 <div class="col-lg-12">
                     <div class="w-100 d-flex flex-column mx-auto px-lg-3 mt-lg-0">
-                        <div class="form-control-n">
+                        <div class="form-control-n addressName">
                             <div class="title mb-2 d-flex justify-content-between">
                                 <div class="allcoin">收貨人姓名<span></span></div>
                             </div>
@@ -236,7 +145,7 @@
                                    placeholder=""
                                    aria-label="" />
                         </div>
-                        <div class="form-control-n mt-3">
+                        <div class="form-control-n mt-3 addressPhone">
                             <div class="title mb-2 d-flex justify-content-between">
                                 <div class="allcoin">聯繫方式<span></span></div>
                             </div>
@@ -271,11 +180,11 @@
                                                     </div>
                                                     <div class="carrier-address d-flex flex-column flex-xl-row">
                                                         <p class="address me-2 m-0">
-                                                            <span class="me-1">
+                                                            <span class="me-1 storeName">
                                                                 忠孝東門市 |
                                                             </span>
-                                                            <span class="me-1 mb-2">225436</span><br />
-                                                            台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝
+                                                            <span class="me-1 mb-2 storeId">225436</span><br />
+                                                            <div >台北市中正區忠孝東路一段72號76號1樓</div>                                                        
                                                         </p>
                                                     </div>
                                                 </div>
@@ -302,9 +211,9 @@
                                         <div class="allcoin">配送服務<span></span></div>
                                     </div>
                                     <select class="select-n" name="state">
-                                        <option value="AL">常溫</option>
+                                        <option value="2">常溫</option>
 
-                                        <option value="WY">低溫</option>
+                                        <option value="1">低溫</option>
                                     </select>
                                 </div>
                             </div>
@@ -364,7 +273,7 @@
                             <input class="form-check-input"
                                    type="checkbox"
                                    role="switch"
-                                   id="flexSwitchCheckChecked"
+                                   id="SwitchHome"
                                    checked />
                         </div>
                     </div>
@@ -379,13 +288,13 @@
                             <input class="form-check-input"
                                    type="checkbox"
                                    role="switch"
-                                   id="flexSwitchCheckChecked"
+                                   id="SwitchStore"
                                    checked />
                         </div>
                     </div>
 
                     <div class="w-100 submit pt-2 mb-3">
-                        <button class="btn dark-btn-n" type="button">
+                        <button class="btn dark-btn-n updateOpen" type="button">
                             保存
                         </button>
                     </div>
@@ -415,16 +324,16 @@
             </div>
             <div class="modal-body mx-2">
                 <div class="col-lg-12">
-                    <div class="form-control-n">
+                    <div class="form-control-n addressName">
                         <div class="title mb-2 d-flex justify-content-between">
                             <div class="allcoin">收貨人姓名<span></span></div>
                         </div>
-                        <input class="form-control form-control-sm"
+                        <input class="form-control form-control-sm" 
                                type="text"
                                placeholder=""
                                aria-label="" />
                     </div>
-                    <div class="form-control-n mt-3">
+                    <div class="form-control-n mt-3 addressPhone">
                         <div class="title mb-2 d-flex justify-content-between">
                             <div class="allcoin">聯繫方式<span></span></div>
                         </div>
@@ -434,7 +343,7 @@
                                aria-label="" />
                     </div>
 
-                    <div class="form-control-n mt-3">
+                    <div class="form-control-n mt-3 address">
                         <div class="title mb-2 d-flex justify-content-between">
                             <div class="allcoin">取貨地址<span></span></div>
                         </div>
@@ -444,13 +353,13 @@
                                aria-label="" />
                     </div>
 
-                    <div class="cart-card bg-none mt-4">
+                    <div class="cart-card bg-none mt-4 carryway">
                         <div class="cart-card-item p-0">
                             <input type="checkbox"
                                    class="hidden-box"
-                                   id="s1_p202409010003"
+                                   id="s1_p202409010004"
                                    checked="" />
-                            <label for="s1_p202409010003"
+                            <label for="s1_p202409010004"
                                    class="check--label w-100">
                                 <span class="check--label-box ms-0 me-2"></span>
                                 <div>
@@ -501,7 +410,7 @@
                 <div class="col-lg-12">
                     <div class="store-body-outer">
                         <div class="pagebody-store m-0">
-                            <div class="form-control-n">
+                            <div class="form-control-n addressName">
                                 <div class="title mb-2 d-flex justify-content-between">
                                     <div class="allcoin">收貨人姓名<span></span></div>
                                 </div>
@@ -510,7 +419,7 @@
                                        placeholder=""
                                        aria-label="" />
                             </div>
-                            <div class="form-control-n mt-3">
+                            <div class="form-control-n mt-3 addressPhone">
                                 <div class="title mb-2 d-flex justify-content-between">
                                     <div class="allcoin">聯繫方式<span></span></div>
                                 </div>
@@ -520,7 +429,7 @@
                                        aria-label="" />
                             </div>
 
-                            <div class="form-control-n mt-3">
+                            <div class="form-control-n mt-3 ">
                                 <div class="title mb-2 d-flex justify-content-between">
                                     <div class="allcoin">門市選擇<span></span></div>
                                 </div>
@@ -540,9 +449,9 @@
                                                 </div>
                                                 <div class="carrier-address d-flex flex-column flex-xl-row">
                                                     <p class="address me-2 m-0">
-                                                        <span class="me-1">忠孝東門市 | </span>
-                                                        <span class="me-1 mb-2">225436</span><br />
-                                                        台北市中正區忠孝東路一段72號76號1樓
+                                                        <span class="me-1 storeName">忠孝東門市 | </span>
+                                                        <span class="me-1 mb-2 storeId">225436</span><br />
+                                                        <div>台北市中正區忠孝東路一段72號76號1樓</div>
                                                     </p>
                                                 </div>
                                             </div>
@@ -602,11 +511,13 @@
 
         $(document).ready(function () {
 
+        const nowId=3;
+
             //主畫面列出當前所有資料
             const loadBuyCarts1 = async (storeId) => {
                 const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
                 const BuyData1 = {
-                    "Msid": 1,
+                    "Msid": nowId,
                     "storeSid": storeId
                 };
 
@@ -638,18 +549,18 @@
                             return `
                                                 
 
-                                        <div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}>
+                                        <div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}">
                                 <div class="w-100 mx-auto">
                                             <div class="part form-control-n w-100">
                                         <div class="carrier-type w-100 d-flex justify-content-between pb-1">
                                             <p class="d-flex align-items-center mb-0">
-                                                                ${address.carrierName}<span>${address.way}</span>
+                                                                ${address.carrierName}<span class="way_no${address.carrierWayNo}">${address.way}</span>
                                             </p>
                                             <div class="d-flex justify-content-center align-items-center">
-                                                <button class="btn track-info p-0">刪除</button>
+                                                <button class="btn track-info p-0" data-deletesid="${address.carrierAddressSid}">刪除</button>
 
 
-                                                                                    <a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
+                                                                                    <a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button"  data-edit="${address.carrierAddressSid}">編輯</a>
                         <a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
 
 
@@ -667,6 +578,7 @@
                                         </div>
                                                 <p class="default me-2 m-0 ${defaultClass}">預設</p>
                                     </div>
+                                </div>
                                 </div>
                        
 
@@ -732,19 +644,255 @@
 
                         const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
 
-selectElements.forEach(element => {
-  element.addEventListener('click', (event) => {
-    // 獲取 href 的值
-    const modalTarget = element.getAttribute('href');
-    console.log("modalTarget:", modalTarget);
 
-    // 獲取 data-edit 屬性的值
-    const dataEditValue = element.getAttribute('data-edit');
-    console.log("data-edit:", dataEditValue);
-             const addressSid = dataEditValue.split('_')[1];
-            console.log("Carrier Address SID:", addressSid);
-  });
+
+        // 通用的更新模态框内容函数
+        const updateModalContent = (modalId, addressData, updateCallback) => {
+            const nameInput = document.querySelector(`${modalId} .addressName input`);
+            const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+            const addressInput = document.querySelector(`${modalId} .address input`);
+             const address = document.querySelector('#exampleModalToggle4 .carrier-address div');
+            const checkbox = document.querySelector(`${modalId} .hidden-box`);
+            const priceElement = document.querySelector(`${modalId} .carryway .checktext-money`);
+
+            const addressStoreName = document.querySelector(`${modalId} .carrier-address .storeName`);
+            const addressStoreId = document.querySelector(`${modalId} .carrier-address .storeId`);
+
+            if (addressData && addressData.length > 0) {
+                nameInput.value = addressData[0].recordName || '';
+                phoneInput.value = addressData[0].recordPhone || '';
+
+                if (addressInput) {
+                    addressInput.value = addressData[0].adress || '';
+                }else{
+                address.textContent= addressData[0].adress.replace(/\|$/, '').trim() || '';
+                }
+
+                if (checkbox) {
+                    checkbox.checked = (addressData[0].carrierWayNo === 1);
+                }
+                if (priceElement) {
+                    priceElement.textContent = `$${addressData[0].price || 0}`;
+                }
+                if (addressStoreName) {
+                    addressStoreName.textContent = addressData[0].storeName || '';
+                }
+                if (addressStoreId) {
+                    addressStoreId.textContent = addressData[0].storeId || '';
+                }
+            }
+
+            $(document).on('click', `${modalId} .dark-btn-n`, function () {
+                const submitdata = {
+                    CarrierAddressSid: addressData[0].carrierAddressSid,
+                    MemberSid: nowId,
+                    RecordName: nameInput.value,
+                    RecordPhone: phoneInput.value,
+                    Adress: addressInput ? addressInput.value : address.textContent,
+                    StoreName: addressStoreName ? addressStoreName.textContent : undefined,
+                    StoreId: addressStoreId ? addressStoreId.textContent : undefined,
+                    CarrierWayNo: checkbox ? (checkbox.checked ? 1 : 2) : undefined
+                };
+                updateCallback(submitdata);
+            });
+        };
+
+
+           const deleteModalContent = (modalId, updateCallback) => {
+        
+                const submitdata = {
+                    CarrierAddressSid: modalId,
+                    MemberSid: nowId,
+                    PublicStatusNo:2
+                };
+                updateCallback(submitdata);
+        };
+
+            const FirstModalContent = (modalId,wayNo, updateCallback) => {
+        
+                const submitdata = {
+                    CarrierAddressSid: modalId,
+                    MemberSid: nowId,
+                    AddressFirst:1,
+                    CarrierWayNo:wayNo
+                };
+                updateCallback(submitdata);
+        };
+
+
+    
+
+ const updateAddModalContent = (modalId, updateCallback) => {
+
+
+
+     
+        $(document).off('click', `${modalId} #updateAddress`).on('click', `${modalId} #updateAddress`, function () {
+            // 获取当前活跃的 tab-pane
+            const activeTab = document.querySelector(`${modalId} .tab-pane.active`);
+
+            // 选取并处理需要的元素
+            const nameInput = document.querySelector(`${modalId} .addressName input`);
+            const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+            const checkbox = document.querySelector(`${modalId} .hidden-box`);
+
+            let submitdata = {
+                CarrierAddressSid: 0,
+                MemberSid: nowId,
+                RecordName: nameInput ? nameInput.value.trim() : '',
+                RecordPhone: phoneInput ? phoneInput.value.trim() : '',
+                AddressFirst: checkbox ? (checkbox.checked ? 1 : 0) : 0,
+                PublicStatusNo: 1
+            };
+
+            // 判断是 #home 还是 #profile 选项卡
+            if (activeTab && activeTab.id === 'home') {
+                // 处理新增超商的信息
+                const addressDiv = document.querySelector(`${modalId} .carrier-address div`);
+                const storeNameElement = document.querySelector(`${modalId} .carrier-address .storeName`);
+                const storeIdElement = document.querySelector(`${modalId} .carrier-address .storeId`);
+
+                submitdata.Adress = addressDiv ? addressDiv.textContent.trim() : '';
+                submitdata.StoreName = storeNameElement ? storeNameElement.textContent.replace(/\s*\|\s*$/, '').trim() : '';
+                submitdata.StoreId = storeIdElement ? storeIdElement.textContent.trim() : '';
+                submitdata.CarrierWayNo = 3;
+            } else if (activeTab && activeTab.id === 'profile') {
+                // 处理新增宅配的信息
+                const addressInput = document.querySelector(`${modalId} #profile input[type="text"]`);
+                const serviceSelect = document.querySelector(`${modalId} #profile select`);
+
+                submitdata.Adress = addressInput ? addressInput.value.trim() : '';
+                submitdata.CarrierWayNo = serviceSelect ? serviceSelect.value : '';
+            }
+
+            console.log("submitdata", submitdata);
+
+            // 调用回调函数以处理数据
+            if (typeof updateCallback === 'function') {
+                updateCallback(submitdata);
+            }
+        });
+
+
+
+
+};
+
+const element = document.querySelector('.page-title .addAddress');
+
+element.addEventListener('click', async () => {
+    const modalTarget = element.getAttribute('href');
+    console.log("modalTarget ",modalTarget )
+    if (modalTarget === "#exampleModalToggle") {
+
+         updateAddModalContent(modalTarget, updatePrices);
+    }
 });
+
+
+document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function (element) {
+    element.addEventListener('dblclick', function () { 
+
+        const parentDiv = this.closest('.other-info');
+        if (parentDiv) {
+            const parentId = parentDiv.id; 
+            const numberPart = parentId.match(/\d+/); 
+
+            let CarrierAddressSid;
+            let wayNo;
+
+            if (numberPart) {
+                console.log('Number Part:', numberPart[0]); 
+                CarrierAddressSid=numberPart[0];
+            }
+
+            const carrierType = parentDiv.querySelector('.carrier-type span');
+            if (carrierType) {
+
+                    const className = carrierType.className;
+                    const wayNoNumber = className.match(/\d+/); 
+                    if (wayNoNumber) {
+                        console.log('Way No Number:', wayNoNumber[0]); 
+                        wayNo=wayNoNumber[0];
+                    }
+                
+            }
+
+
+
+            FirstModalContent(CarrierAddressSid,wayNo, updatePrices);
+        
+
+
+
+        }
+    });
+});
+
+
+
+        // 更新数据
+        const loadAddressData = async (CarrierAddressSid) => {
+            const api = '@Url.Content("~/Frontstage/StoreCentersAPI/AddressOne")';
+            const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
+            try {
+                const response = await fetch(apiFilter, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                throw error;
+            }
+        };
+
+
+
+
+        selectElements.forEach(element => {
+    element.addEventListener('click', async (event) => {
+    
+        
+        const modalTarget = element.getAttribute('href');
+        const dataEditValue = element.getAttribute('data-edit');
+        const dataDeleteValue = element.getAttribute('data-deletesid');
+
+        
+        try {
+            if (dataDeleteValue != null) {
+ 
+
+             
+                await deleteModalContent(dataDeleteValue, updatePrices);
+            } 
+            
+            if (dataEditValue != null) {
+        
+                const addressData = await loadAddressData(dataEditValue);
+
+     
+                if (modalTarget === "#exampleModalToggle3" || modalTarget === "#exampleModalToggle4") {
+                    updateModalContent(modalTarget, addressData, updatePrices); 
+                }
+            }
+
+        } catch (error) {
+            console.error('Error while handling address data:', error);
+        }
+    });
+});
+
+
+
                    
 
 
@@ -753,111 +901,32 @@ selectElements.forEach(element => {
                     console.error('There has been a problem with your fetch operation:', error);
                 }
             };
-            loadBuyCarts1(1);
+            loadBuyCarts1(nowId);
+
+                     const checkbox = document.querySelector('#exampleModalToggle3 .hidden-box');
+             const priceElement = document.querySelector('#exampleModalToggle3 .checktext-money');
 
 
-           //   const selectElement = document.querySelectorAll('#accordionExample1 .track-info');
-
-           // selectElement.addEventListener('click', (event) => {
-           //      // const modalTarget = this.getAttribute('href'); 
-           // console.log("modalTarget")
-           // });
-
-       
-
+        function updatePrice() {
+            if (checkbox.checked) {
+                priceElement.textContent = '$160';
+            } else {
+                priceElement.textContent = '$120';
+            }
+        }
 
 
-
-            const loadAddressData = async (CarrierAddressSid) => {
-              const api = '@Url.Content("~/Frontstage/StoreCentersAPI/AddressOne")';
-const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
+        updatePrice();
 
 
-                try {
-                    const response = await fetch(apiFilter, {
-                        method: 'Get',
-                        // body: JSON.stringify(BuyData1),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
+        checkbox.addEventListener('change', updatePrice);
 
-
-
-                    const data = await response.json();
-                    console.log("data", data)
-
-               
-
-
-
-                    // const divSpots1 = document.getElementById('accordionExample1');
-                    // divSpots1.innerHTML = generateStoresHtml1(data);
-
-
-
-                } catch (error) {
-                    console.error('There has been a problem with your fetch operation:', error);
-                }
-            };
-             loadAddressData(41);
-
-          //    document.querySelectorAll('.track-info').forEach(button => {
-          //   button.addEventListener('click', function(event) {
-          //     const modalTarget = this.getAttribute('href');  // 獲取 href 的值
-          //     const editMode = this.getAttribute('data-edit'); // 獲取 data-edit 屬性的值
-
-          //     if (modalTarget === '#exampleModalToggle3') {
-          //       console.log('exampleModalToggle3', 'edit mode:', editMode);
-          //     } else if (modalTarget === '#exampleModalToggle4') {
-          //       console.log('exampleModalToggle4', 'edit mode:', editMode);
-          //     }
-          //   });
-          // });
-
+   
       
-          
-
-
-
-            function updateSubmitData() {
-                // const discountText = document.querySelector('#part-2 .percent_discount span').textContent.trim();
-                // submitdata.combo = discountText === '無' ? 1 : 0.9;
-
-                // const coinText = document.querySelector('#part-2 .coin_use span').textContent.replace(/[^0-9]/g, '').trim();
-                // submitdata.usecoin = parseInt(coinText, 10) || 0; // 确保是整数
-            }
-
-            //新增宅配物流
-            const submitdata = {
-                CarrierAddressSid: 0,
-                MemberSid: 1,
-                AddressFirst: 0,
-                RecordName: "sss123",
-                RecordPhone: "0930102090",
-                CarrierWayNo: 1,
-                Adress: "新北市三芝區中正路一段61號63號1樓",
-                StoreId: "",
-                StoreName: "",
-                PublicStatusNo: 1
-            }
-
-            //新增超商物流
-            const submitdata2 = {
-                CarrierAddressSid: 0,
-                MemberSid: 1,
-                AddressFirst: 0,
-                RecordName: "sss123",
-                RecordPhone: "0930102090",
-                CarrierWayNo: 1,
-                Adress: "新北市三芝區中正路一段61號63號1樓",
-                StoreId: "252377",
-                StoreName: "7-11忠孝東",
-                PublicStatusNo: 1
-            }
+         
 
             //新增更改資料
-            const updatePrices = async () => {
+            const updatePrices = async (submitdata) => {
                 const apiUrl = 'https://localhost:7080/Frontstage/StoreCentersAPI/CarrierAddress/Save';
 
                 try {
@@ -879,7 +948,7 @@ const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
                     console.log('Success:', result);
 
                     $('.modal-n').modal('hide');
-                    await loadBuyCarts1(data.MemberSid);
+                            await loadBuyCarts1(submitdata.MemberSid);
 
                 } catch (error) {
 
@@ -888,9 +957,104 @@ const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
                 }
             };
 
-            document.getElementById('updateAddress').addEventListener('click', updatePrices);
+
+            const NowUserSid = 3;
+
+      
 
 
+
+
+            const elementopen = document.querySelector('.page-title .changeOpen');
+            let currentOpenData = null;  
+
+            elementopen.addEventListener('click', async () => {
+                try {
+                    const nn = await loadOpenData(NowUserSid); 
+                    console.log("nn", nn[0].carrierOpenNo);
+
+                    const SwitchHome = document.querySelector('#SwitchHome');
+                    const SwitchStore = document.querySelector('#SwitchStore');
+
+                    currentOpenData = nn[0];
+
+                    SwitchHome.checked = nn[0].houseOpen === 1;
+                    SwitchStore.checked = nn[0].storeOpen === 1;
+
+                } catch (error) {
+                    console.error('Error fetching open data:', error);
+                }
+            });
+
+
+            const updateOpen = document.querySelector('#exampleModalToggle5 .updateOpen');
+
+            updateOpen.addEventListener('click', async () => {
+                if (currentOpenData) {
+                    const SwitchHome = document.querySelector('#SwitchHome');
+                    const SwitchStore = document.querySelector('#SwitchStore');
+
+                    const updatedData = {
+                        "CarrierOpenNo": currentOpenData.carrierOpenNo,
+                        "storeOpen": SwitchStore.checked ? 1 : 0,
+                        "houseOpen": SwitchHome.checked ? 1 : 0
+                    };
+
+                    try {
+                        const response = await fetch('https://localhost:7080/Frontstage/StoreCentersAPI/UpdateCarrierOpen', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updatedData)
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const result = await response.json();
+                        console.log('Update successful:', result);
+                        $('.modal-n').modal('hide');
+                        await loadBuyCarts1(currentOpenData.storeSid);
+                    } catch (error) {
+                        console.error('Error updating carrier open data:', error);
+                    }
+                } else {
+                    console.error('No open data available to update.');
+                }
+            });
+
+
+
+
+
+
+            const loadOpenData = async (memberSid) => {
+                const api = '@Url.Content("~/Frontstage/StoreCentersAPI/CarrierOpenOne")';
+                const apiFilter = `${api}?memberSid=${memberSid}`;
+                try {
+                    const response = await fetch(apiFilter, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data;  
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    throw error;
+                }
+            };
+
+
+   
 
         });
 
