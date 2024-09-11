@@ -1146,7 +1146,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 var trackTime = new TrackTime
                 {
                     TrackSid = track.TrackSid, 
-                    TrackStatusNo = 1, 
+                    TrackStatusNo = 1,
+                    CreatedTime = DateTime.Now
                 };
 
 
