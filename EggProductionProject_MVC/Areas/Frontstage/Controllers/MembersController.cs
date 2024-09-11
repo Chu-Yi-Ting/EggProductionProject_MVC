@@ -48,7 +48,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
 
 
-            ViewBag.UserName = user.Name;
+            //ViewBag.UserName = user.Name;
                 return View(user);
             
            
