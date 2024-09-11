@@ -21,7 +21,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _context = context;
         }
 
-        //取得回覆
+        //取得文章回覆
         [HttpGet("GetArticleReplies/{id}")]
         public async Task<ActionResult<List<ReplyDto>>> GetArticleReplies(int id)
         {
@@ -91,6 +91,42 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             }
 
             return Ok(replies);
+        }
+        //取得編輯文章回復
+        [HttpGet("GetReplyById/{id}")]
+        public async Task<ActionResult<ReplyDto>> GetReplyById(int id)
+        {
+            var reply = await _context.Replies
+                .Where(reply => reply.ReplySid == id && reply.DeleteOrNot == false && reply.PublicStatusNo == 1)
+                .Include(reply => reply.ArticleCreaterS)
+                .Select(reply => new ReplyDto
+                {
+                    ReplySid = reply.ReplySid,
+                    ReplyInfo = reply.ReplyInfo,
+                    ReplyDate = reply.ReplyDate,
+                    EditTimes = reply.EditTimes,
+                    ArticleCreator = reply.ArticleCreaterS != null
+                        ? new MemberDto
+                        {
+                            MemberSid = reply.ArticleCreaterS.MemberSid,
+                            Name = reply.ArticleCreaterS.Name,
+                            ProfilePic = reply.ArticleCreaterS.ProfilePic,
+                        }
+                        : null,
+                    LikeCount = 0,
+                    DislikeCount = 0,
+                    LikedByUsers = new List<MemberDto>(),
+                    DislikedByUsers = new List<MemberDto>(),
+                    ArticleSid = reply.ArticleSid ?? 0,
+                })
+                .FirstOrDefaultAsync();
+
+            if (reply == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(reply);
         }
         // 對回覆按讚
         [HttpPost("LikeReply/{replyId}")]
@@ -233,6 +269,37 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             }
             // 將新文章加入資料庫
             return CreatedAtAction("GetReplyDetails", new { id = newReply.ReplySid }, newReply);
+        }
+       
+        
+        [HttpPut("UpdateReply/{id}")]
+        public async Task<IActionResult> UpdateReply(int id,[FromForm]ReplyDto replydto)
+        {
+            var existingReply = await _context.Replies.FindAsync(id);
+            if(existingReply ==null)
+            {
+                return NotFound($"未找到ID為{id}的回復");
+            }
+            //編輯的紀錄
+            var editHistory = new Edit
+            {
+                ReplySid = existingReply.ReplySid,
+                EditBefore = existingReply.ReplyInfo,
+                EditAfter = existingReply.ReplyInfo,
+                EditTime = DateTime.UtcNow,
+            };
+            _context.Edits.Add(editHistory);
+
+            
+            existingReply.ReplyInfo = replydto.ReplyInfo;
+            existingReply.PublicStatusNo = replydto.PublicStatus?.PublicStatusNo;
+            existingReply.ReplyUpdate = DateTime.UtcNow;
+            existingReply.EditTimes += 1;
+            // 保存變更
+            await _context.SaveChangesAsync();
+
+            // 返回204 No Content表示成功，但無需返回內容
+            return NoContent();
         }
     }
 }
