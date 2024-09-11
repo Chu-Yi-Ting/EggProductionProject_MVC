@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using EggProductionProject_MVC.ViewModels;
+using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 {
@@ -210,8 +211,103 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
             }
 
         }
+//------------------------------------------雞農新增資料---------------------------------------------
+
+        [HttpGet]
+        public async Task<IActionResult> Get_Area(int memberSid)
+        {
+            var Area = await ((from m in _context.MemberAreas
+                                where m.MemberSid == memberSid //需抓瀏覽器session的id
+                                select new
+                                {
+                                    value = m.AreaSid,
+                                    text = m.MemberAddress
+                                }).Distinct().ToListAsync());
+
+            return Json(Area);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Insert_Record1([FromBody] CombinedRecord request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "提供的資料無效。" });
+
+            var subCategoryNo = await (from m in _context.ChickHouses
+                                       where m.HouseSid == request.HouseSid && m.MemberSid == request.MemberSid
+                                       select m.SubcategoryNo).FirstOrDefaultAsync();
+
+            bool dailyEggRateExists = await _context.DailyEggRes
+                .AnyAsync(e => e.HouseSid == request.HouseSid && e.Date == DateOnly.FromDateTime(request.Date));
+
+            bool chickDeathExists = await _context.ChickDeaths
+                .AnyAsync(d => d.HouseSid == request.HouseSid && d.Date == DateOnly.FromDateTime(request.Date));
+
+            if (dailyEggRateExists || chickDeathExists)
+                return BadRequest(new { success = false, message = "該日該雞舍已存在記錄，無法新增。" });
+
+            try
+            {
+                // 插入到 DailyEggRate 表
+                var dailyEggRate = new DailyEggRe
+                {
+                    HouseSid = request.HouseSid,
+                    MemberSid = request.MemberSid,
+                    EggAmount = request.EggAmount,
+                    UnQamount = request.UnQAmount,
+                    SubcategoryNo = (int)subCategoryNo,
+                    Date = DateOnly.FromDateTime(request.Date)
+                };
+
+                _context.DailyEggRes.Add(dailyEggRate);
+
+                    // 插入到 ChickDeath 表
+                var chickDeath = new ChickDeath
+                {
+                    HouseSid = request.HouseSid,
+                    DeathAmount = request.DeathAmount,
+                    Date = DateOnly.FromDateTime(request.Date)
+                };
+
+                _context.ChickDeaths.Add(chickDeath);
+
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true, message = "記錄已成功建立！" });
+            }catch (Exception ex){
+                return StatusCode(500, new { success = false, message = "伺服器錯誤", error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Insert_Record2([FromBody] CombinedRecord2 request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "提供的資料無效。" });
+
+            try
+            {
+                // 插入到 DailyEggRate 表
+                var areaFeed = new AreaFeed
+                {
+                    AreaSid = request.AreaSid,
+                    MemberSid = request.MemberSid,
+                    LotNo = request.LotNo,
+                    Cost = request.Cost,
+                    Weight = request.Weight,
+                    Date = DateOnly.FromDateTime(request.Date)
+                };
+
+                _context.AreaFeeds.Add(areaFeed);
 
 
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true, message = "記錄已成功建立！" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "伺服器錯誤", error = ex.Message });
+            }
+        }
 
     }
 }
