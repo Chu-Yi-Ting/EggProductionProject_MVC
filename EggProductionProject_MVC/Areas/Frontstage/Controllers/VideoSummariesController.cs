@@ -87,7 +87,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Where(M => M.VideoSid == videoid)
                 .Select(M => new OneVideoDTO
                 {
-
+                    VideoSid = M.VideoSid,
                     VideoTitle = M.VideoTitle,
                     TimesWatched = M.TimesWatched,
                     MoviePath = M.MoviePath,
