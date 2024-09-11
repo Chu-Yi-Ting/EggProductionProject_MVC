@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using EggProductionProject_MVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -102,10 +103,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     var userEmail = user.Email;
 
                     //登入的時候如果有找到該名會員(aspid去找)
-                    var member = _context.Members.FirstOrDefault(x => x.AspUserId == user.Id);
+                    var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id == user.Id);
 
                     //登入時儲存使用者名稱、AspID、大頭貼路徑
-                    if (member != null) 
+                    if (member != null)
                     {
                         HttpContext.Session.SetString("userName", member.Name);
                         HttpContext.Session.SetString("userProfilePic", member.ProfilePic);
