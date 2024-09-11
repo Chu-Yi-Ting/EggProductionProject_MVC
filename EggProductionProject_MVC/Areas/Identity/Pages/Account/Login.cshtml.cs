@@ -101,15 +101,20 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     
                     var userEmail = user.Email;
-
+                    //foreach(Member m in _context.Members)
+                    //{
+                    //    Console.WriteLine(m.AspUserId+">>"+m.Email);
+                    //}
                     //登入的時候如果有找到該名會員(aspid去找)
-                    var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id == user.Id);
+                    var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id.ToLower() == user.Id.ToLower());
 
                     //登入時儲存使用者名稱、AspID、大頭貼路徑
                     if (member != null)
                     {
-                        HttpContext.Session.SetString("userName", member.Name);
-                        HttpContext.Session.SetString("userProfilePic", member.ProfilePic);
+                        if (member.Name != null) { HttpContext.Session.SetString("userName", member.Name); }
+                        if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
+                        
+                        
                     }
                         HttpContext.Session.SetString("userId", user.Id);
 

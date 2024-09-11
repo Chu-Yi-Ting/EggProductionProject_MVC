@@ -236,6 +236,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="~/js/Data/Data.js"></script>
     <script>
         let calendar; // 定義行事曆變數
         let myChart;
@@ -344,7 +345,7 @@
                             tension: 0.1
                         },
                         {
-                            label: '標準化值', // 標準化數據集的標籤
+                            label: '', // 標準化數據集的標籤
                             data: [],
                             fill: false,
                             borderColor: 'rgb(255, 99, 132)', // 紅色
@@ -371,8 +372,6 @@
             const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
             const defaultStartDate = null; // 初始無開始日期
             const defaultEndDate = null; // 初始無結束日期
-
-            //console.log()
 
             // 調用 updateChart 來設置初始數據
             updateChart(defaultMemberSid, defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
@@ -535,34 +534,6 @@
         }
 
 //------------------------------------------折線圖code----------------------------------------------------------
-
-        async function loadHouse(defalutMemberSid) {
-            const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
-            try {
-                // 發送 GET 請求到後端 API
-                const response = await fetch(`/Frontstage/DataApi/Get_House?memberSid=${defalutMemberSid}`, {
-                    method: 'GET',
-                });
-                
-                if (!response.ok) {
-                    alert(`HTTP error! status: ${response.status}`);
-                    return;
-                }
-
-                const data = await response.json();// 將返回的數據解析為 JSON 格式
-                ChickHouseSelected.innerHTML = ''; // 清空選單內容
-                let options = '';// 遍歷數據並創建選項
-
-                data.forEach(item => {
-                    options += `<option value="${item.value}">${item.text}</option>`;
-                });
-
-                // 更新下拉選單內容
-                ChickHouseSelected.innerHTML = options;
-            } catch (error) {
-                alert('加載選單時發生錯誤:', error);
-            }
-        }
 
         document.getElementById('filter').addEventListener('click', function () {
             // 獲取輸入框的值
