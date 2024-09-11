@@ -310,7 +310,7 @@
                     <button class="quantity-increase">+</button>
                 </div>
                 <button id="btnAddToCart" class="btn btn-primary">加入購物車</button>
-                <button class="btn btn-primary" onclick="window.location.href='/Frontstage/Carts/Index'">立即購買</button>
+                <button id="btnBuyNow" class="btn btn-primary">立即購買</button>
             </div>
         </div>
 
@@ -438,6 +438,41 @@
                 toast.show();
             }, 1000);
         }
+
+        // 訂閱"直接購買"按鈕事件
+        const buyNowButton = document.getElementById('btnBuyNow'); // 確保選擇正確的按鈕
+        buyNowButton.addEventListener('click', async function () {
+            try {
+                const productSid = '@Model.productSid';
+                const qty = document.getElementById('quantity-input').value;
+
+                const data = {
+                    ProductSid: productSid,
+                    Qty: qty
+                };
+
+                // 使用 async/await 發送 fetch 請求到後端
+                const api = '@Url.Content("~/Frontstage/ProductApi/AddToCart")'
+                const response = await fetch(api, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 成功加入購物車後，跳轉到購物車頁面
+                    window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
+                } else {
+                    alert('加入購物車失敗');
+                }
+            } catch (error) {
+                console.error('錯誤:', error);
+            }
+        });
     </script>
 
 }
