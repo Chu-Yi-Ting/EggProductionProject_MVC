@@ -1,5 +1,6 @@
 ﻿@model EggProductionProject_MVC.Models.Member
-@* @if(Model.IsChickFarm=='1') *@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -265,6 +266,22 @@
                     #scrollToTopBtn.show {
                         display: flex;
                     }
+
+
+            /* 讓 disabled 按鈕顯示為灰色 */
+            button:disabled {
+                background-color: #ccc; /* 灰色背景 */
+                color: #666; /* 灰色文字 */
+                cursor: not-allowed; /* 禁止符號的鼠標樣式 */
+                border-color: #ccc; /* 灰色邊框 */
+            }
+
+                /* 禁用按鈕的 hover 樣式，防止鼠標變成點擊狀態 */
+                button:disabled:hover {
+                    background-color: #ccc;
+                    color: #666;
+                    cursor: not-allowed; /* 確保禁用按鈕不顯示手型 */
+                }
             </style>
         }
 
@@ -401,7 +418,7 @@
                       d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999zm2.493 8.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.319 1.319 0 0 0-.37.265.301.301 0 0 0-.057.09V14l.002.008a.147.147 0 0 0 .016.033.617.617 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.619.619 0 0 0 .146-.15.148.148 0 0 0 .015-.033L12 14v-.004a.301.301 0 0 0-.057-.09 1.318 1.318 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465-1.281 0-2.462-.172-3.34-.465-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411z" />
             </symbol>
         </svg>
-        <header>
+       @*  <header>
             <div class="container_title p-0 m-0">
                 <div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
                     <div class="outer-layout-n">
@@ -529,7 +546,10 @@
 
 
                                 alice
-                                @ViewBag.UserName
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         
                             </div>
                         </li>
@@ -546,7 +566,7 @@
                 </div>
             </div>
 
-        </header>
+        </header> *@
 
         <main>
             <div class="title-bg mb-3">
@@ -596,11 +616,11 @@
                 <div class="tab-content mt-4">
                     <div class="tab-pane fade show active" id="tab-content-basic-info" role="tabpanel" aria-labelledby="tab-basic-info">
                         <!-- 基本資料內容 -->
-                        <p>這裡是基本資料的內容。</p>
+                       @*  <p>這裡是基本資料的內容。</p> *@
 
 
-                        <br>
-                        <h2 class="text-center">個人檔案</h2>
+                        
+                        <h2 class="text-center" style="margin:50px">個人檔案</h2>
 
 
 
@@ -628,7 +648,7 @@
                                     color: #a57c42;
                                     font-size: 16px;
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
-                                        <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">外部連接</button>
+                                        <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">綁定帳號</button>
                                     </li>
                                     <li style="            border: none;
                                     padding: 10px 30px;
@@ -667,16 +687,28 @@
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
-                                1.  @ViewBag.UserName
-                                <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data">
+                           @*  1.  *@
+                            <form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data" >
                                 <div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
 
-                               
+                                    <span class="text-danger validation-summary-valid" ></span>
                                     <div class="container">
                                         <div class="form-container d-flex justify-content-center align-items-center">
                                             <div class="d-flex" style="flex-direction: row;">
                                                 <div class="profile-pic" style="padding: 20px;">
-                                                        <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+                                                    @{
+                                                        if (Model.ProfilePic == null)
+                                                        {
+                                                            <img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img id="img1" src="@Model.ProfilePic" alt="會員照片">
+
+                                                        }
+
+                                                        }
+                                                        
                                                     @* <button>上傳照片</button> *@
                                                         <br />
                                                         <input class="form-control" type="file" id="ProfilePic" name="ProfilePic" asp-for="ProfilePic">
@@ -686,11 +718,12 @@
                                                     <input type="hidden" asp-for="AspUserId" />
                                                     <div class="form-group">
                                                             <label for="username">會員名稱</label>
-                                                            <span> &nbsp;&nbsp;&nbsp;&nbsp;</span>
-
-
+                                                            @* <span> &nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+                                                        <span class="required-tag">必填</span>
                                                             <input type="text" id="username" name="Name" asp-for="Name">
                                                     </div>
+                                                    <span class="text-danger" asp-validation-for="Name"></span>
+
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
@@ -698,24 +731,28 @@
                                                             <span class="required-tag">必填</span>
                                                         </span>
                                                             <input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
-                                                    </div>
+                                                        </div>
+                                                        <span class="text-danger" asp-validation-for="Email"></span>
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
                                                             <label for="phone">電話號碼</label>
-                                                                <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                            @* <span class="required-tag">必填</span> *@
+                                                              @*   <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+                                                            <span class="required-tag">必填</span>
                                                         </span>
                                                             <input type="text" id="phone" name="Phone" asp-for="Phone" required>
                                                     </div>
+                                                        <span class="text-danger" asp-validation-for="Phone"></span>
                                                     <br>
                                                     <div class="form-group">
                                                         <span>
                                                             <label for="birthdate">出生日期</label>
-                                                            <span class="required-tag">必填</span>
+                                                            @* <span class="required-tag">必填</span> *@
+                                                            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                         </span>
                                                             <input type="date" id="birthdate" name="BirthDate" asp-for="BirthDate" required>
-                                                    </div>
+                                                        </div>
+                                                        <span class="text-danger" asp-validation-for="BirthDate"></span>
                                                     <br>
 
                                                     <br>
@@ -751,8 +788,8 @@
 
                                     </div>
                                 </div> <div class="buttons">
-                                    <button class="cancel">取消</button>
-                                        <button id="btnSubmit" type="submit">確定</button>
+                                    <button type="reset" class="cancel">取消</button>
+                                        <button  id="btnSubmit" type="submit">確定</button>
                                 </div>
                                 </form>
 
@@ -781,7 +818,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
+                                                <button type="reset" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
                                     color: #a57c42;
                                     border: none;
                                   padding: 10px 20px;
@@ -964,84 +1001,84 @@
                             </div>
                             <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
                                 ..4.
-                                @{
-                                    if (Model.Chickcode == null)
-                                    {
-                                        <div>請先開通成為雞農身分!</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="tab-content" id="pills-tabContent">
-                                            <!-- 頁面一的內容 -->
-                                            <div class="form-section">
+                            @{
+                                if (Model.Chickcode == null)
+                                {
+                                    <img src="~/memberimg/chickopenfirst.jpg" />
+                                }
+                                else
+                                {
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <!-- 頁面一的內容 -->
+                                        <div class="form-section">
+                                            <hr />
+                                            <br />
+                                            <form>
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="date" class="form-label me-custom">填寫日期</label>
+                                                        <input type="date"
+                                                        class="form-control w-50"
+                                                        id="date"
+                                                        value="2024-06-18" />
+                                                    </div>
+                                                </div>
+                                                <br />
                                                 <hr />
                                                 <br />
-                                                <form>
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="date" class="form-label me-custom">填寫日期</label>
-                                                            <input type="date"
-                                                                   class="form-control w-50"
-                                                                   id="date"
-                                                                   value="2024-06-18" />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="region" class="form-label me-custom">區域</label>
+                                                        <select class="form-control w-50" id="region"></select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="flock" class="form-label me-custom">雞舍</label>
+                                                        <select class="form-control w-50" id="flock"></select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="production" class="form-label me-custom">產蛋數</label>
+                                                        <input type="number"
+                                                        class="form-control w-50"
+                                                        id="production" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="defective" class="form-label me-custom">不合格數</label>
+                                                        <input type="number"
+                                                        class="form-control w-50"
+                                                        id="defective" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end align-items-center">
+                                                        <label for="death" class="form-label me-custom">死亡數</label>
+                                                        <input type="number" class="form-control w-50" id="death" />
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-row mb-3">
+                                                    <div class="col-md-9 d-flex justify-content-end">
+                                                        <div class="w-50 d-flex justify-content-end">
+                                                            <button type="submit" class="btn light-btn-n">
+                                                                新增記錄
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <br />
-                                                    <hr />
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="region" class="form-label me-custom">區域</label>
-                                                            <select class="form-control w-50" id="region"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="flock" class="form-label me-custom">雞舍</label>
-                                                            <select class="form-control w-50" id="flock"></select>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="production" class="form-label me-custom">產蛋數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="production" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="defective" class="form-label me-custom">不合格數</label>
-                                                            <input type="number"
-                                                                   class="form-control w-50"
-                                                                   id="defective" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end align-items-center">
-                                                            <label for="death" class="form-label me-custom">死亡數</label>
-                                                            <input type="number" class="form-control w-50" id="death" />
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="form-row mb-3">
-                                                        <div class="col-md-9 d-flex justify-content-end">
-                                                            <div class="w-50 d-flex justify-content-end">
-                                                                <button type="submit" class="btn light-btn-n">
-                                                                    新增記錄
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                    }
+                                    </div>
                                 }
+                            }
                             
                             
 
@@ -1054,7 +1091,9 @@
                                 @{
                                     if (Model.Chickcode == null)
                                     {
-                                        <div>請先開通成為雞農身分!</div>
+									// <div>請先開通成為雞農身分!</div>
+
+									<img src="~/memberimg/chickopenfirst.jpg" />
                                     }
                                     else
                                     {
@@ -1177,6 +1216,12 @@
     </html>
 
 @section Scripts{
+
+    <!-- 引用jquery來驗證表單的資料輸入是否正確 -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
     <!-- //小分頁切換功能  應該是原本的壞掉了所以改用新的切換功能了 不確定 明天問問別人 -->
     <!-- <script src="/assets/dist/js/bootstrap.bundle.min.js"></script> -->
     <!-- jQuery -->
@@ -1225,7 +1270,22 @@
             tabButtons[0].click();
         });
 
-       
+       //---------------------設定雞農出生日期合理範圍------------------------
+        // 取得當前日期
+        var today = new Date();
+
+        // 計算出合理的最小日期（假設年齡最大為 120 歲）
+        var minDate = new Date();
+        minDate.setFullYear(today.getFullYear() - 120); // 假設最大年齡為 120 歲
+
+        // 計算出合理的最大日期（今天 - 18 年，假設最小年齡為 18 歲）
+        var maxDate = new Date();
+        maxDate.setFullYear(today.getFullYear() - 18); // 最小年齡 18 歲
+
+        // 設置 input 的 min 和 max 屬性
+        document.getElementById("birthdate").setAttribute("min", minDate.toISOString().split('T')[0]);
+        document.getElementById("birthdate").setAttribute("max", maxDate.toISOString().split('T')[0]);
+
            
 
 
@@ -1249,6 +1309,30 @@
                 behavior: 'smooth' // 平滑滾動效果
             });
         });
+
+        //--------------------驗證會員輸入的資料是否有符合規則-------------------------
+         // 取得表單和提交按鈕
+    const form = document.getElementById('UserDataForm');
+        const submitBtn = document.getElementById('btnSubmit');
+    
+    // 正則表達式驗證
+    var emailPattern = /^[^@@\s]+@@[^@@\s]+\.[^@@\s]+$/;
+    var phonePattern = /^09\d{8}$/;
+
+    // 驗證欄位
+    function validateForm() {
+        var name = document.getElementById('username').value.trim() !== '';
+        var email = emailPattern.test(document.getElementById('email').value);
+        var phone = phonePattern.test(document.getElementById('phone').value);
+        
+        
+
+        // 如果所有欄位都有效，啟用提交按鈕，否則禁用
+        submitBtn.disabled = !(name && email && phone );
+    }
+
+    // 當表單輸入改變時進行驗證
+    form.addEventListener('input', validateForm);
 
 
         //-----------------------更新會員資料-----------------------

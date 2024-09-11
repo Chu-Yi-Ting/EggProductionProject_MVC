@@ -2,17 +2,21 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EggProductionProject_MVC.Models;
 
 public partial class Member
 {
     public int MemberSid { get; set; }
-
+    [Required(ErrorMessage = "姓名是必填欄位")]
     public string Name { get; set; }
-
+    [Required(ErrorMessage = "電子信箱是必填欄位")]
+    [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "請輸入有效的電子郵件地址")]
+    [EmailAddress(ErrorMessage = "請輸入有效的電子郵件地址")]
     public string Email { get; set; }
-
+    [Required(ErrorMessage = "電話號碼是必填欄位")]
+    [RegularExpression(@"^09\d{8}$", ErrorMessage = "電話號碼應為09開頭的10碼數字")]
     public string Phone { get; set; }
 
     public DateOnly? BirthDate { get; set; }
@@ -25,13 +29,13 @@ public partial class Member
 
     public string UserName { get; set; }
 
-    public byte[] ProfilePic { get; set; }
-
     public byte? IsBlocked { get; set; }
 
     public string Chickcode { get; set; }
 
     public string AspUserId { get; set; }
+
+    public string ProfilePic { get; set; }
 
     public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
 

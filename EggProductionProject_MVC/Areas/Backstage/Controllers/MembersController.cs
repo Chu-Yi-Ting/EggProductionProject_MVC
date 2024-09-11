@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 using EggProductionProject_MVC.Models.MemberVM;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 {
@@ -14,9 +15,12 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
     public class MembersController : Controller
     {
         private readonly EggPlatformContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MembersController(EggPlatformContext context)
+
+        public MembersController(EggPlatformContext context,IWebHostEnvironment webHostEnvironment)
         {
+            _webHostEnvironment = webHostEnvironment;
             _context = context;
         }
 
@@ -24,18 +28,18 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         public async Task<IActionResult> GetPic(int id)
         {
             Member? member = await _context.Members.FindAsync(id);
-            byte[]? content = member?.ProfilePic;
+            string content = member?.ProfilePic;
             return File(content, "image/jpeg");
         }
 
-        private void ReadUploadImage(MemberVM member)
-        {
-            using (BinaryReader br = new BinaryReader(
-                Request.Form.Files["Picture"].OpenReadStream()))
-            {
-                member.ProfilePic = br.ReadBytes((int)Request.Form.Files["Picture"].Length);
-            }
-        }
+        //private void ReadUploadImage(MemberVM member)
+        //{
+        //    using (BinaryReader br = new BinaryReader(
+        //        Request.Form.Files["Picture"].OpenReadStream()))
+        //    {
+        //        member.ProfilePic = br.ReadBytes((int)Request.Form.Files["Picture"].Length);
+        //    }
+        //}
 
 
 
@@ -74,14 +78,32 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 member.IsChickFarm = model.IsChickFarm;
                 member.IsBlocked = model.IsBlocked;
 
-                // 处理上传的头像图片
+                // 處理上傳的照片
                 if (profilePic != null && profilePic.Length > 0)
                 {
-                    using (var ms = new MemoryStream())
+                    // 確定上傳檔案的目錄
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic");
+
+                    // 檢查資料夾是否存在，不存在則建立
+                    if (!Directory.Exists(uploadsFolder))
                     {
-                        profilePic.CopyTo(ms);
-                        member.ProfilePic = ms.ToArray();  // 假设 ProfilePic 是 byte[] 类型
+                        Directory.CreateDirectory(uploadsFolder);
                     }
+
+                    // 產生唯一的檔案名稱
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(profilePic.FileName);
+
+                    // 確定檔案的完整路徑
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // 儲存檔案至伺服器
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                         profilePic.CopyToAsync(fileStream);
+                    }
+
+                    // 儲存檔案路徑到資料庫 (儲存相對路徑)
+                    member.ProfilePic = "/memProfilePic/" + uniqueFileName;
                 }
 
                 _context.SaveChanges();
@@ -94,8 +116,10 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         }
 
 
-        public async Task<IActionResult> CreateSave([FromForm] MemberVM model ,IFormFile profilePic)
+        public async Task<IActionResult> CreateSave([FromForm] UserDTO model)
         {
+            ModelState.Remove("AspUserId");
+            ModelState.Remove("Chickcode");
             if (ModelState.IsValid)
             {
                 var member = await _context.Members.FindAsync(model.MemberSid);
@@ -112,13 +136,23 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
                 member.IsChickFarm = model.IsChickFarm;
                 member.IsBlocked = model.IsBlocked;
 
-                if (model.ProfilePicFile != null)
+                // 如果有上傳檔案，則處理檔案更新
+                if (model.ProfilePic != null)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    // 檔案名稱處理，避免重名
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePic.FileName;
+                    // 檔案上傳路徑
+                    string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", model.ProfilePic.FileName);
+
+                    // 將檔案上傳到指定路徑
+                    using (var filestream = new FileStream(path, FileMode.Create))
                     {
-                        await model.ProfilePicFile.CopyToAsync(memoryStream);
-                        member.ProfilePic = memoryStream.ToArray(); // 将文件内容转换为 byte[]
+                        model.ProfilePic.CopyTo(filestream);
                     }
+
+                    // 儲存相對路徑到資料庫
+                    member.ProfilePic = "/memProfilePic/" + model.ProfilePic.FileName;
+
                 }
 
                 try

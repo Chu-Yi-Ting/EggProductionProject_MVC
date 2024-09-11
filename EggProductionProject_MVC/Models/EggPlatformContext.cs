@@ -753,7 +753,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsFixedLength();
-            entity.Property(e => e.ProfilePic).HasColumnType("image");
+            entity.Property(e => e.ProfilePic).HasMaxLength(450);
             entity.Property(e => e.UserName).HasMaxLength(50);
 
             entity.HasOne(d => d.AspUser).WithMany(p => p.Members)

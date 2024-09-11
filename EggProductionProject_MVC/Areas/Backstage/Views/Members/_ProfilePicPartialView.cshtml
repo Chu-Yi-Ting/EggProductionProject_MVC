@@ -3,9 +3,9 @@
 
 @if (Model.ProfilePic != null)
 {
-
-	<img src="@Url.Action("GetPic","Members", new {id=Model.MemberSid})"
-		 title="@Html.DisplayFor(model => model.Name)" class="w-25" />
+	<img src="@Model.ProfilePic" alt="會員照片" class="w-25" />
+	@* <img src="@Url.Action("GetPic","Members", new {id=Model.MemberSid})"
+		 title="@Html.DisplayFor(model => model.Name)" class="w-25" /> *@
 }
 else
 {

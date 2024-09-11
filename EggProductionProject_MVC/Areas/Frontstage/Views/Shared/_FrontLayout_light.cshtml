@@ -135,20 +135,37 @@
             </div>
 
             <div class="offcanvas-footer">
+                
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
                         <div class="logoin-user">
                             <div class="border-img">
-                                <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png">
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                                {
+                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                }
+                               
                             </div>
-                            Alice
+                            @* Alice *@
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         </div>
                     </li>
                 </ul>
-                <button type="button" class="btn ">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                        <button type="submit" class="btn ">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                            登出
+                        </button>
+                    </form>
+                }
+       
             </div>
         </div>
 
