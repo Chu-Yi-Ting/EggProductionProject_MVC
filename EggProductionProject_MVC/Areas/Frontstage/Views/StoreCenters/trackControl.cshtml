@@ -530,69 +530,52 @@
                         }
                     });
 
-
-
                     const data = await response.json();
-                    console.log("data",data)
+                    console.log("data", data);
 
                     const generateProductsHtml = (addresses) => {
                         return addresses.map(address => {
-                            const storeNameClass = address.storeName ? '' : 'd-none';
-                            const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
-                            const storeSid = BuyData1.storeSid;
-
-
-                            // const storeNameClass = address.storeName ? '' : 'd-none';
-                            const showFirstButton = address.storeName ? '' : 'd-none';
-                            const showSecondButton = address.storeName ? 'd-none' : '';
+                            const storeNameClass = address.StoreName ? '' : 'd-none';
+                            const defaultClass = address.AddressFirst === 1 ? '' : 'd-none';
+                            const showFirstButton = address.StoreName ? '' : 'd-none';
+                            const showSecondButton = address.StoreName ? 'd-none' : '';
 
                             return `
-                                                
-
-                                        <div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}">
+                            <div class="other-info d-flex flex-column flex-lg-row s_${BuyData1.storeSid}" id="flexRadioDefault${address.CarrierAddressSid}">
                                 <div class="w-100 mx-auto">
-                                            <div class="part form-control-n w-100">
+                                    <div class="part form-control-n w-100">
                                         <div class="carrier-type w-100 d-flex justify-content-between pb-1">
                                             <p class="d-flex align-items-center mb-0">
-                                                                ${address.carrierName}<span class="way_no${address.carrierWayNo}">${address.way}</span>
+                                                ${address.CarrierName}<span class="way_no${address.CarrierWayNo}">${address.Way}</span>
                                             </p>
                                             <div class="d-flex justify-content-center align-items-center">
-                                                <button class="btn track-info p-0" data-deletesid="${address.carrierAddressSid}">刪除</button>
-
-
-                                                                                    <a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button"  data-edit="${address.carrierAddressSid}">編輯</a>
-                        <a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
-
-
+                                                <button class="btn track-info p-0" data-deletesid="${address.CarrierAddressSid}">刪除</button>
+                                                <a class="btn track-info ms-3 p-0 ${showSecondButton}" data-bs-toggle="modal" href="#exampleModalToggle3" role="button" data-edit="${address.CarrierAddressSid}">編輯</a>
+                                                <a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.CarrierAddressSid}">編輯</a>
                                             </div>
                                         </div>
                                         <div class="carrier-address d-flex flex-column flex-xl-row">
                                             <div class="d-flex mt-1 mt-md-0">
-                                                        <p class="name me-2 m-0">${address.recordName}</p>
-                                                        <p class="phone me-2 m-0">${address.recordPhone}</p>
+                                                <p class="name me-2 m-0">${address.RecordName}</p>
+                                                <p class="phone me-2 m-0">${address.RecordPhone}</p>
                                             </div>
-                                           
-                                                    <p class="address me-2 m-0">
-                                                                                            <span class="me-1 ${storeNameClass}">${address.storeName}  | </span>${address.adress}
-                                                                                        </p>
+                                            <p class="address me-2 m-0">
+                                                <span class="me-1 ${storeNameClass}">${address.StoreName}  | </span>${address.Adress}
+                                            </p>
                                         </div>
-                                                <p class="default me-2 m-0 ${defaultClass}">預設</p>
+                                        <p class="default me-2 m-0 ${defaultClass}">預設</p>
                                     </div>
                                 </div>
-                                </div>
-                       
-
-                                        `;
-                        }).join('<hr class="m-0" />');
+                            </div>
+                            <hr class="m-0" />
+                        `;
+                        }).join('');
                     };
 
                     const defaultCarriers = [
                         { carrierNo: 1, displayText: '宅配', imageSrc: '../../FrontstageTemplate/assets/brand/common/blackcat_logo.svg', addresses: [] },
                         { carrierNo: 2, displayText: '超商', imageSrc: '../../FrontstageTemplate/assets/brand/common/seven-logo.png', addresses: [] }
                     ];
-
-
-
 
                     const generateStoresHtml1 = (data) => {
                         const carriersMap = defaultCarriers.reduce((map, carrier) => {
@@ -601,8 +584,8 @@
                         }, {});
 
                         data.forEach(store => {
-                            if (carriersMap[store.carrierNo]) {
-                                carriersMap[store.carrierNo].addresses = store.addresses;
+                            if (carriersMap[store.CarrierNo]) {
+                                carriersMap[store.CarrierNo].addresses = store.Addresses;
                             }
                         });
 
@@ -611,297 +594,292 @@
                             const buttonClass = hasAddresses ? 'accordion-button collapsed' : 'accordion-button collapsed disabled';
                             const productsHtml = hasAddresses ? generateProductsHtml(store.addresses) : '';
 
-
-
-
-
                             return `
-                                                    <div class="accordion-item mb-4 ">
-                                        <h2 class="accordion-header" id="heading${store.carrierNo}">
-                                            <button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
-                                                ${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
-                                            </button>
-                                        </h2>
-                                        <div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
-                                            <div class="accordion-body">
-                                         
-                                                    ${productsHtml}
-                                                
-                                             
-                                            </div>
-                                        </div>
+                            <div class="accordion-item mb-4">
+                                <h2 class="accordion-header" id="heading${store.carrierNo}">
+                                    <button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
+                                        ${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
+                                    </button>
+                                </h2>
+                                <div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
+                                    <div class="accordion-body">
+                                        ${productsHtml}
                                     </div>
-
-
-                                `;
+                                </div>
+                            </div>
+                        `;
                         }).join('');
                     };
-
 
                     const divSpots1 = document.getElementById('accordionExample1');
                     divSpots1.innerHTML = generateStoresHtml1(data);
 
-
-                        const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
-
-
-
-        // 通用的更新模态框内容函数
-        const updateModalContent = (modalId, addressData, updateCallback) => {
-            const nameInput = document.querySelector(`${modalId} .addressName input`);
-            const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
-            const addressInput = document.querySelector(`${modalId} .address input`);
-             const address = document.querySelector('#exampleModalToggle4 .carrier-address div');
-            const checkbox = document.querySelector(`${modalId} .hidden-box`);
-            const priceElement = document.querySelector(`${modalId} .carryway .checktext-money`);
-
-            const addressStoreName = document.querySelector(`${modalId} .carrier-address .storeName`);
-            const addressStoreId = document.querySelector(`${modalId} .carrier-address .storeId`);
-
-            if (addressData && addressData.length > 0) {
-                nameInput.value = addressData[0].recordName || '';
-                phoneInput.value = addressData[0].recordPhone || '';
-
-                if (addressInput) {
-                    addressInput.value = addressData[0].adress || '';
-                }else{
-                address.textContent= addressData[0].adress.replace(/\|$/, '').trim() || '';
-                }
-
-                if (checkbox) {
-                    checkbox.checked = (addressData[0].carrierWayNo === 1);
-                }
-                if (priceElement) {
-                    priceElement.textContent = `$${addressData[0].price || 0}`;
-                }
-                if (addressStoreName) {
-                    addressStoreName.textContent = addressData[0].storeName || '';
-                }
-                if (addressStoreId) {
-                    addressStoreId.textContent = addressData[0].storeId || '';
-                }
-            }
-
-            $(document).on('click', `${modalId} .dark-btn-n`, function () {
-                const submitdata = {
-                    CarrierAddressSid: addressData[0].carrierAddressSid,
-                    MemberSid: nowId,
-                    RecordName: nameInput.value,
-                    RecordPhone: phoneInput.value,
-                    Adress: addressInput ? addressInput.value : address.textContent,
-                    StoreName: addressStoreName ? addressStoreName.textContent : undefined,
-                    StoreId: addressStoreId ? addressStoreId.textContent : undefined,
-                    CarrierWayNo: checkbox ? (checkbox.checked ? 1 : 2) : undefined
-                };
-                updateCallback(submitdata);
-            });
-        };
-
-
-           const deleteModalContent = (modalId, updateCallback) => {
-        
-                const submitdata = {
-                    CarrierAddressSid: modalId,
-                    MemberSid: nowId,
-                    PublicStatusNo:2
-                };
-                updateCallback(submitdata);
-        };
-
-            const FirstModalContent = (modalId,wayNo, updateCallback) => {
-        
-                const submitdata = {
-                    CarrierAddressSid: modalId,
-                    MemberSid: nowId,
-                    AddressFirst:1,
-                    CarrierWayNo:wayNo
-                };
-                updateCallback(submitdata);
-        };
-
-
-    
-
- const updateAddModalContent = (modalId, updateCallback) => {
+                    const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
 
 
 
-     
-        $(document).off('click', `${modalId} #updateAddress`).on('click', `${modalId} #updateAddress`, function () {
-            // 获取当前活跃的 tab-pane
-            const activeTab = document.querySelector(`${modalId} .tab-pane.active`);
+                    // 通用的更新模态框内容函数
+                    const updateModalContent = (modalId, addressData, updateCallback) => {
+                        // Select elements within the modal using modalId
+                        const nameInput = document.querySelector(`${modalId} .addressName input`);
+                        const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+                        const addressInput = document.querySelector(`${modalId} .address input`);
+                        const addressDiv = document.querySelector(`${modalId} .carrier-address div`);
+                        const checkbox = document.querySelector(`${modalId} .hidden-box`);
+                        const priceElement = document.querySelector(`${modalId} .carryway .checktext-money`);
+                        const addressStoreName = document.querySelector(`${modalId} .carrier-address .storeName`);
+                        const addressStoreId = document.querySelector(`${modalId} .carrier-address .storeId`);
 
-            // 选取并处理需要的元素
-            const nameInput = document.querySelector(`${modalId} .addressName input`);
-            const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
-            const checkbox = document.querySelector(`${modalId} .hidden-box`);
+                        if (addressData && addressData.length > 0) {
+                            // Update modal content with data
+                            nameInput.value = addressData[0].RecordName || '';
+                            phoneInput.value = addressData[0].RecordPhone || '';
+                            if (addressInput) {
+                                addressInput.value = addressData[0].Adress || '';
+                            } else {
+                                addressDiv.textContent = addressData[0].Adress.replace(/\|$/, '').trim() || '';
+                            }
+                            if (checkbox) {
+                                checkbox.checked = (addressData[0].CarrierWayNo === 1);
+                            }
+                            if (priceElement) {
+                                priceElement.textContent = `$${addressData[0].Price || 0}`;
+                            }
+                            if (addressStoreName) {
+                                addressStoreName.textContent = addressData[0].StoreName || '';
+                            }
+                            if (addressStoreId) {
+                                addressStoreId.textContent = addressData[0].StoreId || '';
+                            }
+                        }
 
-            let submitdata = {
-                CarrierAddressSid: 0,
-                MemberSid: nowId,
-                RecordName: nameInput ? nameInput.value.trim() : '',
-                RecordPhone: phoneInput ? phoneInput.value.trim() : '',
-                AddressFirst: checkbox ? (checkbox.checked ? 1 : 0) : 0,
-                PublicStatusNo: 1
-            };
+                        // Unbind previous click event handlers to avoid conflicts
+                        $(document).off('click', `${modalId} .dark-btn-n`);
 
-            // 判断是 #home 还是 #profile 选项卡
-            if (activeTab && activeTab.id === 'home') {
-                // 处理新增超商的信息
-                const addressDiv = document.querySelector(`${modalId} .carrier-address div`);
-                const storeNameElement = document.querySelector(`${modalId} .carrier-address .storeName`);
-                const storeIdElement = document.querySelector(`${modalId} .carrier-address .storeId`);
+                        // Bind new click event handler
+                        $(document).on('click', `${modalId} .dark-btn-n`, function () {
+                            const submitdata = {
+                                CarrierAddressSid: addressData[0].CarrierAddressSid,
+                                MemberSid: nowId,
+                                RecordName: nameInput.value,
+                                RecordPhone: phoneInput.value,
+                                Adress: addressInput ? addressInput.value : addressDiv.textContent,
+                                StoreName: addressStoreName ? addressStoreName.textContent : undefined,
+                                StoreId: addressStoreId ? addressStoreId.textContent : undefined,
+                                CarrierWayNo: checkbox ? (checkbox.checked ? 1 : 2) : undefined
+                            };
+                            console.log("submitdata", submitdata); // Log the data being submitted
 
-                submitdata.Adress = addressDiv ? addressDiv.textContent.trim() : '';
-                submitdata.StoreName = storeNameElement ? storeNameElement.textContent.replace(/\s*\|\s*$/, '').trim() : '';
-                submitdata.StoreId = storeIdElement ? storeIdElement.textContent.trim() : '';
-                submitdata.CarrierWayNo = 3;
-            } else if (activeTab && activeTab.id === 'profile') {
-                // 处理新增宅配的信息
-                const addressInput = document.querySelector(`${modalId} #profile input[type="text"]`);
-                const serviceSelect = document.querySelector(`${modalId} #profile select`);
+                            updateCallback(submitdata);
+                        });
+                    };
 
-                submitdata.Adress = addressInput ? addressInput.value.trim() : '';
-                submitdata.CarrierWayNo = serviceSelect ? serviceSelect.value : '';
-            }
 
-            console.log("submitdata", submitdata);
+                    const deleteModalContent = (modalId, updateCallback) => {
 
-            // 调用回调函数以处理数据
-            if (typeof updateCallback === 'function') {
-                updateCallback(submitdata);
-            }
-        });
+                        const submitdata = {
+                            CarrierAddressSid: modalId,
+                            MemberSid: nowId,
+                            PublicStatusNo: 2
+                        };
+                        updateCallback(submitdata);
+                    };
+
+                    const FirstModalContent = (modalId, wayNo, updateCallback) => {
+
+                        const submitdata = {
+                            CarrierAddressSid: modalId,
+                            MemberSid: nowId,
+                            AddressFirst: 1,
+                            CarrierWayNo: wayNo
+                        };
+                        updateCallback(submitdata);
+                    };
 
 
 
 
-};
-
-const element = document.querySelector('.page-title .addAddress');
-
-element.addEventListener('click', async () => {
-    const modalTarget = element.getAttribute('href');
-    console.log("modalTarget ",modalTarget )
-    if (modalTarget === "#exampleModalToggle") {
-
-         updateAddModalContent(modalTarget, updatePrices);
-    }
-});
-
-
-document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function (element) {
-    element.addEventListener('dblclick', function () { 
-
-        const parentDiv = this.closest('.other-info');
-        if (parentDiv) {
-            const parentId = parentDiv.id; 
-            const numberPart = parentId.match(/\d+/); 
-
-            let CarrierAddressSid;
-            let wayNo;
-
-            if (numberPart) {
-                console.log('Number Part:', numberPart[0]); 
-                CarrierAddressSid=numberPart[0];
-            }
-
-            const carrierType = parentDiv.querySelector('.carrier-type span');
-            if (carrierType) {
-
-                    const className = carrierType.className;
-                    const wayNoNumber = className.match(/\d+/); 
-                    if (wayNoNumber) {
-                        console.log('Way No Number:', wayNoNumber[0]); 
-                        wayNo=wayNoNumber[0];
-                    }
-                
-            }
-
-
-
-            FirstModalContent(CarrierAddressSid,wayNo, updatePrices);
-        
-
-
-
-        }
-    });
-});
-
-
-
-        // 更新数据
-        const loadAddressData = async (CarrierAddressSid) => {
-            const api = '@Url.Content("~/Frontstage/StoreCentersAPI/AddressOne")';
-            const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
-            try {
-                const response = await fetch(apiFilter, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('There has been a problem with your fetch operation:', error);
-                throw error;
-            }
-        };
+                    const updateAddModalContent = (modalId, updateCallback) => {
 
 
 
 
-        selectElements.forEach(element => {
-    element.addEventListener('click', async (event) => {
-    
-        
-        const modalTarget = element.getAttribute('href');
-        const dataEditValue = element.getAttribute('data-edit');
-        const dataDeleteValue = element.getAttribute('data-deletesid');
+                        $(document).off('click', `${modalId} #updateAddress`).on('click', `${modalId} #updateAddress`, function () {
+                            // 获取当前活跃的 tab-pane
+                            const activeTab = document.querySelector(`${modalId} .tab-pane.active`);
 
-        
-        try {
-            if (dataDeleteValue != null) {
- 
+                            // 选取并处理需要的元素
+                            const nameInput = document.querySelector(`${modalId} .addressName input`);
+                            const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+                            const checkbox = document.querySelector(`${modalId} .hidden-box`);
 
-             
-                await deleteModalContent(dataDeleteValue, updatePrices);
-            } 
-            
-            if (dataEditValue != null) {
-        
-                const addressData = await loadAddressData(dataEditValue);
+                            let submitdata = {
+                                CarrierAddressSid: 0,
+                                MemberSid: nowId,
+                                RecordName: nameInput ? nameInput.value.trim() : '',
+                                RecordPhone: phoneInput ? phoneInput.value.trim() : '',
+                                AddressFirst: checkbox ? (checkbox.checked ? 1 : 0) : 0,
+                                PublicStatusNo: 1
+                            };
 
-     
-                if (modalTarget === "#exampleModalToggle3" || modalTarget === "#exampleModalToggle4") {
-                    updateModalContent(modalTarget, addressData, updatePrices); 
-                }
-            }
+                            // 判断是 #home 还是 #profile 选项卡
+                            if (activeTab && activeTab.id === 'home') {
+                                // 处理新增超商的信息
+                                const addressDiv = document.querySelector(`${modalId} .carrier-address div`);
+                                const storeNameElement = document.querySelector(`${modalId} .carrier-address .storeName`);
+                                const storeIdElement = document.querySelector(`${modalId} .carrier-address .storeId`);
 
-        } catch (error) {
-            console.error('Error while handling address data:', error);
-        }
-    });
-});
+                                submitdata.Adress = addressDiv ? addressDiv.textContent.trim() : '';
+                                submitdata.StoreName = storeNameElement ? storeNameElement.textContent.replace(/\s*\|\s*$/, '').trim() : '';
+                                submitdata.StoreId = storeIdElement ? storeIdElement.textContent.trim() : '';
+                                submitdata.CarrierWayNo = 3;
+                            } else if (activeTab && activeTab.id === 'profile') {
+                                // 处理新增宅配的信息
+                                const addressInput = document.querySelector(`${modalId} #profile input[type="text"]`);
+                                const serviceSelect = document.querySelector(`${modalId} #profile select`);
+
+                                submitdata.Adress = addressInput ? addressInput.value.trim() : '';
+                                submitdata.CarrierWayNo = serviceSelect ? serviceSelect.value : '';
+                            }
+
+                            console.log("submitdata", submitdata);
+
+                            // 调用回调函数以处理数据
+                            if (typeof updateCallback === 'function') {
+                                updateCallback(submitdata);
+                            }
+                        });
 
 
 
-                   
+
+                    };
+
+                    const element = document.querySelector('.page-title .addAddress');
+
+                    element.addEventListener('click', async () => {
+                        const modalTarget = element.getAttribute('href');
+                        console.log("modalTarget ", modalTarget)
+                        if (modalTarget === "#exampleModalToggle") {
+
+                            updateAddModalContent(modalTarget, updatePrices);
+                        }
+                    });
+
+
+                    document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function (element) {
+                        element.addEventListener('dblclick', function () {
+
+                            const parentDiv = this.closest('.other-info');
+                            if (parentDiv) {
+                                const parentId = parentDiv.id;
+                                const numberPart = parentId.match(/\d+/);
+
+                                let CarrierAddressSid;
+                                let wayNo;
+
+                                if (numberPart) {
+                                    console.log('Number Part:', numberPart[0]);
+                                    CarrierAddressSid = numberPart[0];
+                                }
+
+                                const carrierType = parentDiv.querySelector('.carrier-type span');
+                                if (carrierType) {
+
+                                    const className = carrierType.className;
+                                    const wayNoNumber = className.match(/\d+/);
+                                    if (wayNoNumber) {
+                                        console.log('Way No Number:', wayNoNumber[0]);
+                                        wayNo = wayNoNumber[0];
+                                    }
+
+                                }
+
+
+
+                                FirstModalContent(CarrierAddressSid, wayNo, updatePrices);
+
+
+
+
+                            }
+                        });
+                    });
+
+
+
+                    // 更新数据
+                    const loadAddressData = async (CarrierAddressSid) => {
+                        const api = '@Url.Content("~/Frontstage/StoreCentersAPI/AddressOne")';
+                        const apiFilter = `${api}?CarrierAddressSid=${CarrierAddressSid}`;
+                        try {
+                            const response = await fetch(apiFilter, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+
+                            const data = await response.json();
+                            return data;
+                        } catch (error) {
+                            console.error('There has been a problem with your fetch operation:', error);
+                            throw error;
+                        }
+                    };
+
+
+
+
+                    selectElements.forEach(element => {
+                        element.addEventListener('click', async (event) => {
+
+
+                            const modalTarget = element.getAttribute('href');
+                            const dataEditValue = element.getAttribute('data-edit');
+                            const dataDeleteValue = element.getAttribute('data-deletesid');
+
+
+                            try {
+                                if (dataDeleteValue != null) {
+
+
+
+                                    await deleteModalContent(dataDeleteValue, updatePrices);
+                                }
+
+                                if (dataEditValue != null) {
+
+                                    const addressData = await loadAddressData(dataEditValue);
+
+
+                                    if (modalTarget === "#exampleModalToggle3" || modalTarget === "#exampleModalToggle4") {
+                                        updateModalContent(modalTarget, addressData, updatePrices);
+                                    }
+                                }
+
+                            } catch (error) {
+                                console.error('Error while handling address data:', error);
+                            }
+                        });
+                    });
+
+
+
 
 
 
                 } catch (error) {
-                    console.error('There has been a problem with your fetch operation:', error);
+                    console.error('Error fetching address list:', error);
                 }
             };
-            loadBuyCarts1(nowId);
+
+
+            loadBuyCarts1(1);
 
                      const checkbox = document.querySelector('#exampleModalToggle3 .hidden-box');
              const priceElement = document.querySelector('#exampleModalToggle3 .checktext-money');
@@ -921,15 +899,11 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
 
         checkbox.addEventListener('change', updatePrice);
 
-   
-      
-         
-
-            //新增更改資料
             const updatePrices = async (submitdata) => {
                 const apiUrl = 'https://localhost:7080/Frontstage/StoreCentersAPI/CarrierAddress/Save';
 
                 try {
+                    // Sending POST request to API with submitdata
                     const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: {
@@ -938,24 +912,29 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
                         body: JSON.stringify(submitdata)
                     });
 
-
+                    // Check if the response is OK
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
 
-
+                    // Parse and handle the response
                     const result = await response.json();
                     console.log('Success:', result);
 
+                    // Hide the modal and reload the cart information
                     $('.modal-n').modal('hide');
-                            await loadBuyCarts1(submitdata.MemberSid);
+                    await loadBuyCarts1(submitdata.MemberSid);
 
                 } catch (error) {
-
+                    // Log any errors that occur during the process
                     console.error("Error occurred:", error.message);
-                    console.log("nonono");
                 }
             };
+
+            // Example usage
+            // Assuming submitdata is already defined and populated
+            // updatePrices(submitdata);
+
 
 
             const NowUserSid = 3;
@@ -978,8 +957,8 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
 
                     currentOpenData = nn[0];
 
-                    SwitchHome.checked = nn[0].houseOpen === 1;
-                    SwitchStore.checked = nn[0].storeOpen === 1;
+                    SwitchHome.checked = nn[0].HouseOpen === 1;
+                    SwitchStore.checked = nn[0].StoreOpen === 1;
 
                 } catch (error) {
                     console.error('Error fetching open data:', error);
@@ -995,9 +974,9 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
                     const SwitchStore = document.querySelector('#SwitchStore');
 
                     const updatedData = {
-                        "CarrierOpenNo": currentOpenData.carrierOpenNo,
-                        "storeOpen": SwitchStore.checked ? 1 : 0,
-                        "houseOpen": SwitchHome.checked ? 1 : 0
+                        CarrierOpenNo: currentOpenData.CarrierOpenNo,
+                        storeOpen: SwitchStore ? (SwitchStore.checked ? 1 : 0) : 0,
+                        houseOpen: SwitchHome ? (SwitchHome.checked ? 1 : 0) : 0
                     };
 
                     try {
@@ -1010,20 +989,25 @@ document.querySelectorAll('.carrier-type p, .carrier-address').forEach(function 
                         });
 
                         if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+                            throw new Error(`HTTP error! Status: ${response.status}`);
                         }
 
                         const result = await response.json();
                         console.log('Update successful:', result);
+
+                        // Hide the modal and reload data
                         $('.modal-n').modal('hide');
-                        await loadBuyCarts1(currentOpenData.storeSid);
+                        await loadBuyCarts1(currentOpenData.StoreSid);
                     } catch (error) {
                         console.error('Error updating carrier open data:', error);
+                        // Optional: Display a user-friendly message or perform additional actions
                     }
                 } else {
                     console.error('No open data available to update.');
+                    // Optional: Notify the user that no data is available for updating
                 }
             });
+
 
 
 
