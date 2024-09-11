@@ -1,6 +1,8 @@
 ﻿using EggProductionProject_MVC.Areas.Frontstage.DTO;
 using EggProductionProject_MVC.Areas.Frontstage.Models;
+using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
 using EggProductionProject_MVC.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,16 +10,18 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
-	[Area("Frontstage")]
+    [Area("Frontstage")]
 	public class ProductApiController : Controller
     {
         private readonly EggPlatformContext _context;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;  // 使用Identity User Manager
 
-        public ProductApiController (EggPlatformContext context, IWebHostEnvironment hostingEnvironment)
+        public ProductApiController (EggPlatformContext context, IWebHostEnvironment hostingEnvironment, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -144,5 +148,30 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(pagingDTO);
         }
 
+
+        //商品詳細分頁的加入購物車功能
+        [HttpPost]
+        public IActionResult AddToCart([FromBody] CartViewModel cartData)
+        {
+            if (cartData != null)
+            {
+                var aspUserId = _userManager.GetUserId(User);
+                var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
+                // 將 cartData 寫入資料庫邏輯
+                var cart = new Cart
+                {
+                    MemberSid = member.MemberSid,
+                    ProductSid = cartData.productSid,
+                    Qty = cartData.qty
+                };
+
+                // 假設你有 dbContext 實例
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
     }
 }

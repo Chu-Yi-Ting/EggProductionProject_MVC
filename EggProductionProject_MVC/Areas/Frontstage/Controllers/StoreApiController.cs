@@ -93,40 +93,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(items);
         }
 
-
-        //取得商品給編輯商品modal使用
-        //      [HttpGet]
-        //public IActionResult GetProductById(int productSid)
-        //{
-        //	var product = (from p in _context.Products
-        //				   join s in _context.ProductSubcategories
-        //				   on p.SubcategoryNo equals s.SubcategoryNo
-        //				   join i in _context.ProductItems
-        //				   on p.ItemNo equals i.ItemNo
-        //				   where p.ProductSid == productSid
-        //				   select new ProductViewModel
-        //				   {
-        //					   productSid = p.ProductSid,
-        //					   productName = p.ProductName,
-        //					   price = p.Price,
-        //					   subcategoryNo = p.SubcategoryNo,
-        //					   subcategoryName = s.SubcategoryName,  // 從聯結的ProductSubcategory表中獲取SubcategoryName
-        //					   itemNo = p.ItemNo,
-        //					   itemName = i.ItemName,  // 從聯結的ProductItems表中獲取ItemName
-        //					   description = p.Description,
-        //					   quantity = p.Quanitity,
-        //					   weight = p.Weight,
-        //					   component = p.Component,
-        //					   discountPercent = p.DiscountPercent
-        //				   }).FirstOrDefault();
-
-        //	if (product != null)
-        //	{
-        //		return Ok(product);
-        //	}
-        //	return NotFound(new { success = false, message = "找不到該商品!!" });
-        //}
-
         // 根據 productSid 獲取商品資料給編輯商品modal使用
         [HttpGet]
         public IActionResult GetProductById(int productSid)
@@ -197,8 +163,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 				return Json(new { success = true, selectedProductSid = _deleteRequestDTO.productSid, message = "商品已成功刪除!" });
 			}
 			return Json(new { success = false, message = "找不到該商品!" });
-		}
+		}       
 
-	}
+    }
 }
 
