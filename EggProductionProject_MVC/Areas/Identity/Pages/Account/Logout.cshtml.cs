@@ -30,6 +30,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            HttpContext.Session.Clear();
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
