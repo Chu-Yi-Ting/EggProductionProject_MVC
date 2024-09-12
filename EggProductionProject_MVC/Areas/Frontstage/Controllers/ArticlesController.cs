@@ -34,7 +34,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(a => a.ArticleCreaterS)
                 .Include(a => a.ArticleCategoriesS)
                 .Where(a => a.PublicStatusNoNavigation != null && a.PublicStatusNoNavigation.PublicStatusNo == 1)//只傳公開的文章
-                .Where(a =>a.DeleteOrNot !=null && a.DeleteOrNot ==false) //只傳未被刪除的文章
+                .Where(a => a.DeleteOrNot != null && a.DeleteOrNot == false) //只傳未被刪除的文章
                 .OrderByDescending(a => a.ArticleDate) // 按时间降序排列
                 .Select(article => new ArticleDto
                 {
@@ -197,7 +197,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Phone = article.ArticleCreaterS.Phone,
                         BirthDate = article.ArticleCreaterS.BirthDate,
                         UserName = article.ArticleCreaterS.UserName,
-                        //ProfilePic = article.ArticleCreaterS.ProfilePic
+                        ProfilePic = article.ArticleCreaterS.ProfilePic
                     }
                     : null,
                 PublicStatus = article.PublicStatusNoNavigation != null
@@ -219,7 +219,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .GroupBy(gb => gb.ArticleSid)
                 .Select(g => new ArticleReactionCountDto
                 {
-                    ArticleSid = g.Key?? 0,
+                    ArticleSid = g.Key ?? 0,
                     LikeCount = g.Count(gb => gb.GorBtype == 1),  // 計算按讚的數量
                     DislikeCount = g.Count(gb => gb.GorBtype == 0)  // 計算不喜歡的數量
                 })
@@ -361,7 +361,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { LikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 1), DislikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 0) });
         }
-    
+
         //編輯 都還沒搞
         [HttpGet("GetArticleEdits/{id}")]
         public async Task<ActionResult<List<EditDto>>> GetArticleEdits(int id)

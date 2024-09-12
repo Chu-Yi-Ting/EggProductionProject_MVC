@@ -27,7 +27,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             // 查询回复
             var replies = await _context.Replies
-                .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot ==false && reply.PublicStatusNo==1)
+                .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot == false && reply.PublicStatusNo == 1)
                 .Include(reply => reply.ArticleCreaterS)
                 .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
@@ -41,7 +41,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         {
                             MemberSid = reply.ArticleCreaterS.MemberSid,
                             Name = reply.ArticleCreaterS.Name,
-                            //ProfilePic = reply.ArticleCreaterS.ProfilePic,
+                            ProfilePic = "https://localhost:7080/" + reply.ArticleCreaterS.ProfilePic,
                         }
                         : null,
                     LikeCount = 0, // 初始化，稍后将填充
@@ -270,13 +270,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 將新文章加入資料庫
             return CreatedAtAction("GetReplyDetails", new { id = newReply.ReplySid }, newReply);
         }
-       
-        
+
+
         [HttpPut("UpdateReply/{id}")]
-        public async Task<IActionResult> UpdateReply(int id,[FromForm]ReplyDto replydto)
+        public async Task<IActionResult> UpdateReply(int id, [FromForm] ReplyDto replydto)
         {
             var existingReply = await _context.Replies.FindAsync(id);
-            if(existingReply ==null)
+            if (existingReply == null)
             {
                 return NotFound($"未找到ID為{id}的回復");
             }
@@ -290,7 +290,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             };
             _context.Edits.Add(editHistory);
 
-            
+
             existingReply.ReplyInfo = replydto.ReplyInfo;
             existingReply.PublicStatusNo = replydto.PublicStatus?.PublicStatusNo;
             existingReply.ReplyUpdate = DateTime.UtcNow;
