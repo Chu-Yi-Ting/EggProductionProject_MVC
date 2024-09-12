@@ -12,6 +12,7 @@ using System.Diagnostics.Metrics;
 using System.ComponentModel.DataAnnotations;
 using NuGet.Protocol;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -162,8 +163,26 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost]
         public async Task<IActionResult> EditVideo([FromBody] EditVideoDTO Edit)
         {
+            VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(Edit.VideoSid);
 
-            var EditVideo = 
+            var EditVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+
+                VideoSid = Edit.VideoSid,
+                VideoTitle = Edit.VideoTitle,
+                CreatorSid = Edit.CreatorSid,
+                TimesWatched = Edit.TimesWatched,
+                MoviePath = 資料庫資料.MoviePath,
+                InformationColumn = Edit.InformationColumn,
+                UploadDate = Edit.UploadDate,
+                NatureSid = Edit.NatureSid,
+                PublicStatusNo = 1,
+
+        };
+
+
+            
+
         }
     }
 }

@@ -9,6 +9,9 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "影片標題")]
         public string? VideoTitle { get; set; }
 
+        [Display(Name ="創作者ID")]
+        public int CreatorSid { get; set; }
+
         [Display(Name = "觀看次數")]
         public int? TimesWatched { get; set; }
 
@@ -28,9 +31,7 @@ namespace EggProductionProject_MVC.ViewModels
         public string? MemberName { get; set; }
 
         [Display(Name = "影片分類")]
-        public string? ViedoNature { get; set; }
+        public int? NatureSid { get; set; }
 
-        [Display(Name = "公開狀態")]
-        public string? StatusDescription { get; set; }
     }
 }

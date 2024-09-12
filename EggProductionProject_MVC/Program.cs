@@ -31,14 +31,14 @@ builder.Services.AddCors(option =>
 //    });
 //關閉傳送Json駝峰式命名
 
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDbContext<EggPlatformContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
-//});
+builder.Services.AddDbContext<EggPlatformContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("EggPlatform"));
+});
 
-//builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 
