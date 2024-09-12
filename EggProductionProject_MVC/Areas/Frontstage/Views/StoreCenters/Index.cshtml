@@ -283,9 +283,10 @@
 
         function handleButtonClick(encodedRow) {
             const row = JSON.parse(decodeURIComponent(encodedRow));
-            findData(row.orderSid);
-            loadBuyCarts1(row.storeSid, row.carrierWayNo);
-            nowOrderSid = row.orderSid;
+            findData(row.OrderSid);
+            loadBuyCarts1(row.StoreSid, row.CarrierWayNo);
+         
+            nowOrderSid = row.OrderSid;
             console.log("nowOrderSid", nowOrderSid)
             
         }
@@ -313,33 +314,33 @@
 
                 const generateProductsHtml = (addresses) => {
                     return addresses.map(address => {
-                        const storeNameClass = address.storeName ? '' : 'd-none';
-                        const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+                        const storeNameClass = address.StoreName ? '' : 'd-none';
+                        const defaultClass = address.AddressFirst === 1 ? '' : 'd-none';
                         const storeSid = BuyData1.storeSid;
 
                         return `
                                             <div class="form-check d-flex s_${storeSid}">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.carrierAddressSid}">
-                                                <label class="form-check-label w-100" for="flexRadioDefault${address.carrierAddressSid}">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.CarrierAddressSid}">
+                                                <label class="form-check-label w-100" for="flexRadioDefault${address.CarrierAddressSid}">
                                                     <div class="other-info d-flex flex-column flex-lg-row">
                                                         <div class="w-100 mx-auto">
                                                             <div class="part form-control-n">
                                                                 <div class="carrier-type w-100 d-flex justify-content-between pb-1">
                                                                     <p class="d-flex align-items-center mb-0">
-                                                                        ${address.carrierName}<span>${address.way}</span>
+                                                                        ${address.CarrierName}<span>${address.Way}</span>
                                                                         <span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
                                                                     </p>
                                                                     <div class="d-flex justify-content-center align-items-center">
-                                                                        <div class="track-info">${address.price}元</div>
+                                                                        <div class="track-info">${address.Price}元</div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="carrier-address d-flex flex-column">
                                                                     <div class="d-flex mt-1 mt-md-0">
-                                                                        <p class="name me-2 m-0">${address.recordName}</p>
-                                                                        <p class="phone me-2 m-0">${address.recordPhone}</p>
+                                                                        <p class="name me-2 m-0">${address.RecordName}</p>
+                                                                        <p class="phone me-2 m-0">${address.RecordPhone}</p>
                                                                     </div>
                                                                     <p class="address me-2 m-0">
-                                                                        <span class="me-1 ${storeNameClass}">${address.storeName ? address.storeName + ' | ' : ''}</span>${address.adress}
+                                                                        <span class="me-1 ${storeNameClass}">${address.StoreName ? address.StoreName + ' | ' : ''}</span>${address.Adress}
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -353,7 +354,7 @@
                 };
 
                 const divSpots1 = document.getElementById('AddressOuter');
-                divSpots1.innerHTML = generateProductsHtml(data[0].addresses);
+                divSpots1.innerHTML = generateProductsHtml(data[0].Addresses);
 
             } catch (error) {
                 console.error('There has been a problem with your fetch operation:', error);
@@ -389,9 +390,9 @@
                 rows += `
                             <tr>
                                 <th scope="row">${index + 1}</th>
-                                <td>${product.productNo}</td>
-                                <td>${product.productName}</td>
-                                <td>x${product.qty}</td>
+                                <td>${product.ProductNo}</td>
+                                <td>${product.ProductName}</td>
+                                <td>x${product.Qty}</td>
                             </tr>
                         `;
             });
@@ -477,7 +478,7 @@
                             const rowData = encodeURIComponent(JSON.stringify(row));
                             return `
                                       <a class="btn dark-btn-n btn-sm-dbrs change_address mx-auto"
-                               id="store_${row.carrierWayNo}"
+                               id="store_${row.CarrierWayNo}"
                                data-bs-toggle="modal"
                                href="#exampleModalToggle2"
                                role="button"
@@ -496,19 +497,19 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "payment", "width": "auto", "title": "付款方式" },
-                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "carrierWayNo", "width": "auto", "title": "狀態", "visible": false },
-                    { "data": "storeSid", "width": "auto", "title": "商店序號", "visible": false },
+                    { "data": "Payment", "width": "auto", "title": "付款方式" },
+                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "CarrierWayNo", "width": "auto", "title": "狀態", "visible": false },
+                    { "data": "StoreSid", "width": "auto", "title": "商店序號", "visible": false },
                     { "data": "", "width": "auto", "title": "操作" },
                 ],
                 fixedHeader: { header: true },
@@ -554,20 +555,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "payment", "width": "auto", "title": "付款方式" },
-                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "Payment", "width": "auto", "title": "付款方式" },
+                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "trackStatus",
+                        "data": "TrackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
@@ -615,20 +616,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "payment", "width": "auto", "title": "付款方式" },
-                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "Payment", "width": "auto", "title": "付款方式" },
+                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "trackStatus",
+                        "data": "TrackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
@@ -676,20 +677,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "payment", "width": "auto", "title": "付款方式" },
-                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "Payment", "width": "auto", "title": "付款方式" },
+                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "trackStatus",
+                        "data": "TrackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
@@ -738,20 +739,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "payment", "width": "auto", "title": "付款方式" },
-                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "Payment", "width": "auto", "title": "付款方式" },
+                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "trackStatus",
+                        "data": "TrackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {

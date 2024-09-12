@@ -757,16 +757,18 @@
 
         $(document).ready(function () {
 
-
-
             const searchData = {
                 "Msid": 1
             }
 
-
+            const BuyData = {
+                "Msid": 1,
+                "CartSids": []
+            }
 
             const loadSpots = async (cartSid_check) => {
-                const api = '@Url.Content("~/Frontstage/CartsAPI/CartsList")';
+                const api = '@Url.Content("~/Frontstage/CartsAPI/CartsList")'; // Ensure this is properly resolved
+                console.log('API URL:', api);
                 const response = await fetch(api, {
                     method: 'POST',
                     body: JSON.stringify(searchData),
@@ -775,95 +777,113 @@
                     }
                 });
 
+                if (!response.ok) {
+                    console.error('Network response was not ok:', response.statusText);
+                    return;
+                }
+
                 const data = await response.json();
-                console.log(data);
+                console.log("data",data);
 
                 const generateProductsHtml = (products, cartSidCheck) => {
+                    if (!Array.isArray(products)) {
+                        console.error('Expected products to be an array');
+                        return '';
+                    }
                     return products.map(product => {
-                        const isChecked = cartSidCheck.includes(product.cartSid) ? 'checked' : '';
+                        const isChecked = cartSidCheck && cartSidCheck.includes(product.CartSid) ? 'checked' : '';
                         return `
-                        <div class="cart-card-item w-100">
-                            <input type="checkbox" class="hidden-box" id="s${product.cartSid}_p${product.productSid}" ${isChecked} />
-                            <label for="s${product.cartSid}_p${product.productSid}" class="check--label">
-                                <span class="check--label-box"></span>
-                            </label>
-                            <div class="card-body-img d-flex w-100">
-                                <div class="img_box">
-                                                                            <img  src="${product.productImagePath}"  />
-                                     
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="d-flex flex-column justify-content-between align-items-start me-3">
-                                            <h5>${product.productName}</h5>
-                                                            <small class="describe no_${product.subcategoryNo}">${product.subcategoryName}</small>
-                                        </div>
-                                        <button class="btn delete_btn" type="button">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button>
+                    <div class="cart-card-item w-100">
+                        <input type="checkbox" class="hidden-box" id="s${product.CartSid}_p${product.ProductSid}" ${isChecked} />
+                        <label for="s${product.CartSid}_p${product.ProductSid}" class="check--label">
+                            <span class="check--label-box"></span>
+                        </label>
+                        <div class="card-body-img d-flex w-100">
+                            <div class="img_box">
+                                <img src="${product.ProductImagePath}" />
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                        <h5>${product.ProductName}</h5>
+                                        <small class="describe no_${product.SubcategoryNo}">${product.SubcategoryName}</small>
                                     </div>
-                                    <div class="bottom_item flex-md-row align-items-md-center">
-                                        <div class="d-flex flex-column justify-content-between align-items-start me-3">
-
-
-                                                            <big class="price">NT$ ${Math.round(product.price * (product.discountPercent || 1))}</big>
-                                            <small class="o_price">NT$ ${product.price.toFixed(2)}</small>
-                                        </div>
-                                        <div class="input-group num_box_n">
-                                            <button class="btn decrease-qty" type="button">
-                                                <i class="fa-solid fa-minus"></i>
-                                            </button>
-                                            <input type="text" class="form-control qty stock_${product.stock}" placeholder="" value="${product.qty}" aria-label="Example text with two button addons" />
-                                            <button class="btn increase-qty" type="button">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                        </div>
+                                    <button class="btn delete_btn" type="button">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="bottom_item flex-md-row align-items-md-center">
+                                    <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                        <big class="price">NT$ ${Math.round(product.Price * ((product.DiscountPercent || 1) ))}</big>
+                                        <small class="o_price">NT$ ${product.Price.toFixed(2)}</small>
+                                    </div>
+                                    <div class="input-group num_box_n">
+                                        <button class="btn decrease-qty" type="button">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <input type="text" class="form-control qty stock_${product.Stock}" placeholder="" value="${product.Qty}" aria-label="Example text with two button addons" />
+                                        <button class="btn increase-qty" type="button">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    `;
+                    </div>
+                `;
                     }).join(' <hr />');
                 };
-
                 const generateStoresHtml = (data) => {
-                    return data.map(store => `
+                    if (!Array.isArray(data)) {
+                        console.error('Expected data to be an array');
+                        return '';
+                    }
+                    return data.map(store => {
+                        const products = Array.isArray(store.Products) ? store.Products : [];
+                        return `
                     <div class="col col-sm-12 my-4">
                         <div class="card shadow-sm cart-card pb-3">
-                                            <div class="cart-card-owner ">
+                            <div class="cart-card-owner">
                                 <div class="ck-farm d-flex align-items-center">
                                     <div class="img-outer">
-                                                <img  src="${store.storeImagePath}"  />
+                                        <img src="${store.StoreImagePath}" />
                                     </div>
-                                    <p class="ck-farm-name p-0 m-0">${store.company}</p>
+                                    <p class="ck-farm-name p-0 m-0">${store.Company}</p>
                                 </div>
                                 <button class="btn p-0 me-md-3 all_cart" type="button">
-                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                    <p class="all-tool p-0 m-0">全選</p>
                                 </button>
                             </div>
                             <hr />
-                            ${generateProductsHtml(store.products, cartSid_check)}
+                            ${generateProductsHtml(products, BuyData.CartSids)}
                         </div>
                     </div>
-                `).join('');
+                `;
+                    }).join('');
                 };
 
                 const divSpots = document.getElementById('div1');
-                divSpots.innerHTML = generateStoresHtml(data);
+                if (divSpots) {
+                    divSpots.innerHTML = generateStoresHtml(data);
+                } else {
+                    console.error('Element #div1 not found');
+                }
             };
 
+            loadSpots(BuyData.CartSids);
+        
 
-            const BuyData = {
-                "Msid": 1,
-                "CartSids": []
-            }
-
+            console.log('BuyData.CartSids',BuyData.CartSids);
 
 
+           
 
 
 
-             loadSpots(BuyData.CartSids);
+
+
+
+           
 
 
 
@@ -1243,7 +1263,7 @@
           //----------------------------------------------------------------
 
             let submitdata = {
-                // memberSid: 1,
+                // memberSid: 1, // 確保 memberSid 在此處或其他地方正確設定
                 stores: [],
                 combo: 0.9,
                 usecoin: 0,
@@ -1253,160 +1273,158 @@
 
             const loadBuyCarts = async () => {
                 const api = '@Url.Content("~/Frontstage/CartsAPI/CartsList")';
-                const response = await fetch(api, {
-                    method: 'POST',
-                    body: JSON.stringify(BuyData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
 
-                const data = await response.json();
+                try {
+                    const response = await fetch(api, {
+                        method: 'POST',
+                        body: JSON.stringify(BuyData),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
+                    const data = await response.json();
 
-                const generateProductsHtml1 = (products) => {
-                    return products.map(product => `
-                <div class="cart-card-item w-100">
-                    <div class="card-body-img d-flex w-100 px-3">
-                        <div class="d-flex flex-column">
-                            <div class="img_box">
-                                        <img  src="${product.productImagePath}"  />
-                            </div>
-                        </div>
+                    console.log("Data received:", data); // Log data to check its structure
 
-                        <div class="card-body flex-row align-items-center">
-                            <div class="w-100 d-flex flex-column flex-lg-row justify-content-between align-items-start">
-                                <div class="w-50 d-flex flex-column justify-content-between align-items-start">
-                                    <h5>${product.productName}</h5>
-                                    <small class="describe">${product.subcategoryName}</small>
+                    const generateProductsHtml1 = (products) => {
+                        if (!Array.isArray(products)) {
+                            console.error("Expected products to be an array, but received:", products);
+                            return '';
+                        }
+                        return products.map(product => `
+                    <div class="cart-card-item w-100">
+                        <div class="card-body-img d-flex w-100 px-3">
+                            <div class="d-flex flex-column">
+                                <div class="img_box">
+                                    <img src="${product.ProductImagePath}" />
                                 </div>
-                                <div class="w-100 bottom_item flex-md-row align-items-md-center me-3">
-                                    <div class="w-100 d-flex flex-column justify-content-between align-items-start align-items-lg-end ">
-
-                                                                <big class="price">NT$ ${Math.round(product.price * (product.discountPercent || 1))}</big>
+                            </div>
+                            <div class="card-body flex-row align-items-center">
+                                <div class="w-100 d-flex flex-column flex-lg-row justify-content-between align-items-start">
+                                    <div class="w-50 d-flex flex-column justify-content-between align-items-start">
+                                        <h5>${product.ProductName}</h5>
+                                        <small class="describe">${product.SubcategoryName}</small>
                                     </div>
-                                    <div class="w-100 d-flex flex-column justify-content-center align-items-end ">
-                                                <big class="price">X ${product.qty}</big>
-                                    </div>
-                                    <div class="w-100 flex-column justify-content-center align-items-end align-items-lg-end d-none d-lg-flex">
-
-                                                                  <big class="price">NT$ ${product.qty * Math.round(product.price * (product.discountPercent || 1))}</big>
+                                    <div class="w-100 bottom_item flex-md-row align-items-md-center me-3">
+                                        <div class="w-100 d-flex flex-column justify-content-between align-items-start align-items-lg-end">
+                                            <big class="price">NT$ ${Math.round(product.Price * (product.DiscountPercent || 1))}</big>
+                                        </div>
+                                        <div class="w-100 d-flex flex-column justify-content-center align-items-end">
+                                            <big class="price">X ${product.Qty}</big>
+                                        </div>
+                                        <div class="w-100 flex-column justify-content-center align-items-end align-items-lg-end d-none d-lg-flex">
+                                            <big class="price">NT$ ${product.Qty * Math.round(product.Price * (product.DiscountPercent || 1))}</big>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `).join(' <hr />');
-                };
+                    `).join(' <hr />');
+                    };
 
-
-                const generateStoresHtml1 = (data) => {
-                    return data.map(store => `
-                                            <div class="col col-sm-12 mb-5 ">
-                                <div class="card shadow-sm cart-card">
-                                            <div class="cart-card-owner s_${store.storeSid}">
-                                        <div class="ck-farm d-flex align-items-center">
-                                            <div class="img-outer">
-                                       
-                                                <img  src="${store.storeImagePath}"  />
-                                            </div>
-                                                    <p class="ck-farm-name p-0 m-0">${store.company}</p>
-                                        </div>
+                    const generateStoresHtml1 = (data) => {
+                        if (!Array.isArray(data)) {
+                            console.error("Expected data to be an array, but received:", data);
+                            return '';
+                        }
+                        return data.map(store => `
+                    <div class="col col-sm-12 mb-5">
+                        <div class="card shadow-sm cart-card">
+                            <div class="cart-card-owner s_${store.StoreSid}">
+                                <div class="ck-farm d-flex align-items-center">
+                                    <div class="img-outer">
+                                        <img src="${store.StoreImagePath}" />
                                     </div>
-                                    <hr>
-                                          ${generateProductsHtml1(store.products)}
-                                    <hr class="hr-dotted">
-                                    <div class="other-info d-flex flex-column flex-lg-row mx-3 mx-lg-2  my-3 mb-5">
-                                        <div class=" w-100 mx-auto mx-lg-4">
-                                            <div class="part  form-control-n">
-                                                <div class=" w-100 d-flex justify-content-between">
-                                                    <div class="title ">
-                                                        <div class="title-line"></div>寄送資訊
-                                                    </div>
-                                                    <div class="d-flex justify-content-center align-items-center me-3">
-                                                        <div class="track-info d-none">
-                                                            60元
-                                                        </div>
-                                                                   <a class="btn light-btn-n btn-sm-dbrs change_address ms-2" id="store_${store.storeSid}" data-bs-toggle="modal" href="#exampleModalToggle2" role="button">調整</a>
-                                                    </div>
-
-                                                </div>
-                                                <div class="carrier-type ">
-                                                            <p class=" align-items-center mb-2  hasCarriers">7-ELEVEN<span>超商</span></p>
-                                                             <p class="d-flex align-items-center my-2 noCarriers" >請新增取貨人物流資訊</p>
-                                                </div>
-                                                <div class="carrier-address d-flex flex-column flex-xl-row d-none">
-                                                    <div class="d-flex mt-1 mt-md-0">
-                                                        <p class="name me-2 m-0">張家豪</p>
-                                                        <p class="phone me-2 m-0">0960101028</p>
-                                                    </div>
-                                                    <p class="address me-2 m-0"><span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝東路一段72號76號1樓</p>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-
-                                        <div class=" w-100 d-flex flex-column mx-auto mx-lg-4 mt-3 mt-lg-0">
-                                            <div class="part  form-control-n">
-                                                <div class="title mb-3">
-                                                    <div class="title-line"></div>電子發票
-                                                </div>
-                                                <select class="select-n js-example-basic-single" name="state">
-                                                            <option value="AL">二聯式發票(個人)</option>
-                                                            <option value="AL">其他</option>
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-
+                                    <p class="ck-farm-name p-0 m-0">${store.Company}</p>
                                 </div>
                             </div>
-                        `).join('');
-                };
+                            <hr>
+                            ${generateProductsHtml1(store.Products || [])}
+                            <hr class="hr-dotted">
+                            <div class="other-info d-flex flex-column flex-lg-row mx-3 mx-lg-2 my-3 mb-5">
+                                <div class="w-100 mx-auto mx-lg-4">
+                                    <div class="part form-control-n">
+                                        <div class="w-100 d-flex justify-content-between">
+                                            <div class="title">
+                                                <div class="title-line"></div>寄送資訊
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center me-3">
+                                                <div class="track-info d-none">60元</div>
+                                                <a class="btn light-btn-n btn-sm-dbrs change_address ms-2" id="store_${store.StoreSid}" data-bs-toggle="modal" href="#exampleModalToggle2" role="button">調整</a>
+                                            </div>
+                                        </div>
+                                        <div class="carrier-type">
+                                            <p class="align-items-center mb-2 hasCarriers">7-ELEVEN<span>超商</span></p>
+                                            <p class="d-flex align-items-center my-2 noCarriers">請新增取貨人物流資訊</p>
+                                        </div>
+                                        <div class="carrier-address d-flex flex-column flex-xl-row d-none">
+                                            <div class="d-flex mt-1 mt-md-0">
+                                                <p class="name me-2 m-0">張家豪</p>
+                                                <p class="phone me-2 m-0">0960101028</p>
+                                            </div>
+                                            <p class="address me-2 m-0"><span class="me-1">忠孝東門市 | </span>台北市中正區忠孝東路一段72號76號1樓台北市中正區忠孝東路一段72號76號1樓</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100 d-flex flex-column mx-auto mx-lg-4 mt-3 mt-lg-0">
+                                    <div class="part form-control-n">
+                                        <div class="title mb-3">
+                                            <div class="title-line"></div>電子發票
+                                        </div>
+                                        <select class="select-n js-example-basic-single" name="state">
+                                            <option value="AL">二聯式發票(個人)</option>
+                                            <option value="AL">其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `).join('');
+                    };
 
-                const divSpots1 = document.getElementById('div2');
-                console.log("divSpots1", divSpots1)
-                divSpots1.innerHTML = generateStoresHtml1(data);
+                    const divSpots1 = document.getElementById('div2');
+                    divSpots1.innerHTML = generateStoresHtml1(data);
 
-                submitdata.stores = [];
+                    submitdata.stores = []; // Reset stores
 
-                data.forEach(store => {
-                    submitdata.memberSid = store.products[0].memberSid; // Assuming all products have the same memberSid
+                    data.forEach(store => {
+                        // Ensure we're checking for the correct case in key names
+                        if (store.Products && store.Products.length > 0) {
+                            submitdata.memberSid = store.Products[0].MemberSid; // Assuming all products have the same memberSid
 
-                    submitdata.stores.push({
-                        storeSid: store.storeSid,
-                        addressSid: null,
-                        cart: store.products.map(product => product.cartSid)
+                            // Use correct case for storeSid and Products
+                            submitdata.stores.push({
+                                storeSid: store.StoreSid, // Fix here
+                                addressSid: null, // You'll need to update this when the address is selected
+                                cart: store.Products.map(product => product.CartSid) // Correct key for products
+                            });
+                        }
                     });
-                });
-
-                console.log("Updated submitdata:", submitdata);
-
-                document.getElementById('part-1').classList.add('d-none');
 
 
-                document.getElementById('part-2').classList.remove('d-none');
+       
 
+                    console.log("Updated submitdata:", submitdata);
 
-                const stepElement = Array.from(document.querySelectorAll('.step')).find(step => {
-                    const stepNumElement = step.querySelector('.step-num');
-                    return stepNumElement && stepNumElement.textContent.trim() === '2';
-                });
+                    document.getElementById('part-1').classList.add('d-none');
+                    document.getElementById('part-2').classList.remove('d-none');
 
-                if (stepElement) {
-                    stepElement.classList.add('finished');
+                    const stepElement = Array.from(document.querySelectorAll('.step')).find(step => {
+                        const stepNumElement = step.querySelector('.step-num');
+                        return stepNumElement && stepNumElement.textContent.trim() === '2';
+                    });
+
+                    if (stepElement) {
+                        stepElement.classList.add('finished');
+                    }
+
+                } catch (error) {
+                    console.error("An error occurred while loading buy carts:", error);
                 }
-
             };
-
-
-
 
 
             $(document).on('click', '.submit-btn', async function () {
@@ -1414,37 +1432,29 @@
                     try {
                         await loadBuyCarts();
 
-
-
                         $('#div3').empty();
-
 
                         const generateStoresHtml = () => {
                             return `
-                                                  <select class="select-n " name="state" id="couponSelect">
-                                                                <option value="null">無需使用優惠券</option>
-                                                            </select>
-                                        `;
+                        <select class="select-n" name="state" id="couponSelect">
+                            <option value="null">無需使用優惠券</option>
+                        </select>
+                        `;
                         };
 
                         const divSpots = document.getElementById('div3');
                         divSpots.innerHTML = generateStoresHtml();
+
                         await loadCoupons(BuyData2.totalMoney);
-
-
-
-                         await loadCoinTotal();
-
+                        await loadCoinTotal();
 
                     } catch (error) {
-                        console.error("An error occurred while loading buy carts or initializing Choices:", error);
+                        console.error("An error occurred while initializing Choices:", error);
                     }
                 } else {
                     alert("需至少選一筆進行結帳");
                 }
             });
-
-
 
 
             let nowStore =''
@@ -1482,109 +1492,103 @@
                         }
                     });
 
-
-
                     const data = await response.json();
+                    console.log("datasss", data);
 
-
+                    // Function to generate HTML for products (addresses)
                     const generateProductsHtml = (addresses) => {
                         return addresses.map(address => {
-                            const storeNameClass = address.storeName ? '' : 'd-none';
-                            const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+                            const storeNameClass = address.StoreName ? '' : 'd-none';
+                            const defaultClass = address.AddressFirst === 1 ? '' : 'd-none';
                             const storeSid = BuyData1.storeSid;
                             return `
-                                    <div class="form-check d-flex s_${storeSid}">
-                                <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault${address.carrierAddressSid}">
-                                <label class="form-check-label w-100" for="flexRadioDefault${address.carrierAddressSid}">
-                                    <div class="other-info d-flex flex-column flex-lg-row">
-                                        <div class="w-100 mx-auto">
-                                            <div class="part form-control-n">
-                                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
-                                                    <p class="d-flex align-items-center mb-0">
-                                                        ${address.carrierName}<span>${address.way}</span><span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
-                                                    </p>
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <div class="track-info">${address.price}元</div>
-                                                    </div>
-                                                </div>
-                                                <div class="carrier-address d-flex flex-column">
-                                                    <div class="d-flex mt-1 mt-md-0">
-                                                        <p class="name me-2 m-0">${address.recordName}</p>
-                                                        <p class="phone me-2 m-0">${address.recordPhone}</p>
-                                                    </div>
-                                                                  <p class="address me-2 m-0">
-                                                                    <span class="me-1 ${storeNameClass}">${address.storeName}  | </span>${address.adress}
-                                                                </p>
-
-                                                </div>
-                                            </div>
+                        <div class="form-check d-flex s_${storeSid}">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.CarrierAddressSid}">
+                    <label class="form-check-label w-100" for="flexRadioDefault${address.CarrierAddressSid}">
+                        <div class="other-info d-flex flex-column flex-lg-row">
+                            <div class="w-100 mx-auto">
+                                <div class="part form-control-n">
+                                    <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                        <p class="d-flex align-items-center mb-0">
+                                            ${address.CarrierName}<span>${address.Way}</span><span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
+                                        </p>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="track-info">${address.Price}元</div>
                                         </div>
                                     </div>
-                                </label>
+                                    <div class="carrier-address d-flex flex-column">
+                                        <div class="d-flex mt-1 mt-md-0">
+                                            <p class="name me-2 m-0">${address.RecordName}</p>
+                                            <p class="phone me-2 m-0">${address.RecordPhone}</p>
+                                        </div>
+                                    
+
+                                                <p class="address me-2 m-0">
+                                                                     <span class="me-1 ${storeNameClass}">${address.StoreName}  | </span>${address.Adress}
+                                                                 </p>
+                                    </div>
+                                </div>
                             </div>
-                        `;
+                        </div>
+                    </label>
+                </div>
+                `;
                         }).join('<hr class="m-0" />');
                     };
 
+                    // Default carriers
                     const defaultCarriers = [
-                        { carrierNo: 1, displayText: '宅配', imageSrc: '../../FrontstageTemplate/assets/brand/common/blackcat_logo.svg', addresses: [] },
-                        { carrierNo: 2, displayText: '超商', imageSrc: '../../FrontstageTemplate/assets/brand/common/seven-logo.png', addresses: [] }
+                        { CarrierNo: 1, displayText: '宅配', imageSrc: '../../FrontstageTemplate/assets/brand/common/blackcat_logo.svg', Addresses: [] },
+                        { CarrierNo: 2, displayText: '超商', imageSrc: '../../FrontstageTemplate/assets/brand/common/seven-logo.png', Addresses: [] }
                     ];
 
-
-
-
+                    // Generate HTML for carriers and their associated addresses
                     const generateStoresHtml1 = (data) => {
                         const carriersMap = defaultCarriers.reduce((map, carrier) => {
-                            map[carrier.carrierNo] = carrier;
+                            map[carrier.CarrierNo] = carrier;
                             return map;
                         }, {});
 
                         data.forEach(store => {
-                            if (carriersMap[store.carrierNo]) {
-                                carriersMap[store.carrierNo].addresses = store.addresses;
+                            if (carriersMap[store.CarrierNo]) {
+                                carriersMap[store.CarrierNo].Addresses = store.Addresses;
                             }
                         });
 
                         return Object.values(carriersMap).map(store => {
-                            const hasAddresses = store.addresses.length > 0;
+                            const hasAddresses = store.Addresses.length > 0;
                             const buttonClass = hasAddresses ? 'accordion-button collapsed' : 'accordion-button collapsed disabled';
-                            const productsHtml = hasAddresses ? generateProductsHtml(store.addresses) : '';
-
-
-
-
+                            const productsHtml = hasAddresses ? generateProductsHtml(store.Addresses) : '';
 
                             return `
-                                    <div class="accordion-item mb-4 ">
-                        <h2 class="accordion-header" id="heading${store.carrierNo}">
-                            <button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
-                                ${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
-                            </button>
-                        </h2>
-                        <div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
-                            <div class="accordion-body">
-                                <div class="scroll">
-                                    ${productsHtml}
-                                </div>
-                                ${hasAddresses ? '<div class="form-control-n py-2 p-3"><a class="btn light-btn-n btn-sm-dbrs" data-bs-toggle="modal" href="#exampleModalToggle4" role="button">新增地址</a></div>' : ''}
+                <div class="accordion-item mb-4">
+                    <h2 class="accordion-header" id="heading${store.CarrierNo}">
+                        <button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.CarrierNo}" aria-expanded="false" aria-controls="collapse${store.CarrierNo}">
+                            ${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
+                        </button>
+                    </h2>
+                    <div id="collapse${store.CarrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.CarrierNo}" data-bs-parent="#accordionExample1">
+                        <div class="accordion-body">
+                            <div class="scroll">
+                                ${productsHtml}
                             </div>
+                            ${hasAddresses ? '<div class="form-control-n py-2 p-3"><a class="btn light-btn-n btn-sm-dbrs" data-bs-toggle="modal" href="#exampleModalToggle4" role="button">新增地址</a></div>' : ''}
                         </div>
                     </div>
+                </div>
                 `;
                         }).join('');
                     };
 
-
+                    // Insert the generated HTML into the DOM
                     const divSpots1 = document.getElementById('accordionExample1');
                     divSpots1.innerHTML = generateStoresHtml1(data);
-
-
 
                 } catch (error) {
                     console.error('There has been a problem with your fetch operation:', error);
                 }
             };
+
 
 
 
@@ -1595,6 +1599,7 @@
 
             $('#showOrderCarrier').on('click', function () {
 
+                // Find the selected radio button
                 const selectedRadio = $('input[type="radio"][name="flexRadioDefault"]:checked');
 
                 if (selectedRadio.length === 0) {
@@ -1602,30 +1607,39 @@
                     return;
                 }
 
+                // Extract the radio ID to get a unique number (if needed)
                 const radioId = selectedRadio.attr('id');
                 const extractedNumber = radioId.replace('flexRadioDefault', '');
-
                 console.log('Extracted Number:', extractedNumber);
 
-
+                // Find the closest form-check element
                 const selectedDiv = selectedRadio.closest('.form-check');
 
+                if (!selectedDiv.length) {
+                    console.error('No form-check found');
+                    return;
+                }
 
-                const classList = selectedDiv.attr('class');
-                const match = classList.match(/s_(\d+)/);
-                const number = match ? match[1] : null;
+                // Get the class list as a string and split it into an array
+                const classList = selectedDiv.attr('class').split(/\s+/);
 
+                // Find the class that starts with 's_' (which contains the storeSid)
+                const match = classList.find(cls => cls.startsWith('s_'));
+                const number = match ? match.split('_')[1] : null;
 
                 if (!number) {
                     console.error('未找到 storeSid');
-
+                    return;
                 }
-                // console.log('Extracted Number:', extractedNumber);
-                // number
-                let numericNumber = parseInt(number, 10);
+
+                // Convert the extracted storeSid to a number
+                const numericNumber = parseInt(number, 10);
+
+
+                // Update the submitdata.stores with the extracted storeSid
                 submitdata.stores.forEach(store => {
-                    if (store.storeSid === numericNumber) { // 使用非嚴格比較
-                        store.addressSid = extractedNumber;
+                    if (store.storeSid == numericNumber) { // Use non-strict comparison in case of type mismatch
+                        store.addressSid = extractedNumber; // Set the addressSid as needed
                     }
                 });
 
@@ -1906,12 +1920,12 @@
 
                     coupons.forEach(coupon => {
                         const option = document.createElement('option');
-                        option.value = `${coupon.couponSid}|${coupon.price}`;
-                        option.textContent = `${coupon.name} `;
+                        option.value = `${coupon.CouponSid}|${coupon.Price}`;
+                        option.textContent = `${coupon.Name} `;
                         option.dataset.price = coupon.price;
                         if (coupon.minimum > totalMoney) {
                             option.disabled = true;
-                            option.textContent = `${coupon.name} (低消，需滿 NT$${coupon.minimum.toFixed(0)})`;
+                            option.textContent = `${coupon.Name} (低消，需滿 NT$${coupon.Minimum.toFixed(0)})`;
                         }
                         selectElement.appendChild(option);
                     });
