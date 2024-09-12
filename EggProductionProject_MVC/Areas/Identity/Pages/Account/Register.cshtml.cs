@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -93,12 +94,16 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
+
+                    // 生成驗證碼並發送驗證信
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var encodedToken = WebUtility.UrlEncode(token);  // 確保token已被編碼
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl,token=encodedToken,success=true },
                         protocol: Request.Scheme);
 
                     //修改寄件內容

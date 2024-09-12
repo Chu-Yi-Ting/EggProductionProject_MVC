@@ -3,18 +3,32 @@
 @{
     ViewData["Title"] = "Confirm email";
     var userId = TempData["UserId"] as string;
+    var success = Request.Query["success"];  // 取得 URL 中的 success 參數
+   
+
 }
 
-<h2>@ViewData["Title"]</h2>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+@* <h2>信箱驗證成功！</h2> *@
 
-@if (!string.IsNullOrEmpty(userId))
+
+@if (!string.IsNullOrEmpty(userId)||success!="false")
 {
-    @* <p> 5秒鐘後將重新導向至會員資料頁面...</p> *@
+    <div style="text-align: center;">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+        @* <img src="~/MemberImg/emailConfirmed.png" /> *@
+        
 
-   @*  <script type="text/javascript">
+    </div>
+    
+
+     <script type="text/javascript">
         setTimeout(function () {
-            window.location.href = '@Url.Action("MemberPage", "Members", new { userId = userId }, protocol: Request.Scheme)';
+            window.location.href = '@Url.Action("Login", "Account", new { area = "Identity" })';
         }, 5000);
-    </script> *@
+    </script>
+}
+else
+{
+    
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
 }

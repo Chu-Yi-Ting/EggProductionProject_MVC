@@ -46,8 +46,12 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 //options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
-
+//設定驗證信的失效
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    // 設定驗證碼的有效時間為 20 秒
+    options.TokenLifespan = TimeSpan.FromSeconds(20);
+});
 
 ////設定會員登入失敗會鎖住
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -57,9 +61,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); //// 鎖定時間，我改成1分鐘
     options.Lockout.MaxFailedAccessAttempts = 5; //// 最大登入失敗次數
     options.Lockout.AllowedForNewUsers = true; //// 是否允許新用戶被鎖定
+
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders().AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>(TokenOptions.DefaultEmailProvider);
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromSeconds(30)); ;
+
 
 builder.Services.AddControllersWithViews();
 

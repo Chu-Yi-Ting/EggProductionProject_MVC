@@ -120,6 +120,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
                         if (member.IsBlocked == 1)
                         {
+                            HttpContext.Session.Clear();
                             return RedirectToPage("./Lockout");
                         }
 

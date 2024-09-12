@@ -351,15 +351,6 @@
 
 
 
-        //-------------------------註冊成功跳出提醒用戶去收信的modal-----------------
-        $(document).ready(function () {
-            var showModal = '@(showModal)';
-
-            if (showModal === "True") {
-                $('#successModal').modal('show');
-            }
-        });
-
 
 
         //------------------[密碼]toggle成text型態來讓使用者看到自己輸入的密碼----------------
@@ -396,7 +387,7 @@
             }
         });
 
-        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出modal顯示-------------
+        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出toast顯示-------------
         $(document).ready(function () {
             // 攔截表單提交事件
             $('#registerForm').on('submit', function (e) {
@@ -413,11 +404,11 @@
                             // 兩秒後跳轉到登入頁面
                             setTimeout(function () {
                                 window.location.href = '@Url.Page("/Account/Login")'; // 確保這裡的 URL 是正確的登入頁面
-                            }, 2000); // 兩秒延遲
+                            }, 4000); // 四秒延遲
                             
                         } else if (response.success) {
-                            var successToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
-                            successToast.show();
+                            const SuccessToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
+                            SuccessToast.show();
 
                         } else {
                             alert("註冊失敗，請再嘗試一次")
