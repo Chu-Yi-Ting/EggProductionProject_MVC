@@ -912,7 +912,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.ProductSid);
 
             entity.Property(e => e.Component).HasMaxLength(50);
-            entity.Property(e => e.Description).HasMaxLength(50);
             entity.Property(e => e.DiscountPercent).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.Origin).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("money");
@@ -1107,7 +1106,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.StoreSid);
 
             entity.Property(e => e.Company).HasMaxLength(50);
-            entity.Property(e => e.StoreIntroduction).HasMaxLength(50);
 
             entity.HasOne(d => d.MemberS).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.MemberSid)

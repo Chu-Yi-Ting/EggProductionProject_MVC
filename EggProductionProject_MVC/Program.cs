@@ -23,12 +23,12 @@ builder.Services.AddCors(option =>
 });
 //跨域測試
 //關閉傳送Json駝峰式命名
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        // 關閉默認的駝峰命名規則，保持屬性名稱與 C# 模型一致
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        // 關閉默認的駝峰命名規則，保持屬性名稱與 C# 模型一致
+//        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+//    });
 //關閉傳送Json駝峰式命名
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
