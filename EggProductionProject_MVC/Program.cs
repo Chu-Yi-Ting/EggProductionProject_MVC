@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using EggProductionProject_MVC.HTTPModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +23,12 @@ builder.Services.AddCors(option =>
 });
 //跨域測試
 //關閉傳送Json駝峰式命名
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        // 關閉默認的駝峰命名規則，保持屬性名稱與 C# 模型一致
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        // 關閉默認的駝峰命名規則，保持屬性名稱與 C# 模型一致
+//        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+//    });
 //關閉傳送Json駝峰式命名
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -39,9 +40,28 @@ builder.Services.AddControllers()
 
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-//builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
+
+////設定會員登入失敗會鎖住
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+//{
+//    options.SignIn.RequireConfirmedAccount = true;
+//    鎖定配置
+//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); //// 鎖定時間，我改成1分鐘
+//    options.Lockout.MaxFailedAccessAttempts = 5; //// 最大登入失敗次數
+//    options.Lockout.AllowedForNewUsers = true; //// 是否允許新用戶被鎖定
+//})
+//.AddEntityFrameworkStores<ApplicationDbContext>()
+//.AddDefaultTokenProviders();
+
+builder.Services.AddControllersWithViews();
 
 
 //留給前台會員用
@@ -76,6 +96,8 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // ���U���v�A��
 builder.Services.AddAuthorization();
+
+builder.Services.AddHttpClient<WebScrapingService>();
 builder.Services.AddControllersWithViews();
 
 
@@ -104,6 +126,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 //跨域測試
 app.UseStaticFiles();
+
 
 
 

@@ -753,7 +753,7 @@ public partial class EggPlatformContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsFixedLength();
-            entity.Property(e => e.ProfilePic).HasColumnType("image");
+            entity.Property(e => e.ProfilePic).HasMaxLength(450);
             entity.Property(e => e.UserName).HasMaxLength(50);
 
             entity.HasOne(d => d.AspUser).WithMany(p => p.Members)
@@ -912,12 +912,15 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.ProductSid);
 
             entity.Property(e => e.Component).HasMaxLength(50);
-            entity.Property(e => e.Description).HasMaxLength(50);
             entity.Property(e => e.DiscountPercent).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.Origin).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("money");
             entity.Property(e => e.ProductName).HasMaxLength(50);
             entity.Property(e => e.ProductNo).HasMaxLength(50);
+
+            entity.HasOne(d => d.ItemNoNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.ItemNo)
+                .HasConstraintName("FK_Products_ProductItems");
 
             entity.HasOne(d => d.PublicStatusNoNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.PublicStatusNo)
@@ -1103,7 +1106,6 @@ public partial class EggPlatformContext : DbContext
             entity.HasKey(e => e.StoreSid);
 
             entity.Property(e => e.Company).HasMaxLength(50);
-            entity.Property(e => e.StoreIntroduction).HasMaxLength(50);
 
             entity.HasOne(d => d.MemberS).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.MemberSid)

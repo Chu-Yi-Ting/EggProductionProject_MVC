@@ -29,7 +29,7 @@ namespace EggProductionProject_MVC.Models.MemberVM
 
         [Display(Name = "會員頭貼")]
 
-        public byte[]? ProfilePic { get; set; }
+        public string ProfilePic { get; set; }
         [Display(Name = "是否被禁用")]
 
         public byte? IsBlocked { get; set; }

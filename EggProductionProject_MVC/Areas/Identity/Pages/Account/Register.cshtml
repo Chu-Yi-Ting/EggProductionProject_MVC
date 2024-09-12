@@ -4,164 +4,6 @@
     ViewData["Title"] = "Register";
     bool showModal = ViewData["ShowModal"] != null && (bool)ViewData["ShowModal"];
 }
-
-
-<div class="row">
-
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 left-column"></div>
-            <div class="col-md-6 right-column">
-                <br />
-                <br />
-
-                <div class="welcome-box">
-                    <h1>歡迎回來！</h1>
-                    <p>智慧養殖，從掌蛋記錄開始</p>
-                    <p>
-
-                        <a asp-area="Identity" asp-controller="Account" asp-action="Login">已有帳號？立即登入</a>
-                    </p>
-                </div>
-                <br />
-                <div class="login-box">
-                    <h1>註冊</h1>
-                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <div class="mb-3 form-group">
-                            <label asp-for="Input.Email">信箱</label>
-                            <input asp-for="Input.Email" class="form-control" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3 form-group">
-                            <label asp-for="Input.Password">密碼</label>
-                            <input asp-for="Input.Password" class="form-control" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3 form-group">
-                            <label asp-for="Input.ConfirmPassword">確認密碼</label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control" />
-                            <span id="password-error" class="text-danger" style="display: none;">密碼必須一致！</span>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="notRobot">
-                                <label class="form-check-label" for="notRobot">
-                                    我已閱讀並同意<span><a>GoodEgg會員條款</a></span> 及 <span><a>個人資料保護條款</a></span>。
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">註冊</button>
-                    </form>
-                    @*     <div class="divider">
-                    <span>OR</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
-                    <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
-                    </div> *@
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-@*     <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
-    </div> *@
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
-
-
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">註冊成功</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                註冊成功！請至信箱確認您的電子郵件。
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        $(document).ready(function () {
-            var showModal = '@(showModal)';
-
-            if (showModal === "True") {
-                $('#successModal').modal('show');
-            }
-        });
-    </script>
-}
 @section Styles {
     <style>
 
@@ -295,4 +137,267 @@
                     text-decoration: none;
                 }
     </style>
+}
+
+
+<div class="row">
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <br />
+                <br />
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+                    <p>
+
+                        <a asp-area="Identity" asp-controller="Account" asp-action="Login">已有帳號？立即登入</a>
+                    </p>
+                </div>
+                <br />
+                <div class="login-box">
+                    <h1>註冊</h1>
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" id="registerForm" novalidate>
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.Email">信箱</label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.Password">密碼</label>
+
+                            <div class="input-group">
+                                <input asp-for="Input.Password" type="password" class="form-control" id="password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                          
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label asp-for="Input.ConfirmPassword">確認密碼</label>
+
+                            <div class="input-group">
+                                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" id="ConfirmPassword">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+
+                          
+
+
+
+                            <span id="password-error" class="text-danger" style="display: none;">密碼必須一致！</span>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notRobot">
+                                <label class="form-check-label" for="notRobot">
+                                    我已閱讀並同意<span><a>GoodEgg會員條款</a></span> 及 <span><a>個人資料保護條款</a></span>。
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">註冊</button>
+                    </form>
+                    @*     <div class="divider">
+                    <span>OR</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light w-100 me-2">使用 GOOGLE</button>
+                    <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+@*     <div class="col-md-4">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Register</button>
+        </form>
+    </div> *@
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Use another service to register.</h4>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+
+<!-- Bootstrap Modal註冊成功 -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">註冊成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                註冊成功！請至信箱確認您的電子郵件。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 信箱重複-->
+<div class="modal fade" id="emailDuplicateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">註冊錯誤</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                信箱已經存在，請使用其他信箱。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link href="~/backstagetemplate/docs/fonts/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        //-------------------------註冊成功跳出提醒用戶去收信的modal-----------------
+        $(document).ready(function () {
+            var showModal = '@(showModal)';
+
+            if (showModal === "True") {
+                $('#successModal').modal('show');
+            }
+        });
+
+
+
+        //------------------[密碼]toggle成text型態來讓使用者看到自己輸入的密碼----------------
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            var passwordInput = document.getElementById("password");
+            var icon = this.querySelector("i");
+
+            // 切換密碼欄位的 type 屬性
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+
+        //------------------[確認密碼]toggle成text型態來讓使用者看到自己輸入的密碼----------------
+        document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
+            var passwordInput = document.getElementById("ConfirmPassword");
+            var icon = this.querySelector("i");
+
+            // 切換密碼欄位的 type 屬性
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+
+        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出modal顯示-------------
+        $(document).ready(function () {
+            // 攔截表單提交事件
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();  // 阻止表單的預設行為（刷新頁面）
+
+                $.ajax({
+                    url: '@Url.Page("/Account/Register")', // 設定提交到的頁面
+                    type: 'POST',
+                    data: $(this).serialize(), // 將表單序列化為資料
+                    success: function (response) {
+                        if (response.isDuplicateEmail) {
+                            // 如果信箱重複，顯示Modal
+                            $('#emailDuplicateModal').modal('show');
+                        } else if (response.success) {
+                            // 如果註冊成功，重定向或顯示成功訊息
+                            window.location.href = response.redirectUrl;
+                        } else {
+                           alert("註冊失敗，請再式一次")
+                        }
+                    },
+                    error: function () {
+                        alert('提交失敗，請再試一次');
+                    }
+                });
+            });
+        });
+    </script>
 }

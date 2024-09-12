@@ -247,7 +247,8 @@
             <div class="product-info align-right">
                 <h2>@Model.productName</h2>
                 <span>庫存數量 : </span><span>@Model.stock</span>
-                <p class="product-price">$@(Model.price.HasValue ? (Model.price.Value * 0.8m).ToString("0") : "價格不詳") <span class="old-price">$@(Model.price.HasValue ? Model.price.Value.ToString("0") : "價格不詳")</span></p>
+                <p class="product-price">$@(Model.price.HasValue ? (Model.price.Value * 0.8m).ToString("0") : "價格不詳") 
+                    <span class="old-price">$@(Model.price.HasValue ? Model.price.Value.ToString("0") : "價格不詳")</span></p>
 
                 <!-- 商品描述及概況說明 -->
                 <div class="accordion" id="accordionExample">
