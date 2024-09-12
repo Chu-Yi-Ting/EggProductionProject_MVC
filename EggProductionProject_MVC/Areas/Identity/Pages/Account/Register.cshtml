@@ -327,6 +327,7 @@
             var passwordInput = document.getElementById('password');
             var checkbox = document.getElementById('IagreeTerms');
             var submitBtn = document.getElementById('submitBtn');
+            var passwordInvalidText = document.getElementById('passwordInvalidText');
 
             // 檢查所有欄位是否符合條件
             function checkFormValidity() {
@@ -335,7 +336,7 @@
                 var termsChecked = checkbox.checked; // 檢查是否勾選條款
 
                 // 當所有條件都符合時，啟用按鈕
-                if (emailValid && passwordValid && termsChecked) {
+                if (emailValid && passwordValid && termsChecked && (passwordInvalidText.textContent.trim() === "")) {
                     submitBtn.disabled = false;
                 } else {
                     submitBtn.disabled = true;
