@@ -178,24 +178,24 @@
             // 处理数据并将其填充到页面
             function populateTrackInfo(data) {
                 // 设置追踪号、物流名称和运输方式
-                $('.other-info .mb-0').text(data.trackingNum);
-                $('.carrier-type').html(`${data.carrierName} <span>${data.carrierWay}</span>`);
+                $('.other-info .mb-0').text(data.TrackingNum);
+                $('.carrier-type').html(`${data.CarrierName} <span>${data.CarrierWay}</span>`);
 
                 // 更新图片
-                $('.img_box img').attr('src', data.productImage);
+                $('.img_box img').attr('src', data.ProductImage);
 
                 const timelineContainer = $('.timeline');
                 timelineContainer.empty(); // 清空现有的条目
 
                 // 获取最早和最晚的条目
-                const lastTrackTimeSid = data.trackTimes[0].trackTimeSid;
-                const firstTrackTimeSid = data.trackTimes[data.trackTimes.length - 1].trackTimeSid;
+                const lastTrackTimeSid = data.trackTimes[0].TrackTimeSid;
+                const firstTrackTimeSid = data.trackTimes[data.trackTimes.length - 1].TrackTimeSid;
 
                 data.trackTimes.forEach(function (trackTime) {
                     // 判断当前条目是否为最早或最晚
-                    const isFirst = (trackTime.trackTimeSid === firstTrackTimeSid) ? 'first' : '';
-                    const isLast = (trackTime.trackTimeSid === lastTrackTimeSid) ? 'last' : '';
-                    const formattedDateTime = trackTime.createdTime.replace('T', ' ');
+                    const isFirst = (trackTime.TrackTimeSid === firstTrackTimeSid) ? 'first' : '';
+                    const isLast = (trackTime.TrackTimeSid === lastTrackTimeSid) ? 'last' : '';
+                    const formattedDateTime = trackTime.CreatedTime.replace('T', ' ');
 
                     // 生成条目并添加到时间线容器中
                     timelineContainer.append(`
@@ -203,7 +203,7 @@
                     <div class="timeline-date ${isFirst} ${isLast}"></div>
                     <div class="timeline-content d-flex flex-column flex-sm-row">
                                 <p class="timeline-header">${formattedDateTime}</p>
-                        <p class="timeline-body">${trackTime.status}</p>
+                        <p class="timeline-body">${trackTime.Status}</p>
                     </div>
                 </div>
             `);
@@ -213,26 +213,26 @@
                 // 更新寄件和收件地址
                 const sendAddress = data.sendReceiveAddresses[0];
                 const receiveAddress = data.sendReceiveAddresses[1];
-                var sendStoreNameHtml = sendAddress.storeName ?
-                    `<span class="me-1">${sendAddress.storeName} | </span>` :
+                var sendStoreNameHtml = sendAddress.StoreName ?
+                    `<span class="me-1">${sendAddress.StoreName} | </span>` :
                     '<span class="me-1 d-none"></span>';
 
                 // 寄件人信息
                 const sendInfo = $('#sendInfo');
-                sendInfo.find('.name').text(sendAddress.recordName);
-                sendInfo.find('.phone').text(sendAddress.recordPhone);
-                sendInfo.find('.address').html(`${sendStoreNameHtml}${sendAddress.adress}`);
+                sendInfo.find('.name').text(sendAddress.RecordName);
+                sendInfo.find('.phone').text(sendAddress.RecordPhone);
+                sendInfo.find('.address').html(`${sendStoreNameHtml}${sendAddress.Adress}`);
 
                 // 构建收件人地址 HTML
-                var receiveStoreNameHtml = receiveAddress.storeName ?
-                    `<span class="me-1">${receiveAddress.storeName} | </span>` :
+                var receiveStoreNameHtml = receiveAddress.StoreName ?
+                    `<span class="me-1">${receiveAddress.StoreName} | </span>` :
                     '<span class="me-1 d-none"></span>';
 
                 // 收件人信息
                 const receiveInfo = $('#receiveInfo');
-                receiveInfo.find('.name').text(receiveAddress.recordName);
-                receiveInfo.find('.phone').text(receiveAddress.recordPhone);
-                receiveInfo.find('.address').html(`${receiveStoreNameHtml}${receiveAddress.adress}`);
+                receiveInfo.find('.name').text(receiveAddress.RecordName);
+                receiveInfo.find('.phone').text(receiveAddress.RecordPhone);
+                receiveInfo.find('.address').html(`${receiveStoreNameHtml}${receiveAddress.Adress}`);
             }
 
         
