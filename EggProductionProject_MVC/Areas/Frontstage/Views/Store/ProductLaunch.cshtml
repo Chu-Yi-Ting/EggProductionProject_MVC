@@ -66,6 +66,27 @@
                 background-color: #e0a800;
             }
 
+        .container {
+            max-height: 100vh; /* 設定最大高度為視窗高度 */
+            overflow-y: auto; /* 自動出現垂直滾動條 */
+        }
+
+        .image-preview-container {
+            width: 100%; /* 设置预览容器的宽度 */
+            height: 250px; /* 设置预览容器的高度，根据需要调整 */
+            overflow: hidden; /* 确保超出部分被隐藏 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 确保图片等宽等高并裁切部分 */
+            border-radius: 5px; /* 可以添加圆角 */
+        }
+
         .modal-body {
             max-height: 70vh; /* 設定最大高度為視窗高度的70% */
             overflow-y: auto; /* 超出時自動顯示滾動條 */
@@ -286,7 +307,7 @@
                             </div>
 
                             <!-- 商品圖片上傳 -->
-                            <div class="form-control-n mt-3">
+                            <div class="form-control-n mt-3 ">
                                 <div class="title mb-2 d-flex justify-content-between">
                                     <div class="allcoin">商品圖片<span></span></div>
                                 </div>
@@ -295,10 +316,14 @@
                                        id="productImage"
                                        name="productImage"
                                        accept="image/*"
-                                       onchange="previewImage(event)" />
-                                <img id="imagePreview" src="" alt="圖片預覽" style="max-width: 100%; max-height: 200px; margin-top: 10px;" />
+                                       onchange="previewImage(event)" />                                
                             </div>
 
+                            <!-- 圖片預覽 -->
+                            <div class="form-control-n mt-3 image-preview-container">
+                                <img id="imagePreview" src="~/images/noimage2.jpg" class="image-preview" alt="圖片預覽" style="max-width: 100%; height: auto;" />
+                            </div>
+                       
                             <!-- 庫存數量 -->
                             <div class="form-control-n mt-3">
                                 <div class="title mb-2 d-flex justify-content-between">
@@ -464,6 +489,24 @@
                                        id="editPrice"
                                        name="price"
                                        aria-label="商品價格" />
+                            </div>
+
+                            <!-- 商品圖片上傳 -->
+                            <div class="form-control-n mt-3 ">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品圖片<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="file"
+                                       id="editproductImage"
+                                       name="productImage"
+                                       accept="image/*"
+                                       onchange="previewImage(event)" />
+                            </div>
+
+                            <!-- 圖片預覽 -->
+                            <div class="form-control-n mt-3 image-preview-container">
+                                <img id="editImagePreview" src="" class="image-preview" alt="圖片預覽" style="max-width: 100%; height: auto;" />
                             </div>
 
                             <!-- 商品分類 -->
@@ -789,25 +832,35 @@
             $('#exampleModalToggle').modal('hide'); // 同時隱藏商品上架 Modal
         });
 
+        //每當新增商品的modal被關閉的時候都要清空表單
+        document.getElementById('exampleModalToggle').addEventListener('hide.bs.modal', function (e) {
+            // 重置表单
+            document.getElementById('productForm').reset();
+            // 清空圖片預覽
+            document.getElementById('imagePreview').src = '@Url.Content("~/Images/NoImage2.jpg")';
+        });
 
         //-----編輯功能---------------------------------------------------------------        
         // 點擊編輯按鈕，發送請求取得商品資料，並將資料顯示在編輯的modal中
         async function openEditModal(productSid) {
-            try {
+            try {               
+
                 const api = `@Url.Content("~/Frontstage/StoreApi/GetProductById")?productSid=${productSid}`;
                 const response = await fetch(api);
                 const product = await response.json();
+                console.log(product);
 
                 // 將資料填入編輯 modal 的表單中
                 document.getElementById('editProductSid').value = product.productSid;
                 document.getElementById('editProductName').value = product.productName;
                 document.getElementById('editPrice').value = product.price;
+                document.getElementById('editImagePreview').src = product.productImagePath;
                 document.getElementById('editSubcategoryNo').value = product.subcategoryNo;
                 document.getElementById('editSubcategoryName').value = product.subcategoryName;
                 document.getElementById('editItemNo').value = product.itemNo;
                 document.getElementById('editItemName').value = product.itemName;
                 document.getElementById('editDescription').value = product.description;
-                document.getElementById('editQuantity').value = product.quantity;
+                document.getElementById('editQuantity').value = product.quanitity;
                 document.getElementById('editWeight').value = product.weight;
                 document.getElementById('editComponent').value = product.component;
                 document.getElementById('editDiscount').value = product.discountPercent;
@@ -840,8 +893,12 @@
                     body: formData
                 });
 
+                //前端的 fetch 請求返回時，先檢查 response 是否為有效的 JSON，並在返回前檢查數據格式
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
                 const result = await response.json();
-
+                console.log(result);
                 if (result.success) {
                     // 显示編輯成功的 Toast 通知
                     showEditToast('商品已成功編輯資訊!');
@@ -867,6 +924,18 @@
                 alert('更新失敗，請稍後再試。');
             }
         });
+
+
+        document.getElementById('editProductModal').addEventListener('hidden.bs.modal', function () {
+            // 手动移除残留的模态框遮罩
+            var modalBackdrop = document.querySelectorAll('.modal-backdrop');
+            if (modalBackdrop) {
+                modalBackdrop.forEach(function (backdrop) {
+                    backdrop.remove();
+                });
+            }
+        });
+
 
         //表單資料成功送到後端，返回成功，跳出成功通知toast
         function showEditToast(message) {
@@ -953,6 +1022,13 @@
             setTimeout(function () {
                 toast.show();
             }, 1000);
+        }
+
+        //當上傳圖片的input值有變動，會觸發previewImage方法，會將圖片的url塞給ID為imagePreview的標籤，標籤顯示狀態改為block
+        function previewImage(event) {
+            const image = document.getElementById('imagePreview');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.display = 'block';
         }
     </script>
 }
