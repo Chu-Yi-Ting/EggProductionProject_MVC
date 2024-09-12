@@ -285,6 +285,20 @@
                                        aria-label="商品價格" />
                             </div>
 
+                            <!-- 商品圖片上傳 -->
+                            <div class="form-control-n mt-3">
+                                <div class="title mb-2 d-flex justify-content-between">
+                                    <div class="allcoin">商品圖片<span></span></div>
+                                </div>
+                                <input class="form-control form-control-sm"
+                                       type="file"
+                                       id="productImage"
+                                       name="productImage"
+                                       accept="image/*"
+                                       onchange="previewImage(event)" />
+                                <img id="imagePreview" src="" alt="圖片預覽" style="max-width: 100%; max-height: 200px; margin-top: 10px;" />
+                            </div>
+
                             <!-- 庫存數量 -->
                             <div class="form-control-n mt-3">
                                 <div class="title mb-2 d-flex justify-content-between">
