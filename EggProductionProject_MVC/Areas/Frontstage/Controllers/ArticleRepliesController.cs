@@ -41,7 +41,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         {
                             MemberSid = reply.ArticleCreaterS.MemberSid,
                             Name = reply.ArticleCreaterS.Name,
-                            ProfilePic = reply.ArticleCreaterS.ProfilePic,
+                            //ProfilePic = reply.ArticleCreaterS.ProfilePic,
                         }
                         : null,
                     LikeCount = 0, // 初始化，稍后将填充

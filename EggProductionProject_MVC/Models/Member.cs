@@ -25,13 +25,13 @@ public partial class Member
 
     public string UserName { get; set; }
 
-    public byte[] ProfilePic { get; set; }
-
     public byte? IsBlocked { get; set; }
 
     public string Chickcode { get; set; }
 
     public string AspUserId { get; set; }
+
+    public string ProfilePic { get; set; }
 
     public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
 

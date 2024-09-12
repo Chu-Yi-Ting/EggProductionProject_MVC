@@ -22,9 +22,9 @@
 		<div class="container_title p-0 m-0">
 			<div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
 				<div class="outer-layout-n">
-					<a href="#"
+                    <a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index"
 					   class="d-flex align-items-center  text-decoration-none">
-						購物中心
+						賣家中心
 					</a>
 					<a href="#"
 					   class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
@@ -125,24 +125,47 @@
                             會員中心
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-area="Frontstage" asp-controller="Store" asp-action="SellerInformation">
+                            <i class="fa-solid fa-shop me-2"></i>
+                            賣家中心
+                        </a>
+                    </li>
                 </ul>
             </div>
 
             <div class="offcanvas-footer">
+                
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
                         <div class="logoin-user">
                             <div class="border-img">
-                                <img src="~/FrontstageTemplate/assets/brand/common/seven-logo.png">
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                                {
+                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                }
+                               
                             </div>
-                            Alice
+                            @* Alice *@
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
                         </div>
                     </li>
                 </ul>
-                <button type="button" class="btn ">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                    登出
-                </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                        <button type="submit" class="btn ">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                            登出
+                        </button>
+                    </form>
+                }
+       
             </div>
         </div>
 

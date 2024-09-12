@@ -24,56 +24,33 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+
+
         [HttpGet]
-        //[Route("Members/MemberPage/{userId}")]
         // GET: Frontstage/Members
         public async Task<IActionResult> MemberPage()
         {
             
             string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
-            // 從 Session 取得 memberSid
+            // 從 Session 取得 memberAspID，不知道有沒有掛掉
             var userAspId  = HttpContext.Session.GetString("userId");
 
-            //if (userAspId == null)
-            //{
-            //    return RedirectToAction("Login", "Account");
-            //}
-
             
-            var user = _context.Members.Where(x=>x.AspUserId == aspuserId).FirstOrDefault();
-           
-            // 將 Name 傳遞到視圖
             
+            var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
            
+            
+            //原本的寫法，不知道為什麼掛了
+               // var member = await _context.Members
+               //.Include(m => m.AspUser)
+               //.Include(m => m.ShoppingRankNoNavigation)
+               //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
 
-            //如果==null代表剛註冊好，還不是會員
-            if (user == null)
-            {
-                //新創立一個member並且擁有asp的ID與email
-                user =  new Member
-                {
-                    AspUserId = aspuserId,
-                    Email = aspuseEmail,
-                    IsBlocked = 0,
-                    IsChickFarm = 0,
-                };
-                ViewBag.UserName = user.Name;
 
-                _context.Members.Add(user);
-                await _context.SaveChangesAsync();
+            //ViewBag.UserName = user.Name;
                 return View(user);
-            }
-            else
-            {
-                var member = await _context.Members
-               .Include(m => m.AspUser)
-               .Include(m => m.ShoppingRankNoNavigation)
-               .FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
-
-                ViewBag.UserName = user.Name;
-                return View(member);
-            }
+            
            
                 
         }
@@ -109,30 +86,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
-        //private async Task<string> CompressImageAsync(byte[] imageBytes)
-        //{
-        //    using (var inputStream = new MemoryStream(imageBytes))
-        //    using (var image = await Image.LoadAsync(inputStream))
-        //    {
-        //        image.Mutate(x => x.Resize(new ResizeOptions
-        //        {
-        //            Size = new Size(400, 0), // 調整寬度，保持比例
-        //            Mode = ResizeMode.Max
-        //        }));
-
-        //        using (var outputStream = new MemoryStream())
-        //        {
-        //            var jpegEncoder = new JpegEncoder
-        //            {
-        //                Quality = 1 // 設定壓縮質量（0-100）
-        //            };
-        //            await image.SaveAsync(outputStream, jpegEncoder);
-
-        //            return Convert.ToBase64String(outputStream.ToArray());
-        //        }
-        //    }
-        //}
-
 
         [HttpPost]
         public async Task<IActionResult> MemberPageUpdate([FromForm] UserDTO _user)
@@ -150,42 +103,46 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             member.Email = _user.Email;
             member.BirthDate = _user.BirthDate;
             member.Phone = _user.Phone;
-           
-            
-
-            // 如果有上傳檔案，則處理檔案更新
-            if (_user.ProfilePic != null)
-            {
-                // 檔案上傳路徑
-                string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
-
-                // 將檔案上傳到指定路徑
-                using (var filestream = new FileStream(path, FileMode.Create))
-                {
-                    _user.ProfilePic.CopyTo(filestream);
-                }
-
-                // 將上傳的檔案轉為二進位格式並存儲在資料庫中
-                byte[] imgByte = null;
-                using (var memoryStream = new MemoryStream())
-                {
-                    _user.ProfilePic.CopyTo(memoryStream);
-                    imgByte = memoryStream.ToArray();
-
-                    
-
-                    //壓縮圖片應該是寫在這裡
-                   
 
 
 
-                    member.ProfilePic = imgByte;
-                }
-                Console.WriteLine($"Image byte array length: {imgByte.Length}"); // 检查图像大小
-               
-            }
+			//// 如果有上傳檔案，則處理檔案更新
+			//if (_user.ProfilePic != null)
+			//{
+			//    // 檔案上傳路徑
+			//    string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
 
-            _context.Members.Update(member);
+			//    // 將檔案上傳到指定路徑
+			//    using (var filestream = new FileStream(path, FileMode.Create))
+			//    {
+			//        _user.ProfilePic.CopyTo(filestream);
+			//    }
+
+
+
+			//}
+
+
+			// 如果有上傳檔案，則處理檔案更新
+			if (_user.ProfilePic != null)
+			{
+				// 檔案名稱處理，避免重名
+				string uniqueFileName = Guid.NewGuid().ToString() + "_" + _user.ProfilePic.FileName;
+				// 檔案上傳路徑
+				string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
+
+				// 將檔案上傳到指定路徑
+				using (var filestream = new FileStream(path, FileMode.Create))
+				{
+					_user.ProfilePic.CopyTo(filestream);
+				}
+
+				// 儲存相對路徑到資料庫
+				member.ProfilePic = "/memProfilePic/" + _user.ProfilePic.FileName;
+
+			}
+
+			_context.Members.Update(member);
             // 儲存更新後的資料
             _context.SaveChanges();
 
@@ -351,4 +308,5 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return _context.Members.Any(e => e.MemberSid == id);
         }
     }
+   
 }
