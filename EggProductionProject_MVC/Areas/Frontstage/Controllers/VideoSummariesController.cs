@@ -159,5 +159,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(newmessage);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditVideo([FromBody] EditVideoDTO Edit)
+        {
+
+            var EditVideo = 
+        }
     }
 }
