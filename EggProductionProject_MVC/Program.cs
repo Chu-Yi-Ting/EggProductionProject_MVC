@@ -42,24 +42,24 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => 
-options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+//options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 
 
 ////設定會員登入失敗會鎖住
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-//{
-//    options.SignIn.RequireConfirmedAccount = true;
-//    鎖定配置
-//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); //// 鎖定時間，我改成1分鐘
-//    options.Lockout.MaxFailedAccessAttempts = 5; //// 最大登入失敗次數
-//    options.Lockout.AllowedForNewUsers = true; //// 是否允許新用戶被鎖定
-//})
-//.AddEntityFrameworkStores<ApplicationDbContext>()
-//.AddDefaultTokenProviders();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    //鎖定配置
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); //// 鎖定時間，我改成1分鐘
+    options.Lockout.MaxFailedAccessAttempts = 5; //// 最大登入失敗次數
+    options.Lockout.AllowedForNewUsers = true; //// 是否允許新用戶被鎖定
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
