@@ -650,7 +650,7 @@
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
                                         <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">綁定帳號</button>
                                     </li>
-                                    <li style="            border: none;
+@*                                     <li style="            border: none;
                                     padding: 10px 30px;
                                     background-color: #fff;
                                     margin: 0;
@@ -659,7 +659,7 @@
                                     font-size: 16px;
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
                                         <button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three" type="button" role="tab" aria-controls="pills-three" aria-selected="false">物流地址修改</button>
-                                    </li>
+                                    </li> *@
                                     <li style=" border: none;
                                     padding: 10px 30px;
 
@@ -717,9 +717,11 @@
                                                 <div style="padding-left: 20px;">
                                                     <input type="hidden" asp-for="AspUserId" />
                                                     <div class="form-group">
+                                                        <span>
                                                             <label for="username">會員名稱</label>
-                                                            @* <span> &nbsp;&nbsp;&nbsp;&nbsp;</span> *@
-                                                        <span class="required-tag">必填</span>
+                                                            <span class="required-tag">必填</span>
+                                                        </span>
+                                                           
                                                             <input type="text" id="username" name="Name" asp-for="Name">
                                                     </div>
                                                     <span class="text-danger" asp-validation-for="Name"></span>
@@ -997,13 +999,13 @@
                                 </div>
 
 
-                                3...
+                              @*   3... *@
                             </div>
                             <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
                                 @{
                                     if (Model.Chickcode == null)
                                     {
-                                        <div>請先開通成為雞農身分!</div>
+                                    <img src="~/memberimg/chickopenfirst.jpg" style="align-items:center"/>
                                     }
                                     else
                                     {
@@ -1064,7 +1066,7 @@
                                     {
 									// <div>請先開通成為雞農身分!</div>
 
-									<img src="~/memberimg/chickopenfirst.jpg" />
+                                    <img src="~/memberimg/chickopenfirst.jpg" style="align-items:center" />
                                     }
                                     else
                                     {
@@ -1162,6 +1164,22 @@
 
 
     </html>
+
+<!-- 註冊成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="beComeFarmToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            雞農身分開通成功！
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts{
 
@@ -1368,8 +1386,20 @@
                 // 處理後端的回應
                 const result = await response.json();
                 console.log('Success:', result);
+                
 
-                alert('雞農功能開通!')
+
+
+                // 關閉 Modal
+                const modalElement = document.getElementById('exampleModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement); // 獲取當前 modal 的實例
+                modalInstance.hide(); // 隱藏 modal
+               
+                // 顯示 toast 通知
+                const toastElement = document.getElementById('beComeFarmToast');
+                const toastInstance = new bootstrap.Toast(toastElement);
+                toastInstance.show();
+
             } catch (error) {
                 console.error('Error:', error);
             }
