@@ -1,18 +1,18 @@
 ﻿@{
-	Layout = "_FrontLayout_store";
+    Layout = "_FrontLayout_store";
 }
 
 @{
-	var antiForgeryToken = Html.AntiForgeryToken().ToString();
+    var antiForgeryToken = Html.AntiForgeryToken().ToString();
 }
 
 @section Styles {
 
-	<link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
-	<!-- FixedHeader 样式 -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+    <!-- FixedHeader 样式 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
     @* <link href="~/backstagetemplate/build/css/stylesheet_n.css?version1.2" rel="stylesheet" /> *@
-	<style>
+    <style>
         table {
             caption-side: bottom;
             border-collapse: separate;
@@ -73,46 +73,46 @@
         }
 
         .dt-search:has(.dt-input) {
-            display:none;
+            display: none;
         }
 
-        .dt-scroll-headInner{
-            width:100%!important;
+        .dt-scroll-headInner {
+            width: 100% !important;
         }
 
-    /*     .accordion .table > :not(caption) > * > * {
-      
-            border-bottom-width: 0px;
+        /*     .accordion .table > :not(caption) > * > * {
 
-        } */
+                    border-bottom-width: 0px;
 
-	</style>
+                } */
+
+    </style>
 }
 
 
 <div class=" col-12">
-	<div class="page-title">
-		<h5 class="mb-3">訂單管理</h5>
-	</div>
-	<div class="tab-see mb-3">
-		<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">訂單成立</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">訂單待出貨</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three" type="button" role="tab" aria-controls="pills-three" aria-selected="false">訂單代收貨</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="pills-four-tab" data-bs-toggle="pill" data-bs-target="#pills-four" type="button" role="tab" aria-controls="pills-four" aria-selected="false">訂單完成</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="pills-five-tab" data-bs-toggle="pill" data-bs-target="#pills-five" type="button" role="tab" aria-controls="pills-five" aria-selected="false">訂單退貨</button>
-			</li>
-		</ul>
-	</div>
+    <div class="page-title">
+        <h5 class="mb-3">訂單管理</h5>
+    </div>
+    <div class="tab-see mb-3">
+        <ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">訂單成立</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">訂單待出貨</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three" type="button" role="tab" aria-controls="pills-three" aria-selected="false">訂單代收貨</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-four-tab" data-bs-toggle="pill" data-bs-target="#pills-four" type="button" role="tab" aria-controls="pills-four" aria-selected="false">訂單完成</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-five-tab" data-bs-toggle="pill" data-bs-target="#pills-five" type="button" role="tab" aria-controls="pills-five" aria-selected="false">訂單退貨</button>
+            </li>
+        </ul>
+    </div>
     <div class="notify-title d-lg-flex justify-content-between align-items-center my-4">
         <div>
             <img src="~/FrontstageTemplate/assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
@@ -127,41 +127,41 @@
         </div>
     </div>
 
-	<div class="tab-content" id="pills-tabContent">
-		<div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
-			
-         
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+
+
             <table id="tableList" class="table table-striped table-hover w-100">
                 <thead class="">
                 </thead>
             </table>
 
-		</div>
-		<div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+        </div>
+        <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
             <table id="tableList2" class="table table-striped table-hover w-100">
                 <thead class="">
                 </thead>
             </table>
         </div>
-		<div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
+        <div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
             <table id="tableList3" class="table table-striped table-hover w-100">
                 <thead class="">
                 </thead>
             </table>
         </div>
-		<div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
+        <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
             <table id="tableList4" class="table table-striped table-hover w-100">
                 <thead class="">
                 </thead>
             </table>
         </div>
-		<div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
+        <div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
             <table id="tableList5" class="table table-striped table-hover w-100">
                 <thead class="">
                 </thead>
             </table>
         </div>
-	</div>
+    </div>
 </div>
 
 <div class="modal modal-n fade"
@@ -187,25 +187,25 @@
                     <div class="store-body-outer">
                         <div class="pagebody-store m-0">
                             <div class="accordion" id="accordionExample1">
-                                                      <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed py-2"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne1"
-                                aria-expanded="false"
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed py-2"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne1"
+                                                aria-expanded="false"
                                                 aria-controls="collapseOne1" style="font-size: small;">
                                             出貨商品列表
-                                </button>
-                                </h2>
-                                <div id="collapseOne1"
-                                class="accordion-collapse collapse"
-                                aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample1">
-                                <div class="accordion-body">
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne1"
+                                         class="accordion-collapse collapse"
+                                         aria-labelledby="headingOne"
+                                         data-bs-parent="#accordionExample1">
+                                        <div class="accordion-body">
                                             <div class="scroll" style="background: #fff;" id="detailOuter">
                                                 <table class="table">
-                                                 
+
                                                     <tbody>
                                                         <tr>
                                                             <th scope="row">1</th>
@@ -218,41 +218,39 @@
                                                             <td>E202406070002</td>
                                                             <td>金山鮮雞蛋</td>
                                                             <td>x2</td>
-                                                        </tr>                                                     
+                                                        </tr>
                                                     </tbody>
                                                 </table>
-                                </div>
-                                </div>
-                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="accordion-item my-4">
-                                <h2 class="accordion-header" id="headingTwo">
+                                    <h2 class="accordion-header" id="headingTwo">
                                         <button class="accordion-button collapsed py-2"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo1"
-                                aria-expanded="false"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseTwo1"
+                                                aria-expanded="false"
                                                 aria-controls="collapseTwo1" style="font-size: small;">
                                             賣家出貨地址
-                                </button>
-                                </h2>
-                                <div id="collapseTwo1"
-                                class="accordion-collapse collapse"
-                                aria-labelledby="headingTwo"
-                               >
-                                <div class="accordion-body">
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo1"
+                                         class="accordion-collapse collapse"
+                                         aria-labelledby="headingTwo">
+                                        <div class="accordion-body">
                                             <div class="scroll " id="AddressOuter">
-         
-                                </div>
+                                            </div>
 
-                                <div class="form-control-n pt-2 p-3">
-                                <a class="btn light-btn-n btn-sm-dbrs"
-                                data-bs-toggle="modal"
-                                href="#exampleModalToggle3"
-                                role="button">新增地址</a>
-                                </div>
-                                </div>
-                                </div>
+                                            <div class="form-control-n pt-2 p-3">
+                                                <a class="btn light-btn-n btn-sm-dbrs"
+                                                   data-bs-toggle="modal"
+                                                   href="#exampleModalToggle3"
+                                                   role="button">新增地址</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="w-100 submit mt-4 mb-3">
@@ -271,24 +269,23 @@
 
 @section Scripts {
 
-    <script src="~/lib/datatables.net/datatables.min.js"></script > 
+    <script src="~/lib/datatables.net/datatables.min.js"></script>
 
     <script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
     <script src="~/js/common.js"></script>
     <script>
- 
+
         const nowId = 3;
         let store;
         let nowOrderSid;
 
         function handleButtonClick(encodedRow) {
             const row = JSON.parse(decodeURIComponent(encodedRow));
-            findData(row.OrderSid);
-            loadBuyCarts1(row.StoreSid, row.CarrierWayNo);
-         
-            nowOrderSid = row.OrderSid;
+            findData(row.orderSid);
+            loadBuyCarts1(row.storeSid, row.carrierWayNo);
+            nowOrderSid = row.orderSid;
             console.log("nowOrderSid", nowOrderSid)
-            
+
         }
 
         const loadBuyCarts1 = async (storeId, CarrierWayNo) => {
@@ -314,54 +311,54 @@
 
                 const generateProductsHtml = (addresses) => {
                     return addresses.map(address => {
-                        const storeNameClass = address.StoreName ? '' : 'd-none';
-                        const defaultClass = address.AddressFirst === 1 ? '' : 'd-none';
+                        const storeNameClass = address.storeName ? '' : 'd-none';
+                        const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
                         const storeSid = BuyData1.storeSid;
 
                         return `
-                                            <div class="form-check d-flex s_${storeSid}">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.CarrierAddressSid}">
-                                                <label class="form-check-label w-100" for="flexRadioDefault${address.CarrierAddressSid}">
-                                                    <div class="other-info d-flex flex-column flex-lg-row">
-                                                        <div class="w-100 mx-auto">
-                                                            <div class="part form-control-n">
-                                                                <div class="carrier-type w-100 d-flex justify-content-between pb-1">
-                                                                    <p class="d-flex align-items-center mb-0">
-                                                                        ${address.CarrierName}<span>${address.Way}</span>
-                                                                        <span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
-                                                                    </p>
-                                                                    <div class="d-flex justify-content-center align-items-center">
-                                                                        <div class="track-info">${address.Price}元</div>
+                                                    <div class="form-check d-flex s_${storeSid}">
+                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${address.carrierAddressSid}">
+                                                        <label class="form-check-label w-100" for="flexRadioDefault${address.carrierAddressSid}">
+                                                            <div class="other-info d-flex flex-column flex-lg-row">
+                                                                <div class="w-100 mx-auto">
+                                                                    <div class="part form-control-n">
+                                                                        <div class="carrier-type w-100 d-flex justify-content-between pb-1">
+                                                                            <p class="d-flex align-items-center mb-0">
+                                                                                ${address.carrierName}<span>${address.way}</span>
+                                                                                <span class="default ms-2 m-0 mt-0 ${defaultClass}">預設</span>
+                                                                            </p>
+                                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                                <div class="track-info">${address.price}元</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="carrier-address d-flex flex-column">
+                                                                            <div class="d-flex mt-1 mt-md-0">
+                                                                                <p class="name me-2 m-0">${address.recordName}</p>
+                                                                                <p class="phone me-2 m-0">${address.recordPhone}</p>
+                                                                            </div>
+                                                                            <p class="address me-2 m-0">
+                                                                                <span class="me-1 ${storeNameClass}">${address.storeName ? address.storeName + ' | ' : ''}</span>${address.adress}
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="carrier-address d-flex flex-column">
-                                                                    <div class="d-flex mt-1 mt-md-0">
-                                                                        <p class="name me-2 m-0">${address.RecordName}</p>
-                                                                        <p class="phone me-2 m-0">${address.RecordPhone}</p>
-                                                                    </div>
-                                                                    <p class="address me-2 m-0">
-                                                                        <span class="me-1 ${storeNameClass}">${address.StoreName ? address.StoreName + ' | ' : ''}</span>${address.Adress}
-                                                                    </p>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </label>
                                                     </div>
-                                                </label>
-                                            </div>
-                                            <hr class="m-0" />
-                                        `;
+                                                    <hr class="m-0" />
+                                                `;
                     }).join('');
                 };
 
                 const divSpots1 = document.getElementById('AddressOuter');
-                divSpots1.innerHTML = generateProductsHtml(data[0].Addresses);
+                divSpots1.innerHTML = generateProductsHtml(data[0].addresses);
 
             } catch (error) {
                 console.error('There has been a problem with your fetch operation:', error);
             }
         };
 
-        
+
 
 
 
@@ -371,7 +368,7 @@
                 method: 'GET',
                 data: { OrderSid: OrderSid },
                 success: function (response) {
-       
+
                     const html = generateProductsHtml(response);
                     const divSpots1 = document.getElementById('detailOuter');
                     divSpots1.innerHTML = html;
@@ -388,22 +385,22 @@
 
             products.forEach((product, index) => {
                 rows += `
-                            <tr>
-                                <th scope="row">${index + 1}</th>
-                                <td>${product.ProductNo}</td>
-                                <td>${product.ProductName}</td>
-                                <td>x${product.Qty}</td>
-                            </tr>
-                        `;
+                                    <tr>
+                                        <th scope="row">${index + 1}</th>
+                                        <td>${product.productNo}</td>
+                                        <td>${product.productName}</td>
+                                        <td>x${product.qty}</td>
+                                    </tr>
+                                `;
             });
 
             return `
-                        <table class="table">
-                            <tbody>
-                                ${rows}
-                            </tbody>
-                        </table>
-                    `;
+                                <table class="table">
+                                    <tbody>
+                                        ${rows}
+                                    </tbody>
+                                </table>
+                            `;
         }
 
 
@@ -413,13 +410,13 @@
 
             let tabContentId = '#pills-one';
 
-  
+
             $('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
                 var activeTabId = $(e.target).attr('id');
                 var activeTabText = $(e.target).text();
 
                 tabContentId = $(e.target).attr('data-bs-target');
-         
+
                 var tableSelector = `${tabContentId} table`;
                 var table = $(tableSelector).DataTable();
 
@@ -431,7 +428,7 @@
                 }
             });
 
-          
+
             $('button.navbar-toggler').on('click', function () {
                 var tableSelector = `${tabContentId} table`;
                 var table = $(tableSelector).DataTable();
@@ -443,7 +440,7 @@
                     } else {
                         console.error("Unable to find DataTable associated with the tab.");
                     }
-                }, 300); 
+                }, 300);
             });
 
 
@@ -454,7 +451,7 @@
                     type: "POST",
                     url: "/Frontstage/StoreCentersAPI/OrderList",
                     data: function () {
-           
+
                         const jsonObject = {
                             memberSid: nowId,
                             OrderStatusNo: 1
@@ -477,16 +474,16 @@
                         render: function (data, type, row) {
                             const rowData = encodeURIComponent(JSON.stringify(row));
                             return `
-                                      <a class="btn dark-btn-n btn-sm-dbrs change_address mx-auto"
-                               id="store_${row.CarrierWayNo}"
-                               data-bs-toggle="modal"
-                               href="#exampleModalToggle2"
-                               role="button"
-                               style="max-width: 65px;"
-                                                       onclick="handleButtonClick('${rowData}')">
-                               出貨
-                            </a>
-                                              `;
+                                              <a class="btn dark-btn-n btn-sm-dbrs change_address mx-auto"
+                                       id="store_${row.carrierWayNo}"
+                                       data-bs-toggle="modal"
+                                       href="#exampleModalToggle2"
+                                       role="button"
+                                       style="max-width: 65px;"
+                                                               onclick="handleButtonClick('${rowData}')">
+                                       出貨
+                                    </a>
+                                                      `;
                         }
                     },
                 ],
@@ -497,32 +494,32 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "Payment", "width": "auto", "title": "付款方式" },
-                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "CarrierWayNo", "width": "auto", "title": "狀態", "visible": false },
-                    { "data": "StoreSid", "width": "auto", "title": "商店序號", "visible": false },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "carrierWayNo", "width": "auto", "title": "狀態", "visible": false },
+                    { "data": "storeSid", "width": "auto", "title": "商店序號", "visible": false },
                     { "data": "", "width": "auto", "title": "操作" },
                 ],
                 fixedHeader: { header: true },
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
-                paging: false,      
-                ordering: false,    
-                info: false,     
+                paging: false,
+                ordering: false,
+                info: false,
                 searching: true
             })
 
-           
+
 
 
             $("#tableList2").dataTable({
@@ -531,7 +528,7 @@
                     type: "POST",
                     url: "/Frontstage/StoreCentersAPI/OrderList",
                     data: function () {
-               
+
                         const jsonObject = {
                             memberSid: nowId,
                             OrderStatusNo: 2
@@ -555,24 +552,24 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "Payment", "width": "auto", "title": "付款方式" },
-                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "TrackStatus",
+                        "data": "trackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
-                            return '<span style="color: #B8860B;">等待出貨</span>';  
+                            return '<span style="color: #B8860B;">等待出貨</span>';
                         }
                     }
                 ],
@@ -580,9 +577,9 @@
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
-                paging: false,   
-                ordering: false,   
-                info: false,      
+                paging: false,
+                ordering: false,
+                info: false,
                 searching: true
             })
 
@@ -592,7 +589,7 @@
                     type: "POST",
                     url: "/Frontstage/StoreCentersAPI/OrderList",
                     data: function () {
-          
+
                         const jsonObject = {
                             memberSid: nowId,
                             OrderStatusNo: 3
@@ -616,24 +613,24 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "Payment", "width": "auto", "title": "付款方式" },
-                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "TrackStatus",
+                        "data": "trackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
-                            return '<span style="color: #B8860B;">已寄件成功</span>';  
+                            return '<span style="color: #B8860B;">已寄件成功</span>';
                         }
                     }
                 ],
@@ -641,9 +638,9 @@
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
-                paging: false,   
-                ordering: false,  
-                info: false,  
+                paging: false,
+                ordering: false,
+                info: false,
                 searching: true
             })
 
@@ -653,7 +650,7 @@
                     type: "POST",
                     url: "/Frontstage/StoreCentersAPI/OrderList",
                     data: function () {
-            
+
                         const jsonObject = {
                             memberSid: nowId,
                             OrderStatusNo: 4
@@ -677,24 +674,24 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "Payment", "width": "auto", "title": "付款方式" },
-                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "TrackStatus",
+                        "data": "trackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
-                            return '<span style="color: #B8860B;">買家取件成功</span>'; 
+                            return '<span style="color: #B8860B;">買家取件成功</span>';
                         }
                     }
                 ],
@@ -702,9 +699,9 @@
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
-                paging: false,    
-                ordering: false,    
-                info: false,       
+                paging: false,
+                ordering: false,
+                info: false,
                 searching: true
             })
 
@@ -715,7 +712,7 @@
                     type: "POST",
                     url: "/Frontstage/StoreCentersAPI/OrderList",
                     data: function () {
-      
+
                         const jsonObject = {
                             memberSid: nowId,
                             OrderStatusNo: 5
@@ -739,20 +736,20 @@
                     end: 1
                 },
                 columns: [
-                    { "data": "OrderSid", "width": "auto", "title": "訂單序號", "visible": false },
-                    { "data": "OrderNo", "width": "auto", "title": "訂單編號" },
-                    { "data": "TotalPrice", "width": "auto", "title": "賣家實付金額" },
+                    { "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+                    { "data": "orderNo", "width": "auto", "title": "訂單編號" },
+                    { "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
                     {
-                        "data": "AlreadyPaid", "width": "auto", "title": "付款狀態",
+                        "data": "alreadyPaid", "width": "auto", "title": "付款狀態",
                         "render": function (data, type, row) {
                             return data == 1 ? "已付款" : "未付款";
                         }
                     },
-                    { "data": "Payment", "width": "auto", "title": "付款方式" },
-                    { "data": "CarrierNameWay", "width": "auto", "title": "配送方式" },
-                    { "data": "TrackingNum", "width": "auto", "title": "物流號碼" },
+                    { "data": "payment", "width": "auto", "title": "付款方式" },
+                    { "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+                    { "data": "trackingNum", "width": "auto", "title": "物流號碼" },
                     {
-                        "data": "TrackStatus",
+                        "data": "trackStatus",
                         "width": "auto",
                         "title": "狀態",
                         "render": function (data, type, row) {
@@ -764,9 +761,9 @@
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
                 },
-                paging: false,     
-                ordering: false,   
-                info: false,      
+                paging: false,
+                ordering: false,
+                info: false,
                 searching: true
             })
 
@@ -789,7 +786,7 @@
 
                 $('.dt-search .dt-input').val(trackNo);
 
-      
+
                 $('.dt-search .dt-input').trigger('input');
 
                 console.log("追蹤號碼已同步: " + trackNo);
@@ -797,42 +794,42 @@
 
 
 
-                const elementopen = document.querySelector('#updateState');
+            const elementopen = document.querySelector('#updateState');
 
-                elementopen.addEventListener('click', async () => {
-                    try {
-             
-                        const radioButtons = document.querySelectorAll('input[name="flexRadioDefault"]');
+            elementopen.addEventListener('click', async () => {
+                try {
 
-            
-                        const anyChecked = Array.from(radioButtons).some(radio => radio.checked);
+                    const radioButtons = document.querySelectorAll('input[name="flexRadioDefault"]');
 
-                        if (!anyChecked) {
-      
-                            alert("至少勾選一項");
-                        } else {
-                  
-                            radioButtons.forEach(radio => {
-                                if (radio.checked) {
-                                    const numericId = handleRadioChange(radio.id);
-                                    console.log("nowOrderSid", nowOrderSid);
-                                    console.log('Selected Radio ID:', numericId);
-                                    updateOrderAndTrack(nowOrderSid, numericId)
 
-                             
-                                }
-                            });
-                        }
+                    const anyChecked = Array.from(radioButtons).some(radio => radio.checked);
 
-                    } catch (error) {
-                        console.error('Error fetching open data:', error);
+                    if (!anyChecked) {
+
+                        alert("至少勾選一項");
+                    } else {
+
+                        radioButtons.forEach(radio => {
+                            if (radio.checked) {
+                                const numericId = handleRadioChange(radio.id);
+                                console.log("nowOrderSid", nowOrderSid);
+                                console.log('Selected Radio ID:', numericId);
+                                updateOrderAndTrack(nowOrderSid, numericId)
+
+
+                            }
+                        });
                     }
-                });
 
-            
-                function handleRadioChange(id) {
-                    return id.replace('flexRadioDefault', '');
+                } catch (error) {
+                    console.error('Error fetching open data:', error);
                 }
+            });
+
+
+            function handleRadioChange(id) {
+                return id.replace('flexRadioDefault', '');
+            }
 
 
 
@@ -877,8 +874,8 @@
                 }
             };
 
-     
-            
+
+
 
         });
 
