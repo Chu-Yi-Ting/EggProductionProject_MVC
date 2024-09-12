@@ -115,8 +115,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
                         
                         
-                    }
                         HttpContext.Session.SetString("userId", user.Id);
+                    }
 
                     return LocalRedirect(returnUrl);
                 }

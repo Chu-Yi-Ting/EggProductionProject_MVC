@@ -117,6 +117,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         //跳轉到這個頁面，但我目前不想讓他跳轉
                         //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
 
+                        return new JsonResult(new { success = true ,message = "註冊成功！" });
                     }
                     else
                     {
@@ -135,7 +136,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         // 這裡加入信箱重複的錯誤訊息，傳回前端
                         TempData["DuplicateEmailError"] = "信箱已經存在，請使用其他信箱";
                         // 回傳信箱重複的 JSON
-                        return new JsonResult(new { success = false, message = "信箱已經存在，請使用其他信箱。" });
+                        return new JsonResult(new { success = false, isDuplicateEmail = true, message = "信箱已經存在，請使用其他信箱。" ,inputEmailVal=Input.Email});
                     }
                     
                 }
