@@ -973,7 +973,7 @@
             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
         });
 
-        //-----刪除鍵功能-----------------------------------------------------------
+        //-----軟刪除鍵功能-----------------------------------------------------------
         // 按下刪除鍵，顯示刪除確認modal
         function openDeleteModal(productSid) {
             selectedProductSid = productSid;
@@ -982,7 +982,7 @@
             deleteModal.show();
         }
 
-        // 刪除確認modal的刪除確定按鈕綁定事件
+        // 軟刪除確認modal的刪除確定按鈕綁定事件
         let selectedProductSid = null;
 
         document.getElementById('confirmDeleteYes').addEventListener('click', async function () {

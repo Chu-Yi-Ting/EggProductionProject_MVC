@@ -298,16 +298,18 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(new { success = true, updatedProduct });
         }
 
-        //刪除上架及審核中的商品
+        //軟刪除上架及審核中的商品
         [HttpPost]
 		public IActionResult DeleteProduct([FromBody] DeleteRequestDTO _deleteRequestDTO)
 		{
 			var product = _context.Products.FirstOrDefault(p => p.ProductSid == _deleteRequestDTO.productSid);
 			if (product != null)
 			{
-				_context.Products.Remove(product);
-				_context.SaveChanges();
-				return Json(new { success = true, selectedProductSid = _deleteRequestDTO.productSid, message = "商品已成功刪除!" });
+                // 更新商品公開狀態為禁用（編號3）
+                product.PublicStatusNo = 3;
+                _context.Products.Update(product);
+                _context.SaveChanges();
+                return Json(new { success = true, selectedProductSid = _deleteRequestDTO.productSid, message = "商品已成功刪除!" });
 			}
 			return Json(new { success = false, message = "找不到該商品!" });
 		}       
