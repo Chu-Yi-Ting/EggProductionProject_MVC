@@ -1,6 +1,4 @@
-﻿using EggProductionProject_MVC.Areas.Frontstage.Models;
-
-namespace EggProductionProject_MVC.Areas.Frontstage.DTO
+﻿namespace EggProductionProject_MVC.Areas.Frontstage.DTO
 {
     public class ProductsPagingDTO
     {

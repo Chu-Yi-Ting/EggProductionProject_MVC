@@ -16,7 +16,7 @@
 		public int? weight { get; set; }
 		public string? component { get; set; }
 		public decimal? discountPercent { get; set; }
-		public DateOnly? launchTime { get; set; }
+		public DateTime? launchTime { get; set; }
 		public int? publicStatusNo { get; set; }
 
         // 接受上傳圖片的參數

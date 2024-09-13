@@ -193,7 +193,7 @@
                     {
                         <tr id="product-row-@product.productSid">
                             <td>@product.productName</td>
-                            <td>$@product.price</td>
+                            <td>$@string.Format("{0:N0}", product.price)</td>
                             <td>@product.stock</td>
                             <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
                             <td>
@@ -244,7 +244,7 @@
                     {
                         <tr id="product-row-@product.productSid">
                             <td>@product.productName</td>
-                            <td>$@product.price</td>
+                            <td>$@string.Format("{0:N0}", product.price)</td>
                             <td>@product.stock</td>
                             <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
                             <td>
@@ -812,10 +812,11 @@
         // 更新審核中分頁局部内容
         function addProductToReviewingTab(product) {
             const table = document.querySelector('#pills-two tbody');
+            const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const newRow = `
                 <tr id="product-row-${product.productSid}">
                     <td>${product.productName}</td>
-                    <td>$${product.price}</td>
+                    <td>$${formattedPrice}</td>
                     <td>${product.stock}</td>
                     <td>${product.launchTime}</td>
                     <td>
@@ -823,7 +824,7 @@
                         <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
                     </td>
                 </tr>`;
-            table.insertAdjacentHTML('beforeend', newRow);
+            table.insertAdjacentHTML('afterbegin', newRow);
         }
 
         // 當使用者按下 "否" 時，關閉兩個 Modal

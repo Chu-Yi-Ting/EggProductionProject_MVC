@@ -104,7 +104,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Component = model.component,
                         StoreSid = store.StoreSid,
                         DiscountPercent = model.discountPercent,
-                        LaunchTime = DateOnly.FromDateTime(DateTime.Now),
+                        LaunchTime = DateTime.Now,
                         PublicStatusNo = 2 // 預設為非公開狀態
                     };
 

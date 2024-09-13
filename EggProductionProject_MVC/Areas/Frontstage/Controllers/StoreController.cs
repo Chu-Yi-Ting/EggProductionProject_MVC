@@ -1,11 +1,12 @@
-﻿using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
+﻿using EggProductionProject_MVC.Areas.Frontstage.DTO;
+using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
 using EggProductionProject_MVC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
-	[Area("Frontstage")]
+    [Area("Frontstage")]
 	public class StoreController : Controller
     {
         private readonly EggPlatformContext _context;
@@ -19,55 +20,117 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _userManager = userManager;
         }
 
-        //查詢賣家資訊及賣家的商品
-        public IActionResult Store(int storeSid)
-        {
-            var storeInfo = _context.Stores
-                .Where(s => s.StoreSid == storeSid)
-                .Select(s => new StoreViewModel
-                {
-                    storeSid = s.StoreSid,
-                    memberSid = s.MemberSid,
-                    storeImagePath = s.StoreImagePath,
-                    storeName = s.Company,
-                    establishDate = s.EstablishDate,
-                    storeIntroduction = s.StoreIntroduction,
-                    productCount = _context.Products.Where(p => p.StoreSid == s.StoreSid).Count()
-                })
-                .FirstOrDefault();
+		//查詢賣家資訊及賣家的商品
+		//public IActionResult Store(int storeSid)
+		//{
+		//    var storeInfo = _context.Stores
+		//        .Where(s => s.StoreSid == storeSid)
+		//        .Select(s => new StoreViewModel
+		//        {
+		//            storeSid = s.StoreSid,
+		//            memberSid = s.MemberSid,
+		//            storeImagePath = s.StoreImagePath,
+		//            storeName = s.Company,
+		//            establishDate = s.EstablishDate,
+		//            storeIntroduction = s.StoreIntroduction,
+		//            productCount = _context.Products.Where(p => p.StoreSid == s.StoreSid).Count()
+		//        })
+		//        .FirstOrDefault();
 
-            if (storeInfo == null)
+		//    if (storeInfo == null)
+		//    {
+		//        return NotFound();
+		//    }
+
+		//    // 查詢該賣家的所有商品
+		//    var products = _context.Products
+		//        .Where(p => p.StoreSid == storeSid && p.PublicStatusNo == 1)
+		//        .Select(p => new ProductViewModel
+		//        {
+		//            productSid = p.ProductSid,
+		//            productImagePath = _context.ProductImages
+		//                .Where(img => img.ProductSid == p.ProductSid)
+		//                .Select(img => img.ProductImagePath)
+		//                .FirstOrDefault(),
+		//            productName = p.ProductName,
+		//            price = p.Price
+		//        })
+		//        .ToList();
+
+		//    // 組合商品及賣家資訊
+		//    var ProductInStore = new ProductAndStoreViewModel
+		//    {
+		//        storeInfo = storeInfo,
+		//        products = products
+		//    };
+
+		//    return View(ProductInStore);
+		//}
+
+		// 查詢賣家資訊及賣家的商品
+		public IActionResult Store(StoreQueryDTO _storeQueryDTO)
+		{
+			var storeInfo = _context.Stores
+				.Where(s => s.StoreSid == _storeQueryDTO.storeSid)
+				.Select(s => new StoreViewModel
+				{
+					storeSid = s.StoreSid,
+					memberSid = s.MemberSid,
+					storeImagePath = s.StoreImagePath,
+					storeName = s.Company,
+					establishDate = s.EstablishDate,
+					storeIntroduction = s.StoreIntroduction,
+					productCount = _context.Products.Where(p => p.StoreSid == s.StoreSid && p.PublicStatusNo == 1).Count() // 只計算公開狀態的商品數量
+				})
+				.FirstOrDefault();
+
+			if (storeInfo == null)
+			{
+				return NotFound();
+			}
+
+			// 分頁查詢該賣家的公開商品
+			var products = _context.Products
+				.Where(p => p.StoreSid == _storeQueryDTO.storeSid && p.PublicStatusNo == 1)
+				.Select(p => new ProductViewModel
+				{
+					productSid = p.ProductSid,
+					productImagePath = _context.ProductImages
+						.Where(img => img.ProductSid == p.ProductSid)
+						.Select(img => img.ProductImagePath)
+						.FirstOrDefault(),
+					productName = p.ProductName,
+					price = p.Price
+				})
+				.OrderBy(p => p.productName) // 你可以根據需要更改排序依據
+				.Skip((_storeQueryDTO.page - 1) * _storeQueryDTO.pageSize)
+				.Take(_storeQueryDTO.pageSize)
+				.ToList();
+
+			// 組合商品及賣家資訊
+			var ProductInStore = new ProductAndStoreViewModel
+			{
+				storeInfo = storeInfo,
+				products = products,
+				PageNumber = _storeQueryDTO.page,
+				PageSize = _storeQueryDTO.pageSize,
+				TotalPages = (int)Math.Ceiling((double)storeInfo.productCount / _storeQueryDTO.pageSize) // 計算總頁數
+			};
+
+            // 如果是 AJAX 請求，返回部分視圖
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return NotFound();
+                return PartialView("~/Areas/Frontstage/PartialViews/_ProductListPartial.cshtml", ProductInStore);
             }
 
-            // 查詢該賣家的所有商品
-            var products = _context.Products
-                .Where(p => p.StoreSid == storeSid && p.PublicStatusNo == 1)
-                .Select(p => new ProductViewModel
-                {
-                    productSid = p.ProductSid,
-                    productImagePath = _context.ProductImages
-                        .Where(img => img.ProductSid == p.ProductSid)
-                        .Select(img => img.ProductImagePath)
-                        .FirstOrDefault(),
-                    productName = p.ProductName,
-                    price = p.Price
-                })
-                .ToList();
-
-            // 組合商品及賣家資訊
-            var ProductInStore = new ProductAndStoreViewModel
-            {
-                storeInfo = storeInfo,
-                products = products
-            };
-
+            // 如果是普通請求，返回完整視圖
             return View(ProductInStore);
-        }
+		}
 
-        //SellerInformation動作函式生賣家中心基本資料畫面
-        public IActionResult SellerInformation()
+
+
+		//SellerInformation動作函式生賣家中心基本資料畫面
+		public IActionResult SellerInformation()
 		{
 			// 獲取當前登入用戶的AspUserId
 			var aspUserId = _userManager.GetUserId(User);

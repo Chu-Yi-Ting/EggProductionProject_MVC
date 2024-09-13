@@ -12,7 +12,8 @@
         public int? quanitity { get; set; }
         public int? weight { get; set; }
         public string? component { get; set; }
-        public DateOnly? launchTime { get; set; }
+        public decimal? discountPercent { get; set; }
+        public DateTime? launchTime { get; set; }
         public StoreViewModel? storeInfo { get; set; }
 
     }

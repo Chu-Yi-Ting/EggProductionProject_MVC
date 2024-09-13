@@ -1,5 +1,4 @@
 ﻿using EggProductionProject_MVC.Areas.Frontstage.DTO;
-using EggProductionProject_MVC.Areas.Frontstage.Models;
 using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
 using EggProductionProject_MVC.Models;
 using Microsoft.AspNetCore.Identity;

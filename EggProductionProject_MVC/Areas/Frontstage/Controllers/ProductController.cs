@@ -44,7 +44,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 					weight = p.Weight,
 					component = p.Component,
 					launchTime = p.LaunchTime,
-					storeInfo = _context.Stores
+                    discountPercent = p.DiscountPercent,
+
+                    storeInfo = _context.Stores
 						.Where(s => s.StoreSid == p.StoreSid)
 						.Select(s => new StoreViewModel
 						{

@@ -1,0 +1,44 @@
+﻿@model EggProductionProject_MVC.Areas.Frontstage.ViewModels.ProductAndStoreViewModel
+
+<div class="row g-3">
+    @foreach (var product in Model.products)
+    {
+        <div class="col-lg-4">
+            <div class="product-card">
+                <img src="@Url.Content(product.productImagePath)" alt="@product.productName">
+                <div class="card-body">
+                    <h5 class="card-title">@product.productName</h5>
+                    <div class="price-and-button">
+                        <p class="price">
+                            $@(product.price.HasValue ? (product.price.Value * 0.8m).ToString("0") : "價格不詳")
+                            <span class="old-price">$@(product.price.HasValue ? product.price.Value.ToString("0") : "價格不詳")</span>
+                        </p>
+                        <button class="btn" onclick="window.location.href='/Frontstage/Product/ProductDetail?productSid=@product.productSid'">查看更多</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- 分頁區域 -->
+<nav class="mt-md-5">
+    <ul class="pagination">
+        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0);" onclick="loadPage(@(Model.PageNumber - 1))" aria-label="Previous">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </li>
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                <a class="page-link" href="javascript:void(0);" onclick="loadPage(@i)">@i</a>
+            </li>
+        }
+        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0);" onclick="loadPage(@(Model.PageNumber + 1))" aria-label="Next">
+                <i class="fas fa-angle-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
