@@ -139,10 +139,11 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
+                
                 else
                 {
                     
-                    ModelState.AddModelError(string.Empty, "帳號密碼錯誤");
+                    ModelState.AddModelError(string.Empty, "登入失敗，請重新嘗試");
                     return Page();
 
                 }
