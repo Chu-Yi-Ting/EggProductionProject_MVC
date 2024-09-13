@@ -59,7 +59,6 @@
 }
 
 <div class="d-none">
-
     <h2>合併訂單結帳</h2>
 
     @using (Html.BeginForm("CreateOrder", "Carts", FormMethod.Post, new { id = "orderForm" }))
@@ -778,10 +777,11 @@
 
         $(document).ready(function () {
 
-
+            var memberSid = '@ViewBag.MemberSid';
+            console.log("Member SID: " + memberSid);
 
             const searchData = {
-                "Msid": 1
+                "Msid": memberSid
             }
 
 
@@ -875,7 +875,7 @@
 
 
             const BuyData = {
-                "Msid": 1,
+                "Msid": memberSid,
                 "CartSids": []
             }
 
@@ -1526,7 +1526,7 @@
             const loadBuyCarts1 = async (storeId) => {
                 const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
                 const BuyData1 = {
-                    "Msid": 1,
+                    "Msid": memberSid,
                     "storeSid": storeId
                 };
 
@@ -1925,7 +1925,7 @@
 
 
             const BuyData2 = {
-                "Msid": 1,
+                "Msid": memberSid,
                 "totalMoney": 200
             }
 
@@ -1937,7 +1937,7 @@
                 console.log('Total Money:', totalMoney);
 
                 try {
-                    const response = await fetch(`https://localhost:7080/Frontstage/CartsAPI/GetCoupons?memberSid=1&totalmoney=${totalMoney}`);
+                    const response = await fetch(`https://localhost:7080/Frontstage/CartsAPI/GetCoupons?memberSid=${encodeURIComponent(memberSid)}&totalmoney=${totalMoney}`);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
@@ -2161,6 +2161,7 @@
                     console.log('Success:', result);
 
                     const postData = {
+                        memberSid: result.memberSid,
                         combo: result.combo,
                         usecoin: result.usecoin,
                         couponSid: result.couponSid,
@@ -2177,7 +2178,7 @@
 
 
 
-                    // 触发表单的 AJAX 提交
+                    // // 触发表单的 AJAX 提交
                     $('#orderForm').submit(function (event) {
                         event.preventDefault(); // 防止表单的默认提交行为
 

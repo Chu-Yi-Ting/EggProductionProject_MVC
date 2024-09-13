@@ -3,19 +3,83 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Web;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
+using EggProductionProject_MVC.Models;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
     [Area("Frontstage")]
     public class CartsController : Controller
     {
-        public IActionResult Index()
-        {
-			var order = new Dictionary<string, string> { };
 
-			return View(order); 
-		}
-		public async Task<IActionResult> GetNgrokUrl()
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly EggPlatformContext _context;
+
+        public CartsController(IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager, EggPlatformContext context)
+        {
+            _hostingEnvironment = webHostEnvironment;
+            _userManager = userManager;
+            _context = context;
+        }
+
+        private async Task<IActionResult> CheckUserAndMember()
+        {
+            var aspUser = await _userManager.GetUserAsync(User);
+
+            if (aspUser == null)
+            {
+                return Redirect("https://localhost:7080/Identity/Account/Login");
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUser.Id);
+
+            if (member == null)
+            {
+                return Redirect("https://localhost:7080/Identity/Account/Login");
+            }
+
+            ViewBag.MemberSid = member.MemberSid;
+
+            return null; // 返回 null 表示检查成功
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var result = await CheckUserAndMember();
+            if (result != null)
+            {
+                return result;
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+            //var aspUser = await _userManager.GetUserAsync(User);
+
+            //if (aspUser == null)
+            //{
+            //    // 如果用户未登录，重定向到登录页面
+            //    return Redirect("https://localhost:7080/Identity/Account/Login");
+            //}
+
+            //var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUser.Id);
+
+            //if (member == null)
+            //{
+            //    // 如果会员信息不存在，重定向到登录页面
+            //    return Redirect("https://localhost:7080/Identity/Account/Login");
+            //}
+
+            //// 处理支付回调后的业务逻辑
+            //ViewBag.MemberSid = member.MemberSid;
+
+            return View();
+        }
+
+        public async Task<IActionResult> GetNgrokUrl()
 		{
 			string ngrokUrl = await GetNgrokUrlAsync();
 			return Json(new { url = ngrokUrl });
@@ -33,10 +97,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 		
 
-        public IActionResult Checkout()
-        {
-            return View();
-        }
+ 
 
 		[HttpPost]
 		public IActionResult CreateOrder(string itemName, decimal totalAmount)

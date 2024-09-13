@@ -264,8 +264,12 @@
 	<script>
 
 		const postData = JSON.parse(sessionStorage.getItem('postData'));
+		if (!postData) {
+			window.location.href = 'https://localhost:7080/Identity/Account/Login';
+		}
 		console.log("asd", postData);
 
+		let NowMemberSid = postData.memberSid;
 		let orderNumbers = postData.orderNumbers; // 数组
 		let combo = postData.combo; // 1
 		let usecoin = postData.usecoin; // 0
