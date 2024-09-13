@@ -168,7 +168,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditVideo([FromForm]EditVideoDTO Edit,IFormFile image)
+        public async Task<IActionResult> EditVideo([FromForm]EditVideoDTO Edit,IFormFile? image)
         {
             VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(Edit.VideoSid);
 
@@ -199,21 +199,20 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 VideoSid = Edit.VideoSid,
                 VideoTitle = Edit.VideoTitle,
                 CreatorSid = Edit.CreatorSid,
-                TimesWatched = Edit.TimesWatched,
+                TimesWatched = 資料庫資料.TimesWatched,
                 MoviePath = 資料庫資料.MoviePath,
                 InformationColumn = Edit.InformationColumn,
-                UploadDate = Edit.UploadDate,
+                UploadDate = 資料庫資料.UploadDate,
                 NatureSid = Edit.NatureSid,
                 PublicStatusNo = 1,
 
             };
+            _context.Entry(資料庫資料).State = EntityState.Detached;
+
             _context.Update(EditVideo);
             _context.SaveChanges();
 
             return Json(new { Message = "修改成功" });
-
-            
-
         }
     }
 }
