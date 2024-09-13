@@ -780,9 +780,19 @@
             var memberSid = '@ViewBag.MemberSid';
             console.log("Member SID: " + memberSid);
 
+            const cartSid = sessionStorage.getItem('cartSid');
+            const cartSidNumber = parseInt(cartSid, 10);
+         
             const searchData = {
-                "Msid": memberSid
+                "Msid": memberSid,
             }
+
+            let BuyData = {
+                "Msid": memberSid,
+                "CartSids": []
+            }
+
+           
 
             const loadSpots = async (cartSid_check) => {
                 //將searchData印出來確認
@@ -803,170 +813,92 @@
                     return products.map(product => {
                         const isChecked = cartSidCheck.includes(product.cartSid) ? 'checked' : '';
                         return `
-                                <div class="cart-card-item w-100">
-                                    <input type="checkbox" class="hidden-box" id="s${product.cartSid}_p${product.productSid}" ${isChecked} />
-                                    <label for="s${product.cartSid}_p${product.productSid}" class="check--label">
-                                        <span class="check--label-box"></span>
-                                    </label>
-                                    <div class="card-body-img d-flex w-100">
-                                        <div class="img_box">
-                                                                                    <img  src="${product.productImagePath}"  />
+                                        <div class="cart-card-item w-100">
+                                            <input type="checkbox" class="hidden-box" id="s${product.cartSid}_p${product.productSid}" ${isChecked} />
+                                            <label for="s${product.cartSid}_p${product.productSid}" class="check--label">
+                                                <span class="check--label-box"></span>
+                                            </label>
+                                            <div class="card-body-img d-flex w-100">
+                                                <div class="img_box">
+                                                                                            <img  src="${product.productImagePath}"  />
 
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div class="d-flex flex-column justify-content-between align-items-start me-3">
-                                                    <h5>${product.productName}</h5>
-                                                                    <small class="describe no_${product.subcategoryNo}">${product.subcategoryName}</small>
                                                 </div>
-                                                <button class="btn delete_btn" type="button">
-                                                    <i class="fa-solid fa-xmark"></i>
-                                                </button>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <div class="d-flex flex-column justify-content-between align-items-start me-3">
+                                                            <h5>${product.productName}</h5>
+                                                                            <small class="describe no_${product.subcategoryNo}">${product.subcategoryName}</small>
+                                                        </div>
+                                                        <button class="btn delete_btn" type="button">
+                                                            <i class="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="bottom_item flex-md-row align-items-md-center">
+                                                        <div class="d-flex flex-column justify-content-between align-items-start me-3">
+
+
+                                                                            <big class="price">NT$ ${Math.round(product.price * (product.discountPercent || 1))}</big>
+                                                            <small class="o_price">NT$ ${product.price.toFixed(2)}</small>
+                                                        </div>
+                                                        <div class="input-group num_box_n">
+                                                            <button class="btn decrease-qty" type="button">
+                                                                <i class="fa-solid fa-minus"></i>
+                                                            </button>
+                                                            <input type="text" class="form-control qty stock_${product.stock}" placeholder="" value="${product.qty}" aria-label="Example text with two button addons" />
+                                                            <button class="btn increase-qty" type="button">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="bottom_item flex-md-row align-items-md-center">
-                                                <div class="d-flex flex-column justify-content-between align-items-start me-3">
-
-
-                                                                    <big class="price">NT$ ${Math.round(product.price * (product.discountPercent || 1))}</big>
-                                                    <small class="o_price">NT$ ${product.price.toFixed(2)}</small>
-                                                </div>
-                                                <div class="input-group num_box_n">
-                                                    <button class="btn decrease-qty" type="button">
-                                                        <i class="fa-solid fa-minus"></i>
-                                                    </button>
-                                                    <input type="text" class="form-control qty stock_${product.stock}" placeholder="" value="${product.qty}" aria-label="Example text with two button addons" />
-                                                    <button class="btn increase-qty" type="button">
-                                                        <i class="fa-solid fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            `;
+                                    `;
                     }).join(' <hr />');
                 };
 
                 const generateStoresHtml = (data) => {
                     return data.map(store => `
-                            <div class="col col-sm-12 my-4">
-                                <div class="card shadow-sm cart-card pb-3">
-                                                    <div class="cart-card-owner ">
-                                        <div class="ck-farm d-flex align-items-center">
-                                            <div class="img-outer">
-                                                        <img  src="${store.storeImagePath}"  />
+                                    <div class="col col-sm-12 my-4">
+                                        <div class="card shadow-sm cart-card pb-3">
+                                                            <div class="cart-card-owner ">
+                                                <div class="ck-farm d-flex align-items-center">
+                                                    <div class="img-outer">
+                                                                <img  src="${store.storeImagePath}"  />
+                                                    </div>
+                                                    <p class="ck-farm-name p-0 m-0">${store.company}</p>
+                                                </div>
+                                                <button class="btn p-0 me-md-3 all_cart" type="button">
+                                                    <p class="all-tool p-0 m-0 ">全選</p>
+                                                </button>
                                             </div>
-                                            <p class="ck-farm-name p-0 m-0">${store.company}</p>
+                                            <hr />
+                                            ${generateProductsHtml(store.products, cartSid_check)}
                                         </div>
-                                        <button class="btn p-0 me-md-3 all_cart" type="button">
-                                            <p class="all-tool p-0 m-0 ">全選</p>
-                                        </button>
                                     </div>
-                                    <hr />
-                                    ${generateProductsHtml(store.products, cartSid_check)}
-                                </div>
-                            </div>
-                        `).join('');
+                                `).join('');
                 };
 
                 const divSpots = document.getElementById('div1');
                 divSpots.innerHTML = generateStoresHtml(data);
             };
 
+            (async () => {
+                if (cartSidNumber) {
+                    console.log('Cart SID from sessionStorage: ', cartSidNumber);
+                    BuyData.CartSids.push(cartSidNumber);
+                    console.log('Updated CartSids: ', BuyData.CartSids);
 
-            const BuyData = {
-                "Msid": memberSid,
-                "CartSids": []
-            }
+                    await loadSpots(BuyData.CartSids);
+                    updateTotals();
 
+                    sessionStorage.removeItem('cartSid');
 
+                } else {
+                    await loadSpots([]);
+                }
+            })();
 
-
-
-
-            loadSpots(BuyData.CartSids);
-
-
-
-            // const data = [
-            //     {
-            //         "storeSid": 1,
-            //         "company": "大帥哥牧場",
-            //         "storeImg": null,
-            //         "products": [
-            //             {
-            //                 "cartSid": 1,
-            //                 "memberSid": 1,
-            //                 "productSid": 5,
-            //                 "qty": 2,
-            //                 "productNo": "E202406070001",
-            //                 "productName": "雞籠",
-            //                 "img":null,
-            //                 "price": 100.0000,
-            //                 "stock": 50,
-            //                 "discountPercent": null,
-            // "subcategoryNo": 2,
-            //                 "subcategoryName": "籠飼蛋"
-            //             },
-            //             {
-            //                 "cartSid": 2,
-            //                 "memberSid": 1,
-            //                 "productSid": 6,
-            //                 "qty": 1,
-            //                 "productNo": "P202406070002",
-            //                 "productName": "超神奇蛋捲",
-            //                 "img": null,
-            //                 "price": 60.0000,
-            //                 "stock": 20,
-            //                 "discountPercent": 0.65,
-            // "subcategoryNo": 3,
-            //                 "subcategoryName": "加工蛋品"
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         "storeSid": 11,
-            //         "company": "傑克畜牧場",
-            //         "storeImg": null,
-            //         "products": [
-            //             {
-            //                 "cartSid": 4,
-            //                 "memberSid": 1,
-            //                 "productSid": 11,
-            //                 "qty": 2,
-            //                 "productNo": "P202406080002",
-            //                 "productName": "先生蛋塔",
-            //                 "img": null,
-            //                 "price": 300.0000,
-            //                 "stock": 100,
-            //                 "discountPercent": 0.60,
-            // "subcategoryNo": 3,
-            //                 "subcategoryName": "加工蛋品"
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         "storeSid": 13,
-            //         "company": "贊克畜牧場",
-            //         "storeImg": null,
-            //         "products": [
-            //             {
-            //                 "cartSid": 5,
-            //                 "memberSid": 1,
-            //                 "productSid": 13,
-            //                 "qty": 1,
-            //                 "productNo": "E202406080004",
-            //                 "productName": "富基靈芝機能雞蛋",
-            //                 "img": null,
-            //                 "price": 160.0000,
-            //                 "stock": 200,
-            //                 "discountPercent": 0.70,
-            // "subcategoryNo": 1,
-            //                 "subcategoryName": "放牧蛋"
-            //             }
-            //         ]
-            //     }
-            // ]
 
             function sendAjaxRequest(url, method, data, successCallback, errorCallback) {
                 $.ajax({

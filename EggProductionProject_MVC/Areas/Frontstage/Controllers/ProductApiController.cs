@@ -149,7 +149,49 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
-        //商品詳細分頁的加入購物車功能
+        //[HttpPost]
+        //public IActionResult AddToCart([FromBody] CartViewModel cartData)
+        //{
+        //    if (cartData != null)
+        //    {
+        //        var aspUserId = _userManager.GetUserId(User);
+        //        var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
+        //        if (member == null)
+        //        {
+        //            return Json(new { success = false, message = "Member not found" });
+        //        }
+
+        //        var existingCart = _context.Carts.FirstOrDefault(c => c.MemberSid == member.MemberSid && c.ProductSid == cartData.productSid);
+
+        //        if (existingCart != null)
+        //        {
+        //            existingCart.Qty += cartData.qty;
+        //            existingCart.NewInTime = DateTime.Now; 
+
+        //            _context.Carts.Update(existingCart);
+        //        }
+        //        else
+        //        {
+        //            var newCart = new Cart
+        //            {
+        //                MemberSid = member.MemberSid,
+        //                ProductSid = cartData.productSid,
+        //                Qty = cartData.qty,
+        //                NewInTime = DateTime.Now 
+        //            };
+
+        //            _context.Carts.Add(newCart);
+        //        }
+
+        //        // 保存更改到資料庫
+        //        _context.SaveChanges();
+
+        //        return Json(new { success = true });
+        //    }
+
+        //    return Json(new { success = false });
+        //}
+
         [HttpPost]
         public IActionResult AddToCart([FromBody] CartViewModel cartData)
         {
@@ -157,21 +199,53 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             {
                 var aspUserId = _userManager.GetUserId(User);
                 var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-                // 將 cartData 寫入資料庫邏輯
-                var cart = new Cart
+                if (member == null)
                 {
-                    MemberSid = member.MemberSid,
-                    ProductSid = cartData.productSid,
-                    Qty = cartData.qty
-                };
+                    return Json(new { success = false, message = "Member not found" });
+                }
 
-                // 假設你有 dbContext 實例
-                _context.Carts.Add(cart);
-                _context.SaveChanges();
+                int cartSid;
 
-                return Json(new { success = true });
+                // 檢查該會員是否已經擁有相同的產品
+                var existingCart = _context.Carts.FirstOrDefault(c => c.MemberSid == member.MemberSid && c.ProductSid == cartData.productSid);
+
+                if (existingCart != null)
+                {
+                    // 已經擁有該產品，則增加數量並更新時間
+                    existingCart.Qty += cartData.qty;
+                    existingCart.NewInTime = DateTime.Now; // 更新為當下時間
+
+                    _context.Carts.Update(existingCart);
+                    _context.SaveChanges();
+
+                    // 返回更新的 CartSid
+                    cartSid = existingCart.CartSid;
+                }
+                else
+                {
+                    // 沒有該產品，新增一筆購物車記錄
+                    var newCart = new Cart
+                    {
+                        MemberSid = member.MemberSid,
+                        ProductSid = cartData.productSid,
+                        Qty = cartData.qty,
+                        NewInTime = DateTime.Now // 設置加入購物車的時間為當下時間
+                    };
+
+                    _context.Carts.Add(newCart);
+                    _context.SaveChanges();
+
+                    // 新增完成後查詢剛剛新增的 CartSid
+                    cartSid = newCart.CartSid;
+                }
+
+                // 返回成功訊息與 CartSid
+                return Json(new { success = true, cartSid = cartSid });
             }
+
             return Json(new { success = false });
         }
+
+
     }
 }

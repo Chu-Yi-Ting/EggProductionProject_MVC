@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace EggProductionProject_MVC.Models;
 
@@ -12,10 +11,8 @@ public partial class Member
 
     public string Name { get; set; }
 
-    [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "請輸入有效的電子郵件地址")]
     public string Email { get; set; }
 
-    [RegularExpression(@"^09\d{8}$", ErrorMessage = "電話號碼應為09開頭的10碼數字")]
     public string Phone { get; set; }
 
     public DateOnly? BirthDate { get; set; }

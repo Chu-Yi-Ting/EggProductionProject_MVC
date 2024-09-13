@@ -463,12 +463,22 @@
 
                 const result = await response.json();
 
+                // if (result.success) {
+                //     // 成功加入購物車後，跳轉到購物車頁面
+                //     window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
+                // } else {
+                //     alert('加入購物車失敗');
+                // }
+
                 if (result.success) {
-                    // 成功加入購物車後，跳轉到購物車頁面
+
+                    sessionStorage.setItem('cartSid', result.cartSid);
                     window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
+
                 } else {
                     alert('加入購物車失敗');
                 }
+
             } catch (error) {
                 console.error('錯誤:', error);
             }
