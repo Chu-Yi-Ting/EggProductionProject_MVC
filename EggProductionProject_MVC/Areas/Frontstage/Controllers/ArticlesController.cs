@@ -203,7 +203,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Phone = article.ArticleCreaterS.Phone,
                         BirthDate = article.ArticleCreaterS.BirthDate,
                         UserName = article.ArticleCreaterS.UserName,
-                        ProfilePic = article.ArticleCreaterS.ProfilePic
+                        ProfilePic = "https://localhost:7080/"+ article.ArticleCreaterS.ProfilePic
                     }
                     : null,
                 PublicStatus = article.PublicStatusNoNavigation != null
@@ -282,7 +282,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("LikeArticle/{articleId}")]
         public async Task<IActionResult> LikeArticle(int articleId)
         {
-            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 登入者
 
             if (memberNo == null)
             {
@@ -302,7 +302,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果用户之前点过噓，则更新为按赞
                     existingReaction.GorBtype = 1;
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -313,7 +313,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ArticleSid = articleId,
                     GorBtype = 1, // 1 代表按讚
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -347,7 +347,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果用户之前按过赞，则更新为点噓
                     existingReaction.GorBtype = 0;
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -358,7 +358,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ArticleSid = articleId,
                     GorBtype = 0, // 0 代表點噓
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);

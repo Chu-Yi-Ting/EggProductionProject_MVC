@@ -152,7 +152,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果之前点了噓，现在切换为按赞
                     existingReaction.GorBtype = 1; // 更新为按讚
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -163,7 +163,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ReplySid = replyId,
                     GorBtype = 1, // 1 代表按讚
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -197,7 +197,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果之前点了赞，现在切换为点噓
                     existingReaction.GorBtype = 0; // 更新为点噓
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -208,7 +208,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ReplySid = replyId,
                     GorBtype = 0, // 0 代表点噓
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
