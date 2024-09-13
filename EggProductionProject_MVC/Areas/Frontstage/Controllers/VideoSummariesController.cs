@@ -214,5 +214,33 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Json(new { Message = "修改成功" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteVideo([FromForm] DeleteVideoDTO delete, IFormFile? image)
+        {
+            VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(delete.VideoSid);
+
+            var DeleteVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+
+                VideoSid = delete.VideoSid,
+                VideoCoverImage = 資料庫資料.VideoCoverImage,
+                VideoTitle = 資料庫資料.VideoTitle,
+                CreatorSid = 資料庫資料.CreatorSid,
+                TimesWatched = 資料庫資料.TimesWatched,
+                MoviePath = 資料庫資料.MoviePath,
+                InformationColumn = 資料庫資料.InformationColumn,
+                UploadDate = 資料庫資料.UploadDate,
+                NatureSid = 資料庫資料.NatureSid,
+                PublicStatusNo = 3,
+            };
+            _context.Entry(資料庫資料).State = EntityState.Detached;
+
+            _context.Update(DeleteVideo);
+            _context.SaveChanges();
+
+            return Json(new { Message = "刪除成功" });
+        }
+
     }
 }
