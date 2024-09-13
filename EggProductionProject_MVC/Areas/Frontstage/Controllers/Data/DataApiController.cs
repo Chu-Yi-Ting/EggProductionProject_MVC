@@ -32,8 +32,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
             if(!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "提供的資料無效。" });
             try{
-
-                Calendar.MemberSid = 1;
+                Calendar.MemberSid = HttpContext.Session.GetInt32("userMemberSid");
                 Calendar.InsertDate = DateOnly.FromDateTime(DateTime.Now);
                 Calendar.Finished = 0;
 
@@ -67,12 +66,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "提供的資料無效。" });
-
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             try
             {
                 var result = await ((from c in _context.Calendars
-                             where c.MemberSid == 1 //需抓瀏覽器session的id
-                             select new
+                             where c.MemberSid == MemberSid //需抓瀏覽器session的id
+                                     select new
                              {
                                  id = c.CalendarSid,
                                  title = c.Title,
@@ -136,10 +135,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 //---------------------------------圖表--------------------------------------------------
 
         [HttpGet]
-        public async Task<IActionResult> Get_House(int memberSid)
+        public async Task<IActionResult> Get_House()
         {
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             var House = await ((from m in _context.ChickHouses
-                                where m.MemberSid == memberSid //需抓瀏覽器session的id
+                                where m.MemberSid == MemberSid //需抓瀏覽器session的id
                                 select new
                                 {
                                     value = m.HouseSid,
@@ -150,9 +150,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update_Chart(int memberSid,int Judge,int HouseSid,string StartDate, string EndDate)
+        public async Task<IActionResult> Update_Chart(int Judge,int HouseSid,string StartDate, string EndDate)
         {
             var result = new EggProductionReport();
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             try {
                 using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
@@ -161,7 +162,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@Judge", Judge);
-                        cmd.Parameters.AddWithValue("@MemberSid", memberSid);
+                        cmd.Parameters.AddWithValue("@MemberSid", MemberSid);
                         cmd.Parameters.AddWithValue("@HouseSid", HouseSid);
                         cmd.Parameters.AddWithValue("@StartDate", !string.IsNullOrWhiteSpace(StartDate) ? StartDate : DBNull.Value);
                         cmd.Parameters.AddWithValue("@EndDate", !string.IsNullOrWhiteSpace(EndDate) ? EndDate : DBNull.Value);
@@ -214,11 +215,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 //------------------------------------------雞農新增資料---------------------------------------------
 
         [HttpGet]
-        public async Task<IActionResult> Get_Area(int memberSid)
+        public async Task<IActionResult> Get_Area()
         {
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             var Area = await ((from m in _context.MemberAreas
-                                where m.MemberSid == memberSid //需抓瀏覽器session的id
-                                select new
+                                where m.MemberSid == MemberSid //需抓瀏覽器session的id
+                               select new
                                 {
                                     value = m.AreaSid,
                                     text = m.MemberAddress
@@ -232,9 +234,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "提供的資料無效。" });
-
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             var subCategoryNo = await (from m in _context.ChickHouses
-                                       where m.HouseSid == request.HouseSid && m.MemberSid == request.MemberSid
+                                       where m.HouseSid == request.HouseSid && m.MemberSid == MemberSid
                                        select m.SubcategoryNo).FirstOrDefaultAsync();
 
             bool dailyEggRateExists = await _context.DailyEggRes
@@ -252,7 +254,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
                 var dailyEggRate = new DailyEggRe
                 {
                     HouseSid = request.HouseSid,
-                    MemberSid = request.MemberSid,
+                    MemberSid = (int)MemberSid,
                     EggAmount = request.EggAmount,
                     UnQamount = request.UnQAmount,
                     SubcategoryNo = (int)subCategoryNo,

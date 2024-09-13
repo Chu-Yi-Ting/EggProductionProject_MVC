@@ -1112,12 +1112,11 @@
 
             //-----------------------------------紀錄邏輯-----------------------------------------
             today = new Date().toISOString().split('T')[0];
-            const defaultMemberSid = 1;//需抓瀏覽器Sid
             document.getElementById('date_1').value = today;
             document.getElementById('date_2').value = today;
 
-            loadHouse(defaultMemberSid);
-            loadArea(defaultMemberSid);
+            loadHouse();
+            loadArea();
         });
 
 
@@ -1270,7 +1269,6 @@
         async function Insert_Record1() {
             const data = {
                 Date: document.getElementById('date_1').value,
-                MemberSid: 1,//抓session登入id
                 HouseSid: document.getElementById('ChickHouse_Selected').value,
                 EggAmount: document.getElementById('production').value,
                 UnQAmount: document.getElementById('defective').value,
@@ -1301,7 +1299,6 @@
         async function Insert_Record2() {
             const data = {
                 Date: document.getElementById('date_2').value,
-                MemberSid: 1,//抓session登入id
                 AreaSid: document.getElementById('Area_Selected').value,
                 Weight: document.getElementById('weight').value,
                 Cost: document.getElementById('cost').value,
