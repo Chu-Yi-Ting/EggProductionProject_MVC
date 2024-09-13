@@ -11,11 +11,11 @@
 @* <h2>信箱驗證成功！</h2> *@
 
 
-@if (!string.IsNullOrEmpty(userId)||success!="false")
+@if (!string.IsNullOrEmpty(userId) || (Model.StatusMessage != "驗證連結無效或已過期"))
 {
     <div style="text-align: center;">
-        <partial name="_StatusMessage" model="Model.StatusMessage" />
-        @* <img src="~/MemberImg/emailConfirmed.png" /> *@
+        @* <partial name="_StatusMessage" model="Model.StatusMessage" /> *@
+        <img src="~/MemberImg/emailConfirmed.png" />
         
 
     </div>
