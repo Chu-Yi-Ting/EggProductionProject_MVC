@@ -39,17 +39,19 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
             
             var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
-           
-            
-            //原本的寫法，不知道為什麼掛了
-               // var member = await _context.Members
-               //.Include(m => m.AspUser)
-               //.Include(m => m.ShoppingRankNoNavigation)
-               //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
 
+
+            //原本的寫法，不知道為什麼掛了
+            // var member = await _context.Members
+            //.Include(m => m.AspUser)
+            //.Include(m => m.ShoppingRankNoNavigation)
+            //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
+
+
+            ViewData["Title"] = "GOOD EGG 會員頁面"; // 設定首頁的標題
 
             //ViewBag.UserName = user.Name;
-                return View(user);
+            return View(user);
             
            
                 
@@ -106,21 +108,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 
 
-			//// 如果有上傳檔案，則處理檔案更新
-			//if (_user.ProfilePic != null)
-			//{
-			//    // 檔案上傳路徑
-			//    string path = Path.Combine(_webHostEnvironment.WebRootPath, "memProfilePic", _user.ProfilePic.FileName);
-
-			//    // 將檔案上傳到指定路徑
-			//    using (var filestream = new FileStream(path, FileMode.Create))
-			//    {
-			//        _user.ProfilePic.CopyTo(filestream);
-			//    }
-
-
-
-			//}
 
 
 			// 如果有上傳檔案，則處理檔案更新
@@ -145,6 +132,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			_context.Members.Update(member);
             // 儲存更新後的資料
             _context.SaveChanges();
+
+            //儲存當前使用者的大頭貼與姓名session
+            if (member.Name != null) { HttpContext.Session.SetString("userName", member.Name); }
+            if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
+       
 
             // 回傳更新後的檔案儲存的路徑或其他資訊
             return Json(new { success = true, message = "Member updated successfully" });

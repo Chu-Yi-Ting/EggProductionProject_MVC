@@ -112,6 +112,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 
+////第三方登入
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = "817635871464-ng3miqkr6aujusqgnedjs5lphv7ov6c8.apps.googleusercontent.com";
+        options.ClientSecret = "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";
+    });
 
 
 var app = builder.Build();

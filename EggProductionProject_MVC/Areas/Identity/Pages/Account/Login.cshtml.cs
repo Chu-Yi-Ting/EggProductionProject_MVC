@@ -45,6 +45,9 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        //第三方登入
+        //public List<AuthenticationScheme> Schemes { get; set; }
+
         public class InputModel
         {
 
@@ -64,6 +67,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+           
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
