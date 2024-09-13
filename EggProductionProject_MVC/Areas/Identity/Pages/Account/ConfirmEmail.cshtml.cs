@@ -24,11 +24,12 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         [TempData]
         public string StatusMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string code)
+        public async Task<IActionResult> OnGetAsync(string userId, string code,string token)
         {
-            if (userId == null || code == null)
+            if (userId == null || code == null|| token==null)
             {
-                return RedirectToPage("/Index");
+                TempData["statusDiscription"]  = "驗證連結無效或已過期";
+                return RedirectToPage("/Index", new {success = false});
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -39,8 +40,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "驗證完成！五秒後將重新跳轉至會員頁面" : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "驗證完成！五秒後將重新跳轉至會員頁面" : "驗證連結無效或已過期";
             TempData["UserId"] = userId;   // 將 userId 存入 TempData，以便在視圖中使用
+
+
             return Page();
         }
     }

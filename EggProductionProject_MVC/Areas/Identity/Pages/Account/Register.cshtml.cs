@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -93,12 +94,16 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
+
+                    // 生成驗證碼並發送驗證信
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var encodedToken = WebUtility.UrlEncode(token);  // 確保token已被編碼
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl,token=encodedToken,success=true },
                         protocol: Request.Scheme);
 
                     //修改寄件內容
@@ -117,6 +122,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         //跳轉到這個頁面，但我目前不想讓他跳轉
                         //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
 
+                        return new JsonResult(new { success = true ,message = "註冊成功！" });
                     }
                     else
                     {
@@ -135,7 +141,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         // 這裡加入信箱重複的錯誤訊息，傳回前端
                         TempData["DuplicateEmailError"] = "信箱已經存在，請使用其他信箱";
                         // 回傳信箱重複的 JSON
-                        return new JsonResult(new { success = false, message = "信箱已經存在，請使用其他信箱。" });
+                        return new JsonResult(new { success = false, isDuplicateEmail = true, message = "信箱已經存在，請使用其他信箱。" ,inputEmailVal=Input.Email});
                     }
                     
                 }
