@@ -316,12 +316,12 @@
                                        id="productImage"
                                        name="productImage"
                                        accept="image/*"
-                                       onchange="previewImage(event)" />                                
+                                       onchange="launchPreviewImage(event)" />
                             </div>
 
                             <!-- 圖片預覽 -->
                             <div class="form-control-n mt-3 image-preview-container">
-                                <img id="imagePreview" src="~/images/noimage2.jpg" class="image-preview" alt="圖片預覽" style="max-width: 100%; height: auto;" />
+                                <img id="launchImagePreview" src="~/images/noimage2.jpg" class="image-preview" alt="圖片預覽" style="max-width: 100%; height: auto;" />
                             </div>
                        
                             <!-- 庫存數量 -->
@@ -501,7 +501,7 @@
                                        id="editproductImage"
                                        name="productImage"
                                        accept="image/*"
-                                       onchange="previewImage(event)" />
+                                       onchange="editPreviewImage(event)" />
                             </div>
 
                             <!-- 圖片預覽 -->
@@ -837,13 +837,17 @@
             // 重置表单
             document.getElementById('productForm').reset();
             // 清空圖片預覽
-            document.getElementById('imagePreview').src = '@Url.Content("~/Images/NoImage2.jpg")';
+            document.getElementById('launchImagePreview').src = '@Url.Content("~/images/noimage2.jpg")';
         });
 
         //-----編輯功能---------------------------------------------------------------        
         // 點擊編輯按鈕，發送請求取得商品資料，並將資料顯示在編輯的modal中
         async function openEditModal(productSid) {
-            try {               
+            try {
+                // 重置上傳的檔案的input，讓其不顯示上次上傳的檔案名稱
+                document.getElementById('editProductModal').addEventListener('shown.bs.modal', function () {                    
+                    document.getElementById('editproductImage').value = '';
+                });
 
                 const api = `@Url.Content("~/Frontstage/StoreApi/GetProductById")?productSid=${productSid}`;
                 const response = await fetch(api);
@@ -934,8 +938,12 @@
                     backdrop.remove();
                 });
             }
-        });
 
+            // 如果没有其他模态框在显示，恢复页面滚动
+            if (!document.querySelector('.modal.show')) {
+                document.body.style.overflow = 'auto';
+            }
+        });
 
         //表單資料成功送到後端，返回成功，跳出成功通知toast
         function showEditToast(message) {
@@ -1025,8 +1033,14 @@
         }
 
         //當上傳圖片的input值有變動，會觸發previewImage方法，會將圖片的url塞給ID為imagePreview的標籤，標籤顯示狀態改為block
-        function previewImage(event) {
-            const image = document.getElementById('imagePreview');
+        function launchPreviewImage(event) {
+            const image = document.getElementById('launchImagePreview');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.display = 'block';
+        }
+
+        function editPreviewImage(event) {
+            const image = document.getElementById('editImagePreview');
             image.src = URL.createObjectURL(event.target.files[0]);
             image.style.display = 'block';
         }
