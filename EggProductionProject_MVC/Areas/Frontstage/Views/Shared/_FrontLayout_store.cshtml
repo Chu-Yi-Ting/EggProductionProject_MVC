@@ -79,7 +79,7 @@
 	<header class="">
 		<div class="container_title p-0 m-0">
 			<div class="outer-layout-n">
-				<a href="#"
+				<a asp-area="Frontstage" asp-controller="Carts" asp-action="Index"
 				   class="d-flex align-items-center  text-decoration-none  d-lg-none">
 					賣家中心
 				</a>
@@ -203,10 +203,10 @@
 							<small>Map 地圖</small>
 						</a>
 						<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-							<li><a class="dropdown-item" href="#">首頁</a></li>
+							<li><a class="dropdown-item" href="https://localhost:7080/">首頁</a></li>
 							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop">商城</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">會員中心</a></li>
+							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Members" asp-action="MemberPage">會員中心</a></li>
 						</ul>
 					</div>
 				</div>

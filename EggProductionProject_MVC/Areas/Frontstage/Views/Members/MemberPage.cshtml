@@ -467,7 +467,7 @@
                                     color: #a57c42;
                                     font-size: 16px;
                                     border-radius: 20px 20px 0 0;" class="nav-item custom-tab" role="presentation">
-                                    <button  class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">基本資料修改</button>
+                                    <button  class="nav-link " id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">基本資料修改</button>
                                     </li>
                                     <li style="            border: none;
                                     padding: 10px 30px;
@@ -891,7 +891,7 @@
                                 
                             </div>
                             <div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
-                            @if (Model.Chickcode == null)
+                            @if (Model.IsChickFarm == null)
                             {
 							    <div class="d-flex justify-content-center">
                                     <img src="~/memberimg/chickopenfirst.jpg" />
