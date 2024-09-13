@@ -23,10 +23,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
     public class VideoSummariesController : Controller
     {
         private readonly EggPlatformContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public VideoSummariesController(EggPlatformContext _context)
+        public VideoSummariesController(EggPlatformContext _context, IWebHostEnvironment webHostEnvironment)
         {
             this._context = _context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Frontstage/VideoSummaries
@@ -85,9 +87,14 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public async Task<IActionResult> GetOneVideo(int videoid)
         {
             var video = _context.VideoSummaries
+                .Include(M => M.CreatorS.MemberS)
+                .Include(M=>M.NatureS)
                 .Where(M => M.VideoSid == videoid)
                 .Select(M => new OneVideoDTO
                 {
+                    VideoCoverImage = M.VideoCoverImage,
+                    NatureSid = M.NatureSid,
+                    MemberName = M.CreatorS.MemberS.Name,
                     VideoSid = M.VideoSid,
                     VideoTitle = M.VideoTitle,
                     TimesWatched = M.TimesWatched,
@@ -161,13 +168,34 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditVideo([FromBody] EditVideoDTO Edit)
+        public async Task<IActionResult> EditVideo([FromForm]EditVideoDTO Edit,IFormFile image)
         {
             VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(Edit.VideoSid);
 
-            var EditVideo = new EggProductionProject_MVC.Models.VideoSummary
+            if (image != null && image.Length > 0)
             {
 
+                string FileImg = Path.GetExtension(image.FileName);
+                string FileNameImg = Path.GetFileName("創作者編號_" +
+                    Edit.CreatorSid + "-" + Edit.VideoSid + FileImg);
+
+                string ImagePath = Path.Combine(_webHostEnvironment
+                    .WebRootPath, "VideoImage", FileNameImg);
+
+                using (var filesteam = new FileStream(ImagePath, FileMode.Create))
+                {
+                    image.CopyTo(filesteam);
+                }
+                Edit.VideoCoverImage = $"/VideoImage/{FileNameImg}";
+            }
+            else
+            {
+                Edit.VideoCoverImage = 資料庫資料.VideoCoverImage;
+            }
+
+            var EditVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+                VideoCoverImage = Edit.VideoCoverImage,
                 VideoSid = Edit.VideoSid,
                 VideoTitle = Edit.VideoTitle,
                 CreatorSid = Edit.CreatorSid,
@@ -178,8 +206,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 NatureSid = Edit.NatureSid,
                 PublicStatusNo = 1,
 
-        };
+            };
+            _context.Update(EditVideo);
+            _context.SaveChanges();
 
+            return Json(new { Message = "修改成功" });
 
             
 
