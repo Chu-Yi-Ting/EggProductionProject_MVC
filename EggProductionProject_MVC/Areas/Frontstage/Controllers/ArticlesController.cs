@@ -26,12 +26,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             _context = context;
         }
-        [HttpGet("GetLoginUser")]
-        public IActionResult GetLoginUser()
-        {
-            var LoginUserSid = HttpContext.Session.GetInt32("userMemberSid");
-            return Ok(LoginUserSid);
-        }
 
         [HttpGet("GetLoginUser")]
         public IActionResult GetLoginUser()
