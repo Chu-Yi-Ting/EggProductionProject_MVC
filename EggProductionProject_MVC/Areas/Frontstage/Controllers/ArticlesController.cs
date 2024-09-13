@@ -282,7 +282,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("LikeArticle/{articleId}")]
         public async Task<IActionResult> LikeArticle(int articleId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
 
             if (memberNo == null)
             {
@@ -327,7 +327,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("DislikeArticle/{articleId}")]
         public async Task<IActionResult> DislikeArticle(int articleId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
 
             if (memberNo == null)
             {
