@@ -43,7 +43,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             // 查詢該賣家的所有商品
             var products = _context.Products
-                .Where(p => p.StoreSid == storeSid)
+                .Where(p => p.StoreSid == storeSid && p.PublicStatusNo == 1)
                 .Select(p => new ProductViewModel
                 {
                     productSid = p.ProductSid,
