@@ -60,7 +60,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public string? Phone { get; set; }
             public DateOnly? BirthDate { get; set; }
             public string? UserName { get; set; }
-            public byte[]? ProfilePic { get; set; }
+            public string ProfilePic { get; set; }
         }
 
         public class PublicStatusDto

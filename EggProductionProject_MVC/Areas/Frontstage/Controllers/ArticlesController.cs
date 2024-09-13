@@ -26,6 +26,12 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             _context = context;
         }
+        [HttpGet("GetLoginUser")]
+        public IActionResult GetLoginUser()
+        {
+            var LoginUserSid = HttpContext.Session.GetInt32("userMemberSid");
+            return Ok(LoginUserSid);
+        }
 
         [HttpGet("GetArticles")]
         public async Task<ActionResult<IEnumerable<ArticleDto>>> GetArticles()
@@ -34,7 +40,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .Include(a => a.ArticleCreaterS)
                 .Include(a => a.ArticleCategoriesS)
                 .Where(a => a.PublicStatusNoNavigation != null && a.PublicStatusNoNavigation.PublicStatusNo == 1)//只傳公開的文章
-                .Where(a =>a.DeleteOrNot !=null && a.DeleteOrNot ==false) //只傳未被刪除的文章
+                .Where(a => a.DeleteOrNot != null && a.DeleteOrNot == false) //只傳未被刪除的文章
                 .OrderByDescending(a => a.ArticleDate) // 按时间降序排列
                 .Select(article => new ArticleDto
                 {
@@ -197,7 +203,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Phone = article.ArticleCreaterS.Phone,
                         BirthDate = article.ArticleCreaterS.BirthDate,
                         UserName = article.ArticleCreaterS.UserName,
-                        //ProfilePic = article.ArticleCreaterS.ProfilePic
+                        ProfilePic = "https://localhost:7080/"+ article.ArticleCreaterS.ProfilePic
                     }
                     : null,
                 PublicStatus = article.PublicStatusNoNavigation != null
@@ -219,7 +225,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 .GroupBy(gb => gb.ArticleSid)
                 .Select(g => new ArticleReactionCountDto
                 {
-                    ArticleSid = g.Key?? 0,
+                    ArticleSid = g.Key ?? 0,
                     LikeCount = g.Count(gb => gb.GorBtype == 1),  // 計算按讚的數量
                     DislikeCount = g.Count(gb => gb.GorBtype == 0)  // 計算不喜歡的數量
                 })
@@ -276,7 +282,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("LikeArticle/{articleId}")]
         public async Task<IActionResult> LikeArticle(int articleId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 登入者
 
             if (memberNo == null)
             {
@@ -296,7 +302,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果用户之前点过噓，则更新为按赞
                     existingReaction.GorBtype = 1;
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -307,7 +313,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ArticleSid = articleId,
                     GorBtype = 1, // 1 代表按讚
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -321,7 +327,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("DislikeArticle/{articleId}")]
         public async Task<IActionResult> DislikeArticle(int articleId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
 
             if (memberNo == null)
             {
@@ -341,7 +347,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果用户之前按过赞，则更新为点噓
                     existingReaction.GorBtype = 0;
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -352,7 +358,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ArticleSid = articleId,
                     GorBtype = 0, // 0 代表點噓
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -361,7 +367,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { LikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 1), DislikeCount = _context.GoodorBads.Count(g => g.ArticleSid == articleId && g.GorBtype == 0) });
         }
-    
+
         //編輯 都還沒搞
         [HttpGet("GetArticleEdits/{id}")]
         public async Task<ActionResult<List<EditDto>>> GetArticleEdits(int id)

@@ -130,6 +130,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     }
                     
 
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

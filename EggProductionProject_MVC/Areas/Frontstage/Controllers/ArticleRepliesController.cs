@@ -21,13 +21,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _context = context;
         }
 
-        //取得回覆
+        //取得文章回覆
         [HttpGet("GetArticleReplies/{id}")]
         public async Task<ActionResult<List<ReplyDto>>> GetArticleReplies(int id)
         {
             // 查询回复
             var replies = await _context.Replies
-                .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot ==false && reply.PublicStatusNo==1)
+                .Where(reply => reply.ArticleSid == id && reply.DeleteOrNot == false && reply.PublicStatusNo == 1)
                 .Include(reply => reply.ArticleCreaterS)
                 .OrderByDescending(reply => reply.ReplyDate)
                 .Select(reply => new ReplyDto
@@ -41,7 +41,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         {
                             MemberSid = reply.ArticleCreaterS.MemberSid,
                             Name = reply.ArticleCreaterS.Name,
-                            //ProfilePic = reply.ArticleCreaterS.ProfilePic,
+                            ProfilePic = "https://localhost:7080/" + reply.ArticleCreaterS.ProfilePic,
                         }
                         : null,
                     LikeCount = 0, // 初始化，稍后将填充
@@ -92,11 +92,47 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(replies);
         }
+        //取得編輯文章回復
+        [HttpGet("GetReplyById/{id}")]
+        public async Task<ActionResult<ReplyDto>> GetReplyById(int id)
+        {
+            var reply = await _context.Replies
+                .Where(reply => reply.ReplySid == id && reply.DeleteOrNot == false && reply.PublicStatusNo == 1)
+                .Include(reply => reply.ArticleCreaterS)
+                .Select(reply => new ReplyDto
+                {
+                    ReplySid = reply.ReplySid,
+                    ReplyInfo = reply.ReplyInfo,
+                    ReplyDate = reply.ReplyDate,
+                    EditTimes = reply.EditTimes,
+                    ArticleCreator = reply.ArticleCreaterS != null
+                        ? new MemberDto
+                        {
+                            MemberSid = reply.ArticleCreaterS.MemberSid,
+                            Name = reply.ArticleCreaterS.Name,
+                            ProfilePic = reply.ArticleCreaterS.ProfilePic,
+                        }
+                        : null,
+                    LikeCount = 0,
+                    DislikeCount = 0,
+                    LikedByUsers = new List<MemberDto>(),
+                    DislikedByUsers = new List<MemberDto>(),
+                    ArticleSid = reply.ArticleSid ?? 0,
+                })
+                .FirstOrDefaultAsync();
+
+            if (reply == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(reply);
+        }
         // 對回覆按讚
         [HttpPost("LikeReply/{replyId}")]
         public async Task<IActionResult> LikeReply(int replyId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
 
             if (memberNo == null)
             {
@@ -116,7 +152,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果之前点了噓，现在切换为按赞
                     existingReaction.GorBtype = 1; // 更新为按讚
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -127,7 +163,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ReplySid = replyId,
                     GorBtype = 1, // 1 代表按讚
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -141,7 +177,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost("DislikeReply/{replyId}")]
         public async Task<IActionResult> DislikeReply(int replyId)
         {
-            var memberNo = 1; // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
+            var memberNo = HttpContext.Session.GetInt32("userMemberSid"); // 示例中硬编码用户ID，实际情况中需要获取当前登录用户ID
 
             if (memberNo == null)
             {
@@ -161,7 +197,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 {
                     // 如果之前点了赞，现在切换为点噓
                     existingReaction.GorBtype = 0; // 更新为点噓
-                    existingReaction.GorBdate = DateTime.Now;
+                    existingReaction.GorBdate = DateTime.UtcNow;
                 }
             }
             else
@@ -172,7 +208,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MemberNo = memberNo,
                     ReplySid = replyId,
                     GorBtype = 0, // 0 代表点噓
-                    GorBdate = DateTime.Now
+                    GorBdate = DateTime.UtcNow
                 };
 
                 _context.GoodorBads.Add(newReaction);
@@ -204,7 +240,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         //發表回覆
-        [HttpPost("PostReply")]
+        [HttpPost("PostReply/{id}")]
         public async Task<ActionResult<Reply>> PostReply([FromForm] ReplyDto replyDto)
         {
             // 輸出 DTO 的內容以確認是否成功接收到資料
@@ -233,6 +269,37 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             }
             // 將新文章加入資料庫
             return CreatedAtAction("GetReplyDetails", new { id = newReply.ReplySid }, newReply);
+        }
+
+
+        [HttpPut("UpdateReply/{id}")]
+        public async Task<IActionResult> UpdateReply(int id, [FromForm] ReplyDto replydto)
+        {
+            var existingReply = await _context.Replies.FindAsync(id);
+            if (existingReply == null)
+            {
+                return NotFound($"未找到ID為{id}的回復");
+            }
+            //編輯的紀錄
+            var editHistory = new Edit
+            {
+                ReplySid = existingReply.ReplySid,
+                EditBefore = existingReply.ReplyInfo,
+                EditAfter = existingReply.ReplyInfo,
+                EditTime = DateTime.UtcNow,
+            };
+            _context.Edits.Add(editHistory);
+
+
+            existingReply.ReplyInfo = replydto.ReplyInfo;
+            existingReply.PublicStatusNo = replydto.PublicStatus?.PublicStatusNo;
+            existingReply.ReplyUpdate = DateTime.UtcNow;
+            existingReply.EditTimes += 1;
+            // 保存變更
+            await _context.SaveChangesAsync();
+
+            // 返回204 No Content表示成功，但無需返回內容
+            return NoContent();
         }
     }
 }
