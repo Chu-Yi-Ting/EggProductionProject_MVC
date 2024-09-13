@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EggProductionProject_MVC.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
@@ -6,8 +8,19 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
     [Area("Frontstage")]
     public class CartsController : Controller
     {
+        private readonly EggPlatformContext _context;        
+        private readonly UserManager<IdentityUser> _userManager;  // 使用Identity User Manager
+
+        public CartsController(EggPlatformContext context, IWebHostEnvironment hostEnvironment, UserManager<IdentityUser> userManager)
+        {
+            _context = context;           
+            _userManager = userManager;
+        }
         public IActionResult Index()
         {
+            var aspUserId = _userManager.GetUserId(User);
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
+            ViewBag.MemberSid = member.MemberSid;
             return View();
         }
 

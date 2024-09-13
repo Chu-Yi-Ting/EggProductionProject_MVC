@@ -756,16 +756,17 @@
 
 
         $(document).ready(function () {
+            // 使用 ViewBag 取得後端傳來的會員編號
+            var memberSid = '@ViewBag.MemberSid'
 
-
-
+            // 將 memberSid 設置到 searchData 中
             const searchData = {
-                "Msid": 1
+                "Msid": memberSid // 使用後端傳來的會員編號
             }
 
-
-
             const loadSpots = async (cartSid_check) => {
+                //將searchData印出來確認
+                console.log(searchData);
                 const api = '@Url.Content("~/Frontstage/CartsAPI/CartsList")';
                 const response = await fetch(api, {
                     method: 'POST',

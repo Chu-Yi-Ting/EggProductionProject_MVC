@@ -309,8 +309,8 @@
                     <input type="number" id="quantity-input" value="1" min="1">
                     <button class="quantity-increase">+</button>
                 </div>
-                <button class="btn btn-primary">加入購物車</button>
-                <button class="btn btn-primary">立即購買</button>
+                <button id="btnAddToCart" class="btn btn-primary">加入購物車</button>
+                <button id="btnBuyNow" class="btn btn-primary">立即購買</button>
             </div>
         </div>
 
@@ -334,6 +334,20 @@
                     @* <div>粉絲數量<br>1.8 M</div> *@
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 加入購物車成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="addToCartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            商品已成功加入購物車!
         </div>
     </div>
 </div>
@@ -375,6 +389,89 @@
             collapseElements.forEach(function (element) {
                 element.classList.remove('show'); // 确保折叠部分默认是关闭的
             });
+        });
+
+        // 訂閱"加入購物車"按鈕事件
+        const addToCartButton = document.getElementById('btnAddToCart'); // 確保選擇正確的按鈕
+        addToCartButton.addEventListener('click', async function () {
+            try {
+                // 取得資料 (只需傳送 ProductSid 和 Qty)
+                const productSid = '@Model.productSid'; // 假設你在 Model 中有該資料
+                const qty = document.getElementById('quantity-input').value; // 取得訂購數量
+
+                // 建立要傳送的資料
+                const data = {
+                    ProductSid: productSid,
+                    Qty: qty
+                };
+
+                // 使用 async/await 發送 fetch 請求到後端
+                const api = '@Url.Content("~/Frontstage/ProductApi/AddToCart")'
+                const response = await fetch(api, { // 改成你的後端控制器URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 成功後顯示 Toast 通知
+                    showAddToCartToast("商品已成功加入購物車！");
+                } else {
+                    alert("加入購物車失敗，請重試。");
+                }
+            } catch (error) {
+                console.error('錯誤:', error);
+            }
+        });
+
+
+        function showAddToCartToast(message) {
+            const toastElement = document.getElementById('addToCartToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+            toastBody.textContent = message;
+            const toast = new bootstrap.Toast(toastElement);
+            setTimeout(function () {
+                toast.show();
+            }, 1000);
+        }
+
+        // 訂閱"直接購買"按鈕事件
+        const buyNowButton = document.getElementById('btnBuyNow'); // 確保選擇正確的按鈕
+        buyNowButton.addEventListener('click', async function () {
+            try {
+                const productSid = '@Model.productSid';
+                const qty = document.getElementById('quantity-input').value;
+
+                const data = {
+                    ProductSid: productSid,
+                    Qty: qty
+                };
+
+                // 使用 async/await 發送 fetch 請求到後端
+                const api = '@Url.Content("~/Frontstage/ProductApi/AddToCart")'
+                const response = await fetch(api, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 成功加入購物車後，跳轉到購物車頁面
+                    window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
+                } else {
+                    alert('加入購物車失敗');
+                }
+            } catch (error) {
+                console.error('錯誤:', error);
+            }
         });
     </script>
 

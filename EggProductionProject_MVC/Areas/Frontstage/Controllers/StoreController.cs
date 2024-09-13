@@ -43,7 +43,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             // 查詢該賣家的所有商品
             var products = _context.Products
-                .Where(p => p.StoreSid == storeSid)
+                .Where(p => p.StoreSid == storeSid && p.PublicStatusNo == 1)
                 .Select(p => new ProductViewModel
                 {
                     productSid = p.ProductSid,
@@ -134,7 +134,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Stores");
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.storeImage.FileName);
                 var newImagePath = Path.Combine(uploadPath, uniqueFileName);
-                storeImagePath = $"/images/stores/{uniqueFileName}";  // 將相對路徑存入資料庫
+                storeImagePath = $"/Images/Stores/{uniqueFileName}";  // 將相對路徑存入資料庫
 
                 using (var stream = new FileStream(newImagePath, FileMode.Create))
                 {
@@ -186,34 +186,36 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			if (store != null)
 			{
-				// 查詢該賣家的當前上架產品 (PublicStatusNo = 1)
-				model.CurrentProducts = _context.Products
-					.Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
-					.Select(p => new ProductViewModel
-					{
-						productSid = p.ProductSid,
-						productName = p.ProductName,
-						price = p.Price,
-						stock = p.Stock,
-						launchTime = p.LaunchTime,
-						publicStatusNo = p.PublicStatusNo
-					})
-					.ToList();
+                // 查詢該賣家的當前上架產品 (PublicStatusNo = 1)，按LaunchTime降序排列
+                model.CurrentProducts = _context.Products
+                    .Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
+                    .OrderByDescending(p => p.LaunchTime)  // 按照LaunchTime降序排列
+                    .Select(p => new ProductViewModel
+                    {
+                        productSid = p.ProductSid,
+                        productName = p.ProductName,
+                        price = p.Price,
+                        stock = p.Stock,
+                        launchTime = p.LaunchTime,
+                        publicStatusNo = p.PublicStatusNo
+                    })
+                    .ToList();
 
-				// 查詢該賣家的審核中產品 (PublicStatusNo = 2)
-				model.ReviewingProducts = _context.Products
-					.Where(p => p.PublicStatusNo == 2 && p.StoreSid == store.StoreSid)
-					.Select(p => new ProductViewModel
-					{
-						productSid = p.ProductSid,
-						productName = p.ProductName,
-						price = p.Price,
-						stock = p.Stock,
-						launchTime = p.LaunchTime,
-						publicStatusNo = p.PublicStatusNo
-					})
-					.ToList();
-			}
+                // 查詢該賣家的審核中產品 (PublicStatusNo = 2)，按LaunchTime降序排列
+                model.ReviewingProducts = _context.Products
+                    .Where(p => p.PublicStatusNo == 2 && p.StoreSid == store.StoreSid)
+                    .OrderByDescending(p => p.LaunchTime)  // 按照LaunchTime降序排列
+                    .Select(p => new ProductViewModel
+                    {
+                        productSid = p.ProductSid,
+                        productName = p.ProductName,
+                        price = p.Price,
+                        stock = p.Stock,
+                        launchTime = p.LaunchTime,
+                        publicStatusNo = p.PublicStatusNo
+                    })
+                    .ToList();
+            }
 
 			// 查詢所有子分類並傳送到前端
 			ViewBag.Subcategories = _context.ProductSubcategories.Select(s => new

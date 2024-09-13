@@ -19,7 +19,10 @@
 		public DateOnly? launchTime { get; set; }
 		public int? publicStatusNo { get; set; }
 
-		// 新增這個屬性來存放所有產品
-		public List<ProductViewModel>? products { get; set; }
+        // 接受上傳圖片的參數
+        public IFormFile? productImage { get; set; }
+
+        // 新增這個屬性來存放所有產品
+        public List<ProductViewModel>? products { get; set; }
 	}
 }
