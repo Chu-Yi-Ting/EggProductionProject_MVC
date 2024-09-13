@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.HTTPModels;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,11 +114,17 @@ builder.Services.AddRazorPages();
 
 
 ////第三方登入
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie()
     .AddGoogle(options =>
     {
         options.ClientId = "817635871464-ng3miqkr6aujusqgnedjs5lphv7ov6c8.apps.googleusercontent.com";
         options.ClientSecret = "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";
+        options.CallbackPath = "/signin-google"; // 這個路徑可以自行設定，默認為 /signin-google
     });
 
 
@@ -151,6 +158,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
