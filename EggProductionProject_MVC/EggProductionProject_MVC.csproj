@@ -146,9 +146,6 @@
     <Content Update="wwwroot\Images\Products\teaegg1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\Images\Stores\a29b3fed-889c-41d0-9650-3944cc191942.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\Images\Stores\store1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
