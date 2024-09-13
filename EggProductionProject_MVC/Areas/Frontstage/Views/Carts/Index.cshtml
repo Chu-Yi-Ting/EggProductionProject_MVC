@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_FrontLayout_common";
 }
-
+@model Dictionary<string, string>
 @section Styles {
     <style>
         .cart-card .cart-card-owner .all-choose {
@@ -57,6 +57,26 @@
 
     </style>
 }
+
+<div class="d-none">
+    <h2>合併訂單結帳</h2>
+
+    @using (Html.BeginForm("CreateOrder", "Carts", FormMethod.Post, new { id = "orderForm" }))
+    {
+        <div>
+            <label for="itemName">商品名稱：</label>
+            <input type="text" id="itemName" name="ItemName" required />
+        </div>
+        <div>
+            <label for="totalAmount">總金額：</label>
+            <input type="number" id="totalAmount" name="TotalAmount" required />
+        </div>
+        <button type="submit">生成訂單</button>
+    }
+
+    <div id="form-container"></div>
+
+</div>
 
 <div class="title-bg mb-3">
     <img class="w-100"
@@ -756,12 +776,12 @@
 
 
         $(document).ready(function () {
-            // 使用 ViewBag 取得後端傳來的會員編號
-            var memberSid = '@ViewBag.MemberSid'
 
-            // 將 memberSid 設置到 searchData 中
+            var memberSid = '@ViewBag.MemberSid';
+            console.log("Member SID: " + memberSid);
+
             const searchData = {
-                "Msid": memberSid // 使用後端傳來的會員編號
+                "Msid": memberSid
             }
 
             const loadSpots = async (cartSid_check) => {
@@ -855,7 +875,7 @@
 
 
             const BuyData = {
-                "Msid": 1,
+                "Msid": memberSid,
                 "CartSids": []
             }
 
@@ -1287,7 +1307,7 @@
                                                                         <big class="price">NT$ ${Math.round(product.price * (product.discountPercent || 1))}</big>
                                             </div>
                                             <div class="w-100 d-flex flex-column justify-content-center align-items-end ">
-                                                        <big class="price">X ${product.qty}</big>
+                                                                    <big class="price QTY">X ${product.qty}</big>
                                             </div>
                                             <div class="w-100 flex-column justify-content-center align-items-end align-items-lg-end d-none d-lg-flex">
 
@@ -1404,6 +1424,42 @@
                     stepElement.classList.add('finished');
                 }
 
+                //------
+
+                let cardBodies = document.querySelectorAll('#part-2 .card-body');
+
+                // 创建一个数组来存储每个 card-body 中的 h5 内容和 QTY
+                let items = [];
+
+                // 遍历所有 card-body 元素
+                cardBodies.forEach(cardBody => {
+                    // 获取当前 card-body 中的 h5 元素
+                    let h5Element = cardBody.querySelector('h5');
+                    // 获取当前 card-body 中的 QTY 元素
+                    let qtyElement = cardBody.querySelector('.QTY');
+                    if (h5Element && qtyElement) {
+                        // 获取 h5 内容
+                        let itemName = h5Element.textContent.trim();
+                        // 获取 QTY 内容并提取数量
+                        let qtyText = qtyElement.textContent.trim();
+                        let qtyMatch = qtyText.match(/X\s(\d+)/);
+                        let quantity = qtyMatch ? qtyMatch[1] : '1'; // 默认为 '1' 件
+
+                        // 将 h5 内容和数量添加到 items 数组中
+                        items.push(`${itemName} ${quantity} 件`);
+                    }
+                });
+
+                // 将 items 数组格式化为所需的字符串形式
+                let formattedItems = items.join('#');
+
+                // 获取 input 元素
+                let inputElement = document.querySelector('input[name="ItemName"]');
+                if (inputElement) {
+                    // 设置 input 元素的 value 属性
+                    inputElement.value = formattedItems;
+                }
+
             };
 
 
@@ -1470,7 +1526,7 @@
             const loadBuyCarts1 = async (storeId) => {
                 const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
                 const BuyData1 = {
-                    "Msid": 1,
+                    "Msid": memberSid,
                     "storeSid": storeId
                 };
 
@@ -1869,7 +1925,7 @@
 
 
             const BuyData2 = {
-                "Msid": 1,
+                "Msid": memberSid,
                 "totalMoney": 200
             }
 
@@ -1881,7 +1937,7 @@
                 console.log('Total Money:', totalMoney);
 
                 try {
-                    const response = await fetch(`https://localhost:7080/Frontstage/CartsAPI/GetCoupons?memberSid=1&totalmoney=${totalMoney}`);
+                    const response = await fetch(`https://localhost:7080/Frontstage/CartsAPI/GetCoupons?memberSid=${encodeURIComponent(memberSid)}&totalmoney=${totalMoney}`);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
@@ -2059,6 +2115,23 @@
                 const coinText = document.querySelector('#part-2 .coin_use span').textContent.replace(/[^0-9]/g, '').trim();
                 submitdata.usecoin = parseInt(coinText, 10) || 0; // 确保是整数
 
+                let totalElement = document.querySelector('.price_total.cal-box-list.pay_end_total span');
+
+                if (totalElement) {
+                    // 提取总计金额文本内容
+                    let totalText = totalElement.textContent.trim();
+                    // 使用正则表达式提取金额中的数字
+                    let totalMatch = totalText.match(/NT\$\s*(\d+)/);
+                    let totalAmount = totalMatch ? totalMatch[1] : '0'; // 默认为 '0' 如果未找到
+
+                    // 获取 input 元素
+                    let inputElement = document.querySelector('input[name="TotalAmount"]');
+                    if (inputElement) {
+                        // 设置 input 元素的 value 属性
+                        inputElement.value = totalAmount;
+                    }
+                }
+
 
             }
 
@@ -2066,9 +2139,10 @@
             const updatePrices = async () => {
                 const apiUrl = 'https://localhost:7080/Frontstage/CartsAPI/UpdatePrices';
 
+                // 更新 submitData (确保 updateSubmitData 函数在其他地方定义)
                 updateSubmitData();
 
-                console.log("submitdata", submitdata)
+                console.log("submitdata", submitdata);
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -2086,8 +2160,8 @@
                     const result = await response.json();
                     console.log('Success:', result);
 
-                    // 只提取需要传递的数据
                     const postData = {
+                        memberSid: result.memberSid,
                         combo: result.combo,
                         usecoin: result.usecoin,
                         couponSid: result.couponSid,
@@ -2095,34 +2169,52 @@
                         orderNumbers: result.orderNumbers
                     };
 
-                    // 创建一个隐藏表单并提交
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = 'https://localhost:7080/Frontstage/carts/checkout';
 
-                    // 将数据添加到表单
-                    for (const key in postData) {
-                        if (postData.hasOwnProperty(key)) {
-                            const hiddenField = document.createElement('input');
-                            hiddenField.type = 'hidden';
-                            hiddenField.name = key;
-                            hiddenField.value = Array.isArray(postData[key])
-                                ? JSON.stringify(postData[key])
-                                : postData[key];
-                            form.appendChild(hiddenField);
-                        }
-                    }
 
-                    document.body.appendChild(form);
-                    form.submit(); // 提交表单，进行跳转
+                    // console.log('postData:', postData);
+                    sessionStorage.setItem('postData', JSON.stringify(postData));
+
+                    // 读取数据
+
+
+
+                    // // 触发表单的 AJAX 提交
+                    $('#orderForm').submit(function (event) {
+                        event.preventDefault(); // 防止表单的默认提交行为
+
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: 'POST',
+                            data: $(this).serialize(),
+                            success: function (data) {
+                                $('#form-container').html(data);
+
+                                // 如果成功响应后需要提交 formEC 表单
+                                if (postData.paymentNo == "1") {
+                                    console.log("Submitting formEC for paymentNo 1...");
+                                    document.getElementById('ECForm').submit();
+                                } else {
+                                    window.location.href = 'https://localhost:7080/Frontstage/carts/Checkout';
+                                }
+                            },
+                            error: function () {
+                                alert('發生錯誤，請重試。');
+                            }
+                        });
+                    });
+
+                    // 手动触发 orderForm 的提交
+                    $('#orderForm').trigger('submit');
 
                 } catch (error) {
                     console.error('Error:', error);
                 }
             };
 
-            // 假设你有一个按钮来触发这个函数
+            // 示例按钮触发 updatePrices 函数
             document.getElementById('updatePricesButton').addEventListener('click', updatePrices);
+
+
 
 
 

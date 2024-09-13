@@ -1,0 +1,11 @@
+﻿@model Dictionary<string, string>
+
+<h2>請確認訂單</h2>
+
+<form id="ECForm" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+    @foreach (var key in Model.Keys.ToList())
+    {
+        <input type="hidden" name="@key" value="@Model[key]" />
+    }
+    <button type="submit" id="checkoutBtn">送出</button>
+</form>

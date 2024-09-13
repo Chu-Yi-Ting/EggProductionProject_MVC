@@ -868,7 +868,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 		private async Task<string> GenerateOrderNoAsync()
 		{
-			var today = DateTime.UtcNow.ToString("yyyyMMdd");
+			var taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+			var taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, taiwanTimeZone);
+			var today = taiwanTime.ToString("yyyyMMdd");
 			var sequenceNumber = await GetNextSequenceNumberAsync(today);
 			return $"O{today}{sequenceNumber:D4}"; // 用四位数填充序列号
 		}
@@ -898,7 +900,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 		private async Task<string> GenerateTrackingNumAsync(string carrierCode)
 		{
-			var today = DateTime.UtcNow.ToString("yyyyMMdd");
+			var taiwanTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+			var taiwanTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, taiwanTimeZone);
+			var today = taiwanTime.ToString("yyyyMMdd");
 			var sequenceNumber = await GetNextTrackingSequenceNumberAsync(carrierCode, today);
 			return $"{carrierCode}{today}{sequenceNumber:D4}"; // 用四位数填充序列号
 		}

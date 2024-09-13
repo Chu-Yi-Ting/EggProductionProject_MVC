@@ -1,23 +1,73 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EggProductionProject_MVC.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
 	[Area("Frontstage")]
 	public class StoreCentersController : Controller
 	{
-		public IActionResult Index()
+
+		private readonly IWebHostEnvironment _hostingEnvironment;
+		private readonly UserManager<IdentityUser> _userManager;
+		private readonly EggPlatformContext _context;
+
+		public StoreCentersController(IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager, EggPlatformContext context)
 		{
+			_hostingEnvironment = webHostEnvironment;
+			_userManager = userManager;
+			_context = context;
+		}
+
+		private async Task<IActionResult> CheckUserAndMember()
+		{
+			var aspUser = await _userManager.GetUserAsync(User);
+
+			if (aspUser == null)
+			{
+				return Redirect("https://localhost:7080/Identity/Account/Login");
+			}
+
+			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUser.Id);
+
+			if (member == null)
+			{
+				return Redirect("https://localhost:7080/Identity/Account/Login");
+			}
+
+			ViewBag.MemberSid = member.MemberSid;
+
+			return null; // 返回 null 表示检查成功
+		}
+		public async Task<IActionResult> Index()
+		{
+			var result = await CheckUserAndMember();
+			if (result != null)
+			{
+				return result;
+			}
+
 			return View();
 		}
 
-		public IActionResult trackSearch()
+		public async Task<IActionResult> trackSearch()
 		{
+			var result = await CheckUserAndMember();
+			if (result != null)
+			{
+				return result;
+			}
 			return View();
 		}
 
-        public IActionResult trackControl()
+        public async Task<IActionResult>  trackControl()
         {
-            return View();
+			var result = await CheckUserAndMember();
+			if (result != null)
+			{
+				return result;
+			}
+			return View();
         }
     }
 }

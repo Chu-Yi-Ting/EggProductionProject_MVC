@@ -1,6 +1,5 @@
 ﻿@{
 	Layout = "_FrontLayout_common";
-	int orderCount = Model.OrderNumbers.Count;
 }
 
 @section Styles {
@@ -264,20 +263,23 @@
 
 	<script>
 
-		let combo = "@Model.Combo";
-		let usecoin = "@Model.Usecoin";
-		let couponSid = "@Model.CouponSid";
-		let paymentNo = "@Model.PaymentNo";
-
-
-		let orderNumbers = [
-		@for (int i = 0; i < Model.OrderNumbers.Count; i++)
-		{
-			@: "@Model.OrderNumbers[i]"@((i < Model.OrderNumbers.Count - 1) ? "," : "")
+		const postData = JSON.parse(sessionStorage.getItem('postData'));
+		if (!postData) {
+			window.location.href = 'https://localhost:7080/Identity/Account/Login';
 		}
-							];
-		let count = "@Model.OrderNumbers.Count"
+		console.log("asd", postData);
 
+		let NowMemberSid = postData.memberSid;
+		let orderNumbers = postData.orderNumbers; // 数组
+		let combo = postData.combo; // 1
+		let usecoin = postData.usecoin; // 0
+		let couponSid = postData.couponSid; // null
+		let paymentNo = postData.paymentNo; // 2
+
+		// 计算订单数量
+		let count = orderNumbers.length;
+
+		// 获取 <p> 元素
 		const countElement = document.querySelector('.payend-title p');
 
 		// 更新 <p> 元素的内容
@@ -345,7 +347,7 @@
 									<div class="card-body-img d-flex w-100 px-3">
 										<div class="d-flex flex-column">
 											<div class="img_box">
-														<img  src="${orderDetails[0].productImagePath}"  />
+																<img src="${orderDetail.productImagePath}" />
 											</div>
 										</div>
 										<div class="card-body flex-row align-items-center">
