@@ -1,13 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EggProductionProject_MVC.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 {
     [Area("Frontstage")]
     public class DataController : Controller
     {
+        private EggPlatformContext _context;
+        public DataController(EggPlatformContext context) 
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+            var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
+            var user = _context.Members.Where(x => x.MemberSid == MemberSid).FirstOrDefault();
+
+            return View(user);
         }
     }
 }

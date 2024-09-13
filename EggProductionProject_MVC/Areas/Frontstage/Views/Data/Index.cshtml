@@ -1,4 +1,5 @@
-﻿@{
+﻿@model EggProductionProject_MVC.Models.Member
+@{
     Layout = "_FrontLayout_light";
 }
 
@@ -64,171 +65,191 @@
             <img class="w-100" src="~/frontstagetemplate/assets/brand/layout/banners/banner_18.png" />
         </div>
 
-        <div class="w-100 mt-3 mt-md-5">
+        @if(Model.IsChickFarm == 0)
+        {
             <div class="d-flex justify-content-center">
-                <div class="custom-nav-border">
-                    <ul class="nav nav-pills mb-1 tab-controll-n justify-content-center"
-                        id="pills-tab"
-                        role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active custom-tab"
-                                    id="pills-one-tab"
-                                    data-bs-toggle="pill"
-                                    data-bs-target="#pills-one"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="pills-one"
-                                    aria-selected="true">
-                                蛋雞分析
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link custom-tab"
-                                    id="pills-two-tab"
-                                    data-bs-toggle="pill"
-                                    data-bs-target="#pills-two"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="pills-two"
-                                    aria-selected="false">
-                                行事曆
-                            </button>
-                        </li>
-                    </ul>
+                <img src="~/memberimg/chickopenfirst.jpg" />
+            </div>
+        }
+        else
+        {
+            <div class="w-100 mt-3 mt-md-5">
+                <div class="d-flex justify-content-center">
+                    <div class="custom-nav-border">
+                        <ul class="nav nav-pills mb-1 tab-controll-n justify-content-center"
+                            id="pills-tab"
+                            role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active custom-tab"
+                                        id="pills-one-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#pills-one"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="pills-one"
+                                        aria-selected="true">
+                                    蛋雞分析
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link custom-tab"
+                                        id="pills-two-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#pills-two"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="pills-two"
+                                        aria-selected="false">
+                                    行事曆
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="tab-content" id="pills-tabContent">
-            <!-- 折線圖的內容 -->
-            <div class="tab-pane fade show active"
-                 id="pills-one"
-                 role="tabpanel"
-                 aria-labelledby="pills-one-tab">
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col-md-9">
-                        <h3>蛋雞紀錄分析</h3>
-                            <canvas id="myChart" style="height: 500px; margin-bottom: 80px"></canvas>
-                        </div>
-                        <div class="col-md-3">
-                            <h4>篩選條件</h4>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="ChickHouse_Selected" class="form-label">雞舍</label>
-                                        <select class="form-select" id="ChickHouse_Selected"></select>
+            <div class="tab-content" id="pills-tabContent">
+                <!-- 折線圖的內容 -->
+                <div class="tab-pane fade show active"
+                     id="pills-one"
+                     role="tabpanel"
+                     aria-labelledby="pills-one-tab">
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-md-9">
+                            <h3>蛋雞紀錄分析</h3>
+                                <canvas id="myChart" style="height: 500px; margin-bottom: 80px"></canvas>
+                            </div>
+                            <div class="col-md-3">
+                                <h4>篩選條件</h4>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="ChickHouse_Selected" class="form-label">雞舍</label>
+                                            <select class="form-select" id="ChickHouse_Selected"></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Rate_Selected" class="form-label">資料型態</label>
+                                            <select class="form-select" id="Rate_Selected">
+                                                <option value=1>產蛋率</option>
+                                                <option value=2>蛋不合格率</option>
+                                                <option value=3>雞隻死亡率</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dateRange" class="form-label">時間</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="dateRange"
+                                                   placeholder="選擇日期範圍" />
+                                        </div>
+                                        <br />
+                                        <button type="button" class="btn btn-primary w-50" id="filter">篩選</button>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="Rate_Selected" class="form-label">資料型態</label>
-                                        <select class="form-select" id="Rate_Selected">
-                                            <option value=1>產蛋率</option>
-                                            <option value=2>蛋不合格率</option>
-                                            <option value=3>雞隻死亡率</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="dateRange" class="form-label">時間</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id="dateRange"
-                                               placeholder="選擇日期範圍" />
-                                    </div>
-                                    <br />
-                                    <button type="button" class="btn btn-primary w-50" id="filter">篩選</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- 行事曆的內容 -->
-            <div class="tab-pane fade"
-                 id="pills-two"
-                 role="tabpanel"
-                 aria-labelledby="pills-two-tab">
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>行事曆</h3>
-                            <div id="calendar" class="border p-3 rounded shadow-sm"></div>
+                <!-- 行事曆的內容 -->
+                <div class="tab-pane fade"
+                     id="pills-two"
+                     role="tabpanel"
+                     aria-labelledby="pills-two-tab">
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>行事曆</h3>
+                                <div id="calendar" class="border p-3 rounded shadow-sm"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal 事件新增彈出視窗 -->
-            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">新增事件</h5>
-                            <button type="button" class="close" aria-label="Close" onclick="closeAddModal()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="addEventForm">
-                                <div class="form-group">
-                                    <label for="addEventTitle">標題</label>
-                                    <input type="text" class="form-control" id="addEventTitle" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addEventTodoList">敘述</label>
-                                    <textarea class="form-control" id="addEventTodoList" required></textarea>
-                                </div>
-                                <input type="hidden" id="addEventDate">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeAddModal()">取消</button>
-                            <button type="button" class="btn btn-primary" onclick="submitEvent()">保存</button>
+                <!-- Modal 事件新增彈出視窗 -->
+                <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">新增事件</h5>
+                                <button type="button" class="close" aria-label="Close" onclick="closeAddModal()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addEventForm">
+                                    <div class="form-group">
+                                        <label for="addEventTitle">標題</label>
+                                        <input type="text" class="form-control" id="addEventTitle" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addEventTodoList">敘述</label>
+                                        <textarea class="form-control" id="addEventTodoList" required></textarea>
+                                    </div>
+                                    <input type="hidden" id="addEventDate">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeAddModal()">取消</button>
+                                <button type="button" class="btn btn-primary" onclick="submitEvent()">保存</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal 事件修改彈出視窗 -->
-            <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">事件詳細</h5>
-                            <button type="button" class="close" aria-label="Close" onclick="closeEditModal()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <!-- Modal 事件修改彈出視窗 -->
+                <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">事件詳細</h5>
+                                <button type="button" class="close" aria-label="Close" onclick="closeEditModal()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editEventForm">
+                                    <div class="form-group">
+                                        <label for="editEventTitle">標題</label>
+                                        <input type="text" class="form-control" id="editEventTitle" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editEventTodoList">敘述</label>
+                                        <textarea class="form-control" id="editEventTodoList" readonly></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editEventFinished">是否完成</label>
+                                        <select class="form-control" id="editEventFinished" disabled>
+                                            <option value="0">未完成</option>
+                                            <option value="1">已完成</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" id="editEventId">
+                                    <input type="hidden" id="editEventDate">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">取消</button>
+                                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteEvent()">刪除</button>
+                                <button type="button" class="btn btn-warning" id="editEventBtn" onclick="enableEdit()">修改</button>
+                                <button type="button" class="btn btn-primary" id="saveEventBtn" onclick="updateEvent()" style="display: none;">保存</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <form id="editEventForm">
-                                <div class="form-group">
-                                    <label for="editEventTitle">標題</label>
-                                    <input type="text" class="form-control" id="editEventTitle" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editEventTodoList">敘述</label>
-                                    <textarea class="form-control" id="editEventTodoList" readonly></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editEventFinished">是否完成</label>
-                                    <select class="form-control" id="editEventFinished" disabled>
-                                        <option value="0">未完成</option>
-                                        <option value="1">已完成</option>
-                                    </select>
-                                </div>
-                                <input type="hidden" id="editEventId">
-                                <input type="hidden" id="editEventDate">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">取消</button>
-                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteEvent()">刪除</button>
-                            <button type="button" class="btn btn-warning" id="editEventBtn" onclick="enableEdit()">修改</button>
-                            <button type="button" class="btn btn-primary" id="saveEventBtn" onclick="updateEvent()" style="display: none;">保存</button>
+                    </div>
+                </div>
+
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                    <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <!-- 消息內容將在 JavaScript 中動態設置 -->
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </main>
 </body>
 
@@ -237,378 +258,380 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script src="~/js/Data/Data.js"></script>
-    <script>
-        let calendar; // 定義行事曆變數
-        let myChart;
-        document.addEventListener('DOMContentLoaded', async function () {
-            // 監聽標籤頁切換事件 初始化行事曆
-            const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
-            if (tabElement) {
-                tabElement.addEventListener('shown.bs.tab', function (e) {
-                    if (!calendar) { // 如果行事曆尚未初始化
-                        const calendarEl = document.getElementById('calendar');
-                        if (calendarEl) {
-                            calendar = new FullCalendar.Calendar(calendarEl, {
-                                initialView: 'dayGridMonth',
-                                locale: 'zh-tw',
-                                dateClick: function (info) {
-                                    // 顯示新增事件的彈出視窗
-                                    new bootstrap.Modal(document.getElementById('addEventModal')).show();
+    @if (Model.IsChickFarm != 0)
+    {
+        <script>
+            let calendar; // 定義行事曆變數
+            let myChart;
+            document.addEventListener('DOMContentLoaded', async function () {
+                // 監聽標籤頁切換事件 初始化行事曆
+                const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-two-tab"]'); // 使用更具體的選取器
+                if (tabElement) {
+                    tabElement.addEventListener('shown.bs.tab', function (e) {
+                        if (!calendar) { // 如果行事曆尚未初始化
+                            const calendarEl = document.getElementById('calendar');
+                            if (calendarEl) {
+                                calendar = new FullCalendar.Calendar(calendarEl, {
+                                    initialView: 'dayGridMonth',
+                                    locale: 'zh-tw',
+                                    dateClick: function (info) {
+                                        // 顯示新增事件的彈出視窗
+                                        new bootstrap.Modal(document.getElementById('addEventModal')).show();
 
-                                    // 填充日期訊息
-                                    document.getElementById('addEventDate').value = info.dateStr;
-                                },
-                                events: '/Frontstage/DataApi/GetCalendarEvents',
-                                eventContent: function (arg) {
-                                    // 創建一個新的 span 元素來表示事件的完成狀態
-                                    var completedEl = document.createElement('span');
-                                    completedEl.id = `completed-${arg.event.id}`; // 動態 ID，基於事件 ID
-                                    completedEl.innerHTML = (arg.event.extendedProps.finished === 1 ? '✅' : '❌'); // 標示已完成或未完成
+                                        // 填充日期訊息
+                                        document.getElementById('addEventDate').value = info.dateStr;
+                                    },
+                                    events: '/Frontstage/DataApi/GetCalendarEvents',
+                                    eventContent: function (arg) {
+                                        // 創建一個新的 span 元素來表示事件的完成狀態
+                                        var completedEl = document.createElement('span');
+                                        completedEl.id = `completed-${arg.event.id}`; // 動態 ID，基於事件 ID
+                                        completedEl.innerHTML = (arg.event.extendedProps.finished === 1 ? '✅' : '❌'); // 標示已完成或未完成
 
-                                    // 創建一個新的 span 元素來顯示事件的標題
-                                    var titleEl = document.createElement('span');
-                                    titleEl.id = `title-${arg.event.id}`; // 動態 ID，基於事件 ID
-                                    titleEl.innerHTML = '標題: ' + arg.event.title;
+                                        // 創建一個新的 span 元素來顯示事件的標題
+                                        var titleEl = document.createElement('span');
+                                        titleEl.id = `title-${arg.event.id}`; // 動態 ID，基於事件 ID
+                                        titleEl.innerHTML = '標題: ' + arg.event.title;
 
-                                    // 將事件的標題和完成狀態組合為一個陣列
-                                    var arrayOfDomNodes = [titleEl, completedEl];
+                                        // 將事件的標題和完成狀態組合為一個陣列
+                                        var arrayOfDomNodes = [titleEl, completedEl];
 
-                                    // 返回要顯示的 DOM 節點
-                                    return { domNodes: arrayOfDomNodes };
-                                },
-                                eventDidMount: function (info) {
-                                    if (info.event.extendedProps.finished === 1) {
-                                        info.el.style.backgroundColor = 'lightgreen';
-                                    } else {
-                                        info.el.style.backgroundColor = 'lightcoral';
-                                    }
+                                        // 返回要顯示的 DOM 節點
+                                        return { domNodes: arrayOfDomNodes };
+                                    },
+                                    eventDidMount: function (info) {
+                                        if (info.event.extendedProps.finished === 1) {
+                                            info.el.style.backgroundColor = 'lightgreen';
+                                        } else {
+                                            info.el.style.backgroundColor = 'lightcoral';
+                                        }
 
-                                    // 添加點擊事件來顯示事件詳細信息
-                                    info.el.addEventListener('click', function () {
-                                        showEventDetails(info.event);
-                                    });
-                                },
-                                headerToolbar: {
-                                    right: 'prev,next today',
-                                    left: 'title',
-                                },
-                                dayCellClassNames: function (dateInfo) {
-                                    return ['custom-day-hover'];
-                                },
-                                themeSystem: 'bootstrap',
-                                dayMaxEvents: true,
-                                editable: true,
-                                selectable: true,
-                            });
-                            calendar.render(); // 初始化並渲染行事曆
+                                        // 添加點擊事件來顯示事件詳細信息
+                                        info.el.addEventListener('click', function () {
+                                            showEventDetails(info.event);
+                                        });
+                                    },
+                                    headerToolbar: {
+                                        right: 'prev,next today',
+                                        left: 'title',
+                                    },
+                                    dayCellClassNames: function (dateInfo) {
+                                        return ['custom-day-hover'];
+                                    },
+                                    themeSystem: 'bootstrap',
+                                    dayMaxEvents: true,
+                                    editable: true,
+                                    selectable: true,
+                                });
+                                calendar.render(); // 初始化並渲染行事曆
+                            }
                         }
-                    }
-                });
-            }
-//-------------------------初始化折線圖------------------------------------------------------------
+                    });
+                }
+    //-------------------------初始化折線圖------------------------------------------------------------
 
-            const defaultMemberSid = 1;//需抓瀏覽器Sid
+                const defaultMemberSid = 1;//需抓瀏覽器Sid
             
-            //1.load雞舍
-            await loadHouse(defaultMemberSid);
-            //2.初始化日期選擇器
-            let isDateSet = false; // 用來追蹤日期是否已設置
+                //1.load雞舍
+                await loadHouse(defaultMemberSid);
+                //2.初始化日期選擇器
+                let isDateSet = false; // 用來追蹤日期是否已設置
 
-            flatpickr('#dateRange', {
-                mode: 'range',
-                dateFormat: 'Y-m-d',
-                onOpen: function (selectedDates, dateStr, instance) {
-                    instance.clear();
-                    if (!isDateSet) {
-                        const today = new Date();
-                        const defaultStartDate = new Date();
-                        defaultStartDate.setHours(0, 0, 0, 0); // 當天的開始時間
-                        isDateSet = true; // 標記日期已設置
-                    }
-                }
-            });
-
-            const ctx = document.getElementById('myChart').getContext('2d');
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: '', // 實際數據集的標籤
-                            data: [],
-                            fill: false,
-                            borderColor: 'rgb(0, 0, 255)', // 深藍色
-                            borderWidth: 3, // 增加線條寬度
-                            pointBackgroundColor: 'rgb(0, 0, 255)', // 點的顏色
-                            pointRadius: 4, // 增加點的大小
-                            tension: 0.1
-                        },
-                        {
-                            label: '', // 標準化數據集的標籤
-                            data: [],
-                            fill: false,
-                            borderColor: 'rgb(255, 99, 132)', // 紅色
-                            borderDash: [5, 5], // 使用虛線
-                            borderWidth: 2, // 保持標準寬度
-                            pointBackgroundColor: 'rgb(255, 99, 132)', // 點的顏色
-                            pointRadius: 4, // 增加點的大小
-                            tension: 0.1
+                flatpickr('#dateRange', {
+                    mode: 'range',
+                    dateFormat: 'Y-m-d',
+                    onOpen: function (selectedDates, dateStr, instance) {
+                        instance.clear();
+                        if (!isDateSet) {
+                            const today = new Date();
+                            const defaultStartDate = new Date();
+                            defaultStartDate.setHours(0, 0, 0, 0); // 當天的開始時間
+                            isDateSet = true; // 標記日期已設置
                         }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: true, position: 'top' } },
-                    scales: {
-                        x: { display: true, title: { display: true, text: '日期' } },
-                        y: { display: true, title: { display: true, text: '值' } }
                     }
+                });
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                label: '', // 實際數據集的標籤
+                                data: [],
+                                fill: false,
+                                borderColor: 'rgb(0, 0, 255)', // 深藍色
+                                borderWidth: 3, // 增加線條寬度
+                                pointBackgroundColor: 'rgb(0, 0, 255)', // 點的顏色
+                                pointRadius: 4, // 增加點的大小
+                                tension: 0.1
+                            },
+                            {
+                                label: '', // 標準化數據集的標籤
+                                data: [],
+                                fill: false,
+                                borderColor: 'rgb(255, 99, 132)', // 紅色
+                                borderDash: [5, 5], // 使用虛線
+                                borderWidth: 2, // 保持標準寬度
+                                pointBackgroundColor: 'rgb(255, 99, 132)', // 點的顏色
+                                pointRadius: 4, // 增加點的大小
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: true, position: 'top' } },
+                        scales: {
+                            x: { display: true, title: { display: true, text: '日期' } },
+                            y: { display: true, title: { display: true, text: '值' } }
+                        }
+                    }
+                });
+
+
+                const defaultJudge = 1; // 設置預設的 Judge 值
+                const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
+                const defaultStartDate = null; // 初始無開始日期
+                const defaultEndDate = null; // 初始無結束日期
+
+                // 調用 updateChart 來設置初始數據
+                updateChart(defaultMemberSid, defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
+
+            });
+    //------------------------------------------行事曆code----------------------------------------------------------
+
+            // 當點擊日曆中的事件時顯示詳細的彈出視窗
+            function showEventDetails(event) {
+                document.getElementById('editEventTitle').value = event.title;
+                document.getElementById('editEventTodoList').value = event.extendedProps.description;
+                document.getElementById('editEventFinished').value = event.extendedProps.finished;
+                document.getElementById('editEventId').value = event.id;
+
+                // 禁用編輯狀態
+                document.getElementById('editEventTitle').readOnly = true;
+                document.getElementById('editEventTodoList').readOnly = true;
+                document.getElementById('editEventFinished').disabled = true;
+
+                // 根據事件的完成狀態顯示或隱藏按鈕
+                if (event.extendedProps.finished === 1) {
+                    document.getElementById('editEventBtn').style.display = 'none';
+                    document.getElementById('saveEventBtn').style.display = 'none';
+                    document.getElementById('confirmDeleteBtn').style.display = 'none'; // 假設刪除按鈕 ID 為 confirmDeleteBtn
+                } else {
+                    document.getElementById('editEventBtn').style.display = 'inline-block';
+                    document.getElementById('confirmDeleteBtn').style.display = 'inline-block';
+                }
+
+                new bootstrap.Modal(document.getElementById('editEventModal')).show();
+            }
+
+            // 關閉事件新增的彈出視窗
+            function closeAddModal() {
+                bootstrap.Modal.getInstance(document.getElementById('addEventModal')).hide();
+            }
+
+            // 關閉事件修改的彈出視窗
+            function closeEditModal() {
+                bootstrap.Modal.getInstance(document.getElementById('editEventModal')).hide();
+            }
+
+            // 啟用編輯模式
+            function enableEdit() {
+                document.getElementById('editEventTodoList').readOnly = false;
+                document.getElementById('editEventFinished').disabled = false;
+                document.getElementById('editEventBtn').style.display = 'none';
+                document.getElementById('saveEventBtn').style.display = 'inline-block';
+            }
+
+            // 保存新事件
+            async function submitEvent() {
+                var eventTitle = document.getElementById('addEventTitle').value;
+                var eventTodoList = document.getElementById('addEventTodoList').value;
+                var eventDate = document.getElementById('addEventDate').value;
+
+                var eventData = {
+                    Title: eventTitle,
+                    TodoList: eventTodoList,
+                    StartDate: eventDate
+                };
+
+                try {
+                    const response = await fetch('/Frontstage/DataApi/InsertCalendar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(eventData)
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert('Error: ' + (data.message || '無法儲存事件'));
+                        return;
+                    }
+
+                    closeAddModal();
+                    reloadCalendarEvents()
+                } catch (e) {
+                    alert('Error:' + e.message);
+                }
+            }
+
+            // 更新現有事件
+            async function updateEvent() {
+                var eventId = document.getElementById('editEventId').value;
+                var eventTitle = document.getElementById('editEventTitle').value;
+                var eventTodoList = document.getElementById('editEventTodoList').value;
+                var eventFinished = document.getElementById('editEventFinished').value;
+
+                var eventData = {
+                    Id: eventId,
+                    Title: eventTitle,
+                    TodoList: eventTodoList,
+                    Finished: eventFinished
+                };
+
+                try {
+                    const response = await fetch(`/Frontstage/DataApi/UpdateCalendar/${eventId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(eventData)
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert('Error: ' + (data.message || '無法更新事件'));
+                        return;
+                    }
+
+                    closeEditModal();
+                    reloadCalendarEvents()
+                } catch (e) {
+                    alert('Error:' + e.message);
+                }
+            }
+
+            // 確認刪除事件
+            function confirmDeleteEvent() {
+                if (confirm('確定要刪除這個事件嗎？')) {
+                    deleteEvent();
+                }
+            }
+
+            // 刪除事件
+            async function deleteEvent() {
+                var eventId = document.getElementById('editEventId').value;
+
+                try {
+                    const response = await fetch(`/Frontstage/DataApi/DeleteCalendar/${eventId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert('Error: ' + (data.message || '無法刪除事件'));
+                        return;
+                    }
+
+                    closeEditModal();
+                    reloadCalendarEvents()
+                } catch (e) {
+                    alert('Error:'+e.message);
+                }
+            }
+
+            function reloadCalendarEvents() {
+                if (calendar) {
+                    calendar.refetchEvents(); // 重新得到事件
+                }
+            }
+
+    //------------------------------------------折線圖code----------------------------------------------------------
+
+            document.getElementById('filter').addEventListener('click', function () {
+                // 獲取輸入框的值
+                const dateRangeInput = document.getElementById('dateRange').value;
+                const Rate_Selected = document.getElementById('Rate_Selected');
+                const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
+
+                const houseSid = ChickHouseSelected.value; // 從下拉選單獲取選定的 HouseSid
+                const Judge = Number(Rate_Selected.value); // 從下拉選單獲取選定的 Judge
+                const memberSid = 1; // 固定為 1
+
+                if (!dateRangeInput) {
+                    // 如果是空值，執行相應操作（例如使用默認篩選條件或顯示所有資料）
+                    updateChart(memberSid, Judge, houseSid, null, null); // 用 null 表示沒有選擇的日期範圍
+                } else {
+                    // 如果有日期範圍值，繼續處理
+                    const [startDate, endDate] = dateRangeInput.split(' to ');
+                    updateChart(memberSid, Judge, houseSid, startDate, endDate);
                 }
             });
 
+            async function updateChart(memberSid, Judge, houseSid, startDate, endDate) {
+                try {
+                    const response = await fetch(`/Frontstage/DataApi/Update_Chart?memberSid=${memberSid}&houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
+                        method: 'GET',
+                    });
 
-            const defaultJudge = 1; // 設置預設的 Judge 值
-            const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
-            const defaultStartDate = null; // 初始無開始日期
-            const defaultEndDate = null; // 初始無結束日期
-
-            // 調用 updateChart 來設置初始數據
-            updateChart(defaultMemberSid, defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
-
-        });
-//------------------------------------------行事曆code----------------------------------------------------------
-
-        // 當點擊日曆中的事件時顯示詳細的彈出視窗
-        function showEventDetails(event) {
-            document.getElementById('editEventTitle').value = event.title;
-            document.getElementById('editEventTodoList').value = event.extendedProps.description;
-            document.getElementById('editEventFinished').value = event.extendedProps.finished;
-            document.getElementById('editEventId').value = event.id;
-
-            // 禁用編輯狀態
-            document.getElementById('editEventTitle').readOnly = true;
-            document.getElementById('editEventTodoList').readOnly = true;
-            document.getElementById('editEventFinished').disabled = true;
-
-            // 根據事件的完成狀態顯示或隱藏按鈕
-            if (event.extendedProps.finished === 1) {
-                document.getElementById('editEventBtn').style.display = 'none';
-                document.getElementById('saveEventBtn').style.display = 'none';
-                document.getElementById('confirmDeleteBtn').style.display = 'none'; // 假設刪除按鈕 ID 為 confirmDeleteBtn
-            } else {
-                document.getElementById('editEventBtn').style.display = 'inline-block';
-                document.getElementById('confirmDeleteBtn').style.display = 'inline-block';
-            }
-
-            new bootstrap.Modal(document.getElementById('editEventModal')).show();
-        }
-
-        // 關閉事件新增的彈出視窗
-        function closeAddModal() {
-            bootstrap.Modal.getInstance(document.getElementById('addEventModal')).hide();
-        }
-
-        // 關閉事件修改的彈出視窗
-        function closeEditModal() {
-            bootstrap.Modal.getInstance(document.getElementById('editEventModal')).hide();
-        }
-
-        // 啟用編輯模式
-        function enableEdit() {
-            document.getElementById('editEventTodoList').readOnly = false;
-            document.getElementById('editEventFinished').disabled = false;
-            document.getElementById('editEventBtn').style.display = 'none';
-            document.getElementById('saveEventBtn').style.display = 'inline-block';
-        }
-
-        // 保存新事件
-        async function submitEvent() {
-            var eventTitle = document.getElementById('addEventTitle').value;
-            var eventTodoList = document.getElementById('addEventTodoList').value;
-            var eventDate = document.getElementById('addEventDate').value;
-
-            var eventData = {
-                Title: eventTitle,
-                TodoList: eventTodoList,
-                StartDate: eventDate
-            };
-
-            try {
-                const response = await fetch('/Frontstage/DataApi/InsertCalendar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(eventData)
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    alert('Error: ' + (data.message || '無法儲存事件'));
-                    return;
-                }
-
-                closeAddModal();
-                reloadCalendarEvents()
-            } catch (e) {
-                alert('Error:' + e.message);
-            }
-        }
-
-        // 更新現有事件
-        async function updateEvent() {
-            var eventId = document.getElementById('editEventId').value;
-            var eventTitle = document.getElementById('editEventTitle').value;
-            var eventTodoList = document.getElementById('editEventTodoList').value;
-            var eventFinished = document.getElementById('editEventFinished').value;
-
-            var eventData = {
-                Id: eventId,
-                Title: eventTitle,
-                TodoList: eventTodoList,
-                Finished: eventFinished
-            };
-
-            try {
-                const response = await fetch(`/Frontstage/DataApi/UpdateCalendar/${eventId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(eventData)
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    alert('Error: ' + (data.message || '無法更新事件'));
-                    return;
-                }
-
-                closeEditModal();
-                reloadCalendarEvents()
-            } catch (e) {
-                alert('Error:' + e.message);
-            }
-        }
-
-        // 確認刪除事件
-        function confirmDeleteEvent() {
-            if (confirm('確定要刪除這個事件嗎？')) {
-                deleteEvent();
-            }
-        }
-
-        // 刪除事件
-        async function deleteEvent() {
-            var eventId = document.getElementById('editEventId').value;
-
-            try {
-                const response = await fetch(`/Frontstage/DataApi/DeleteCalendar/${eventId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
+                    if (!response.ok) {
+                        alert(`HTTP error! status: ${response.status}`);
+                        return;
                     }
-                });
 
-                const data = await response.json();
-
-                if (!response.ok) {
-                    alert('Error: ' + (data.message || '無法刪除事件'));
-                    return;
-                }
-
-                closeEditModal();
-                reloadCalendarEvents()
-            } catch (e) {
-                alert('Error:'+e.message);
-            }
-        }
-
-        function reloadCalendarEvents() {
-            if (calendar) {
-                calendar.refetchEvents(); // 重新得到事件
-            }
-        }
-
-//------------------------------------------折線圖code----------------------------------------------------------
-
-        document.getElementById('filter').addEventListener('click', function () {
-            // 獲取輸入框的值
-            const dateRangeInput = document.getElementById('dateRange').value;
-            const Rate_Selected = document.getElementById('Rate_Selected');
-            const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
-
-            const houseSid = ChickHouseSelected.value; // 從下拉選單獲取選定的 HouseSid
-            const Judge = Number(Rate_Selected.value); // 從下拉選單獲取選定的 Judge
-            const memberSid = 1; // 固定為 1
-
-            if (!dateRangeInput) {
-                // 如果是空值，執行相應操作（例如使用默認篩選條件或顯示所有資料）
-                updateChart(memberSid, Judge, houseSid, null, null); // 用 null 表示沒有選擇的日期範圍
-            } else {
-                // 如果有日期範圍值，繼續處理
-                const [startDate, endDate] = dateRangeInput.split(' to ');
-                updateChart(memberSid, Judge, houseSid, startDate, endDate);
-            }
-        });
-
-        async function updateChart(memberSid, Judge, houseSid, startDate, endDate) {
-            try {
-                const response = await fetch(`/Frontstage/DataApi/Update_Chart?memberSid=${memberSid}&houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
-                    method: 'GET',
-                });
-
-                if (!response.ok) {
-                    alert(`HTTP error! status: ${response.status}`);
-                    return;
-                }
-
-                const data = await response.json();
+                    const data = await response.json();
 
                 
 
-                // 動態設置圖表數據
-                const labels = data.rate.map(item => item.date); // 提取日期
-                myChart.data.labels = labels;
+                    // 動態設置圖表數據
+                    const labels = data.rate.map(item => item.date); // 提取日期
+                    myChart.data.labels = labels;
 
-                if (Judge === 1) {
-                    // 當 Judge 為 1 時，設置蛋率的數據
-                    const actualValues = data.rate.map(item => item.actualValue); // 實際蛋率
-                    const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化蛋率
+                    if (Judge === 1) {
+                        // 當 Judge 為 1 時，設置蛋率的數據
+                        const actualValues = data.rate.map(item => item.actualValue); // 實際蛋率
+                        const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化蛋率
 
-                    myChart.data.datasets[0].data = actualValues; // 設置實際蛋率
-                    myChart.data.datasets[1].data = normalizedValues; // 設置標準化蛋率
-                    myChart.data.datasets[0].label = '實際蛋率';
-                    myChart.data.datasets[1].label = '標準化蛋率';
-                } else if (Judge === 2) {
-                    // 當 Judge 為 2 時，設置不合格率的數據
-                    const values = data.rate.map(item => item.value); // 不合格率
+                        myChart.data.datasets[0].data = actualValues; // 設置實際蛋率
+                        myChart.data.datasets[1].data = normalizedValues; // 設置標準化蛋率
+                        myChart.data.datasets[0].label = '實際蛋率';
+                        myChart.data.datasets[1].label = '標準化蛋率';
+                    } else if (Judge === 2) {
+                        // 當 Judge 為 2 時，設置不合格率的數據
+                        const values = data.rate.map(item => item.value); // 不合格率
 
-                    myChart.data.datasets[0].data = values; // 設置不合格率
-                    myChart.data.datasets[0].label = '不合格率';
-                    myChart.data.datasets[1].data = []; // 清空另一條數據
-                    myChart.data.datasets[1].label = '';
-                } else if (Judge===3){
-                    // 當 Judge 為其他值時，設置死亡率的數據
-                    const actualValues = data.rate.map(item => item.actualValue); // 實際死亡率
-                    const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化死亡率
+                        myChart.data.datasets[0].data = values; // 設置不合格率
+                        myChart.data.datasets[0].label = '不合格率';
+                        myChart.data.datasets[1].data = []; // 清空另一條數據
+                        myChart.data.datasets[1].label = '';
+                    } else if (Judge===3){
+                        // 當 Judge 為其他值時，設置死亡率的數據
+                        const actualValues = data.rate.map(item => item.actualValue); // 實際死亡率
+                        const normalizedValues = data.rate.map(item => item.normalizedValue); // 標準化死亡率
 
-                    myChart.data.datasets[0].data = actualValues; // 設置實際死亡率
-                    myChart.data.datasets[1].data = normalizedValues; // 設置標準化死亡率
-                    myChart.data.datasets[0].label = '實際死亡率';
-                    myChart.data.datasets[1].label = '標準化死亡率';
+                        myChart.data.datasets[0].data = actualValues; // 設置實際死亡率
+                        myChart.data.datasets[1].data = normalizedValues; // 設置標準化死亡率
+                        myChart.data.datasets[0].label = '實際死亡率';
+                        myChart.data.datasets[1].label = '標準化死亡率';
+                    }
+
+                    myChart.update(); // 更新圖表
+                } catch (error) {
+                    console.error('更新圖表時發生錯誤:', error);
                 }
-
-                myChart.update(); // 更新圖表
-            } catch (error) {
-                console.error('更新圖表時發生錯誤:', error);
             }
-         }
 
 
-
-    </script>
+        </script>
+   }
 }
