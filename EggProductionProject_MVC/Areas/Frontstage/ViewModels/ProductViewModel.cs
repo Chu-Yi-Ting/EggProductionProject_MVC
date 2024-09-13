@@ -3,7 +3,7 @@
     public class ProductViewModel
     {
         public int productSid { get; set; }
-        public int? subcategoryNo { get; set; }
+        public int subcategoryNo { get; set; }
 		public string? subcategoryName { get; set; }
 		public int? itemNo { get; set; }
 		public string? itemName { get; set; }
