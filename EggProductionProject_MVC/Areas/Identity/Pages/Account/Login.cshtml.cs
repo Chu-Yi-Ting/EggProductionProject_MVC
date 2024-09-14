@@ -24,15 +24,18 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly EggPlatformContext _context;
+        private readonly TokenService _tokenService;
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
-             EggPlatformContext context)
+             EggPlatformContext context,
+             TokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -82,6 +85,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
         }
+
+
+       
+
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -153,5 +160,84 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        // 用於處理 QR Code 掃描後的請求
+        [HttpGet]
+        public async Task<IActionResult> AuthenticateQRCode(string token)
+        {
+            // 驗證 token 並獲取對應的 userId
+            var userId = _tokenService.ValidateToken(token);
+            if (userId == null)
+            {
+                return Unauthorized(); // token 無效或過期
+            }
+
+            // 根據 userId 查找對應的用戶
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized(); // 無效的用戶
+            }
+
+            // 確認用戶的身份，並進行登入
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            // 登入成功後重定向到首頁
+            return RedirectToAction("Index", "Home");
+        }
+
+        // 生成 QR Code 登入頁面，並顯示 QR Code
+        [HttpGet]
+        public async Task<IActionResult> QRCodeLogin()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge(); // 如果用戶未登入，請求登入
+            }
+
+            // 生成 QR Code 的 token
+            var token = _tokenService.GenerateToken(user.Id);
+
+            // 生成 QR Code URL，該 URL 包含 token
+            var qrCodeUrl = Url.Action("AuthenticateQRCode", "Account", new { token }, Request.Scheme);
+            if (qrCodeUrl == null)
+            {
+                // 記錄錯誤或日誌
+                throw new Exception("QR Code URL 生成失敗");
+            }
+            // 將 QR Code URL 傳給視圖
+            ViewData["QRCodeUrl"] = qrCodeUrl;
+            return Page();
+        }
     }
+
+
+
+    public class TokenService
+    {
+        private readonly Dictionary<string, (string UserId, DateTime Expiry)> _tokens = new Dictionary<string, (string, DateTime)>();
+
+        // 生成唯一的 QR Code token 並存儲用戶對應
+        public string GenerateToken(string userId)
+        {
+            var token = Guid.NewGuid().ToString();
+            var expiry = DateTime.UtcNow.AddMinutes(5); // Token 5 分鐘過期
+            _tokens[token] = (userId, expiry);
+            return token;
+        }
+
+        // 驗證 token 是否有效
+        public string ValidateToken(string token)
+        {
+            if (_tokens.TryGetValue(token, out var tokenInfo) && tokenInfo.Expiry > DateTime.UtcNow)
+            {
+                return tokenInfo.UserId; // 返回用戶ID
+            }
+
+            return null; // token 無效
+        }
+    }
+
 }
+

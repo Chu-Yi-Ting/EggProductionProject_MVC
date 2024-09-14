@@ -125,8 +125,8 @@
     <script>
         // 當頁面加載後，生成 QR 碼
         window.onload = function () {
-            // 取得 QR Code 的 URL (AuthenticatorUri 是從後端傳來的)
-            var qrCodeUrl = document.getElementById("qrCodeData").getAttribute("data-url");
+            // 從 ViewData 中取得 QR Code 的 URL
+            var qrCodeUrl = "@ViewData["QRCodeUrl"]";
 
             // 使用 QRCode.js 庫生成 QR 碼
             var qrcode = new QRCode(document.getElementById("qrCode"), {

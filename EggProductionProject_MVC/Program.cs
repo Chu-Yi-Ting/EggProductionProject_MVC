@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.HTTPModels;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using EggProductionProject_MVC.Areas.Identity.Pages.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -137,6 +138,8 @@ builder.Services.Configure<MvcOptions>(options =>
         _ => "此欄位是必填項目");
 });
 
+
+builder.Services.AddScoped<TokenService>(); // 註冊 TokenService
 
 var app = builder.Build();
 
