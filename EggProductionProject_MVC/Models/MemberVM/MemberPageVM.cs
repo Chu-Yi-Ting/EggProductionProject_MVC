@@ -28,7 +28,7 @@ namespace EggProductionProject_MVC.Models.MemberVM
         public string UserName { get; set; }
 
         public byte? IsBlocked { get; set; }
-
+        [StringLength(5, ErrorMessage = "雞農驗證碼長度為5個字", MinimumLength = 5)]
         public string Chickcode { get; set; }
 
         public string AspUserId { get; set; }

@@ -33,7 +33,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(7, ErrorMessage = "驗證碼長度必須介於6~7個字", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Authenticator code")]
             public string TwoFactorCode { get; set; }
@@ -90,7 +90,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             else
             {
                 _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
+                ModelState.AddModelError(string.Empty, "無效的驗證碼");
                 return Page();
             }
         }

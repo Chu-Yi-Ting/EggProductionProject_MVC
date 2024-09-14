@@ -31,8 +31,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "信箱為必填欄位！")]
+            [EmailAddress(ErrorMessage ="不正確的信箱格式！")]
             public string Email { get; set; }
         }
 
