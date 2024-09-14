@@ -12,6 +12,8 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "影片資訊")]
        public string? InformationColumn { get; set; }
 
+        [Display(Name = "影片時長")]
+        public int? VideoDuration { get; set; }
 
         [Display(Name = "影片分類")]
         public int? NatureSid { get; set; }

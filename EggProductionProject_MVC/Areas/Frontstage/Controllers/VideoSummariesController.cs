@@ -208,6 +208,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             var EditVideo = new EggProductionProject_MVC.Models.VideoSummary
             {
+                VideoDuration = Edit.VideoDuration,
                 VideoCoverImage = Edit.VideoCoverImage,
                 VideoSid = Edit.VideoSid,
                 VideoTitle = Edit.VideoTitle,
@@ -245,6 +246,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 InformationColumn = 資料庫資料.InformationColumn,
                 UploadDate = 資料庫資料.UploadDate,
                 NatureSid = 資料庫資料.NatureSid,
+                VideoDuration = 資料庫資料.VideoDuration,
                 PublicStatusNo = 3,
             };
             _context.Entry(資料庫資料).State = EntityState.Detached;
@@ -261,6 +263,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 儲存影片的基本資訊
             var CreatVideo = new EggProductionProject_MVC.Models.VideoSummary
             {
+                VideoDuration = Creat.VideoDuration,
                 VideoTitle = Creat.VideoTitle,
                 CreatorSid = Creat.CreatorSid,
                 TimesWatched = 0,
@@ -317,7 +320,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             var CreatVideo = new EggProductionProject_MVC.Models.VideoSummary
             {
-
+                
                 VideoCoverImage = AddVideo.VideoCoverImage,
                 VideoSid = AddVideo.VideoSid,
                 MoviePath = AddVideo.MoviePath,
@@ -326,6 +329,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 TimesWatched = 資料庫資料.TimesWatched,
                 InformationColumn = 資料庫資料.InformationColumn,
                 UploadDate = 資料庫資料.UploadDate,
+                VideoDuration = 資料庫資料.VideoDuration,
                 NatureSid = 資料庫資料.NatureSid,
                 PublicStatusNo = 資料庫資料.PublicStatusNo,
             };

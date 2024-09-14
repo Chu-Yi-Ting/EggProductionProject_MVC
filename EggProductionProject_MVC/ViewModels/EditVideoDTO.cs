@@ -9,6 +9,9 @@ namespace EggProductionProject_MVC.ViewModels
         [Display(Name = "影片標題")]
         public string? VideoTitle { get; set; }
 
+        [Display(Name = "影片時長")]
+        public int? VideoDuration { get; set; }
+
         [Display(Name ="創作者ID")]
         public int CreatorSid { get; set; }
 
