@@ -553,6 +553,7 @@
                                                            
                                                             <input type="text" id="username" name="Name" asp-for="Name">
                                                     </div>
+                                                    
                                                     <span class="text-danger" asp-validation-for="Name"></span>
 
                                                     <br>
@@ -1165,6 +1166,10 @@
 
     // 當表單輸入改變時進行驗證
     form.addEventListener('input', validateForm);
+
+
+        //-------------------------------新版驗證會員輸入的資料是否有符合規則------------
+ 
 
 
         //-----------------------更新會員資料-----------------------

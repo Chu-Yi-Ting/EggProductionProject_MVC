@@ -1,17 +1,151 @@
 ﻿@page
 @model ExternalLoginModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "綁定信箱";
 }
 
-<h2>@ViewData["Title"]</h2>
-<h4 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h4>
+@section Styles {
+    <style>
+
+
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .left-column {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .login-box,
+        .welcome-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+
+
+        .login-box {
+            margin-bottom: 20px;
+        }
+
+            .login-box a {
+                text-align: center;
+            }
+
+
+            .login-box h1 {
+                color: #b3922c;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+                background-color: #fff;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+            .divider::before,
+            .divider::after {
+                /* content: ""; */
+                position: absolute;
+                top: 50%;
+                width: 40%;
+                height: 1px;
+                background-color: #ddd;
+            }
+
+            .divider::before {
+                left: 0;
+            }
+
+            .divider::after {
+                right: 0;
+            }
+
+            .divider span {
+                color: #666;
+                background-color: #fff;
+                padding: 0 10px;
+            }
+
+        .welcome-box {
+            background-color: #b3922c;
+            color: #fff;
+            text-align: center;
+        }
+
+            .welcome-box h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+                background-color: #b3922c;
+            }
+
+            .welcome-box p {
+                margin-bottom: 20px;
+            }
+
+            .welcome-box a {
+                color: #fff;
+                text-decoration: underline;
+                text-align: center;
+            }
+
+                .welcome-box a:hover {
+                    text-decoration: none;
+                }
+    </style>
+}
+
+@* <h2>@ViewData["Title"]</h2>
+<h4 id="external-login-title">與您的 @Model.ProviderDisplayName 帳號做綁定</h4>
 <hr />
 
 <p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+    您已成功通過 <strong>@Model.ProviderDisplayName</strong> 進行身份驗證。 
+    請在下方輸入此網站的電子郵件地址，然後點擊「註冊」按鈕以完成登入。
 </p>
 
 <div class="row">
@@ -23,11 +157,94 @@
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+            <button type="submit" class="btn btn-default">完成綁定</button>
         </form>
+    </div>
+</div> *@
+
+
+
+
+
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <div class="login-box">
+                    <h1>完成綁定</h1>
+                    <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post" id="registerGoogleForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class=" btn btn-primary w-100">確認</button>
+                    </form>
+
+                </div>
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+
+                    <p><a id="register-link" asp-area="Identity" asp-controller="Account" asp-action="Register">新加入？立即註冊</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<!-- 註冊成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="SuccessToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            綁定成功！請於30分鐘內至信箱確認您的電子郵件。
+        </div>
     </div>
 </div>
 
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+        // //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出toast顯示-------------
+        // $(document).ready(function () {
+        //     // 攔截表單提交事件
+        //     $('#registerGoogleForm').on('submit', function (e) {
+        //         e.preventDefault();  // 阻止表單的預設行為（刷新頁面）
+
+        //         $.ajax({
+        //             url: '@Url.Page("/Account/ExternalLogin")', // 設定提交到的頁面
+        //             type: 'POST',
+        //             data: $(this).serialize(), // 將表單序列化為資料
+        //             success: function (response) {
+                     
+        //                 if (response.success) {
+        //                     const SuccessToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
+        //                     SuccessToast.show();
+
+        //                 } else {
+        //                     alert("註冊失敗，請再嘗試一次")
+        //                 }
+        //             },
+        //             error: function () {
+        //                 alert('提交失敗，請再試一次');
+        //             }
+        //         });
+        //     });
+        // });
+    </script>
 }

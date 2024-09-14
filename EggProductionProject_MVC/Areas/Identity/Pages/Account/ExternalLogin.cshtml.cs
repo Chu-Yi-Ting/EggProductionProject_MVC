@@ -154,7 +154,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                             pageHandler: null,
                             values: new { area = "Identity", userId = userId, code = code, token = encodedToken, success = true },
                             protocol: Request.Scheme);
-
+                        //修改寄件內容
                         await _emailSender.SendEmailAsync(Input.Email, "建立GoodEgg帳戶",
                              "<h2>驗證您的電子郵件位址</h2>" +
                         $"此步驟是要驗證您用來登入GoodEgg好蛋雞農整合平台的電子郵件位址。若要完成建立帳戶，請按右方的[驗證連結]以進入網站。" +
@@ -163,7 +163,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            //跳轉到這個頁面，但我目前不想讓他跳轉
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl,success=true });
+
+                            //return new JsonResult(new { success = true, message = "綁定成功！" });
                         }
 
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);

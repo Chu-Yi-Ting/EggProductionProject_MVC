@@ -189,9 +189,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <form asp-controller="Account" asp-action="ExternalLogin" method="post">
-    <button type="submit" name="provider" value="Google" class="btn btn-primary">用 Google 登入</button>
+                            <button type="submit" name="provider" value="Google" class="btn btn-primary w-100  ms-2">用 Google 登入</button>
                             </form>
-                        <button type="button" class="btn btn-light w-100 ms-2">使用 FACEBOOK</button>
+                        <form asp-controller="Account" asp-action="ExternalLogin" method="post">
+                            <button type="submit" name="provider" value="Google" class="btn btn-light w-100  ms-2">使用 FACEBOOK</button>
+                        </form>
+                        @* <button type="button" class="btn btn-light w-100 ms-2"></button> *@
                     </div>
                 </div>
 
