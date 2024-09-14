@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using NuGet.Protocol;
 using EggProductionProject_MVC.Models.MemberVM;
 
+
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
     [Area("Frontstage")]
@@ -37,9 +38,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 從 Session 取得 memberAspID，不知道有沒有掛掉
             var userAspId  = HttpContext.Session.GetString("userId");
 
-            
-            
-            var member = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
+
+
+            var member =  _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
 
             var memberPageVM = new MemberPageVM
             {
@@ -54,7 +55,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 Chickcode = member.Chickcode,
                 AspUserId = member.AspUserId,
                 ProfilePic = member.ProfilePic,
-
+                MemberAreas = member.MemberAreas,
+                Certifications = member.Certifications,
             };
 
 

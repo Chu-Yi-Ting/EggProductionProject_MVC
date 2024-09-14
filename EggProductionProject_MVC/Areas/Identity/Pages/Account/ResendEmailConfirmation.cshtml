@@ -1,26 +1,208 @@
 ﻿@page
 @model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = "Resend email confirmation";
+    ViewData["Title"] = "重新寄送信箱驗證";
+}
+@section Styles {
+    <style>
+
+
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .left-column {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .login-box,
+        .welcome-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+
+
+        .login-box {
+            margin-bottom: 20px;
+        }
+
+            .login-box a {
+                text-align: center;
+            }
+
+
+            .login-box h1 {
+                color: #b3922c;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+                background-color: #fff;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+            .divider::before,
+            .divider::after {
+                /* content: ""; */
+                position: absolute;
+                top: 50%;
+                width: 40%;
+                height: 1px;
+                background-color: #ddd;
+            }
+
+            .divider::before {
+                left: 0;
+            }
+
+            .divider::after {
+                right: 0;
+            }
+
+            .divider span {
+                color: #666;
+                background-color: #fff;
+                padding: 0 10px;
+            }
+
+        .welcome-box {
+            background-color: #b3922c;
+            color: #fff;
+            text-align: center;
+        }
+
+            .welcome-box h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+                background-color: #b3922c;
+            }
+
+            .welcome-box p {
+                margin-bottom: 20px;
+            }
+
+            .welcome-box a {
+                color: #fff;
+                text-decoration: underline;
+                text-align: center;
+            }
+
+                .welcome-box a:hover {
+                    text-decoration: none;
+                }
+    </style>
 }
 
 <h1>@ViewData["Title"]</h1>
-<h4>Enter your email.</h4>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 right-column">
+                <div class="login-box">
+                    <h1>重新寄送驗證信</h1>
+                    <form method="post" id="resendEmailForm">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">確定</button>
+                    </form>
+
+                </div>
+
+                <div class="welcome-box">
+                    <h1>歡迎回來！</h1>
+                    <p>智慧養殖，從掌蛋記錄開始</p>
+
+                    <p><a id="register-link" asp-area="Identity" asp-controller="Account" asp-action="Register">新加入？立即註冊</a></p>
+
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Resend</button>
-        </form>
+        </div>
     </div>
-</div>
+</body>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出toast顯示-------------
+        $(document).ready(function () {
+            // 攔截表單提交事件
+            $('#resendEmailForm').on('submit', function (e) {
+                e.preventDefault();  // 阻止表單的預設行為（刷新頁面）
+
+                $.ajax({
+                    url: '@Url.Page("/Account/ResendEmailConfirmation")', // 設定提交到的頁面
+                    type: 'POST',
+                    data: $(this).serialize(), // 將表單序列化為資料
+                    success: function (response) {
+                        if (response.success) {
+                            const SuccessToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
+                            SuccessToast.show();
+
+                        } else {
+                            alert("註冊失敗，請再嘗試一次")
+                        }
+                    },
+                    error: function () {
+                        alert('提交失敗，請再試一次');
+                    }
+                });
+            });
+        });
+    </script>
 }
