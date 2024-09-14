@@ -89,7 +89,25 @@
     <Content Update="wwwroot\Images\NoImage2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\Images\Products\cage1.jpg">
+    <Content Update="wwwroot\Images\Products\2cb3d5c3-1b9e-4dfa-9cc4-18ab74687d97_egg15.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\405f61a5-060f-4eac-96b8-3d2c12c08fee.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\40edcd8b-038c-41de-9c65-f883f5f562b7_egg14.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\60b6194d-cbc8-4377-85d0-ee22443dca45_egg16.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\6d8f618a-4371-4947-ba8c-cd6f28d67960_teaegg2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\9363f8d8-3007-4a49-afa8-0b6e022ae18e_egg17.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\e7304ba1-c764-48d2-88f9-f946f1357fb6_ironegg3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Images\Products\egg1.jpg">
@@ -99,6 +117,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Images\Products\egg11.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Products\egg13.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Images\Products\egg2.jpeg">
@@ -147,6 +168,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Images\Products\teaegg1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\Stores\111445e0-b0fe-4072-a7bb-fb81c7d2cced.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Images\Stores\store1.jpg">
