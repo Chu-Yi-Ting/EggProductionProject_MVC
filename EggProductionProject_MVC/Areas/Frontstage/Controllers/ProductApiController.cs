@@ -43,6 +43,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 origin = p.Origin,
                 quantity = p.Quanitity,
                 launchTime = p.LaunchTime,
+                discountPercent = p.DiscountPercent,
                 productImagePath = _context.ProductImages
                     .Where(img => img.ProductSid == p.ProductSid)
                     .Select(img => img.ProductImagePath)
@@ -73,6 +74,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 origin = p.Origin,
                 quantity = p.Quanitity,
                 launchTime = p.LaunchTime,
+                discountPercent = p.DiscountPercent,
                 productImagePath = _context.ProductImages
                     .Where(img => img.ProductSid == p.ProductSid)
                     .Select(img => img.ProductImagePath)

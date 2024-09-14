@@ -585,7 +585,7 @@
     </div>
 </div>
 
-@* AJAX區 *@
+
 @section Scripts {
 
     <script>
@@ -761,7 +761,8 @@
 
             //JSON 資料讀取及顯示
             const products = datas.productsResult.map(product => {
-                const { productSid, productName, price, stock, subcategoryNo, storeSid, productImagePath, imageDescription } = product
+                const { productSid, productName, price, stock, subcategoryNo, storeSid, productImagePath, imageDescription, discountPercent } = product
+                const discountedPrice = price * discountPercent;
                 return (`
                            <div class="col-lg-4">
                               <div class="product-card" onclick="window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'">
@@ -769,8 +770,8 @@
                                  <div class="card-body">
                                     <h5 class="card-title">${productName} </h5>
                                     <div class="price-and-button">
-                                       <p class="price"> $${price * 0.8} <span class="old-price"> $${price} </span></p>
-                                               <button class="btn" onclick="event.stopPropagation(); window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'"> 查看更多 </button>
+                                        <p class="price"> $${discountedPrice.toFixed(0)} <span class="old-price"> $${price} </span></p>
+                                        <button class="btn" onclick="event.stopPropagation(); window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'"> 查看更多 </button>
                                     </div>
                                  </div>
                               </div>

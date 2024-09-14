@@ -18,6 +18,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
         public IActionResult OnlineShop()
         {
+            ViewData["Title"] = "Good EGG商城購物";
             return View();
         }
 
