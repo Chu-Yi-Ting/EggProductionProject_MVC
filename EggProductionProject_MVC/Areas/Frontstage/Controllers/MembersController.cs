@@ -9,6 +9,7 @@ using EggProductionProject_MVC.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 using NuGet.Protocol;
+using EggProductionProject_MVC.Models.MemberVM;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -38,7 +39,23 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             
             
-            var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
+            var member = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
+
+            var memberPageVM = new MemberPageVM
+            {
+                // 將 member 的屬性對應到 MemberPageVM 的屬性
+                MemberSid = member.MemberSid,
+                Name = member.Name,
+                Email = member.Email,
+                Phone = member.Phone,
+                BirthDate = member.BirthDate,
+                IsChickFarm = member.IsChickFarm,
+                IsBlocked = member.IsBlocked,
+                Chickcode = member.Chickcode,
+                AspUserId = member.AspUserId,
+                ProfilePic = member.ProfilePic,
+
+            };
 
 
             //原本的寫法，不知道為什麼掛了
@@ -51,7 +68,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             ViewData["Title"] = "GOOD EGG 會員頁面"; // 設定首頁的標題
 
             //ViewBag.UserName = user.Name;
-            return View(user);
+            return View(memberPageVM);
             
            
                 
