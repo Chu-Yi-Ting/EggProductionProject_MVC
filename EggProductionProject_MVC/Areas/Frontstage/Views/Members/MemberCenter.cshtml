@@ -1,0 +1,999 @@
+﻿@{
+	Layout = "_FrontLayout_common";
+}
+
+@{
+	var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+
+@section Styles {
+
+	<link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+	<!-- FixedHeader 样式 -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/frontstagetemplate/assets/dist/css/style-more-n.css" rel="stylesheet" />
+	<style>
+		
+	</style>
+}
+
+<div class="title-bg mb-3">
+	<img class="w-100"
+		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_18.png"
+		 alt="" />
+</div>
+
+
+<div class="album py-5 container-outer-n memberCenter-outer" style="min-height:600px">
+	<div class="col-12">
+		<div class="d-flex flex-column align-items-center">
+			<div class="page-title">
+				<h5 class="mb-3 page-title-in">會員中心</h5>
+			</div>
+			<div class="tab-see outer-nav my-1">
+				<ul class="nav nav-pills mb-1 tab-controll-n" id="outers-tab" role="tablist">
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link active" id="outers-one-tab" data-bs-toggle="pill" data-bs-target="#outers-one" type="button" role="tab" aria-controls="outers-one" aria-selected="true">基本資料</button>
+					</li>
+				
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-four-tab" data-bs-toggle="pill" data-bs-target="#outers-four" type="button" role="tab" aria-controls="outers-four" aria-selected="false">商城訂單</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-five" type="button" role="tab" aria-controls="outers-five" aria-selected="false">優惠券專區</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-six" type="button" role="tab" aria-controls="outers-six" aria-selected="false">地址管理</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-seven" type="button" role="tab" aria-controls="outers-seven" aria-selected="false">代幣管理</button>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+
+
+		<div class="tab-content" id="outers-tabContent">
+			<div class="tab-pane fade show active" id="outers-one" role="tabpanel" aria-labelledby="outers-one-tab">
+				1
+			</div>
+		
+			<div class="tab-pane fade" id="outers-four" role="tabpanel" aria-labelledby="outers-four-tab">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0">
+							@* 		<div class="page-title">
+							<h5 class="mb-3">訂單管理</h5>
+							</div> *@
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">訂單成立</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">訂單待出貨</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three" type="button" role="tab" aria-controls="pills-three" aria-selected="false">訂單代收貨</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-four-tab" data-bs-toggle="pill" data-bs-target="#pills-four" type="button" role="tab" aria-controls="pills-four" aria-selected="false">訂單完成</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-five-tab" data-bs-toggle="pill" data-bs-target="#pills-five" type="button" role="tab" aria-controls="pills-five" aria-selected="false">訂單退貨</button>
+									</li>
+
+								</ul>
+							</div>
+
+
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+
+
+									<table id="tableList" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+
+								</div>
+								<div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+									<table id="tableList2" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
+									<table id="tableList3" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
+									<table id="tableList4" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
+									<table id="tableList5" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="outers-five" role="tabpanel">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0 ">
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="true">未使用</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">已使用</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-three-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">已過期</button>
+									</li>
+								</ul>
+							</div>
+							<div class="w-100 d-flex justify-content-center">
+								<div class="row w-100" id="couponList" style="height:400px; max-width:960px;  ">
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+
+			<div class="tab-pane fade" id="outers-six" role="tabpanel" aria-labelledby="outers-six-tab">
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class="col-12">
+							<div class="page-title">
+								<h5 class="mb-3 d-flex justify-content-end w-100">
+									
+									<span class="d-flex">
+										<a class="btn light-btn-n btn-sm-dbrs changeOpen" data-bs-toggle="modal" href="#exampleModalToggle5" role="button">物流開放</a>
+										<a class="btn  light-btn-n btn-sm-dbrs ms-3 addAddress" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
+									</span>
+								</h5>
+							</div>
+						</div>
+				<div class="col-lg-12 mt-3 " id="accordionExample1">
+					<div class="accordion" id="accordionExample">
+						<div class="accordion-item mb-4 ">
+							<h2 class="accordion-header" id="heading1">
+								<button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+									宅配 <img src="/FrontstageTemplate/assets/brand/common/blackcat_logo.svg" alt="宅配">
+								</button>
+							</h2>
+							<div id="collapse1" class="accordion-collapse collapse disabled" aria-labelledby="heading1" data-bs-parent="#accordionExample1">
+								<div class="accordion-body">
+								</div>
+							</div>
+						</div>
+						<div class="accordion-item mb-4 ">
+							<h2 class="accordion-header" id="heading2">
+								<button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+									超商 <img src="/FrontstageTemplate/assets/brand/common/seven-logo.png" alt="超商">
+								</button>
+							</h2>
+							<div id="collapse2" class="accordion-collapse collapse disabled" aria-labelledby="heading2" data-bs-parent="#accordionExample1">
+								<div class="accordion-body">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="outers-seven" role="tabpanel" aria-labelledby="outers-seven-tab">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0 ">
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab-coin" data-bs-toggle="pill" type="button" role="tab" aria-selected="true">獲得</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab-coin" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">使用</button>
+									</li>
+								
+								</ul>
+							</div>
+							
+							<p class="coin-total">
+								可用代幣總額:<span id="coinAmount">32</span>
+							</p>
+
+
+							<table id="tableList6" class="table table-striped table-hover w-100">
+								<thead class="">
+								</thead>
+							</table>
+
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+
+
+@section Scripts {
+
+	<script src="~/lib/datatables.net/datatables.min.js"></script>
+
+	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+	<script src="~/js/common.js"></script>
+
+	<script>
+
+
+
+		$(document).ready(function () {
+
+			const nowId = '@ViewBag.MemberSid';
+			let store;
+			let nowOrderSid;
+
+
+			$("#tableList").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 1
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList2").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 2
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList3").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 3
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList4").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 4
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList5").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 5
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			const preprocessData = (data) => {
+				return data.map(item => {
+					const keys = Object.keys(item);
+					return keys.reduce((acc, key) => {
+						acc[key] = item[key] || '';
+						return acc;
+					}, {});
+				});
+			};
+
+
+			//-----------------------coupon--------------------------
+
+
+			const loadCoupons = async (CouponStatusNo) => {
+
+				let searchCoupon = {
+					"memberSid": nowId,
+					"CouponStatusNo": CouponStatusNo
+				};
+
+
+				const api = '@Url.Content("~/Frontstage/MemberCenterAPI/GetCouponsForMember")';
+
+
+				const response = await fetch(api, {
+					method: 'POST',
+					body: JSON.stringify(searchCoupon),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+
+				const data = await response.json();
+				console.log(data);
+
+
+				const generateStoresHtml = (data) => {
+					return data.map(data => {
+						let noUseClass = '';
+						let expiredText = '';
+
+						if (searchCoupon.CouponStatusNo == 2) {
+							noUseClass = 'noUse';
+							expiredText = '<div class="expired-text">已使用</div>';
+						} else if (searchCoupon.CouponStatusNo == 3) {
+							noUseClass = 'noUse';
+							expiredText = '<div class="expired-text">已過期</div>';
+						}
+
+						return `
+							<div class="col-lg-6 coupon-outer-col">
+								<div class="card shadow-sm cart-card coupon-card ${noUseClass}" style="width: 410px;">
+									${expiredText}
+									<div class="cart-card-item w-100 p-0">
+										<div class="card-body-img d-flex w-100">
+											<div class="img_box">
+												<img src="/assets/brand/page/cart/coupon.png">
+												<i class="fa-solid fa-ticket"></i>
+											</div>
+											<div class="card-body my-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="d-flex flex-column justify-content-between align-items-start w-100">
+														<small class="kindTime">${data.kindTime}</small>
+														<small class="couponName" style="font-size: 15px; font-weight: 500; color: #525252;">${data.couponName}</small>
+													</div>
+												</div>
+												<div class="bottom_item flex-md-row align-items-md-center">
+													<div class="d-flex flex-column justify-content-between align-items-start me-3">
+														<big class="price">${data.price}元</big>
+														<small class="min" style="color: #a8a8a8; font-weight: 400;">※結帳商品總和低消<span>${data.minimum}</span></small>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						`;
+					}).join('');
+				};
+
+
+
+				const divSpots = document.getElementById('couponList');
+				divSpots.innerHTML = generateStoresHtml(data);
+			};
+
+			loadCoupons(1);
+
+			//-----------------------coin-------------------------------
+
+			const CoinObject = {
+				memberSid: nowId,
+				IsPositive: 1
+			};
+
+			$("#tableList6").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/GetStoreCoinData",
+					data: function () {
+
+
+						return JSON.stringify(CoinObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: -1,
+						render: function (data, type, row) {
+							return `<p class="text-main-n mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+	
+					{ "data": "orderNo", "width": "auto", "title": "商城訂單編號" },
+					{
+						"data": "changeTime", "width": "auto", "title": "代幣異動時間", "render": function (data, type, row) {
+							return formatDateTime(data);
+						}
+					},
+					{ "data": "money", "width": "auto", "title": "代幣金額" },
+					
+
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			const loadCoinTotal = async () => {
+
+				const api = `@Url.Content("~/Frontstage/CartsAPI/GetTotal?memberSid=${nowId}")`;
+
+				try {
+
+					const response = await fetch(api, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+
+					const data = await response.json();
+
+					const span = document.getElementById('coinAmount');
+					span.innerHTML = data;
+
+				} catch (error) {
+					console.error('Fetch error:', error);
+				}
+			};
+
+			loadCoinTotal();
+			//----------------------address--------------------------------
+
+
+			//主畫面列出當前所有資料
+			const loadAddress = async () => {
+				const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
+				const BuyData1 = {
+					"Msid": nowId,
+				};
+
+				try {
+					const response = await fetch(api, {
+						method: 'POST',
+						body: JSON.stringify(BuyData1),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+
+
+					const data = await response.json();
+					console.log("data", data)
+
+					const generateProductsHtml = (addresses) => {
+						return addresses.map(address => {
+							const storeNameClass = address.storeName ? '' : 'd-none';
+							const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+							const storeSid = BuyData1.storeSid;
+
+
+							// const storeNameClass = address.storeName ? '' : 'd-none';
+							const showFirstButton = address.storeName ? '' : 'd-none';
+							const showSecondButton = address.storeName ? 'd-none' : '';
+
+							return `
+
+
+														<div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}">
+												<div class="w-100 mx-auto">
+															<div class="part form-control-n w-100">
+														<div class="carrier-type w-100 d-flex justify-content-between pb-1">
+															<p class="d-flex align-items-center mb-0">
+																				${address.carrierName}<span class="way_no${address.carrierWayNo}">${address.way}</span>
+															</p>
+															<div class="d-flex justify-content-center align-items-center">
+																<button class="btn track-info p-0" data-deletesid="${address.carrierAddressSid}">刪除</button>
+
+
+																									<a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button"  data-edit="${address.carrierAddressSid}">編輯</a>
+										<a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
+
+
+															</div>
+														</div>
+														<div class="carrier-address d-flex flex-column flex-xl-row">
+															<div class="d-flex mt-1 mt-md-0">
+																		<p class="name me-2 m-0">${address.recordName}</p>
+																		<p class="phone me-2 m-0">${address.recordPhone}</p>
+															</div>
+
+																	<p class="address me-2 m-0">
+																											<span class="me-1 ${storeNameClass}">${address.storeName}  | </span>${address.adress}
+																										</p>
+														</div>
+																<p class="default me-2 m-0 ${defaultClass}">預設</p>
+													</div>
+												</div>
+												</div>
+
+
+														`;
+						}).join('<hr class="m-0" />');
+					};
+
+					const defaultCarriers = [
+						{ carrierNo: 1, displayText: '宅配', imageSrc: '/FrontstageTemplate/assets/brand/common/blackcat_logo.svg', addresses: [] },
+						{ carrierNo: 2, displayText: '超商', imageSrc: '/FrontstageTemplate/assets/brand/common/seven-logo.png', addresses: [] }
+					];
+
+
+
+
+					const generateStoresHtml1 = (data) => {
+						const carriersMap = defaultCarriers.reduce((map, carrier) => {
+							map[carrier.carrierNo] = carrier;
+							return map;
+						}, {});
+
+						data.forEach(store => {
+							if (carriersMap[store.carrierNo]) {
+								carriersMap[store.carrierNo].addresses = store.addresses;
+							}
+						});
+
+						return Object.values(carriersMap).map(store => {
+							const hasAddresses = store.addresses.length > 0;
+							const buttonClass = hasAddresses ? 'accordion-button collapsed' : 'accordion-button collapsed disabled';
+							const productsHtml = hasAddresses ? generateProductsHtml(store.addresses) : '';
+
+
+
+
+
+							return `
+																	<div class="accordion-item mb-4 ">
+														<h2 class="accordion-header" id="heading${store.carrierNo}">
+															<button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
+																${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
+															</button>
+														</h2>
+														<div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
+															<div class="accordion-body">
+
+																	${productsHtml}
+
+
+															</div>
+														</div>
+													</div>
+
+
+												`;
+						}).join('');
+					};
+
+
+					const divSpots1 = document.getElementById('accordionExample1');
+					divSpots1.innerHTML = generateStoresHtml1(data);
+
+
+					const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
+
+
+
+					// 通用的更新模态框内容函数
+					const updateModalContent = (modalId, addressData, updateCallback) => {
+						const nameInput = document.querySelector(`${modalId} .addressName input`);
+						const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+						const addressInput = document.querySelector(`${modalId} .address input`);
+						const address = document.querySelector('#exampleModalToggle4 .carrier-address div');
+						const checkbox = document.querySelector(`${modalId} .hidden-box`);
+						const priceElement = document.querySelector(`${modalId} .carryway .checktext-money`);
+
+						const addressStoreName = document.querySelector(`${modalId} .carrier-address .storeName`);
+						const addressStoreId = document.querySelector(`${modalId} .carrier-address .storeId`);
+
+						if (addressData && addressData.length > 0) {
+							nameInput.value = addressData[0].recordName || '';
+							phoneInput.value = addressData[0].recordPhone || '';
+
+							if (addressInput) {
+								addressInput.value = addressData[0].adress || '';
+							} else {
+								address.textContent = addressData[0].adress.replace(/\|$/, '').trim() || '';
+							}
+
+							if (checkbox) {
+								checkbox.checked = (addressData[0].carrierWayNo === 1);
+							}
+							if (priceElement) {
+								priceElement.textContent = `$${addressData[0].price || 0}`;
+							}
+							if (addressStoreName) {
+								addressStoreName.textContent = addressData[0].storeName || '';
+							}
+							if (addressStoreId) {
+								addressStoreId.textContent = addressData[0].storeId || '';
+							}
+						}
+
+						$(document).on('click', `${modalId} .dark-btn-n`, function () {
+							const submitdata = {
+								CarrierAddressSid: addressData[0].carrierAddressSid,
+								MemberSid: nowId,
+								RecordName: nameInput.value,
+								RecordPhone: phoneInput.value,
+								Adress: addressInput ? addressInput.value : address.textContent,
+								StoreName: addressStoreName ? addressStoreName.textContent : undefined,
+								StoreId: addressStoreId ? addressStoreId.textContent : undefined,
+								CarrierWayNo: checkbox ? (checkbox.checked ? 1 : 2) : undefined
+							};
+							updateCallback(submitdata);
+						});
+					};
+
+
+				} catch (error) {
+					console.error('There has been a problem with your fetch operation:', error);
+				}
+			};
+			loadAddress();
+
+
+			//--------------共用刷新-------------------------------
+
+			$('.nav-link').on('click', function () {
+				const id = $(this).attr('id');
+
+				//order
+				let tabContentId = '#pills-one';
+
+				$('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+					var activeTabId = $(e.target).attr('id');
+					var activeTabText = $(e.target).text();
+
+					tabContentId = $(e.target).attr('data-bs-target');
+
+					var tableSelector = `${tabContentId} table`;
+					var table = $(tableSelector).DataTable();
+
+					if (table) {
+						table.ajax.reload();
+						table.columns.adjust().draw();
+					}
+				});
+
+
+				//Coupon
+				let CouponStatusNo = 1;
+				if (id === 'pills-one-tab-coupon') {
+					CouponStatusNo = 1;
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-two-tab-coupon') {
+					CouponStatusNo = 2;
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-three-tab-coupon') {
+					CouponStatusNo = 3;
+					loadCoupons(CouponStatusNo);
+				}
+
+				
+				if (id === 'pills-one-tab-coin') {
+					CoinObject.IsPositive = 1;
+					var table = $("#tableList6").DataTable();
+					table.ajax.reload();
+					table.columns.adjust().draw();
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-two-tab-coin') {
+					CoinObject.IsPositive = 0;
+					var table = $("#tableList6").DataTable();
+					table.ajax.reload();
+					table.columns.adjust().draw();
+				}
+
+
+
+
+
+			});
+		});
+	</script>
+}

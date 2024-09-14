@@ -1,6 +1,10 @@
 ﻿@{
     Layout = "_FrontLayout_common";
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
+
 @model Dictionary<string, string>
 @section Styles {
     <style>

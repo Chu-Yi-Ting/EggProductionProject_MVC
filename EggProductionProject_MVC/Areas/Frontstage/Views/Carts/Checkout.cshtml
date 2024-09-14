@@ -1,6 +1,9 @@
 ﻿@{
 	Layout = "_FrontLayout_common";
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using EggProductionProject_MVC.Data
+@using Microsoft.AspNetCore.Identity
 
 @section Styles {
 	<style>
@@ -262,6 +265,17 @@
 
 
 	<script>
+
+		window.onload = function () {
+			if (!sessionStorage.getItem('reloaded')) {
+				sessionStorage.setItem('reloaded', 'true');
+				setTimeout(function () {
+					window.location.href = window.location.href;
+				}, 1000); 
+			} else {
+				sessionStorage.removeItem('reloaded');
+			}
+		};
 
 		const postData = JSON.parse(sessionStorage.getItem('postData'));
 		if (!postData) {
