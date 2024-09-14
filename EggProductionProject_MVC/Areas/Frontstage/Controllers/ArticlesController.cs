@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
 using System.Security.Claims;
 using EggProductionProject_MVC.Areas.Frontstage.Controllers;
-using static EggProductionProject_MVC.Areas.Frontstage.Controllers.ArticlesDTOController;
+using static EggProductionProject_MVC.Areas.Frontstage.Controllers.ArticlesDTO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -426,28 +426,28 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         //    }
         //    return Ok(categoryDtos);
         //}
-        //private async Task<string> CompressImageAsync(byte[] imageBytes)
-        //{
-        //    using (var inputStream = new MemoryStream(imageBytes))
-        //    using (var image = await Image.LoadAsync(inputStream))
-        //    {
-        //        image.Mutate(x => x.Resize(new ResizeOptions
-        //        {
-        //            Size = new Size(400, 0), // 調整寬度，保持比例
-        //            Mode = ResizeMode.Max
-        //        }));
+        private async Task<string> CompressImageAsync(byte[] imageBytes)
+        {
+            using (var inputStream = new MemoryStream(imageBytes))
+            using (var image = await Image.LoadAsync(inputStream))
+            {
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(400, 0), // 調整寬度，保持比例
+                    Mode = ResizeMode.Max
+                }));
 
-        //        using (var outputStream = new MemoryStream())
-        //        {
-        //            var jpegEncoder = new JpegEncoder
-        //            {
-        //                Quality = 1 // 設定壓縮質量（0-100）
-        //            };
-        //            await image.SaveAsync(outputStream, jpegEncoder);
+                using (var outputStream = new MemoryStream())
+                {
+                    var jpegEncoder = new JpegEncoder
+                    {
+                        Quality = 60 // 設定壓縮質量（0-100）
+                    };
+                    await image.SaveAsync(outputStream, jpegEncoder);
 
-        //            return Convert.ToBase64String(outputStream.ToArray());
-        //        }
-        //    }
-        //}
+                    return Convert.ToBase64String(outputStream.ToArray());
+                }
+            }
+        }
     }
 }

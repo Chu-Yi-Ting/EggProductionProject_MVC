@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.Models;
-using static EggProductionProject_MVC.Areas.Frontstage.Controllers.ArticlesDTOController;
+using static EggProductionProject_MVC.Areas.Frontstage.Controllers.ArticlesDTO;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {

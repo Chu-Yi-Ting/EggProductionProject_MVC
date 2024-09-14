@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using EggProductionProject_MVC.HTTPModels;
+using EggProductionProject_MVC.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +17,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 //跨域測試
+//builder.Services.AddCors(option =>
+//{
+//    option.AddPolicy("AllowAll",
+//        builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+//});
+//增加signalR後的跨域測試
 builder.Services.AddCors(option =>
 {
     option.AddPolicy("AllowAll",
-        builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 });
 //跨域測試
 //關閉傳送Json駝峰式命名
@@ -69,7 +76,9 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options => option
 
 
 builder.Services.AddControllersWithViews();
-
+//signalR
+builder.Services.AddSignalR();
+//signalR
 
 //留給前台會員用
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -148,7 +157,9 @@ app.UseAuthorization();
 
 app.UseSession();
 
-
+//signalR
+app.MapHub<ChatHub>("/chatHub");
+//signalR
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=BkHome}/{action=Index}/{id?}");
