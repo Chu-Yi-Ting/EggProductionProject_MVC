@@ -351,7 +351,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 return result;
             }
 
-            return View();
+			string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+			var userAspId = HttpContext.Session.GetString("userId");
+
+			var user = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+
+			return View(user);
 
         }
 
