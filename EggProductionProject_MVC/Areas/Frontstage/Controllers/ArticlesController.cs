@@ -34,6 +34,34 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Ok(LoginUserSid);
         }
 
+        [HttpGet("GetLoginUserInfo")]
+        public IActionResult GetLoginUserInfo()
+        {
+            // 取得會員編號
+            var LoginUserSid = HttpContext.Session.GetInt32("userMemberSid");
+
+            // 檢查是否有登入
+            if (LoginUserSid == null)
+            {
+                return Unauthorized("User not logged in");
+            }
+            var member = _context.Members
+                .Where(m=>m.MemberSid == LoginUserSid)
+                .Select(m=>new
+                {
+                    m.MemberSid,
+                    m.Name,
+                    m.ProfilePic,
+                }).FirstOrDefault();
+            // 如果找不到對應的會員資料
+            if (member == null)
+            {
+                return NotFound("Member not found");
+            }
+
+            // 返回會員的完整資料
+            return Ok(member);
+        }
         [HttpGet("GetArticles")]
         public async Task<ActionResult<IEnumerable<ArticleDto>>> GetArticles()
         {
