@@ -29,6 +29,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             //根據商品次分類編號讀取相關商品資料及商品圖片
             var products = _searchProductDTO.subcategoryNo == 0
         ? _context.Products
+         .Where(p => p.PublicStatusNo == 1)  // 新增篩選條件，只顯示公開狀態的商品
             .Select(p => new ProductWithImagesDTO
             {
                 productSid = p.ProductSid,
@@ -59,7 +60,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             })
         // 處理分類篩選
         : _context.Products
-            .Where(p => p.SubcategoryNo == _searchProductDTO.subcategoryNo)
+            .Where(p => p.SubcategoryNo == _searchProductDTO.subcategoryNo && p.PublicStatusNo == 1) // 新增篩選條件
             .Select(p => new ProductWithImagesDTO
             {
                 productSid = p.ProductSid,
