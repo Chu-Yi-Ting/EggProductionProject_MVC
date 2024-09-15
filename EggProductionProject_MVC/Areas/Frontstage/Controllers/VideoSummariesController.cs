@@ -31,6 +31,19 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [HttpGet]
+        public IActionResult GetLoginUser()
+        {
+            var GetLoin = new LoginUserDTO
+            {
+                userMemberSid = HttpContext.Session.GetInt32("userMemberSid"),
+                UserName = HttpContext.Session.GetString("userName")
+
+        };
+            
+            return Json(GetLoin);
+        }
+
         // GET: Frontstage/VideoSummaries
         public async Task<IActionResult> Index()
         {
@@ -195,6 +208,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             var EditVideo = new EggProductionProject_MVC.Models.VideoSummary
             {
+                VideoDuration = Edit.VideoDuration,
                 VideoCoverImage = Edit.VideoCoverImage,
                 VideoSid = Edit.VideoSid,
                 VideoTitle = Edit.VideoTitle,
@@ -214,5 +228,126 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Json(new { Message = "修改成功" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteVideo([FromForm] DeleteVideoDTO delete, IFormFile? image)
+        {
+            VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(delete.VideoSid);
+
+            var DeleteVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+
+                VideoSid = delete.VideoSid,
+                VideoCoverImage = 資料庫資料.VideoCoverImage,
+                VideoTitle = 資料庫資料.VideoTitle,
+                CreatorSid = 資料庫資料.CreatorSid,
+                TimesWatched = 資料庫資料.TimesWatched,
+                MoviePath = 資料庫資料.MoviePath,
+                InformationColumn = 資料庫資料.InformationColumn,
+                UploadDate = 資料庫資料.UploadDate,
+                NatureSid = 資料庫資料.NatureSid,
+                VideoDuration = 資料庫資料.VideoDuration,
+                PublicStatusNo = 3,
+            };
+            _context.Entry(資料庫資料).State = EntityState.Detached;
+
+            _context.Update(DeleteVideo);
+            _context.SaveChanges();
+
+            return Json(new { Message = "刪除成功" });
+        }
+
+        [HttpPost]
+        public IActionResult CreatVideo([FromBody] CreatVideoDTO Creat)
+        {
+            // 儲存影片的基本資訊
+            var CreatVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+                VideoDuration = Creat.VideoDuration,
+                VideoTitle = Creat.VideoTitle,
+                CreatorSid = Creat.CreatorSid,
+                TimesWatched = 0,
+                MoviePath = null, // 初始設為 null，等檔案上傳後再更新
+                InformationColumn = Creat.InformationColumn,
+                UploadDate = Creat.UploadDate,
+                NatureSid = Creat.NatureSid,
+                PublicStatusNo = 1,
+            };
+
+            _context.VideoSummaries.Add(CreatVideo);
+            _context.SaveChanges();  // 這會生成影片Sid
+
+            // 返回影片Sid，讓前端繼續處理檔案上傳
+            return Json(new { videoSid = CreatVideo.VideoSid });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadVideoFiles([FromForm] VideoAddDTO AddVideo, IFormFile? image, IFormFile video)
+        {
+            VideoSummary 資料庫資料 = await _context.VideoSummaries.FindAsync(AddVideo.VideoSid);
+
+            if (image != null && image.Length > 0)
+            {
+
+                string FileImg = Path.GetExtension(image.FileName);
+                string FileNameImg = Path.GetFileName("創作者編號_" +
+                    AddVideo.CreatorSid + "-" + AddVideo.VideoSid+ FileImg);
+
+                string ImagePath = Path.Combine(_webHostEnvironment
+                    .WebRootPath, "VideoImage", FileNameImg);
+
+                using (var filesteam = new FileStream(ImagePath, FileMode.Create))
+                {
+                    image.CopyTo(filesteam);
+                }
+                AddVideo.VideoCoverImage = $"/VideoImage/{FileNameImg}";
+            }
+
+            if (video != null && video.Length > 0)
+            {
+                string File副檔名 = Path.GetExtension(video.FileName);
+                string FileName = Path.GetFileName("創作者編號_" + AddVideo
+                    .CreatorSid + "-" + AddVideo.VideoSid + File副檔名);
+                string VideoPath = Path.Combine(_webHostEnvironment.
+                WebRootPath, "Video", FileName);
+                using (var filesteam = new FileStream(VideoPath, FileMode.Create))
+                {
+                    video.CopyTo(filesteam);
+                }
+                AddVideo.MoviePath = $"/Video/{FileName}";
+            }
+
+
+            var CreatVideo = new EggProductionProject_MVC.Models.VideoSummary
+            {
+                
+                VideoCoverImage = AddVideo.VideoCoverImage,
+                VideoSid = AddVideo.VideoSid,
+                MoviePath = AddVideo.MoviePath,
+                VideoTitle = 資料庫資料.VideoTitle,
+                CreatorSid = 資料庫資料.CreatorSid,
+                TimesWatched = 資料庫資料.TimesWatched,
+                InformationColumn = 資料庫資料.InformationColumn,
+                UploadDate = 資料庫資料.UploadDate,
+                VideoDuration = 資料庫資料.VideoDuration,
+                NatureSid = 資料庫資料.NatureSid,
+                PublicStatusNo = 資料庫資料.PublicStatusNo,
+            };
+
+            _context.Entry(資料庫資料).State = EntityState.Detached;
+            _context.Update(CreatVideo);
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+
     }
 }
+
+
+
+
+
+
+
