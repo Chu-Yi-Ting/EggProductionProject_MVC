@@ -1,4 +1,4 @@
-﻿namespace EggProductionProject_MVC.Areas.Frontstage.Models
+﻿namespace EggProductionProject_MVC.Areas.Frontstage.DTO
 {
     public class ProductWithImagesDTO
     {
@@ -13,7 +13,8 @@
         public string? description { get; set; }
         public string? origin { get; set; }
         public int? quantity { get; set; }
-        public DateOnly? launchTime { get; set; }
+        public DateTime? launchTime { get; set; }
+        public decimal? discountPercent { get; set; }
         public string? productImagePath { get; set; }
         public string? imageDescription { get; set; }
         public DateTime? uploadTime { get; set; }

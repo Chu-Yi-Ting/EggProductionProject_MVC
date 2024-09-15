@@ -563,18 +563,14 @@
             <!-- 分頁區的程式碼 -->
             <nav class="mt-md-5">
                 <ul id="ulPagination" class="pagination">
-                    <!-- 上一頁 -->
-@*                     <li class="page-item">
+                    <!-- 上一頁 -->                    
+                    @* <li class="page-item" id="previousPage">
                         <a class="page-link" href="#">
                             <i class="fas fa-angle-left"></i>
                         </a>
                     </li> *@
-                    <!-- 這裡頁數標籤要被置換掉 -->
-                   @*  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li> *@
-                    <!-- 下一頁 -->
-@*                     <li class="page-item">
+                    <!-- 這裡頁數標籤由JS動態生成 -->
+                   @*  <li class="page-item" id="nextPage">
                         <a class="page-link" href="#">
                             <i class="fas fa-angle-right"></i>
                         </a>
@@ -585,7 +581,7 @@
     </div>
 </div>
 
-@* AJAX區 *@
+
 @section Scripts {
 
     <script>
@@ -734,74 +730,97 @@
             loadProducts();  // 重新加載產品資料
         }
 
-        //顯示該分頁資料
+        // 分頁功能
+        let currentPage = 1;
+        let totalPages = 1; // 初始設置，可以在載入商品時更新
+
+        // 分頁按鈕的點擊處理函數
         const pagingHandler = (event, page) => {
             event.preventDefault();  // 阻止預設行為
-            searchProductData.page = page;
+            currentPage = page; // 更新當前頁數
 
-            // 滾動到商品卡片群的最上方
-            const productSection = document.querySelector('#divProduct');
-            productSection.scrollIntoView({ behavior: 'smooth' });
-
+            // 更新產品列表
             loadProducts();
-        }
+        };
 
         //searchProductData的JSON物件以POST方式請求給API，載入商品資料
         const loadProducts = async () => {
+            searchProductData.page = currentPage; //設置當前頁面
             const api = '@Url.Content("~/Frontstage/ProductApi/Products")'
-            const response = await fetch(api, {
-                method: "post",
-                body: JSON.stringify(searchProductData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            const datas = await response.json()
-            console.log(datas)
+            try {
+                const response = await fetch(api, {
+                    method: "post",
+                    body: JSON.stringify(searchProductData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-            //JSON 資料讀取及顯示
-            const products = datas.productsResult.map(product => {
-                const { productSid, productName, price, stock, subcategoryNo, storeSid, productImagePath, imageDescription } = product
-                return (`
+                const datas = await response.json()            
+                console.log('商品資料:', datas);
+
+                totalPages = datas.totalPages; // 更新總頁數
+
+                //JSON 資料讀取及顯示
+                const products = datas.productsResult.map(product => {
+                    const { productSid, productName, price, productImagePath, imageDescription, discountPercent } = product;
+                    const discountedPrice = price * discountPercent;
+                    return (`
                            <div class="col-lg-4">
                               <div class="product-card" onclick="window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'">
                                  <img src="${productImagePath}" alt = "${imageDescription}">
                                  <div class="card-body">
                                     <h5 class="card-title">${productName} </h5>
                                     <div class="price-and-button">
-                                       <p class="price"> $${price * 0.8} <span class="old-price"> $${price} </span></p>
-                                               <button class="btn" onclick="event.stopPropagation(); window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'"> 查看更多 </button>
+                                        <p class="price"> $${discountedPrice.toFixed(0)} <span class="old-price"> $${price} </span></p>
+                                        <button class="btn" onclick="event.stopPropagation(); window.location.href='/Frontstage/Product/ProductDetail?productSid=${productSid}'"> 查看更多 </button>
                                     </div>
                                  </div>
                               </div>
                            </div>
                        `)
-            })
-            divProducts.innerHTML = products.join("")
+                });
 
-            ulPage.innerHTML = "";
+                divProducts.innerHTML = products.join("")            
 
-            //產生分頁按鈕
-            let liPages = ""
-            for (let i = 1, max = datas.totalPages; i <= max; i++) {
-                liPages += `<li class="page-item" onclick="pagingHandler(event, ${i})"><a class="page-link" href = "#">${i}</a></li>`
-            }
-            //將生成完的分頁標籤做最後加工再送出去
-            liPages = `<li class="page-item">
-                          <a class="page-link" href="#">
-                          <i class="fas fa-angle-left"></i>
-                          </a>
-                       </li>
-                       ${liPages}
-                               <li class="page-item">
-                          <a class="page-link" href="#">
-                          <i class="fas fa-angle-right"></i>
-                          </a>
-                       </li>`
+                //產生分頁按鈕
+                let liPages = "";
+                for (let i = 1; i <= totalPages; i++) {
+                    liPages += `<li class="page-item ${i === currentPage ? 'active' : ''}" onclick="pagingHandler(event, ${i})"><a class="page-link" href="#">${i}</a></li>`;
+                }
 
-            ulPage.innerHTML = liPages
-               
-        }
+                ulPage.innerHTML = `
+                    <li class="page-item ${currentPage === 1 ? 'disabled' : ''}" id="previousPage">
+                        <a class="page-link" href="#"><i class="fas fa-angle-left"></i></a>
+                    </li>
+                    ${liPages}
+                    <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage">
+                        <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
+                    </li>
+                `;
+
+                // 上一頁和下一頁的點擊事件
+                document.querySelector('#previousPage').addEventListener('click', (event) => {
+                    if (currentPage > 1) {
+                        pagingHandler(event, currentPage - 1);
+                    }
+                });
+
+                document.querySelector('#nextPage').addEventListener('click', (event) => {
+                    if (currentPage < totalPages) {
+                        pagingHandler(event, currentPage + 1);
+                    }
+                });
+
+                // 檢查當前頁，禁用上一頁或下一頁按鈕
+               document.querySelector('#previousPage').classList.toggle('disabled', currentPage === 1);
+               document.querySelector('#nextPage').classList.toggle('disabled', currentPage === totalPages);
+
+            } catch (error) {
+                console.error('商品載入錯誤:', error);
+            }          
+            };
+
 
         loadProducts()
 

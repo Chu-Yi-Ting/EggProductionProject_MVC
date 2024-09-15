@@ -33,7 +33,7 @@ public partial class Product
 
     public string Component { get; set; }
 
-    public DateOnly? LaunchTime { get; set; }
+    public DateTime? LaunchTime { get; set; }
 
     public int? PublicStatusNo { get; set; }
 

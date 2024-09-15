@@ -20,61 +20,36 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             _userManager = userManager;
         }
 
-        //新增上架商品
-        //[HttpPost]
-        //public IActionResult ProductLaunch(ProductViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // 查找用户的商店
-        //        var aspUserId = _userManager.GetUserId(User);
-        //        var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-        //        var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
+        //產生產品編號方法
+        public async Task<string> GenerateProductNoAsync(int subcategoryNo)
+        {
+            // 獲取當前日期
+            var today = DateTime.Now.ToString("yyyyMMdd");
 
-        //        if (store != null)
-        //        {
-        //            // 创建新商品
-        //            var product = new Product
-        //            {
-        //                ProductName = model.productName,
-        //                Price = model.price,
-        //                Stock = model.stock,
-        //                SubcategoryNo = model.subcategoryNo,
-        //                ItemNo = model.itemNo,
-        //                Description = model.description,
-        //                Origin = "台灣",
-        //                Quanitity = model.quantity,
-        //                Weight = model.weight,
-        //                Component = model.component,
-        //                StoreSid = store.StoreSid,
-        //                DiscountPercent = model.discountPercent,
-        //                LaunchTime = DateOnly.FromDateTime(DateTime.Now),
-        //                PublicStatusNo = 2 // 默认为非公开
-        //            };
+            // 獲取當天的最大產品编號
+            var prefix = subcategoryNo == 3 ? "P" : "E";
+            var maxProductNo = await _context.Products
+                .Where(p => p.ProductNo.StartsWith($"{prefix}{today}"))
+                .OrderByDescending(p => p.ProductNo)
+                .Select(p => p.ProductNo)
+                .FirstOrDefaultAsync();
 
-        //            // 保存商品到数据库
-        //            _context.Products.Add(product);
-        //            _context.SaveChanges();
+            int sequenceNumber = 1; // 預設序號為0001
 
-        //            // 返回成功和新商品的相关信息
-        //            return Json(new
-        //            {
-        //                success = true,
-        //                newProduct = new
-        //                {
-        //                    productSid = product.ProductSid,
-        //                    productName = product.ProductName,
-        //                    price = product.Price,
-        //                    stock = product.Stock,
-        //                    launchTime = product.LaunchTime.HasValue ? product.LaunchTime.Value.ToString("yyyy-MM-dd") : ""
-        //                }
-        //            });
-        //        }
-        //    }
+            //有最大序號商品的話
+            if (maxProductNo != null)
+            {
+                // 提取序號部分加1
+                var sequencePart = maxProductNo.Substring(maxProductNo.Length - 4);
+                if (int.TryParse(sequencePart, out var sequence))
+                {
+                    sequenceNumber = sequence + 1;
+                }
+            }
 
-        //    // 返回失败信息
-        //    return Json(new { success = false, message = "提交商品失败，请重试。" });
-        //}
+            // 返回生成的產品編號，格式：EYYYYMMDD0001 或 PYYYYMMDD0001
+            return $"{prefix}{today}{sequenceNumber:D4}";
+        }
 
         //商品上架功能
         [HttpPost]
@@ -89,9 +64,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
                 if (store != null)
                 {
+                    // 生成產品编號
+                    var productNo = await GenerateProductNoAsync(model.subcategoryNo);
+
                     // 新增商品
                     var product = new Product
                     {
+                        ProductNo = productNo,
                         ProductName = model.productName,
                         Price = model.price,
                         Stock = model.stock,
@@ -104,7 +83,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                         Component = model.component,
                         StoreSid = store.StoreSid,
                         DiscountPercent = model.discountPercent,
-                        LaunchTime = DateOnly.FromDateTime(DateTime.Now),
+                        LaunchTime = DateTime.Now,
                         PublicStatusNo = 2 // 預設為非公開狀態
                     };
 

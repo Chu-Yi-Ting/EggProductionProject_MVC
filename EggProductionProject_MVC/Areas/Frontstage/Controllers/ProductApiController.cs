@@ -1,5 +1,4 @@
 ﻿using EggProductionProject_MVC.Areas.Frontstage.DTO;
-using EggProductionProject_MVC.Areas.Frontstage.Models;
 using EggProductionProject_MVC.Areas.Frontstage.ViewModels;
 using EggProductionProject_MVC.Models;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +29,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             //根據商品次分類編號讀取相關商品資料及商品圖片
             var products = _searchProductDTO.subcategoryNo == 0
         ? _context.Products
+         .Where(p => p.PublicStatusNo == 1)  // 新增篩選條件，只顯示公開狀態的商品
             .Select(p => new ProductWithImagesDTO
             {
                 productSid = p.ProductSid,
@@ -44,6 +44,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 origin = p.Origin,
                 quantity = p.Quanitity,
                 launchTime = p.LaunchTime,
+                discountPercent = p.DiscountPercent,
                 productImagePath = _context.ProductImages
                     .Where(img => img.ProductSid == p.ProductSid)
                     .Select(img => img.ProductImagePath)
@@ -59,7 +60,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             })
         // 處理分類篩選
         : _context.Products
-            .Where(p => p.SubcategoryNo == _searchProductDTO.subcategoryNo)
+            .Where(p => p.SubcategoryNo == _searchProductDTO.subcategoryNo && p.PublicStatusNo == 1) // 新增篩選條件
             .Select(p => new ProductWithImagesDTO
             {
                 productSid = p.ProductSid,
@@ -74,6 +75,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 origin = p.Origin,
                 quantity = p.Quanitity,
                 launchTime = p.LaunchTime,
+                discountPercent = p.DiscountPercent,
                 productImagePath = _context.ProductImages
                     .Where(img => img.ProductSid == p.ProductSid)
                     .Select(img => img.ProductImagePath)
@@ -92,11 +94,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             //價格區間篩選商品
             if (_searchProductDTO.minPrice.HasValue)
             {
-                products = products.Where(p => p.price >= _searchProductDTO.minPrice.Value);
+                products = products.Where(p => p.price * p.discountPercent >= _searchProductDTO.minPrice.Value);
             }
             if (_searchProductDTO.maxPrice.HasValue)
             {
-                products = products.Where(p => p.price <= _searchProductDTO.maxPrice.Value);
+                products = products.Where(p => p.price * p.discountPercent <= _searchProductDTO.maxPrice.Value);
             }
 
 
@@ -109,8 +111,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             //這段程式碼根據 _searchDTO.sortBy 的值決定如何排序資料。
             switch (_searchProductDTO.sortBy) 
             {
-                case "price": //如果 sortBy 的值是 "price"，則根據 price 進行排序。
-                    products = _searchProductDTO.sortType == "asc" ? products.OrderBy(s => s.price) : products.OrderByDescending(s => s.price);
+                case "price": // 如果 sortBy 的值是 "price"，則根據打折後的價格進行排序。
+                    products = _searchProductDTO.sortType == "asc"
+                        ? products.OrderBy(s => s.price * s.discountPercent) // 按折扣後價格升序排序
+                        : products.OrderByDescending(s => s.price * s.discountPercent); // 按折扣後價格降序排序
                     break;
                 case "subcategoryNo": //如果 sortBy 的值是 "subcategoryNo"，則根據 subcategoryNo 進行排序。
                     products = _searchProductDTO.sortType == "asc" ? products.OrderBy(s => s.subcategoryNo) : products.OrderByDescending(s => s.subcategoryNo);

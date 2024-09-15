@@ -3,7 +3,7 @@
     public class ProductViewModel
     {
         public int productSid { get; set; }
-        public int? subcategoryNo { get; set; }
+        public int subcategoryNo { get; set; }
 		public string? subcategoryName { get; set; }
 		public int? itemNo { get; set; }
 		public string? itemName { get; set; }
@@ -16,7 +16,7 @@
 		public int? weight { get; set; }
 		public string? component { get; set; }
 		public decimal? discountPercent { get; set; }
-		public DateOnly? launchTime { get; set; }
+		public DateTime? launchTime { get; set; }
 		public int? publicStatusNo { get; set; }
 
         // 接受上傳圖片的參數
