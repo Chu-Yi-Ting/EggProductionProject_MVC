@@ -27,7 +27,7 @@
                        class="d-flex align-items-center  text-decoration-none">
                         賣家中心
                     </a>
-                    <a href="#"
+                    <a href="https://localhost:7080/"
                        class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
                         <h5>
                         </h5>
@@ -41,7 +41,7 @@
                     <li><a asp-area="Frontstage" asp-controller="Data" asp-action="Index" class="nav-link px-3 link-dark ">生產分析</a></li>
                     <li><a href="http://localhost:4200/#/Article" class="nav-link px-3 link-dark ">知識討論</a></li>
                     <li>
-                        <a href="http://localhost:7080/" class="nav-link px-3 link-dark ">
+                        <a href="https://localhost:7080/" class="nav-link px-3 link-dark ">
 
                             <img src="~/frontstagetemplate/assets/brand/layout/egg-logo-sm.svg" class="bi"
                                  width="35"
@@ -59,14 +59,28 @@
                         <i class="fa-solid fa-cart-shopping"></i>
                     </a>
 
-                    <a asp-area=" Frontstage" asp-controller="Members" asp-action="MemberPage"
+                    <a asp-area="Frontstage" asp-controller="Members" asp-action="MemberCenter"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
-                        <img src="https://github.com/mdo.png"
-                             alt="mdo"
-                             width="28"
-                             height="28"
-                             class="rounded-circle" />
+                        @{
+                            if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                            {
+                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+                                     alt="mdo"
+                                     width="28"
+                                     height="28"
+                                     class="rounded-circle" />
+                            }
+                            else
+                            {
+                                <img src="~/memberimg/nopicchick.jpg"
+                                     alt="mdo"
+                                     width="28"
+                                     height="28"
+                                     class="rounded-circle" />
+                            }
+
+                        }
                     </a>
 
                     <button class="navbar-toggler link-dark text-decoration-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -132,42 +146,17 @@
                             賣家中心
                         </a>
                     </li>
-                </ul>
-            </div>
-
-            <div class="offcanvas-footer">
-
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <div class="logoin-user">
-                            <div class="border-img">
-                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
-                                {
-                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
-                                }
-
-                            </div>
-                            @* Alice *@
-                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
-                            {
-                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
-                            }
-                        </div>
+                        <a class="nav-link active" aria-current="page"  asp-controller="AccountLogin" asp-action="Index">
+                            <i class="fa-solid fa-shop me-2"></i>
+                            員工管理
+                        </a>
                     </li>
                 </ul>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-
-                        <button type="submit" class="btn ">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-
-                            登出
-                        </button>
-                    </form>
-                }
-
             </div>
+
+           
+            <partial name="_LoginPartial" />
         </div>
 
     </header>

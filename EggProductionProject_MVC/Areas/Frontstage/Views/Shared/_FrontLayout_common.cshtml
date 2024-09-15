@@ -23,7 +23,7 @@
         <div class="container_title p-0 m-0">
             <div class="nav-main d-flex flex-wrap">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="#"
+                    <a href="https://localhost:7080/"
                        class="d-flex align-items-center mb-2 text-dark text-decoration-none">
                         <img src="~/FrontstageTemplate/assets/brand/layout/egg-logo.svg"
                              class="bi me-2"
@@ -31,21 +31,21 @@
                              alt="Bootstrap" />
                     </a>
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center d-none d-lg-flex">
-                        <li><a asp-area="Frontstage" asp-controller="Data" asp-action="Index" class="nav-link px-3 link-light">蛋雞生產分析</a></li>
+                        <li><a asp-area="Frontstage" asp-controller="Data" asp-action="Index" class="nav-link px-3 link-light">生產分析</a></li>
                         <li><a href="http://localhost:4200/#/Article" class="nav-link px-3 link-light">知識討論</a></li>
                         <li><a href="http://localhost:4200/#/video_summary" class="nav-link px-3 link-light">影片生活</a></li>
-                        <li><a href="https://localhost:7080/Frontstage/storeCenters" class="nav-link px-3 link-light">商城購物</a></li>
+                        <li><a asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop" class="nav-link px-3 link-light">商城購物</a></li>
                     </ul>
                 </div>
 
                 <div class="nav-right">
-                    <a href="#"
+                    <a href="https://localhost:7080/Frontstage/carts"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </a>
 
-                    <a href="@(User.Identity.IsAuthenticated? Url.Action("MemberPage", "Members", new { area = "Frontstage" }):Url.Action("Login", "Account", new { area = "Identity" } ))"
+                    <a href="@(User.Identity.IsAuthenticated? Url.Action("MemberCenter", "Members", new { area = "Frontstage" }):Url.Action("Login", "Account", new { area = "Identity" } ))"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
                         
@@ -79,14 +79,13 @@
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
                     <img src="~/FrontstageTemplate/assets/brand/layout/egg-logo.svg" alt="">
-
                 </h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/">
                             <i class="fa-solid fa-house me-2"></i> 首頁
                         </a>
                     </li>
@@ -112,7 +111,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/Frontstage/storeCenters">
+                        <a class="nav-link active" aria-current="page" asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop">
                             <i class="fa-solid fa-shop me-2"></i>
                             商城購物
                         </a>
@@ -121,20 +120,19 @@
                         <span>網站服務</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Members/MemberPage">
+                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/Frontstage/Members/MemberCenter">
                             <i class="fa-solid fa-user-large me-2"></i>
                             會員中心
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/Identity/Account/Manage/EnableAuthenticator">
-                            <i class="fa-solid fa-user-large me-2"></i>
-                            雙因子驗證
+                        <a class="nav-link active" aria-current="page" asp-controller="AccountLogin" asp-action="Index">
+                            <i class="fa-solid fa-shop me-2"></i>
+                            員工管理
                         </a>
                     </li>
                 </ul>
             </div>
-
            <partial name="_LoginPartial"/>
         </div>
     </header>

@@ -77,13 +77,13 @@
 		</symbol>
 	</svg>
 	<header class="">
-		<div class="container_title p-0 m-0">
-			<div class="outer-layout-n">
-				<a asp-area="Frontstage" asp-controller="Carts" asp-action="Index"
+		<div class="container_title p-0 m-0 ">
+			<div class="outer-layout-n d-md-none">
+				<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index"
 				   class="d-flex align-items-center  text-decoration-none  d-lg-none">
 					賣家中心
 				</a>
-				<a href="#"
+				<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index"
 				   class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
 					<h5>
 					</h5>
@@ -97,20 +97,37 @@
 			<div class="nav-main d-flex flex-wrap">
 
 				<div class="nav-right nav-right-no-abo mt-2 mt-lg-auto">
-					<a href="#"
+					<a href="https://localhost:7080/Frontstage/carts"
 					   class="d-block link-dark text-decoration-none"
 					   aria-expanded="false">
 						<i class="fa-solid fa-cart-shopping"></i>
 					</a>
 
-					<a href="#"
+					<a asp-area="Frontstage" asp-controller="Members" asp-action="MemberCenter"
 					   class="d-block link-dark text-decoration-none"
 					   aria-expanded="false">
-						<img src="https://github.com/mdo.png"
-							 alt="mdo"
-							 width="28"
-							 height="28"
-							 class="rounded-circle" />
+						
+
+							@{
+								if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+								{
+									<img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+										 alt="mdo"
+										 width="28"
+										 height="28"
+										 class="rounded-circle" />
+								}
+								else
+								{
+									<img src="~/memberimg/nopicchick.jpg"
+										 alt="mdo"
+										 width="28"
+										 height="28"
+										 class="rounded-circle" />
+								}
+
+							}
+						
 					</a>
 					<button class="navbar-toggler text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent">
 						<i class="fa-solid fa-bars"></i>
@@ -128,7 +145,7 @@
 				<div class="leftmeau-body">
 					
 					<div class="title d-flex align-items-start">
-				<a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none mt-2 ms-1">
+						<a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none mt-2 ms-1">
 	
 					<img src="~/FrontstageTemplate/assets/brand/layout/egg-logo-sm.svg" alt="" style="width:40px">
 						<div class="store-logo d-flex flex-column ">
@@ -186,27 +203,37 @@
 								商品上架
 							</a>
 						</li>
-					@* 	<li class="nav-item">
-							<p>廣告相關</p>
-						</li>
-						<li>
-							<a href="#" class="nav-link link-gray">
-								<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-								廣告投放
-							</a>
-						</li> *@
 					</ul>
 					<hr>
 					<div class="dropdown">
 						<a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-							<small>Map 地圖</small>
+							
+							@{
+								if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+								{
+									<img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+										 alt="mdo"
+										 width="28"
+										 height="28"
+										 class="rounded-circle" />
+								}
+								else
+								{
+									<img src="~/memberimg/nopicchick.jpg"
+										 alt="mdo"
+										 width="28"
+										 height="28"
+										 class="rounded-circle" />
+								}
+
+							}
+							<small>網站導覽</small>
 						</a>
 						<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
 							<li><a class="dropdown-item" href="https://localhost:7080/">首頁</a></li>
 							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop">商城</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Members" asp-action="MemberPage">會員中心</a></li>
+							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Members" asp-action="MemberCenter">會員中心</a></li>
 						</ul>
 					</div>
 				</div>
@@ -218,7 +245,7 @@
 
 				</div>
 
-
+				
 			</div>
 		</div>
 			
