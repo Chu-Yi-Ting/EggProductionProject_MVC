@@ -1,0 +1,1850 @@
+﻿@{
+	Layout = "_FrontLayout_common";
+}
+
+@{
+	var antiForgeryToken = Html.AntiForgeryToken().ToString();
+}
+@model EggProductionProject_MVC.Models.Member
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@section Styles {
+
+	<link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
+	<!-- FixedHeader 样式 -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
+    <link href="~/frontstagetemplate/assets/dist/css/style-more-n.css" rel="stylesheet" />
+	<style>
+		.form-container {
+			margin-top: 40px;
+		}
+
+			.form-container h2 {
+				border-bottom: 2px solid #cba770;
+				padding-bottom: 10px;
+				font-size: 18px;
+			}
+
+		.form-group {
+			margin: 20px 0;
+			display: flex;
+			align-items: center;
+		}
+
+			.form-group label {
+				flex: 0 0 100px;
+				font-size: 16px;
+			}
+
+			.form-group input {
+				flex: 1;
+				padding: 10px;
+				font-size: 16px;
+				border: 2px solid #d5b584;
+				border-radius: 5px;
+			}
+
+			.form-group .required {
+				color: #d33;
+				margin-left: 10px;
+			}
+
+		.profile-pic {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+			.profile-pic img {
+				width: 150px;
+				height: 150px;
+				border-radius: 50%;
+				border: 2px solid #d5b584;
+			}
+
+			.profile-pic button {
+				background-color: #f7d9b4;
+				border: 2px solid #d5b584;
+				padding: 5px 10px;
+				cursor: pointer;
+				color: #a57c42;
+				font-size: 14px;
+				margin-top: 10px;
+				border-radius: 20px;
+			}
+
+		.buttons {
+			display: flex;
+			justify-content: center;
+			margin-top: 40px;
+		}
+
+			.buttons button {
+				background-color: #a57c42;
+				border: none;
+				padding: 10px 20px;
+				margin: 0 10px;
+				cursor: pointer;
+				color: #fff;
+				font-size: 16px;
+				border-radius: 5px;
+			}
+
+				.buttons button.cancel {
+					background-color: #f7d9b4;
+					color: #a57c42;
+				}
+
+		.required-tag {
+			display: inline-block;
+			padding: 4px 10px;
+			border: 2px solid #c89a49; /* 邊框顏色 */
+			background-color: #d7ad54; /* 背景顏色 */
+			color: white; /* 字體顏色 */
+			border-radius: 20px; /* 圓角 */
+			font-weight: bold;
+			font-size: 14px;
+			font-family: Arial, sans-serif;
+			border-right: 20px;
+		}
+
+
+		.step-container {
+			display: flex;
+			justify-content: space-between;
+			border: 1px solid #d9b78a;
+			border-radius: 25px;
+			overflow: hidden;
+		}
+
+		.step {
+			flex: 1;
+			padding: 10px;
+			text-align: center;
+			font-size: 16px;
+			color: #b7b7b7;
+		}
+
+			.step.active {
+				background-color: #b7852c;
+				color: white;
+				border-radius: 25px;
+			}
+
+			.step:not(:last-child) {
+				border-right: 1px solid #d9b78a;
+			}
+
+		.custom-tab {
+			color: #d4af37; /* 標籤的文字顏色 */
+
+			border: 1px solid #d4af37; /* 邊框顏色 */
+			border-radius: 0; /* 移除邊框圓角 */
+			padding: 10px 20px; /* 調整內邊距 */
+			margin-right: 5px; /* 調整標籤之間的間距 */
+		}
+
+			.custom-tab.active {
+				background-color: #d4af37; /* 活躍標籤的背景色 */
+				color: #ffffff; /* 活躍標籤的文字顏色 */
+			}
+
+		.custom-nav-border {
+			border: 2px solid #d4af37; /* 邊框顏色 */
+			border-radius: 50px; /* 創建橢圓形邊框 */
+			padding: 1px; /* 邊框內間距 */
+			display: inline-block;
+		}
+
+		.nav-pills {
+			justify-content: center; /* 確保標籤置中 */
+		}
+
+		#scrollToTopBtn {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background-color: rgba(139, 69, 19, 0.8); /* 棕色半透明 */
+			color: white;
+			border: none;
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			font-size: 18px;
+			cursor: pointer;
+			display: none; /* 預設隱藏 */
+			justify-content: center;
+			align-items: center;
+			transition: opacity 0.3s ease;
+			opacity: 0.5;
+			line-height: 1.2; /* 調整行高，讓文字居中對齊 */
+			padding: 10px;
+		}
+
+			/* 當按鈕顯示時的樣式 */
+			#scrollToTopBtn.show {
+				display: flex;
+			}
+
+
+		/* 讓 disabled 按鈕顯示為灰色 */
+		button:disabled {
+			background-color: #ccc; /* 灰色背景 */
+			color: #666; /* 灰色文字 */
+			cursor: not-allowed; /* 禁止符號的鼠標樣式 */
+			border-color: #ccc; /* 灰色邊框 */
+		}
+
+			/* 禁用按鈕的 hover 樣式，防止鼠標變成點擊狀態 */
+			button:disabled:hover {
+				background-color: #ccc;
+				color: #666;
+				cursor: not-allowed; /* 確保禁用按鈕不顯示手型 */
+			}
+
+		.memberCenter-outer-title {
+			position: relative;
+			z-index: 1;
+		}
+
+		.memberCenter-outer-title::after {
+				content: "";
+				position: absolute;
+				left: -44%;
+				top: 35%;
+				width: 240px;
+				height: 2px;
+				border-bottom: 2px solid darkgoldenrod;
+				z-index: -1;
+			}
+
+
+		.store-body-outer{
+			display:flex;
+			justify-content:center;
+		}
+
+		.store-body-outer .pagebody-store{
+				width: 100%;
+		}
+
+	</style>
+}
+
+<div class="title-bg mb-3">
+	<img class="w-100"
+		 src="~/FrontstageTemplate/assets/brand/layout/banners/banner_18.png"
+		 alt="" />
+</div>
+
+
+<div class="album py-5 container-outer-n memberCenter-outer" style="min-height:600px">
+	<div class="col-12">
+		<div class="d-flex flex-column align-items-center">
+			<div class="page-title memberCenter-outer-title">
+				<h5 class="mb-3 page-title-in" style="border: 2px solid;">會員中心</h5>
+			</div>
+			<div class="tab-see outer-nav my-1">
+				<ul class="nav nav-pills mb-1 tab-controll-n" id="outers-tab" role="tablist">
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link active" id="outers-one-tab" data-bs-toggle="pill" data-bs-target="#outers-one" type="button" role="tab" aria-controls="outers-one" aria-selected="true">基本資料</button>
+					</li>
+				
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-four-tab" data-bs-toggle="pill" data-bs-target="#outers-four" type="button" role="tab" aria-controls="outers-four" aria-selected="false">商城訂單</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-five" type="button" role="tab" aria-controls="outers-five" aria-selected="false">優惠券專區</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-six" type="button" role="tab" aria-controls="outers-six" aria-selected="false">地址管理</button>
+					</li>
+					<li class="nav-item mx-2" role="presentation">
+						<button class="nav-link" id="outers-five-tab" data-bs-toggle="pill" data-bs-target="#outers-seven" type="button" role="tab" aria-controls="outers-seven" aria-selected="false">代幣管理</button>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+
+
+		<div class="tab-content" id="outers-tabContent">
+			<div class="tab-pane fade show active" id="outers-one" role="tabpanel" aria-labelledby="outers-one-tab">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0">
+							@* 		<div class="page-title">
+							<h5 class="mb-3">訂單管理</h5>
+							</div> *@
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1 tab-controll-n" id="pills-tab-data" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one-data" type="button" role="tab" aria-controls="pills-one-data" aria-selected="true">基本資料修改</button>
+									</li>
+								
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three-data" type="button" role="tab" aria-controls="pills-three-data" aria-selected="false">雞蛋每日紀錄</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-four-tab" data-bs-toggle="pill" data-bs-target="#pills-four-data" type="button" role="tab" aria-controls="pills-four-data" aria-selected="false">雞蛋飼料紀錄</button>
+									</li>
+								</ul>
+							</div>
+
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-one-data" role="tabpanel" aria-labelledby="pills-one-tab">
+									<form id="UserDataForm" asp-action="MemberPageUpdate" method="post" enctype="multipart/form-data">
+										<div class="form-container d-flex justify-content-center align-items-center" style="display: flex;">
+
+											<span class="text-danger validation-summary-valid"></span>
+											<div class="container">
+												<div class="form-container d-flex justify-content-center align-items-center">
+													<div class="d-flex" style="flex-direction: row;">
+														<div class="profile-pic" style="padding: 20px;">
+															@{
+																if (Model.ProfilePic == null)
+																{
+																	<img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+																}
+																else
+																{
+																	<img id="img1" src="@Model.ProfilePic" alt="會員照片">
+
+																}
+
+															}
+
+															@* <button>上傳照片</button> *@
+															<br />
+															<input class="form-control" type="file" id="ProfilePic" name="ProfilePic" asp-for="ProfilePic">
+														</div>
+
+														<div style="padding-left: 20px;">
+															<input type="hidden" asp-for="AspUserId" />
+															<div class="form-group">
+																<span>
+																	<label for="username">會員名稱</label>
+																	<span class="required-tag">必填</span>
+																</span>
+
+																<input type="text" id="username" name="Name" asp-for="Name">
+															</div>
+															<span class="text-danger" asp-validation-for="Name"></span>
+
+															<br>
+															<div class="form-group">
+																<span>
+																	<label for="email">電子郵件</label>
+																	<span class="required-tag">必填</span>
+																</span>
+																<input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
+															</div>
+															<span class="text-danger" asp-validation-for="Email"></span>
+															<br>
+															<div class="form-group">
+																<span>
+																	<label for="phone">電話號碼</label>
+																	@*   <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+																	<span class="required-tag">必填</span>
+																</span>
+																<input type="text" id="phone" name="Phone" asp-for="Phone" required>
+															</div>
+															<span class="text-danger" asp-validation-for="Phone"></span>
+															<br>
+															<div class="form-group">
+																<span>
+																	<label for="birthdate">出生日期</label>
+																	@* <span class="required-tag">必填</span> *@
+																	<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+																</span>
+																<input type="date" id="birthdate" name="BirthDate" asp-for="BirthDate" required>
+															</div>
+															<span class="text-danger" asp-validation-for="BirthDate"></span>
+															<br>
+
+															<br>
+
+															@{
+																if (Model.IsChickFarm == 0)
+																{
+																	<div class="form-group">
+																		<span>
+																			<label for="password">成為雞農！</label>
+																		</span>
+																		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+																		<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+																			開通功能
+																		</button>
+																	</div>
+																}
+
+															}
+
+
+
+
+
+														</div>
+													</div>
+												</div>
+
+
+												<br>
+
+
+											</div>
+										</div> <div class="buttons">
+											<button type="reset" class="cancel">取消</button>
+											<button id="btnSubmit" type="submit">確定</button>
+										</div>
+									</form>
+
+									<!-- Modal -->
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">成為雞農！</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+
+													<div class="form-group">
+														<span>
+															<label for="Chickcode">輸入五碼牧場證號</label>
+
+														</span>
+														<input type="text" id="Chickcode" name="Chickcode" asp-for="Chickcode">
+													</div>
+
+
+												</div>
+												<div class="modal-footer">
+													<button type="reset" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
+                                    color: #a57c42;
+                                    border: none;
+                                  padding: 10px 20px;
+                                  margin: 0 10px;
+                                  cursor: pointer;
+
+                                  font-size: 16px;
+                                  border-radius: 5px;
+									">
+														取消
+													</button>
+													<button id="btnchickCodeYES" type="button" style="background-color: #a57c42;
+                                  border: none;
+                                  padding: 10px 20px;
+                                  margin: 0 10px;
+                                  cursor: pointer;
+                                  color: #fff;
+                                  font-size: 16px;
+                                  border-radius: 5px;">
+														確認
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								
+								<div class="tab-pane fade" id="pills-three-data" role="tabpanel" aria-labelledby="pills-three-tab">
+									@if (Model.Chickcode == null)
+									{
+										<div class="d-flex justify-content-center">
+											<img src="~/memberimg/chickopenfirst.jpg" />
+										</div>
+									}
+									else
+									{
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="date" class="form-label me-custom">填寫日期</label>
+												<input type="date"
+													   class="form-control w-50"
+													   id="date_1"
+													   value="2024-09-28" />
+											</div>
+										</div>
+										<hr />
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="ChickHouse_Selected" class="form-label me-custom">雞舍</label>
+												<select class="form-control w-50" id="ChickHouse_Selected"></select>
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="production" class="form-label me-custom">產蛋數</label>
+												<input type="number" class="form-control w-50" id="production" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="defective" class="form-label me-custom">不合格數</label>
+												<input type="number" class="form-control w-50" id="defective" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="death" class="form-label me-custom">死亡數</label>
+												<input type="number" class="form-control w-50" id="death" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end">
+												<div class="w-50 d-flex justify-content-end">
+													<button type="submit" class="btn light-btn-n" onclick="Insert_Record1()">
+														新增記錄
+													</button>
+												</div>
+											</div>
+										</div>
+
+
+
+									}
+
+								</div>
+								<div class="tab-pane fade" id="pills-four-data" role="tabpanel" aria-labelledby="pills-four-tab">
+									@if (Model.IsChickFarm == null)
+									{
+										<div class="d-flex justify-content-center">
+											<img src="~/memberimg/chickopenfirst.jpg" />
+										</div>
+									}
+									else
+									{
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="date" class="form-label me-custom">填寫日期</label>
+												<input type="date"
+													   class="form-control w-50"
+													   id="date_2"
+													   value="2024-09-28" />
+											</div>
+										</div>
+										<hr />
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="Area_Selected" class="form-label me-custom">區域</label>
+												<select class="form-control w-50" id="Area_Selected"></select>
+											</div>
+										</div>
+										<br />
+										<div class="for m-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="weight" class="form-label me-custom">重量</label>
+												<input type="number" class="form-control w-50" id="weight" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="cost" class="form-label me-custom">成本</label>
+												<input type="number" class="form-control w-50" id="cost" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end align-items-center">
+												<label for="lot" class="form-label me-custom">批號</label>
+												<input type="text" class="form-control w-50" id="lot" required />
+											</div>
+										</div>
+										<br />
+										<div class="form-row mb-3">
+											<div class="col-md-9 d-flex justify-content-end">
+												<div class="w-50 d-flex justify-content-end">
+													<button type="submit" class="btn light-btn-n" onclick="Insert_Record2()">
+														新增記錄
+													</button>
+												</div>
+											</div>
+										</div>
+
+
+									}
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+			<button id="scrollToTopBtn">↑ Top</button>
+			<div class="tab-pane fade" id="outers-four" role="tabpanel" aria-labelledby="outers-four-tab">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0">
+							@* 		<div class="page-title">
+							<h5 class="mb-3">訂單管理</h5>
+							</div> *@
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one" aria-selected="true">訂單成立</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two" type="button" role="tab" aria-controls="pills-two" aria-selected="false">訂單待出貨</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three" type="button" role="tab" aria-controls="pills-three" aria-selected="false">訂單代收貨</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-four-tab" data-bs-toggle="pill" data-bs-target="#pills-four" type="button" role="tab" aria-controls="pills-four" aria-selected="false">訂單完成</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-five-tab" data-bs-toggle="pill" data-bs-target="#pills-five" type="button" role="tab" aria-controls="pills-five" aria-selected="false">訂單退貨</button>
+									</li>
+
+								</ul>
+							</div>
+
+
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+
+
+									<table id="tableList" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+
+								</div>
+								<div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+									<table id="tableList2" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
+									<table id="tableList3" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
+									<table id="tableList4" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="pills-five" role="tabpanel" aria-labelledby="pills-five-tab">
+									<table id="tableList5" class="table table-striped table-hover w-100">
+										<thead class="">
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="outers-five" role="tabpanel">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0 ">
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="true">未使用</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">已使用</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-three-tab-coupon" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">已過期</button>
+									</li>
+								</ul>
+							</div>
+							<div class="w-100 d-flex justify-content-center">
+								<div class="row w-100" id="couponList" style="height:400px; max-width:960px;  ">
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+
+			<div class="tab-pane fade" id="outers-six" role="tabpanel" aria-labelledby="outers-six-tab">
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class="col-12 mt-4">
+							<div class="page-title">
+								<h5 class="mb-3 d-flex justify-content-end w-100">
+									
+									<span class="d-flex">
+										<a class="btn  light-btn-n btn-sm-dbrs ms-3 addAddress" data-bs-toggle="modal" href="#exampleModalToggle" role="button">新增地址</a>
+									</span>
+								</h5>
+							</div>
+						</div>
+				<div class="col-lg-12 mt-3 " id="accordionExample1">
+					<div class="accordion" id="accordionExample">
+						<div class="accordion-item mb-4 ">
+							<h2 class="accordion-header" id="heading1">
+								<button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+									宅配 <img src="/FrontstageTemplate/assets/brand/common/blackcat_logo.svg" alt="宅配">
+								</button>
+							</h2>
+							<div id="collapse1" class="accordion-collapse collapse disabled" aria-labelledby="heading1" data-bs-parent="#accordionExample1">
+								<div class="accordion-body">
+								</div>
+							</div>
+						</div>
+						<div class="accordion-item mb-4 ">
+							<h2 class="accordion-header" id="heading2">
+								<button class="accordion-button collapsed disabled" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+									超商 <img src="/FrontstageTemplate/assets/brand/common/seven-logo.png" alt="超商">
+								</button>
+							</h2>
+							<div id="collapse2" class="accordion-collapse collapse disabled" aria-labelledby="heading2" data-bs-parent="#accordionExample1">
+								<div class="accordion-body">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="outers-seven" role="tabpanel" aria-labelledby="outers-seven-tab">
+
+				<div class="store-body-outer">
+					<div class="pagebody-store m-0">
+						<div class=" col-12 px-4 px-lg-0 ">
+							<div class="tab-see my-3 py-2">
+								<ul class="nav nav-pills mb-1  tab-controll-n" id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-one-tab-coin" data-bs-toggle="pill" type="button" role="tab" aria-selected="true">獲得</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-two-tab-coin" data-bs-toggle="pill" type="button" role="tab" aria-selected="false">使用</button>
+									</li>
+								
+								</ul>
+							</div>
+							
+							<p class="coin-total">
+								可用代幣總額:<span id="coinAmount">32</span>
+							</p>
+
+
+							<table id="tableList6" class="table table-striped table-hover w-100">
+								<thead class="">
+								</thead>
+							</table>
+
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+<!-- 註冊成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="beComeFarmToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+		<div class="toast-header">
+			<img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+			<strong class="me-auto">通知</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+			雞農身分開通成功！
+		</div>
+	</div>
+</div>
+
+<!-- 資料更新成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="userUpdateSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+		<div class="toast-header">
+			<img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+			<strong class="me-auto">通知</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+			會員資料更新成功！
+		</div>
+	</div>
+</div>
+
+<div class="position-fixed top-0  p-3" style="z-index: 11">
+	<div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body">
+				<!-- 消息內容將在 JavaScript 中動態設置 -->
+			</div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts {
+
+	<script src="~/lib/datatables.net/datatables.min.js"></script>
+
+	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
+	<script src="~/js/common.js"></script>
+	<script src="~/js/Data/Data.js"></script>
+
+	<script>
+		//---------------------會員鎖住的話-----------------------
+
+
+
+
+		//-------tab分頁----------------------------------------------
+		document.addEventListener("DOMContentLoaded", function () {
+		// 	// 取得所有的標籤按鈕
+		// 	const tabButtons = document.querySelectorAll(".nav-tabs button");
+		// 	// 取得所有的標籤內容
+		// 	const tabContents = document.querySelectorAll(".tab-content .tab-pane");
+
+		// 	// 為每個標籤按鈕添加點擊事件
+		// 	tabButtons.forEach(button => {
+		// 		button.addEventListener("click", function () {
+		// 			// 移除所有按鈕的 active 類別
+		// 			tabButtons.forEach(btn => btn.classList.remove("active"));
+		// 			// 為當前按鈕添加 active 類別
+		// 			this.classList.add("active");
+
+		// 			// 隱藏所有的標籤內容
+		// 			tabContents.forEach(content => content.classList.remove("show", "active"));
+
+		// 			// 顯示當前按鈕對應的標籤內容
+		// 			const tabTarget = this.getAttribute("data-bs-target");
+		// 			document.querySelector(tabTarget).classList.add("show", "active");
+		// 		});
+		// 	});
+
+		// 	// 預設點擊第一個按鈕，顯示第一個內容
+
+		// 	tabButtons[0].click();
+
+		// 	//---------------------設定雞農出生日期合理範圍------------------------
+		// 	// 取得當前日期
+			var today = new Date();
+
+			// 計算出合理的最小日期（假設年齡最大為 120 歲）
+			var minDate = new Date();
+			minDate.setFullYear(today.getFullYear() - 120); // 假設最大年齡為 120 歲
+
+			// 計算出合理的最大日期（今天 - 18 年，假設最小年齡為 18 歲）
+			var maxDate = new Date();
+			maxDate.setFullYear(today.getFullYear() - 18); // 最小年齡 18 歲
+
+			// 設置 input 的 min 和 max 屬性
+			document.getElementById("birthdate").setAttribute("min", minDate.toISOString().split('T')[0]);
+			document.getElementById("birthdate").setAttribute("max", maxDate.toISOString().split('T')[0]);
+
+
+
+		// 	//-----------------------------------紀錄邏輯-----------------------------------------
+			today = new Date().toISOString().split('T')[0];
+			const defaultMemberSid = 1;//需抓瀏覽器Sid
+			document.getElementById('date_1').value = today;
+			document.getElementById('date_2').value = today;
+
+			loadHouse(defaultMemberSid);
+			loadArea(defaultMemberSid);
+		});
+
+
+		//----------------------滾動按鈕-------------------------------
+		// 獲取按鈕元素
+		const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+		// 當滾動超過一定距離時，顯示按鈕
+		window.addEventListener('scroll', () => {
+			if (window.scrollY > 300) {
+				scrollToTopBtn.classList.add('show');
+			} else {
+				scrollToTopBtn.classList.remove('show');
+			}
+		});
+
+		// 點擊按鈕後滾動到頂部
+		scrollToTopBtn.addEventListener('click', () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth' // 平滑滾動效果
+			});
+		});
+
+		//--------------------驗證會員輸入的資料是否有符合規則-------------------------
+		// 取得表單和提交按鈕
+		const form = document.getElementById('UserDataForm');
+		const submitBtn = document.getElementById('btnSubmit');
+
+		// 正則表達式驗證
+		var emailPattern = /^[^@@\s]+@@[^@@\s]+\.[^@@\s]+$/;
+		var phonePattern = /^09\d{8}$/;
+
+		// 驗證欄位
+		function validateForm() {
+			var name = document.getElementById('username').value.trim() !== '';
+			var email = emailPattern.test(document.getElementById('email').value);
+			var phone = phonePattern.test(document.getElementById('phone').value);
+
+
+
+			// 如果所有欄位都有效，啟用提交按鈕，否則禁用
+			submitBtn.disabled = !(name && email && phone);
+		}
+
+		// 當表單輸入改變時進行驗證
+		form.addEventListener('input', validateForm);
+
+
+		//-----------------------更新會員資料-----------------------
+
+		btnSubmit.addEventListener("click", async (event) => {
+			event.preventDefault()
+
+
+			const dataForm = new FormData(document.querySelector('#UserDataForm'));
+			const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+			dataForm.append('__RequestVerificationToken', token);
+			for (const pair of dataForm.entries()) {
+				console.log(pair[0])
+				console.log(pair[1])
+			}
+
+			try {
+				// 發送 AJAX 請求
+				const response = await fetch('/Frontstage/Members/MemberPageUpdate', {
+					method: 'POST',  // POST 方法用於提交資料
+					body: dataForm
+				});
+
+				// 處理後端的回應
+				const result = await response.json();
+				console.log('Success:', result);
+			} catch (error) {
+				console.error('Error:', error);
+			}
+
+
+			const userUpdateSuccessToast = document.getElementById('userUpdateSuccess')
+			const toastInstance = new bootstrap.Toast(userUpdateSuccessToast);
+			toastInstance.show();
+		});
+
+		//-----------------------------會員頭像預覽----------------------------------------
+		document.getElementById('ProfilePic').addEventListener('change', function (event) {
+			const file = event.target.files[0];
+
+			if (file) {
+				const reader = new FileReader();
+
+				reader.onload = function (e) {
+					const img = document.getElementById('img1');
+					img.src = e.target.result;  // 設置圖片的來源為上傳的文件
+					img.style.display = 'block';  // 顯示圖片
+				}
+
+				reader.readAsDataURL(file);  // 讀取文件並在完成後觸發 onload
+			}
+		});
+
+
+		//------------------------會員開通雞農--------------------------------------------------
+
+		btnchickCodeYES = document.querySelector('#btnchickCodeYES')
+		btnchickCodeYES.addEventListener("click", async (event) => {
+			event.preventDefault()
+
+			const Chickcode = document.querySelector('#Chickcode').value;
+
+			// console.log(Chickcode)
+
+
+
+			try {
+				// 發送 AJAX 請求
+				const response = await fetch('/Frontstage/Members/MemberbecomeChickFarm', {
+					method: 'POST',  // 使用 POST 方法來提交數據
+					headers: {
+						'Content-Type': 'application/json'  // 設定請求的類型為 JSON
+					},
+					body: JSON.stringify({ Chickcode: Chickcode })  // 將資料轉換為 JSON 字符串
+				});
+
+				// 處理後端的回應
+				const result = await response.json();
+				console.log('Success:', result);
+
+
+
+
+				// 關閉 Modal
+				const modalElement = document.getElementById('exampleModal');
+				const modalInstance = bootstrap.Modal.getInstance(modalElement); // 獲取當前 modal 的實例
+				modalInstance.hide(); // 隱藏 modal
+
+				// 顯示 toast 通知
+				const toastElement = document.getElementById('beComeFarmToast');
+				const toastInstance = new bootstrap.Toast(toastElement);
+				toastInstance.show();
+
+			} catch (error) {
+				console.error('Error:', error);
+			}
+
+		});
+
+
+		//-------------------------------雞農每日紀錄--------------------------------------------
+
+		async function Insert_Record1() {
+			const data = {
+				Date: document.getElementById('date_1').value,
+				MemberSid: 1,//抓session登入id
+				HouseSid: document.getElementById('ChickHouse_Selected').value,
+				EggAmount: document.getElementById('production').value,
+				UnQAmount: document.getElementById('defective').value,
+				DeathAmount: document.getElementById('death').value
+			};
+
+			console.log(data);
+
+			try {
+				const response = await fetch('/Frontstage/DataApi/Insert_Record1', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				});
+				const result = await response.json();
+				if (result.success) {
+					showToast('記錄新增成功', 'bg-success'); // 顯示成功的 Toast
+				} else {
+					showToast('記錄新增失敗: ' + result.message, 'bg-danger'); // 顯示失敗的 Toast
+				}
+			} catch (error) {
+				showToast('Error inserting record 2: ' + error, 'bg-danger'); // 顯示錯誤的 Toast
+			}
+		}
+
+		async function Insert_Record2() {
+			const data = {
+				Date: document.getElementById('date_2').value,
+				MemberSid: 1,//抓session登入id
+				AreaSid: document.getElementById('Area_Selected').value,
+				Weight: document.getElementById('weight').value,
+				Cost: document.getElementById('cost').value,
+				LotNo: document.getElementById('lot').value
+			};
+
+			try {
+				const response = await fetch('/Frontstage/DataApi/Insert_Record2', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				});
+
+				const result = await response.json();
+				if (result.success) {
+					showToast('記錄新增成功', 'bg-success'); // 顯示成功的 Toast
+				} else {
+					showToast('記錄新增失敗: ' + result.message, 'bg-danger'); // 顯示失敗的 Toast
+				}
+			} catch (error) {
+				showToast('Error inserting record 2: ' + error, 'bg-danger'); // 顯示錯誤的 Toast
+			}
+		}
+
+		function showToast(message, toastClass) {
+			const toastElement = document.getElementById('toastMessage');
+			const toastBody = toastElement.querySelector('.toast-body');
+
+			// 設置 Toast 內容和樣式
+			toastBody.textContent = message;
+			toastElement.className = `toast align-items-center text-white ${toastClass} border-0`; // 動態設置背景色
+
+			// 使用 Bootstrap 的 JavaScript API 來顯示 Toast
+			const toast = new bootstrap.Toast(toastElement);
+			toast.show();
+		}
+
+
+
+		$(document).ready(function () {
+
+			const nowId = '@ViewBag.MemberSid';
+			// let store;
+			// let nowOrderSid;
+
+			//--------------------order---------------------------
+
+			$("#tableList").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 1
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList2").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 2
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList3").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 3
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList4").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 4
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			$("#tableList5").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/OrderList",
+					data: function () {
+
+						const jsonObject = {
+							memberSid: nowId,
+							OrderStatusNo: 5
+						};
+						return JSON.stringify(jsonObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+				},
+				columnDefs: [
+
+					{
+						targets: 5,
+						render: function (data, type, row) {
+							return `<p class="pre-outer dark-btn-n btn-sm-dbrs mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+					{ "data": "orderSid", "width": "auto", "title": "訂單序號", "visible": false },
+					{ "data": "orderNo", "width": "auto", "title": "訂單編號" },
+					{ "data": "totalPrice", "width": "auto", "title": "賣家實付金額" },
+					{
+						"data": "alreadyPaid", "width": "auto", "title": "付款狀態",
+						"render": function (data, type, row) {
+							return data == 1 ? "已付款" : "未付款";
+						}
+					},
+					{ "data": "payment", "width": "auto", "title": "付款方式" },
+					{ "data": "carrierNameWay", "width": "auto", "title": "配送方式" },
+
+					// { "data": "", "width": "auto", "title": "操作" },
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			const preprocessData = (data) => {
+				return data.map(item => {
+					const keys = Object.keys(item);
+					return keys.reduce((acc, key) => {
+						acc[key] = item[key] || '';
+						return acc;
+					}, {});
+				});
+			};
+
+
+			//-----------------------coupon--------------------------
+
+
+			const loadCoupons = async (CouponStatusNo) => {
+
+				let searchCoupon = {
+					"memberSid": nowId,
+					"CouponStatusNo": CouponStatusNo
+				};
+
+
+				const api = '@Url.Content("~/Frontstage/MemberCenterAPI/GetCouponsForMember")';
+
+
+				const response = await fetch(api, {
+					method: 'POST',
+					body: JSON.stringify(searchCoupon),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+
+				const data = await response.json();
+				console.log(data);
+
+
+				const generateStoresHtml = (data) => {
+					return data.map(data => {
+						let noUseClass = '';
+						let expiredText = '';
+
+						if (searchCoupon.CouponStatusNo == 2) {
+							noUseClass = 'noUse';
+							expiredText = '<div class="expired-text">已使用</div>';
+						} else if (searchCoupon.CouponStatusNo == 3) {
+							noUseClass = 'noUse';
+							expiredText = '<div class="expired-text">已過期</div>';
+						}
+
+						return `
+							<div class="col-lg-6 coupon-outer-col">
+								<div class="card shadow-sm cart-card coupon-card ${noUseClass}" style="width: 410px;">
+									${expiredText}
+									<div class="cart-card-item w-100 p-0">
+										<div class="card-body-img d-flex w-100">
+											<div class="img_box">
+												<img src="/assets/brand/page/cart/coupon.png">
+												<i class="fa-solid fa-ticket"></i>
+											</div>
+											<div class="card-body my-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="d-flex flex-column justify-content-between align-items-start w-100">
+														<small class="kindTime">${data.kindTime}</small>
+														<small class="couponName" style="font-size: 15px; font-weight: 500; color: #525252;">${data.couponName}</small>
+													</div>
+												</div>
+												<div class="bottom_item flex-md-row align-items-md-center">
+													<div class="d-flex flex-column justify-content-between align-items-start me-3">
+														<big class="price">${data.price}元</big>
+														<small class="min" style="color: #a8a8a8; font-weight: 400;">※結帳商品總和低消<span>${data.minimum}</span></small>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						`;
+					}).join('');
+				};
+
+
+
+				const divSpots = document.getElementById('couponList');
+				divSpots.innerHTML = generateStoresHtml(data);
+			};
+
+			loadCoupons(1);
+
+			//-----------------------coin-------------------------------
+
+			const CoinObject = {
+				memberSid: nowId,
+				IsPositive: 1
+			};
+
+			$("#tableList6").dataTable({
+				scrollX: "auto",
+				ajax: {
+					type: "POST",
+					url: "/Frontstage/MemberCenterAPI/GetStoreCoinData",
+					data: function () {
+
+
+						return JSON.stringify(CoinObject);
+					},
+
+					dataSrc: function (json) {
+						return preprocessData(json);
+					},
+					contentType: "application/json"
+
+				},
+				columnDefs: [
+
+					{
+						targets: -1,
+						render: function (data, type, row) {
+							return `<p class="text-main-n mx-auto">${data}</p>`;
+						}
+					}
+				],
+
+				lengthMenu: [[6, 12, 24, -1], [6, 12, 24, "All"]],
+				fixedColumns: {
+					start: 0,
+					end: 1
+				},
+				columns: [
+	
+					{ "data": "orderNo", "width": "auto", "title": "商城訂單編號" },
+					{
+						"data": "changeTime", "width": "auto", "title": "代幣異動時間", "render": function (data, type, row) {
+							return formatDateTime(data);
+						}
+					},
+					{ "data": "money", "width": "auto", "title": "代幣金額" },
+					
+
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: '//cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+				},
+				paging: false,
+				ordering: false,
+				info: false,
+				searching: true
+			})
+
+			const loadCoinTotal = async () => {
+
+				const api = `@Url.Content("~/Frontstage/CartsAPI/GetTotal?memberSid=${nowId}")`;
+
+				try {
+
+					const response = await fetch(api, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+
+					const data = await response.json();
+
+					const span = document.getElementById('coinAmount');
+					span.innerHTML = data;
+
+				} catch (error) {
+					console.error('Fetch error:', error);
+				}
+			};
+
+			loadCoinTotal();
+			//----------------------address--------------------------------
+
+
+			//主畫面列出當前所有資料
+			const loadAddress = async () => {
+				const api = '@Url.Content("~/Frontstage/CartsAPI/AddressList")';
+				const BuyData1 = {
+					"Msid": nowId,
+				};
+
+				try {
+					const response = await fetch(api, {
+						method: 'POST',
+						body: JSON.stringify(BuyData1),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+
+
+					const data = await response.json();
+					console.log("data", data)
+
+					const generateProductsHtml = (addresses) => {
+						return addresses.map(address => {
+							const storeNameClass = address.storeName ? '' : 'd-none';
+							const defaultClass = address.addressFirst === 1 ? '' : 'd-none';
+							const storeSid = BuyData1.storeSid;
+
+
+							// const storeNameClass = address.storeName ? '' : 'd-none';
+							const showFirstButton = address.storeName ? '' : 'd-none';
+							const showSecondButton = address.storeName ? 'd-none' : '';
+
+							return `
+
+
+														<div class="other-info d-flex flex-column flex-lg-row s_${storeSid}" id="flexRadioDefault${address.carrierAddressSid}">
+												<div class="w-100 mx-auto">
+															<div class="part form-control-n w-100">
+														<div class="carrier-type w-100 d-flex justify-content-between pb-1">
+															<p class="d-flex align-items-center mb-0">
+																				${address.carrierName}<span class="way_no${address.carrierWayNo}">${address.way}</span>
+															</p>
+															<div class="d-flex justify-content-center align-items-center">
+																<button class="btn track-info p-0" data-deletesid="${address.carrierAddressSid}">刪除</button>
+
+
+																									<a class="btn track-info ms-3 p-0 ${showSecondButton} " data-bs-toggle="modal" href="#exampleModalToggle3" role="button"  data-edit="${address.carrierAddressSid}">編輯</a>
+										<a class="btn track-info ms-3 p-0 ${showFirstButton}" data-bs-toggle="modal" href="#exampleModalToggle4" role="button" data-edit="${address.carrierAddressSid}">編輯</a>
+
+
+															</div>
+														</div>
+														<div class="carrier-address d-flex flex-column flex-xl-row">
+															<div class="d-flex mt-1 mt-md-0">
+																		<p class="name me-2 m-0">${address.recordName}</p>
+																		<p class="phone me-2 m-0">${address.recordPhone}</p>
+															</div>
+
+																	<p class="address me-2 m-0">
+																											<span class="me-1 ${storeNameClass}">${address.storeName}  | </span>${address.adress}
+																										</p>
+														</div>
+																<p class="default me-2 m-0 ${defaultClass}">預設</p>
+													</div>
+												</div>
+												</div>
+
+
+														`;
+						}).join('<hr class="m-0" />');
+					};
+
+					const defaultCarriers = [
+						{ carrierNo: 1, displayText: '宅配', imageSrc: '/FrontstageTemplate/assets/brand/common/blackcat_logo.svg', addresses: [] },
+						{ carrierNo: 2, displayText: '超商', imageSrc: '/FrontstageTemplate/assets/brand/common/seven-logo.png', addresses: [] }
+					];
+
+
+
+
+					const generateStoresHtml1 = (data) => {
+						const carriersMap = defaultCarriers.reduce((map, carrier) => {
+							map[carrier.carrierNo] = carrier;
+							return map;
+						}, {});
+
+						data.forEach(store => {
+							if (carriersMap[store.carrierNo]) {
+								carriersMap[store.carrierNo].addresses = store.addresses;
+							}
+						});
+
+						return Object.values(carriersMap).map(store => {
+							const hasAddresses = store.addresses.length > 0;
+							const buttonClass = hasAddresses ? 'accordion-button collapsed' : 'accordion-button collapsed disabled';
+							const productsHtml = hasAddresses ? generateProductsHtml(store.addresses) : '';
+
+
+
+
+
+							return `
+																	<div class="accordion-item mb-4 ">
+														<h2 class="accordion-header" id="heading${store.carrierNo}">
+															<button class="${buttonClass}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${store.carrierNo}" aria-expanded="false" aria-controls="collapse${store.carrierNo}">
+																${store.displayText} <img src="${store.imageSrc}" alt="${store.displayText}" />
+															</button>
+														</h2>
+														<div id="collapse${store.carrierNo}" class="accordion-collapse collapse ${hasAddresses ? '' : 'disabled'}" aria-labelledby="heading${store.carrierNo}" data-bs-parent="#accordionExample1">
+															<div class="accordion-body">
+
+																	${productsHtml}
+
+
+															</div>
+														</div>
+													</div>
+
+
+												`;
+						}).join('');
+					};
+
+
+					const divSpots1 = document.getElementById('accordionExample1');
+					divSpots1.innerHTML = generateStoresHtml1(data);
+
+
+					const selectElements = document.querySelectorAll('#accordionExample1 .track-info');
+
+
+
+					// 通用的更新模态框内容函数
+					const updateModalContent = (modalId, addressData, updateCallback) => {
+						const nameInput = document.querySelector(`${modalId} .addressName input`);
+						const phoneInput = document.querySelector(`${modalId} .addressPhone input`);
+						const addressInput = document.querySelector(`${modalId} .address input`);
+						const address = document.querySelector('#exampleModalToggle4 .carrier-address div');
+						const checkbox = document.querySelector(`${modalId} .hidden-box`);
+						const priceElement = document.querySelector(`${modalId} .carryway .checktext-money`);
+
+						const addressStoreName = document.querySelector(`${modalId} .carrier-address .storeName`);
+						const addressStoreId = document.querySelector(`${modalId} .carrier-address .storeId`);
+
+						if (addressData && addressData.length > 0) {
+							nameInput.value = addressData[0].recordName || '';
+							phoneInput.value = addressData[0].recordPhone || '';
+
+							if (addressInput) {
+								addressInput.value = addressData[0].adress || '';
+							} else {
+								address.textContent = addressData[0].adress.replace(/\|$/, '').trim() || '';
+							}
+
+							if (checkbox) {
+								checkbox.checked = (addressData[0].carrierWayNo === 1);
+							}
+							if (priceElement) {
+								priceElement.textContent = `$${addressData[0].price || 0}`;
+							}
+							if (addressStoreName) {
+								addressStoreName.textContent = addressData[0].storeName || '';
+							}
+							if (addressStoreId) {
+								addressStoreId.textContent = addressData[0].storeId || '';
+							}
+						}
+
+						$(document).on('click', `${modalId} .dark-btn-n`, function () {
+							const submitdata = {
+								CarrierAddressSid: addressData[0].carrierAddressSid,
+								MemberSid: nowId,
+								RecordName: nameInput.value,
+								RecordPhone: phoneInput.value,
+								Adress: addressInput ? addressInput.value : address.textContent,
+								StoreName: addressStoreName ? addressStoreName.textContent : undefined,
+								StoreId: addressStoreId ? addressStoreId.textContent : undefined,
+								CarrierWayNo: checkbox ? (checkbox.checked ? 1 : 2) : undefined
+							};
+							updateCallback(submitdata);
+						});
+					};
+
+
+				} catch (error) {
+					console.error('There has been a problem with your fetch operation:', error);
+				}
+			};
+			loadAddress();
+
+
+			//--------------共用刷新-------------------------------
+
+			$('.nav-link').on('click', function () {
+				const id = $(this).attr('id');
+
+				//order
+				let tabContentId = '#pills-one';
+
+				$('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+					var activeTabId = $(e.target).attr('id');
+					var activeTabText = $(e.target).text();
+
+					tabContentId = $(e.target).attr('data-bs-target');
+
+					var tableSelector = `${tabContentId} table`;
+					var table = $(tableSelector).DataTable();
+
+					if (table) {
+						table.ajax.reload();
+						table.columns.adjust().draw();
+					}
+				});
+
+
+				//Coupon
+				let CouponStatusNo = 1;
+				if (id === 'pills-one-tab-coupon') {
+					CouponStatusNo = 1;
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-two-tab-coupon') {
+					CouponStatusNo = 2;
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-three-tab-coupon') {
+					CouponStatusNo = 3;
+					loadCoupons(CouponStatusNo);
+				}
+
+				
+				if (id === 'pills-one-tab-coin') {
+					CoinObject.IsPositive = 1;
+					var table = $("#tableList6").DataTable();
+					table.ajax.reload();
+					table.columns.adjust().draw();
+					loadCoupons(CouponStatusNo);
+				} else if (id === 'pills-two-tab-coin') {
+					CoinObject.IsPositive = 0;
+					var table = $("#tableList6").DataTable();
+					table.ajax.reload();
+					table.columns.adjust().draw();
+				}
+
+
+
+
+
+			});
+
+		});
+	</script>
+}

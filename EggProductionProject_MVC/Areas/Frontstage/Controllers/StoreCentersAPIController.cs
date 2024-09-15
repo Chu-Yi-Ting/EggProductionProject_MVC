@@ -399,8 +399,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
          od.order,               
          StoreSid = od.detail.ProductS.StoreSid 
      })
-     .Distinct() 
-     .ToList();
+     .Distinct()
+	 .OrderByDescending(o => o.order.OrderCreatedTime)
+	 .ToList();
 
             var payments = _context.Payments.Select(c => new
             {
@@ -576,6 +577,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             return Ok(new { message = "Order and Track updated successfully." });
         }
+
+
+
+
+
 
 
     }

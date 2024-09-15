@@ -204,7 +204,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 						  combined.SubcategoryName,
 						  image.ProductImagePath
 					  })
-				.ToList();
+                .OrderByDescending(x => x.cart.NewInTime)
+                .ToList();
 
 			var groupedByStore = cartsWithProducts
 				.GroupBy(x => new

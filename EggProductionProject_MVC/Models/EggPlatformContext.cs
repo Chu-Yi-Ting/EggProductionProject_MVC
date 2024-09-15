@@ -389,6 +389,10 @@ public partial class EggPlatformContext : DbContext
         {
             entity.HasKey(e => e.CartSid).HasName("PK_Cart");
 
+            entity.Property(e => e.NewInTime)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
             entity.HasOne(d => d.MemberS).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.MemberSid)
                 .HasConstraintName("FK_Carts_Member");

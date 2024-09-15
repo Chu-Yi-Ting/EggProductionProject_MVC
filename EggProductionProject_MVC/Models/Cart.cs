@@ -15,6 +15,8 @@ public partial class Cart
 
     public int? Qty { get; set; }
 
+    public DateTime? NewInTime { get; set; }
+
     public virtual Member MemberS { get; set; }
 
     public virtual Product ProductS { get; set; }

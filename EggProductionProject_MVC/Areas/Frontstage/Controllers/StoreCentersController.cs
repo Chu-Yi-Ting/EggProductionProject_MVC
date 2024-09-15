@@ -47,7 +47,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 				return result;
 			}
 
-			return View();
+			ViewData["Title"] = "GOOD EGG 賣家中心-訂單管理";
+
+            return View();
 		}
 
 		public async Task<IActionResult> trackSearch()
@@ -57,7 +59,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			{
 				return result;
 			}
-			return View();
+            ViewData["Title"] = "GOOD EGG 賣家中心-物流查詢";
+            return View();
 		}
 
         public async Task<IActionResult>  trackControl()
@@ -67,7 +70,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			{
 				return result;
 			}
-			return View();
+            ViewData["Title"] = "GOOD EGG 賣家中心-物流設定";
+            return View();
         }
     }
 }

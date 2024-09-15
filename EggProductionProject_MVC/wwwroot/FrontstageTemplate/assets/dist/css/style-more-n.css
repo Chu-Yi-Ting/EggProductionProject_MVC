@@ -1,0 +1,195 @@
+/*會員中心*/
+table {
+    caption-side: bottom;
+    border-collapse: separate;
+}
+
+.table > thead {
+    vertical-align: bottom;
+    border-bottom: 1px solid;
+}
+
+table.dataTable thead > tr > th {
+    color: #909090;
+    font-size: 14px;
+    border-bottom: 1px solid #B8860B;
+    text-align: center;
+    min-width: 106px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: #696969;
+}
+
+.table {
+    --bs-table-striped-bg: rgba(0, 0, 0, 0);
+}
+
+tbody, td, tfoot, th, thead, tr {
+    text-align: center;
+    font-size: 15px;
+    color: #696969;
+}
+
+table.dataTable > tbody > tr > td {
+    padding: 16px 10px;
+    vertical-align: middle;
+}
+
+table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+    text-align: center;
+}
+
+div.dt-container.dt-empty-footer .dt-scroll-body {
+    border-bottom: transparent;
+}
+
+.store-body-outer .notify-title .input-group-n .btn:hover {
+    background-color: #fff;
+}
+
+.store-body-outer .pagebody-store .accordion-item .accordion-body .other-info .default {
+    font-size: 10px;
+    color: #d8b45c;
+    font-weight: 700;
+    border: none;
+    border-radius: 40px;
+    padding: 0px;
+}
+
+.dt-search:has(.dt-input) {
+    display: none;
+}
+
+.dt-scroll-headInner {
+    width: 100% !important;
+}
+
+.memberCenter-outer .pre-outer {
+    display: inline-block;
+    padding: 9px 18px;
+    margin-bottom: 0px;
+}
+
+
+.memberCenter-outer .coupon-card .kindTime {
+    font-size: 10px;
+    color: darkgoldenrod;
+    font-weight: 800;
+}
+
+.memberCenter-outer .coupon-card .couponName {
+    font-size: 15px;
+    font-weight: 500;
+    color: #525252;
+}
+
+.memberCenter-outer .coupon-card .price {
+    font-size: larger;
+}
+
+.memberCenter-outer .coupon-card .min {
+    color: #a8a8a8;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.memberCenter-outer .outer-nav .nav-link {
+    color: darkgoldenrod;
+    /* 			padding: 10px 30px; */
+    margin: 10px 8px;
+    font-weight: 600;
+    /* width: 236px; */
+}
+
+    .memberCenter-outer .outer-nav .nav-link.active {
+        border-bottom: 2px solid #d4ac53;
+        border-radius: 0px;
+    }
+
+
+
+.memberCenter-outer .page-title-in {
+    background: darkgoldenrod;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.memberCenter-outer .store-body-outer .pagebody-store .cart-card .cart-card-item .img_box {
+    width: 12rem;
+    min-width: auto;
+    min-height: 56px;
+}
+
+.memberCenter-outer .store-body-outer .tab-controll-n li {
+    width: 236px;
+}
+
+
+.memberCenter-outer .outer-nav .tab-controll-n {
+    justify-content: center;
+}
+
+
+.memberCenter-outer .store-body-outer .tab-controll-n {
+    width: fit-content;
+    margin: auto;
+}
+
+.memberCenter-outer .coupon-outer-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    padding-top: 20px;
+}
+
+.memberCenter-outer .coupon-card.noUse::after {
+    content: "";
+    width: inherit;
+    height: 100%;
+    background-color: #dedede;
+    position: absolute;
+    opacity: .5;
+}
+
+.memberCenter-outer .coupon-card {
+    position: relative; /* 使文字定位於卡片內 */
+}
+
+.memberCenter-outer .expired-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(344deg);
+    background-color: #b49c53ab;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.memberCenter-outer .text-main-n {
+    color: darkgoldenrod;
+    font-weight: 800;
+}
+
+.memberCenter-outer .coin-total {
+    text-align: end;
+    font-size: 14px;
+    color: #8d8c8c;
+}
+
+    .memberCenter-outer .coin-total span {
+        font-size: 20px;
+        font-weight: 700;
+        color: darkgoldenrod;
+    }
+
+/*會員中心*/

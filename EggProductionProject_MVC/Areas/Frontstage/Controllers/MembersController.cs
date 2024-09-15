@@ -9,6 +9,7 @@ using EggProductionProject_MVC.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 using NuGet.Protocol;
+using Microsoft.AspNetCore.Identity;
 
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
@@ -17,11 +18,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
     {
         private readonly EggPlatformContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public MembersController(EggPlatformContext context, IWebHostEnvironment webHostEnvironment)
+        public MembersController(EggPlatformContext context, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
 
@@ -39,20 +42,16 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
             
             var user = _context.Members.Where(x=>x.AspUser.Id == aspuserId).FirstOrDefault();
-           
-            
             //原本的寫法，不知道為什麼掛了
-               // var member = await _context.Members
-               //.Include(m => m.AspUser)
-               //.Include(m => m.ShoppingRankNoNavigation)
-               //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
-
+            // var member = await _context.Members
+            //.Include(m => m.AspUser)
+            //.Include(m => m.ShoppingRankNoNavigation)
+            //.FirstOrDefaultAsync(m => m.AspUserId == aspuserId);
+            ViewBag.MemberSid = user.MemberSid;
 
             //ViewBag.UserName = user.Name;
-                return View(user);
-            
-           
-                
+            return View(user);
+    
         }
 
 
@@ -307,6 +306,66 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         {
             return _context.Members.Any(e => e.MemberSid == id);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        //----------------------------------------------
+
+
+        private async Task<IActionResult> CheckUserAndMember()
+        {
+            var aspUser = await _userManager.GetUserAsync(User);
+
+            if (aspUser == null)
+            {
+                return Redirect("https://localhost:7080/Identity/Account/Login");
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUser.Id);
+
+            if (member == null)
+            {
+                return Redirect("https://localhost:7080/Identity/Account/Login");
+            }
+
+            ViewBag.MemberSid = member.MemberSid;
+
+            return null; 
+        }
+
+        public async Task<IActionResult> MemberCenter()
+        {
+
+            var result = await CheckUserAndMember();
+            if (result != null)
+            {
+                return result;
+            }
+
+			string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+			var userAspId = HttpContext.Session.GetString("userId");
+
+			var user = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+
+            ViewData["Title"] = "GOOD EGG 會員中心";
+
+            return View(user);
+
+        }
+
+
+
+
+
     }
-   
 }
