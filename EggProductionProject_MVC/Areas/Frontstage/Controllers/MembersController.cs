@@ -357,7 +357,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			var user = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
 
-			return View(user);
+            ViewData["Title"] = "GOOD EGG 會員中心";
+
+            return View(user);
 
         }
 

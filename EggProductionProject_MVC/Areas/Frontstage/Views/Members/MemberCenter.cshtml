@@ -218,6 +218,17 @@
 				border-bottom: 2px solid darkgoldenrod;
 				z-index: -1;
 			}
+
+
+		.store-body-outer{
+			display:flex;
+			justify-content:center;
+		}
+
+		.store-body-outer .pagebody-store{
+				width: 100%;
+		}
+
 	</style>
 }
 
@@ -273,9 +284,7 @@
 									<li class="nav-item" role="presentation">
 										<button class="nav-link active" id="pills-one-tab" data-bs-toggle="pill" data-bs-target="#pills-one-data" type="button" role="tab" aria-controls="pills-one-data" aria-selected="true">基本資料修改</button>
 									</li>
-									<li class="nav-item" role="presentation">
-										<button class="nav-link" id="pills-two-tab" data-bs-toggle="pill" data-bs-target="#pills-two-data" type="button" role="tab" aria-controls="pills-two-data" aria-selected="false">綁定帳號</button>
-									</li>
+								
 									<li class="nav-item" role="presentation">
 										<button class="nav-link" id="pills-three-tab" data-bs-toggle="pill" data-bs-target="#pills-three-data" type="button" role="tab" aria-controls="pills-three-data" aria-selected="false">雞蛋每日紀錄</button>
 									</li>
@@ -443,9 +452,7 @@
 									</div>
 
 								</div>
-								<div class="tab-pane fade" id="pills-two-data" role="tabpanel" aria-labelledby="pills-two-tab">
-									222
-								</div>
+								
 								<div class="tab-pane fade" id="pills-three-data" role="tabpanel" aria-labelledby="pills-three-tab">
 									@if (Model.Chickcode == null)
 									{

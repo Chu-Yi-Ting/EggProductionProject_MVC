@@ -53,7 +53,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             {
                 return result;
             }
-
+            ViewData["Title"] = "GOOD EGG 購物車";
             return View();
         }
 
@@ -77,6 +77,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             //// 处理支付回调后的业务逻辑
             //ViewBag.MemberSid = member.MemberSid;
+            ViewData["Title"] = "GOOD EGG 結帳成功";
 
             return View();
         }
