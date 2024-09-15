@@ -13,10 +13,10 @@
 
     if (employeeSid.HasValue)
     {
-        var user = _context.Members.FirstOrDefault(u => u.MemberSid == employeeSid.Value);
+        var user = _context.Employees.FirstOrDefault(u => u.EmployeeSid == employeeSid.Value);
         if (user != null)
         {
-            userName = user.Name;
+            userName = user.EmpName;
         }
     }
 }

@@ -1,26 +1,143 @@
 ﻿@page
 @model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = "Resend email confirmation";
+    ViewData["Title"] = "重新寄送信箱驗證";
+}
+@section Styles {
+    <style>
+
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 防止頁面滾動條 */
+        }
+
+        /* 設定影片為背景，並覆蓋整個頁面 */
+        #background-video {
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 確保影片覆蓋整個畫面並保持比例 */
+            z-index: 0; /* 放在背景 */
+        }
+
+        /* 讓 .login-box 內容顯示在影片之上 */
+        .login-box {
+            position: relative;
+            z-index: 10; /* 確保它顯示在影片上方 */
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            padding-top: 100px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 200px;
+        }
+
+            .login-box h1 {
+                color: #b3922c;
+                background-color: white;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+    </style>
 }
 
-<h1>@ViewData["Title"]</h1>
-<h4>Enter your email.</h4>
+
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Resend</button>
-        </form>
+
+
+
+<body>
+
+    <!-- Video element -->
+    <video autoplay muted loop id="background-video">
+        <source src="~/MemberImg/BreakingEgg.mp4" type="video/mp4">
+        您的瀏覽器不支援影片播放。
+    </video>
+
+                <div class="login-box">
+                    <h1>重新寄送驗證信</h1>
+                    <form method="post" id="resendEmailForm">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 me-2">確定</button>
+                    </form>
+                </div>
+
+
+
+</body>
+
+<!-- 註冊成功toast通知 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="SuccessToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <img src="~/assets/brand/common/circle.png" class="rounded me-2" alt="check icon" width="16" height="16">
+            <strong class="me-auto">通知</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            驗證信寄出！請於30分鐘內至信箱確認您的電子郵件。
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        //-----------------檢查頁面載入時候是否有來字後端的[信箱重複]的json，如果有的話跳出toast顯示-------------
+        $(document).ready(function () {
+            // 攔截表單提交事件
+            $('#resendEmailForm').on('submit', function (e) {
+                e.preventDefault();  // 阻止表單的預設行為（刷新頁面）
+
+                $.ajax({
+                    url: '@Url.Page("/Account/ResendEmailConfirmation")', // 設定提交到的頁面
+                    type: 'POST',
+                    data: $(this).serialize(), // 將表單序列化為資料
+                    success: function (response) {
+                        if (response.success) {
+                            const SuccessToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
+                            SuccessToast.show();
+
+                        } else {
+                            alert("註冊失敗，請再嘗試一次")
+                        }
+                    },
+                    error: function () {
+                        alert('提交失敗，請再試一次');
+                    }
+                });
+            });
+        });
+    </script>
 }
