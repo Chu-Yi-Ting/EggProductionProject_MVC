@@ -15,7 +15,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         {
             var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
             var user = _context.Members.Where(x => x.MemberSid == MemberSid).FirstOrDefault();
-
+            @ViewData["Title"] = "GOOD EGG 生產分析";
             return View(user);
         }
     }
