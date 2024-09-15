@@ -65,7 +65,7 @@
             <img class="w-100" src="~/frontstagetemplate/assets/brand/layout/banners/banner_18.png" />
         </div>
 
-        @if(Model.IsChickFarm == 0)
+        @if(Model == null)
         {
             <div class="d-flex justify-content-center">
                 <img src="~/memberimg/chickopenfirst.jpg" />
@@ -258,7 +258,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script src="~/js/Data/Data.js"></script>
-    @if (Model.IsChickFarm != 0)
+    @if (Model != null)
     {
         <script>
             let calendar; // 定義行事曆變數
@@ -330,10 +330,8 @@
                 }
     //-------------------------初始化折線圖------------------------------------------------------------
 
-                const defaultMemberSid = 1;//需抓瀏覽器Sid
-            
                 //1.load雞舍
-                await loadHouse(defaultMemberSid);
+                await loadHouse();
                 //2.初始化日期選擇器
                 let isDateSet = false; // 用來追蹤日期是否已設置
 
@@ -390,14 +388,13 @@
                     }
                 });
 
-
                 const defaultJudge = 1; // 設置預設的 Judge 值
                 const defaultHouseSid = document.getElementById('ChickHouse_Selected').value; // 設置 HouseSid 為加載後的第一個選項
                 const defaultStartDate = null; // 初始無開始日期
                 const defaultEndDate = null; // 初始無結束日期
 
                 // 調用 updateChart 來設置初始數據
-                updateChart(defaultMemberSid, defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
+                updateChart(defaultJudge, defaultHouseSid, defaultStartDate, defaultEndDate);
 
             });
     //------------------------------------------行事曆code----------------------------------------------------------
@@ -566,21 +563,20 @@
 
                 const houseSid = ChickHouseSelected.value; // 從下拉選單獲取選定的 HouseSid
                 const Judge = Number(Rate_Selected.value); // 從下拉選單獲取選定的 Judge
-                const memberSid = 1; // 固定為 1
 
                 if (!dateRangeInput) {
                     // 如果是空值，執行相應操作（例如使用默認篩選條件或顯示所有資料）
-                    updateChart(memberSid, Judge, houseSid, null, null); // 用 null 表示沒有選擇的日期範圍
+                    updateChart(Judge, houseSid, null, null); // 用 null 表示沒有選擇的日期範圍
                 } else {
                     // 如果有日期範圍值，繼續處理
                     const [startDate, endDate] = dateRangeInput.split(' to ');
-                    updateChart(memberSid, Judge, houseSid, startDate, endDate);
+                    updateChart( Judge, houseSid, startDate, endDate);
                 }
             });
 
-            async function updateChart(memberSid, Judge, houseSid, startDate, endDate) {
+            async function updateChart(Judge, houseSid, startDate, endDate) {
                 try {
-                    const response = await fetch(`/Frontstage/DataApi/Update_Chart?memberSid=${memberSid}&houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
+                    const response = await fetch(`/Frontstage/DataApi/Update_Chart?houseSid=${houseSid}&Judge=${Judge}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, {
                         method: 'GET',
                     });
 
@@ -590,8 +586,6 @@
                     }
 
                     const data = await response.json();
-
-                
 
                     // 動態設置圖表數據
                     const labels = data.rate.map(item => item.date); // 提取日期

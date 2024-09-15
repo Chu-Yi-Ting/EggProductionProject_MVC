@@ -1,8 +1,8 @@
-﻿async function loadHouse(defalutMemberSid) {
+﻿async function loadHouse() {
     const ChickHouseSelected = document.getElementById('ChickHouse_Selected');
     try {
         // 發送 GET 請求到後端 API
-        const response = await fetch(`/Frontstage/DataApi/Get_House?memberSid=${defalutMemberSid}`, {
+        const response = await fetch(`/Frontstage/DataApi/Get_House`, {
             method: 'GET',
         });
 
@@ -26,12 +26,12 @@
     }
 }
 
-async function loadArea(defalutMemberSid) {
+async function loadArea() {
     const AreaSelected = document.getElementById('Area_Selected');
     //console.log(1);
     try {
         // 發送 GET 請求到後端 API
-        const response = await fetch(`/Frontstage/DataApi/Get_Area?memberSid=${defalutMemberSid}`, {
+        const response = await fetch(`/Frontstage/DataApi/Get_Area`, {
             method: 'GET',
         });
 
