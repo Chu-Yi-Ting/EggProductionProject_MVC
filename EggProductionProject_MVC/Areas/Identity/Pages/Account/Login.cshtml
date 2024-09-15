@@ -152,8 +152,8 @@
             <div class="col-md-6 left-column"></div>
             <div class="col-md-6 right-column">
                 <div class="login-box">
-                    <h1>登入</h1>
-                    <form id="account" method="post" novalidate>
+                    <h1 id="loginText">登入</h1>
+                    <form id="loginForm" method="post" novalidate>
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="mb-3">
 
@@ -310,6 +310,25 @@
                 icon.classList.remove("fa-eye-slash");
                 icon.classList.add("fa-eye");
             }
+        });
+
+
+
+        //-----------------------自動輸入------------------------
+        let isFirstAccount = true; // 用來追蹤目前的帳號
+
+        document.getElementById("loginText").addEventListener("click", function () {
+            if (isFirstAccount) {
+                // 填入第一組帳號密碼
+                document.getElementById("account").value = "chuyiting5207@gmail.com";
+                document.getElementById("password").value = "!Msit16123";
+            } else {
+                // 填入第二組帳號密碼
+                document.getElementById("account").value = "yzhu33729@gmail.com";
+                document.getElementById("password").value = "!Msit16124";
+            }
+            // 切換帳號狀態
+            isFirstAccount = !isFirstAccount;
         });
 
     </script>
