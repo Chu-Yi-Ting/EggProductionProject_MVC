@@ -88,9 +88,6 @@
     <Content Update="wwwroot\Images\NoImage2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\Images\Products\cage1.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\Images\Products\egg1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
