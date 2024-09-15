@@ -1,11 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@using EggProductionProject_MVC.Data
-@using Microsoft.AspNetCore.Identity
-@{
-    
-}
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="utf-8" />
@@ -14,69 +8,67 @@
     <meta name="author"
           content="Mark Otto, Jacob Thornton, and Bootstrap contributors" />
     <meta name="generator" content="Hugo 0.88.1" />
-    <title>@ViewData["Title"] - EggProductionProject_MVC</title>
+    <title>@ViewData["Title"]</title>
 
     @* <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/choices.js/choices.min.css" rel="stylesheet" />
-    <link href="~/frontstagetemplate/assets/dist/css/style.css?version1.0" rel="stylesheet" />
+    <link href="~/frontstagetemplate/assets/dist/css/style.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 
 </head>
 <body>
-   
-    <header>
+    <header class="nav-shadow">
         <div class="container_title p-0 m-0">
-            <div class="nav-main d-flex flex-wrap">
-                <div class="d-flex flex-column align-items-center">
-                    <a href="https://localhost:7080/"
-                       class="d-flex align-items-center mb-2 text-dark text-decoration-none">
-                        <img src="~/FrontstageTemplate/assets/brand/layout/egg-logo.svg"
-                             class="bi me-2"
-                             width="160"
+            <div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
+                <div class="outer-layout-n">
+                    <a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index"
+                       class="d-flex align-items-center  text-decoration-none">
+                        賣家中心
+                    </a>
+                    <a href="#"
+                       class="d-flex align-items-center mb-2 text-dark text-decoration-none d-block d-lg-none">
+                        <h5>
+                        </h5>
+                        <img src="~/FrontstageTemplate/assets/brand/layout/GOOD_EGG.svg"
+                             class="bi "
+                             width="120"
                              alt="Bootstrap" />
                     </a>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center d-none d-lg-flex">
-                        <li><a asp-area="Frontstage" asp-controller="Data" asp-action="Index" class="nav-link px-3 link-light">蛋雞分析</a></li>
-                        <li><a href="http://localhost:4200/#/Article" class="nav-link px-3 link-light">知識討論</a></li>
-                        <li><a href="http://localhost:4200/#/video_summary" class="nav-link px-3 link-light">影片生活</a></li>
-                        <li><a asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop" class="nav-link px-3 link-light">商城購物</a></li>
-                    </ul>
                 </div>
+                <ul class="nav col-12 col-lg-auto  justify-content-center align-items-center d-none d-lg-flex">
+                    <li><a asp-area="Frontstage" asp-controller="Data" asp-action="Index" class="nav-link px-3 link-dark ">蛋雞生產分析</a></li>
+                    <li><a href="http://localhost:4200/#/Article" class="nav-link px-3 link-dark ">知識討論</a></li>
+                    <li>
+                        <a href="http://localhost:7080/" class="nav-link px-3 link-dark ">
 
-                <div class="nav-right">
+                            <img src="~/frontstagetemplate/assets/brand/layout/egg-logo-sm.svg" class="bi"
+                                 width="35"
+                                 alt="Bootstrap" />
+
+                        </a>
+                    </li>
+                    <li><a href="http://localhost:4200/#/video_summary" class="nav-link px-3 link-dark ">影片生活</a></li>
+                    <li><a asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop" class="nav-link px-3 link-dark ">商城購物</a></li>
+                </ul>
+                <div class="nav-right-no-abo mt-3 mt-lg-0">
                     <a href="https://localhost:7080/Frontstage/carts"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </a>
 
-                    <a href="@(User.Identity.IsAuthenticated? Url.Action("MemberPage", "Members", new { area = "Frontstage" }):Url.Action("Login", "Account", new { area = "Identity" }))"
+                    <a asp-area=" Frontstage" asp-controller="Members" asp-action="MemberPage"
                        class="d-block link-dark text-decoration-none"
                        aria-expanded="false">
-
-
-                        @{
-                            if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
-                            {
-                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
-                                     alt="mdo"
-                                     width="28"
-                                     height="28"
-                                     class="rounded-circle" />
-                            }
-                            else
-                            {
-                                <img src="~/memberimg/nopicchick.jpg"
-                                     alt="mdo"
-                                     width="28"
-                                     height="28"
-                                     class="rounded-circle" />
-                            }
-
-                        }
+                        <img src="https://github.com/mdo.png"
+                             alt="mdo"
+                             width="28"
+                             height="28"
+                             class="rounded-circle" />
                     </a>
+
                     <button class="navbar-toggler link-dark text-decoration-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i class="fa-solid fa-bars"></i>
                     </button>
@@ -94,7 +86,7 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/">
+                        <a class="nav-link active" aria-current="page" href="#">
                             <i class="fa-solid fa-house me-2"></i> 首頁
                         </a>
                     </li>
@@ -102,10 +94,10 @@
                         <span>網站服務</span>
                     </li>
                     <li class="nav-item">
-                         <a class="nav-link active" aria-current="page" asp-area="Frontstage" asp-controller="Data" asp-action="Index" >
-                                <i class="fa-solid fa-chart-line me-2"></i>
-                                每日蛋雞分析
-                            </a>
+                        <a class="nav-link active" aria-current="page" a asp-area="Frontstage" asp-controller="Data" asp-action="Index">
+                            <i class="fa-solid fa-chart-line me-2"></i>
+                            每日蛋雞生產分析
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="http://localhost:4200/#/Article">
@@ -129,7 +121,7 @@
                         <span>網站服務</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-area="Frontstage" asp-controller="Members" asp-action="MemberPage">
+                        <a class="nav-link active" aria-current="page" href="#">
                             <i class="fa-solid fa-user-large me-2"></i>
                             會員中心
                         </a>
@@ -140,27 +132,54 @@
                             賣家中心
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"  asp-controller="accountLogin" asp-action="Index">
-                            <i class="fa-solid fa-user-large me-2"></i>
-                            後台登入
-                        </a>
-                    </li>
-                   
                 </ul>
             </div>
 
-            <partial name="_LoginPartial" />
+            <div class="offcanvas-footer">
+
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <div class="logoin-user">
+                            <div class="border-img">
+                                @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
+                                {
+                                    <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                }
+
+                            </div>
+                            @* Alice *@
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
+                            {
+                                <p>歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                            }
+                        </div>
+                    </li>
+                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+
+                        <button type="submit" class="btn ">
+                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+                            登出
+                        </button>
+                    </form>
+                }
+
+            </div>
         </div>
+
     </header>
 
     <main>
         @RenderBody()
     </main>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/choices.js/choices.min.js"></script>
-   @*  <script src="~/FrontstageTemplate/assets/dist/js/self_n.js"></script> *@
+    @* <script src="~/FrontstageTemplate/assets/dist/js/self_n.js"></script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
