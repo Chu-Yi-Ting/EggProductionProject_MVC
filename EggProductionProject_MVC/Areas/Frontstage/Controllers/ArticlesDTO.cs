@@ -10,14 +10,8 @@ using EggProductionProject_MVC.Models;
 namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 {
     [Area("Frontstage")]
-    public class ArticlesDTOController : Controller
+    public class ArticlesDTO
     {
-        private readonly EggPlatformContext _context;
-
-        public ArticlesDTOController(EggPlatformContext context)
-        {
-            _context = context;
-        }
         public class ArticleDto
         {
             public int ArticleSid { get; set; }
@@ -113,6 +107,13 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             public int ReplySid { get; set; }
             public int LikeCount { get; set; }
             public int DislikeCount { get; set; }        
+        }
+        public class ChatMessageDto
+        {
+            public int MemberSid { get; set; }  // 會員編號
+            public string Name { get; set; }  // 會員名稱
+            public string ChatContent { get; set; }  // 聊天內容
+            public DateTime ChatTime { get; set; }  // 聊天時間
         }
     }
 }
