@@ -1,26 +1,118 @@
 ﻿@page
 @model ShowRecoveryCodesModel
 @{
-     ViewData["Title"] = "Recovery codes";
+     ViewData["Title"] = "兩步驟驗證";
      ViewData["ActivePage"] = "TwoFactorAuthentication";
 }
+@section Styles {
+    <style>
 
-<partial name="_StatusMessage" for="StatusMessage" />
-<h4>@ViewData["Title"]</h4>
-<div class="alert alert-warning" role="alert">
-    <p>
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        <strong>Put these codes in a safe place.</strong>
-    </p>
-    <p>
-        If you lose your device and don't have the recovery codes you will lose access to your account.
-    </p>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
-        {
-            <code class="recovery-code">@Model.RecoveryCodes[row]</code><text>&nbsp;</text><code class="recovery-code">@Model.RecoveryCodes[row + 1]</code><br />
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
         }
+
+        /* 設定影片為背景，並覆蓋整個頁面 */
+        #background-video {
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 確保影片覆蓋整個畫面並保持比例 */
+            z-index: 0; /* 放在背景 */
+        }
+
+        /* 讓 .login-box 內容顯示在影片之上 */
+        .login-box {
+            position: relative;
+            z-index: 10; /* 確保它顯示在影片上方 */
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            padding-top: 50px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 100px;
+        }
+
+            .login-box h1 {
+                color: #b3922c;
+                background-color: white;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+    </style>
+}
+
+
+<h4>@ViewData["Title"]</h4>
+
+
+<body>
+
+    <!-- Video element -->
+    <video autoplay muted loop id="background-video">
+        <source src="~/MemberImg/BreakingEgg.mp4" type="video/mp4">
+        您的瀏覽器不支援影片播放。
+    </video>
+
+    <div class="login-box">
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <strong>Put these codes in a safe place.</strong>
+            </p>
+            <p>
+               若您手邊沒有可獲取驗證碼的裝置，並且也沒有取回代碼時，你的帳號將會丟失
+            </p>
+        </div>
+        <div><partial name="_StatusMessage" for="StatusMessage" /></div>
+        <div class="row">
+            <div class="col-md-12">
+                @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
+                {
+                    <code class="recovery-code">@Model.RecoveryCodes[row]</code>
+
+                    <text>&nbsp;</text>
+
+                    <code class="recovery-code">@Model.RecoveryCodes[row + 1]</code>
+
+                    <br />
+                }
+            </div>
+        </div>
     </div>
-</div>
+
+
+</body>
+
+
+
+
+
+
+
+
+
+

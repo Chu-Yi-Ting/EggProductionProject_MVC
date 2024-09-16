@@ -4,10 +4,89 @@
     ViewData["Title"] = "Two-factor authentication (2FA)";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
+@section Styles {
+    <style>
 
-<partial name="_StatusMessage" for="StatusMessage" />
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* 設定影片為背景，並覆蓋整個頁面 */
+        #background-video {
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 確保影片覆蓋整個畫面並保持比例 */
+            z-index: 0; /* 放在背景 */
+        }
+
+        /* 讓 .login-box 內容顯示在影片之上 */
+        .login-box {
+            position: relative;
+            z-index: 10; /* 確保它顯示在影片上方 */
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            padding-top: 50px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 100px;
+        }
+
+            .login-box h1 {
+                color: #b3922c;
+                background-color: white;
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .login-box label {
+                color: #b3922c;
+            }
+
+            .login-box .btn-primary {
+                background-color: #b3922c;
+                border: none;
+            }
+
+                .login-box .btn-primary:hover {
+                    background-color: #a37e2b;
+                }
+
+    </style>
+}
+
+
+<body>
+
+    <!-- Video element -->
+    <video autoplay muted loop id="background-video">
+        <source src="~/MemberImg/BreakingEgg.mp4" type="video/mp4">
+        您的瀏覽器不支援影片播放。
+    </video>
+
+    <div class="login-box">
+       
+        <partial name="_StatusMessage" for="StatusMessage" />
+
+    </div>
+
+
+</body>
+
+
+
 <h4>@ViewData["Title"]</h4>
-@if (Model.Is2faEnabled)
+@* @if (Model.Is2faEnabled)
 {
     if (Model.RecoveryCodesLeft == 0)
     {
@@ -50,7 +129,7 @@ else
 {
     <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Setup authenticator app</a>
     <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a>
-}
+} *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
