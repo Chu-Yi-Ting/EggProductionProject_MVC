@@ -28,13 +28,17 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly EggPlatformContext _context;
+		private readonly GoogleCaptchaService _captchaService;
 
-        public RegisterModel(
+
+		public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            EggPlatformContext context)
+            EggPlatformContext context,
+			 GoogleCaptchaService captchaService
+			)
         {
             
             _userManager = userManager;
@@ -42,6 +46,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _captchaService = captchaService;
         }
 
         [BindProperty]
@@ -70,9 +75,11 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]        
             [Compare("Password", ErrorMessage = "兩次輸入的密碼不一致")]
             public string ConfirmPassword { get; set; }
-        }
+			public string Token { get; set; }
 
-        public async Task OnGetAsync(string returnUrl = null)
+		}
+
+		public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -82,7 +89,17 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+
+            //capthca驗證
+			Console.WriteLine(Input.Email + Input.Password + Input.Token);
+			//驗證capchta token with google
+			var captchaResult = await _captchaService.VerifyToken(Input.Token);
+			// 打印或記錄分數
+
+			if (!captchaResult) return Page();
+
+
+			if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);

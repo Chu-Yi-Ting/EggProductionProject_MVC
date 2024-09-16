@@ -100,15 +100,16 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             Console.WriteLine(Input.Email+Input.Password+Input.Token);
-            //驗證capchta token with google
-            var captchaResult = await _captchaService.VerifyToken(Input.Token);
-            if(!captchaResult)return Page();
+			//驗證capchta token with google
+			var captchaResult = await _captchaService.VerifyToken(Input.Token);
+			// 打印或記錄分數
+			
+			if (!captchaResult)return Page();
 
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            //if (captchaResult.Success && captchaResult.Score >= 0.5) // 自訂分數門檻（例如0.5）
-            //{ 
+           
 
                 if (ModelState.IsValid)
             {
@@ -131,6 +132,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     //{
                     //    Console.WriteLine(m.AspUserId+">>"+m.Email);
                     //}
+
                     //登入的時候如果有找到該名會員(aspid去找)
                     var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id.ToLower() == user.Id.ToLower());
 
