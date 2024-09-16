@@ -10,6 +10,7 @@ using EggProductionProject_MVC.HTTPModels;
 using EggProductionProject_MVC.Hubs;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using EggProductionProject_MVC.Areas.Identity.Pages.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -138,6 +139,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 
+builder.Services.AddTransient(typeof(GoogleCaptchaService));
+
+builder.Services.Configure<GoogleCaptchaConfig>(builder.Configuration.GetSection("GoogleReCaptcha"));
 
 //沒用到
 builder.Services.Configure<MvcOptions>(options =>

@@ -14,6 +14,9 @@ using Microsoft.Extensions.Logging;
 using EggProductionProject_MVC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Net;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -24,15 +27,22 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly EggPlatformContext _context;
+        private readonly GoogleCaptchaService _captchaService;
+
+        //recapctha密鑰匙
+        private readonly string secretKey = "6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_"; // 替換為你的 Secret Key
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
-             EggPlatformContext context)
+             EggPlatformContext context,
+             GoogleCaptchaService captchaService
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            _captchaService = captchaService;
         }
 
         [BindProperty]
@@ -44,6 +54,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
+       
+        public string Token { get; set; }
 
         //第三方登入
         //public List<AuthenticationScheme> Schemes { get; set; }
@@ -63,6 +75,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+            public string Token { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -86,10 +99,18 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            Console.WriteLine(Input.Email+Input.Password+Input.Token);
+            //驗證capchta token with google
+            var captchaResult = await _captchaService.VerifyToken(Input.Token);
+            if(!captchaResult)return Page();
+
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
-            if (ModelState.IsValid)
+
+            //if (captchaResult.Success && captchaResult.Score >= 0.5) // 自訂分數門檻（例如0.5）
+            //{ 
+
+                if (ModelState.IsValid)
             {
 
                 // 使用 Email 查找使用者
@@ -150,8 +171,44 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 }
             }
 
+        
             // If we got this far, something failed, redisplay form
             return Page();
         }
     }
+    public class GoogleCaptchaConfig
+    {
+        public string SiteKey { get; set; }
+        public string SecretKey { get; set; }
+    }
+    public class GoogleCaptchaService
+    {
+        public async Task<bool> VerifyToken(string token)
+        {
+            try
+            {
+                var url = $"https://www.google.com/recaptcha/api/siteverify?secret=6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_&response={token}";
+                using (var client = new HttpClient())
+                {
+                    var httpResult = await client.GetAsync(url);
+                    if (httpResult.StatusCode != HttpStatusCode.OK)
+                    {
+                        return false;
+                    }
+                    var responseString = await httpResult.Content.ReadAsStringAsync();
+                    var googleResult = JsonConvert.DeserializeObject<GoogleCaptchaResponse>(responseString);
+
+                    return googleResult.Success && googleResult.score >= 0.5;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+    }
+
+    public class GoogleCaptchaResponse
+    {
+        public bool Success { get; set; }
+        public double score { get; set; }
+    }
+
 }
