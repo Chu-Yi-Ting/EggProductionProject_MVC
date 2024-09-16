@@ -384,9 +384,10 @@
 
 															}
 
-
-
-
+															<!-- 點擊這個按鈕會打開新分頁並跳轉 -->
+															<button type="button" class="btn btn-light" onclick="open2FaPage()">
+																兩步驟驗證
+															</button>
 
 														</div>
 													</div>
@@ -965,7 +966,7 @@
 				console.error('Error:', error);
 			}
 
-			//新加的--------------------------------
+			//----------------ajax來更改layout的使用者姓名頭貼--------------------------------
 			$(document).ready(function () {
 				// 抓取 Layout 中的 Header 並做一些操作
 				var TopUserPicSrc = $('#TopUserPic').attr('src');
@@ -1061,6 +1062,14 @@
 			}
 			
 		});
+
+		//-------------------------------2fa驗證---------------------------------------
+		function open2FaPage() {
+			
+
+			// 在新分頁中打開這個 URL
+			window.open('https://localhost:7080/identity/account/manage/enableauthenticator');
+		}
 
 
 		//-------------------------------雞農每日紀錄--------------------------------------------
