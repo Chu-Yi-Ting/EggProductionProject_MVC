@@ -17,6 +17,10 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -177,6 +181,26 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+        //JWT在登入時候生成一個TOKEN
+        public string GenerateJwtToken(string userId)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("Your_Secret_Key"); // 你的密鑰
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+            new Claim(ClaimTypes.Name, userId) // 包含使用者ID等資料
+        }),
+                Expires = DateTime.UtcNow.AddHours(1), // 設置 Token 過期時間
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token); // 返回 JWT Token
+        }
+
     }
     public class GoogleCaptchaConfig
     {
@@ -212,5 +236,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         public bool Success { get; set; }
         public double score { get; set; }
     }
+
+
 
 }
