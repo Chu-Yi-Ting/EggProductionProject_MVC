@@ -200,8 +200,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			var model = new ProductLaunchViewModel();
 
-			if (store != null)
-			{
+            if (store != null)
+            {
                 // 查詢該賣家的當前上架產品 (PublicStatusNo = 1)，按LaunchTime降序排列
                 model.CurrentProducts = _context.Products
                     .Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
@@ -232,6 +232,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     })
                     .ToList();
             }
+            else
+            {
+                // 沒有賣場資料，將錯誤訊息放入 TempData
+                TempData["ErrorMessage"] = "您尚未填寫賣場基本資料，要填寫完才能開通賣場功能!";
+            }
 
 
             // 判斷是否是 AJAX 請求
@@ -254,7 +259,5 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			return View(model);
         }
-
-	
 	}
 }
