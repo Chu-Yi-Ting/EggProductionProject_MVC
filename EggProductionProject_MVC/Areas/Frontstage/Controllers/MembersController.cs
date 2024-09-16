@@ -370,11 +370,27 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
 			var userAspId = HttpContext.Session.GetString("userId");
 
-			var user = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+			var member = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+			var memberPageVM = new MemberPageVM
+			{
+				// 將 member 的屬性對應到 MemberPageVM 的屬性
+				MemberSid = member.MemberSid,
+				Name = member.Name,
+				Email = member.Email,
+				Phone = member.Phone,
+				BirthDate = member.BirthDate,
+				IsChickFarm = member.IsChickFarm,
+				IsBlocked = member.IsBlocked,
+				Chickcode = member.Chickcode,
+				AspUserId = member.AspUserId,
+				ProfilePic = member.ProfilePic,
+				MemberAreas = member.MemberAreas,
+				Certifications = member.Certifications,
+			};
 
-            ViewData["Title"] = "GOOD EGG 會員中心";
+			ViewData["Title"] = "GOOD EGG 會員中心";
 
-            return View(user);
+            return View(memberPageVM);
 
         }
 
