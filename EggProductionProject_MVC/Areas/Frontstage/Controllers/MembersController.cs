@@ -395,8 +395,25 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
 
+		[HttpPost]
+		public IActionResult GetUpdatedProfile()
+		{
+			string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+			// 查詢要更新的 Member 資料
+			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspuserId);
+			// 從資料庫或其他存儲中獲取更新的圖片路徑和使用者姓名
+			var imagePath = member.ProfilePic;  // 假設這是更新後的圖片路徑
+			var name = member.Name;  // 假設這是更新後的使用者姓名
+
+			// 返回圖片路徑和姓名
+			return Json(new { imageUrl = imagePath, userName = name });
+		}
 
 
 
-    }
+
+
+	}
 }

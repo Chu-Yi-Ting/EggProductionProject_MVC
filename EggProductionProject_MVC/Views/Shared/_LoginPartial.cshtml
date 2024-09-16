@@ -16,18 +16,18 @@
                         <div class="border-img">
                             @if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
                             {
-                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
+                                <img id="botUserPic" src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")">
                             }
                             else
                             {
-                                <img src="~/memberimg/nopicchick.jpg" />
+                            <img id="botUserPic" src="~/memberimg/nopicchick.jpg" />
                             }
 
                         </div>
                         
                         @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
                         {
-                        <p  style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+                        <p id="botUserName" style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
                         }
                     </div>
                 </li>

@@ -307,11 +307,11 @@
 															@{
 																if (Model.ProfilePic == null)
 																{
-																	<img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+																		<img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
 																}
 																else
 																{
-																	<img id="img1" src="@Model.ProfilePic" alt="會員照片">
+																		<img id="img1" src="@Model.ProfilePic" alt="會員照片">
 
 																}
 
@@ -340,7 +340,7 @@
 																	<label for="email">電子郵件</label>
 																	<span class="required-tag">必填</span>
 																</span>
-																<input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
+																<input type="text" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
 															</div>
 															<span class="text-danger" asp-validation-for="Email"></span>
 															<br>
@@ -370,16 +370,16 @@
 															@{
 																if (Model.IsChickFarm == 0)
 																{
-																	<div class="form-group">
-																		<span>
-																			<label for="password">成為雞農！</label>
-																		</span>
-																		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																		<div class="form-group">
+																			<span>
+																				<label for="password">成為雞農！</label>
+																			</span>
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-																		<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-																			開通功能
-																		</button>
-																	</div>
+																			<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+																				開通功能
+																			</button>
+																		</div>
 																}
 
 															}
@@ -824,6 +824,9 @@
 	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
 	<script src="~/js/common.js"></script>
 	<script src="~/js/Data/Data.js"></script>
+	<!-- 引用jquery來驗證表單的資料輸入是否正確 -->
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 	<script>
 		//---------------------會員鎖住的話-----------------------
@@ -962,6 +965,34 @@
 				console.error('Error:', error);
 			}
 
+			//新加的--------------------------------
+			$(document).ready(function () {
+				// 抓取 Layout 中的 Header 並做一些操作
+				var TopUserPicSrc = $('#TopUserPic').attr('src');
+				var botUserPicSrc = $('#botUserPic').attr('src');
+				console.log('TopUserPicSrc:'+TopUserPicSrc);
+			})
+
+			function updateProfile() {
+
+				$.ajax({
+					url: '@Url.Action("GetUpdatedProfile", "Members", new { area = "Frontstage" })',  // 動態生成正確的 URL
+					type: 'POST',
+					success: function (response) {
+						// 當請求成功後，更新圖片和姓名
+						$('#TopUserPic').attr('src', response.imageUrl);
+						$('#botUserPic').attr('src', response.imageUrl);
+							$('#botUserName').text('歡迎,'+response.userName);
+					},
+					error: function (error) {
+						console.log("Error updating profile: ", error);
+					}
+				});
+			}
+
+			// 在你需要的地方（如資料庫更新完成後）呼叫這個方法來更新圖片和姓名
+			updateProfile();
+
 
 			const userUpdateSuccessToast = document.getElementById('userUpdateSuccess')
 			const toastInstance = new bootstrap.Toast(userUpdateSuccessToast);
@@ -1028,7 +1059,7 @@
 			} catch (error) {
 				console.error('Error:', error);
 			}
-
+			
 		});
 
 
