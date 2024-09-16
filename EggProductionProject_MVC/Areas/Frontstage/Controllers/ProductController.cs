@@ -26,8 +26,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		[HttpGet]
 		public IActionResult ProductDetail(int productSid)
 		{
-			// 查詢商品資料
-			var product = _context.Products
+			ViewData["Title"] = "商品分頁";
+            // 查詢商品資料
+            var product = _context.Products
 				.Where(p => p.ProductSid == productSid)
 				.Select(p => new ProductDetailViewModel
 				{
