@@ -116,7 +116,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
            
 
                 if (ModelState.IsValid)
-            {
+                {
 
                 // 使用 Email 查找使用者
                 var user = await _userManager.FindByEmailAsync(Input.Email);
@@ -125,7 +125,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    
+                    var jwtoken = GenerateJwtToken(user.Id);
                     _logger.LogInformation("User logged in.");
 
                     // 這裡你可以存取到 user.Id 或其他使用者資料
@@ -156,6 +156,9 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     }
 
+                    return RedirectToAction("Index", "Home",new { jwtoken });  // 這裡的 "Home" 是控制器名稱，"Index" 是方法名稱
+                   
+                    //舊版的
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -187,7 +190,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         public string GenerateJwtToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("Your_Secret_Key"); // 你的密鑰
+            var key = Encoding.ASCII.GetBytes("S3cUr3K3yF0rJwtTok3n!@#1234567890\r\n"); // 你的密鑰
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
