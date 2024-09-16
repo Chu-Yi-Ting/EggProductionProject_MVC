@@ -11,7 +11,7 @@
 @section Styles {
 
 	<link href="~/lib/datatables.net-jqui/datatables.jqueryui.min.css" rel="stylesheet" />
-	<!-- FixedHeader 样式 -->
+	<!-- FixedHeader  -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
     <link href="~/frontstagetemplate/assets/dist/css/style-more-n.css" rel="stylesheet" />
 	<style>
@@ -307,14 +307,16 @@
 															@{
 																if (Model.ProfilePic == null)
 																{
-																	<img id="img1" src="https://via.placeholder.com/100" alt="會員照片">
+																					<img id="img1" 
+																					 	src="https://via.placeholder.com/100" 
+																					 	alt="會員照片">
 																}
 																else
 																{
-																	<img id="img1" src="@Model.ProfilePic" alt="會員照片">
-
+																					<img id="img1" 
+																					 	src="@Model.ProfilePic" 
+																					 	alt="會員照片">
 																}
-
 															}
 
 															@* <button>上傳照片</button> *@
@@ -329,7 +331,6 @@
 																	<label for="username">會員名稱</label>
 																	<span class="required-tag">必填</span>
 																</span>
-
 																<input type="text" id="username" name="Name" asp-for="Name">
 															</div>
 															<span class="text-danger" asp-validation-for="Name"></span>
@@ -347,7 +348,6 @@
 															<div class="form-group">
 																<span>
 																	<label for="phone">電話號碼</label>
-																	@*   <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> *@
 																	<span class="required-tag">必填</span>
 																</span>
 																<input type="text" id="phone" name="Phone" asp-for="Phone" required>
@@ -370,32 +370,24 @@
 															@{
 																if (Model.IsChickFarm == 0)
 																{
-																	<div class="form-group">
-																		<span>
-																			<label for="password">成為雞農！</label>
-																		</span>
-																		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																					<div class="form-group">
+																						<span>
+																							<label for="password">成為雞農！</label>
+																						</span>
+																						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-																		<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-																			開通功能
-																		</button>
-																	</div>
+																						<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+																							開通功能
+																						</button>
+																					</div>
 																}
 
 															}
-
-
-
-
-
 														</div>
 													</div>
 												</div>
 
-
 												<br>
-
-
 											</div>
 										</div> <div class="buttons">
 											<button type="reset" class="cancel">取消</button>
@@ -420,17 +412,14 @@
 														</span>
 														<input type="text" id="Chickcode" name="Chickcode" asp-for="Chickcode">
 													</div>
-
-
 												</div>
 												<div class="modal-footer">
-													<button type="reset" class="cancel" data-bs-dismiss="modal" style="  background-color: #f7d9b4;
+													<button type="reset" class="cancel" data-bs-dismiss="modal" style="background-color: #f7d9b4;
                                     color: #a57c42;
                                     border: none;
                                   padding: 10px 20px;
                                   margin: 0 10px;
                                   cursor: pointer;
-
                                   font-size: 16px;
                                   border-radius: 5px;
 									">
@@ -468,8 +457,7 @@
 												<label for="date" class="form-label me-custom">填寫日期</label>
 												<input type="date"
 													   class="form-control w-50"
-													   id="date_1"
-													   value="2024-09-28" />
+													   id="date_1" />
 											</div>
 										</div>
 										<hr />
@@ -511,9 +499,6 @@
 												</div>
 											</div>
 										</div>
-
-
-
 									}
 
 								</div>
@@ -531,8 +516,7 @@
 												<label for="date" class="form-label me-custom">填寫日期</label>
 												<input type="date"
 													   class="form-control w-50"
-													   id="date_2"
-													   value="2024-09-28" />
+													   id="date_2" />
 											</div>
 										</div>
 										<hr />
@@ -574,13 +558,9 @@
 												</div>
 											</div>
 										</div>
-
-
 									}
-
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -804,13 +784,14 @@
 	</div>
 </div>
 
-<div class="position-fixed top-0  p-3" style="z-index: 11">
-	<div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-		<div class="d-flex">
-			<div class="toast-body">
-				<!-- 消息內容將在 JavaScript 中動態設置 -->
-			</div>
-			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="dynamicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header">
+			<strong class="me-auto" id="toastTitle">通知</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body" id="toastMessage">
+			<!-- 訊息將由 JavaScript 動態設置 -->
 		</div>
 	</div>
 </div>
@@ -820,16 +801,12 @@
 @section Scripts {
 
 	<script src="~/lib/datatables.net/datatables.min.js"></script>
-
 	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
 	<script src="~/js/common.js"></script>
 	<script src="~/js/Data/Data.js"></script>
 
 	<script>
 		//---------------------會員鎖住的話-----------------------
-
-
-
 
 		//-------tab分頁----------------------------------------------
 		document.addEventListener("DOMContentLoaded", function () {
@@ -879,12 +856,11 @@
 
 		// 	//-----------------------------------紀錄邏輯-----------------------------------------
 			today = new Date().toISOString().split('T')[0];
-			const defaultMemberSid = 1;//需抓瀏覽器Sid
 			document.getElementById('date_1').value = today;
 			document.getElementById('date_2').value = today;
 
-			loadHouse(defaultMemberSid);
-			loadArea(defaultMemberSid);
+			loadHouse();
+			loadArea();
 		});
 
 
@@ -1037,14 +1013,11 @@
 		async function Insert_Record1() {
 			const data = {
 				Date: document.getElementById('date_1').value,
-				MemberSid: 1,//抓session登入id
 				HouseSid: document.getElementById('ChickHouse_Selected').value,
 				EggAmount: document.getElementById('production').value,
 				UnQAmount: document.getElementById('defective').value,
 				DeathAmount: document.getElementById('death').value
 			};
-
-			console.log(data);
 
 			try {
 				const response = await fetch('/Frontstage/DataApi/Insert_Record1', {
@@ -1055,20 +1028,23 @@
 					body: JSON.stringify(data)
 				});
 				const result = await response.json();
-				if (result.success) {
-					showToast('記錄新增成功', 'bg-success'); // 顯示成功的 Toast
-				} else {
-					showToast('記錄新增失敗: ' + result.message, 'bg-danger'); // 顯示失敗的 Toast
+				if (!result.success) {
+				    showToast('記錄新增失敗: ' + result.message, 'fail'); // 顯示失敗的 Toast
+					return;
 				}
+				showToast('記錄新增成功', 'success'); // 顯示成功的 Toast
+
+				document.getElementById('production').value = '';
+				document.getElementById('defective').value = '';
+				document.getElementById('death').value = '';
 			} catch (error) {
-				showToast('Error inserting record 2: ' + error, 'bg-danger'); // 顯示錯誤的 Toast
+				showToast('Error inserting record: ' + error, 'error'); // 顯示錯誤的 Toast
 			}
 		}
 
 		async function Insert_Record2() {
 			const data = {
 				Date: document.getElementById('date_2').value,
-				MemberSid: 1,//抓session登入id
 				AreaSid: document.getElementById('Area_Selected').value,
 				Weight: document.getElementById('weight').value,
 				Cost: document.getElementById('cost').value,
@@ -1085,30 +1061,18 @@
 				});
 
 				const result = await response.json();
-				if (result.success) {
-					showToast('記錄新增成功', 'bg-success'); // 顯示成功的 Toast
-				} else {
-					showToast('記錄新增失敗: ' + result.message, 'bg-danger'); // 顯示失敗的 Toast
+				if (!result.success) {
+					showToast('記錄新增失敗: ' + result.message, 'fail'); // 顯示失敗的 Toast
+					return;
 				}
+				showToast('記錄新增成功', 'success'); // 顯示成功的 Toast
+				document.getElementById('weight').value = '';
+				document.getElementById('cost').value = '';
+				document.getElementById('lot').value = '';
 			} catch (error) {
-				showToast('Error inserting record 2: ' + error, 'bg-danger'); // 顯示錯誤的 Toast
+				showToast('Error inserting record: ' + error, 'error'); // 顯示錯誤的 Toast
 			}
 		}
-
-		function showToast(message, toastClass) {
-			const toastElement = document.getElementById('toastMessage');
-			const toastBody = toastElement.querySelector('.toast-body');
-
-			// 設置 Toast 內容和樣式
-			toastBody.textContent = message;
-			toastElement.className = `toast align-items-center text-white ${toastClass} border-0`; // 動態設置背景色
-
-			// 使用 Bootstrap 的 JavaScript API 來顯示 Toast
-			const toast = new bootstrap.Toast(toastElement);
-			toast.show();
-		}
-
-
 
 		$(document).ready(function () {
 
