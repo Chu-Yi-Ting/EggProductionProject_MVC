@@ -17,10 +17,10 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
+//using System.IdentityModel.Tokens.Jwt;
+//using System.Security.Claims;
+//using System.Text;
+//using Microsoft.IdentityModel.Tokens;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -125,7 +125,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var jwtoken = GenerateJwtToken(user.Id);
+                    //var jwtoken = GenerateJwtToken(user.Id);
                     _logger.LogInformation("User logged in.");
 
                     // 這裡你可以存取到 user.Id 或其他使用者資料
@@ -156,7 +156,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     }
 
-                    return RedirectToAction("Index", "Home",new { jwtoken });  // 這裡的 "Home" 是控制器名稱，"Index" 是方法名稱
+                    //return RedirectToAction("Index", "Home",new { jwtoken });  // 這裡的 "Home" 是控制器名稱，"Index" 是方法名稱
                    
                     //舊版的
                     return LocalRedirect(returnUrl);
@@ -186,23 +186,23 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         }
 
 
-        //JWT在登入時候生成一個TOKEN
-        public string GenerateJwtToken(string userId)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("S3cUr3K3yF0rJwtTok3n!@#1234567890\r\n"); // 你的密鑰
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-            new Claim(ClaimTypes.Name, userId) // 包含使用者ID等資料
-        }),
-                Expires = DateTime.UtcNow.AddHours(1), // 設置 Token 過期時間
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token); // 返回 JWT Token
-        }
+        ////JWT在登入時候生成一個TOKEN
+        //public string GenerateJwtToken(string userId)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes("S3cUr3K3yF0rJwtTok3n!@#1234567890\r\n"); // 你的密鑰
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(new[]
+        //        {
+        //    new Claim(ClaimTypes.Name, userId) // 包含使用者ID等資料
+        //}),
+        //        Expires = DateTime.UtcNow.AddHours(1), // 設置 Token 過期時間
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    };
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    return tokenHandler.WriteToken(token); // 返回 JWT Token
+        //}
 
     }
     public class GoogleCaptchaConfig

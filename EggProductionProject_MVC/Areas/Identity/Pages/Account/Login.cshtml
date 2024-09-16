@@ -353,41 +353,41 @@
 
 
         //--------------------JWT------------------------------------
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
-            event.preventDefault();  // 防止表單提交刷新頁面
+        // document.getElementById('loginForm').addEventListener('submit', function (event) {
+        //     event.preventDefault();  // 防止表單提交刷新頁面
 
-            const username = document.getElementById('account').value;
-            const password = document.getElementById('password').value;
-            // 將 email 和 password 組裝成對象
-            const loginData = {
-                Email: account,  // 這裡的屬性名應該和後端接受的字段一致
-                Password: password
-            };
+        //     const username = document.getElementById('account').value;
+        //     const password = document.getElementById('password').value;
+        //     // 將 email 和 password 組裝成對象
+        //     const loginData = {
+        //         Email: account,  // 這裡的屬性名應該和後端接受的字段一致
+        //         Password: password
+        //     };
 
-            // 發送登入請求到後端
-            fetch('Login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();  // 確保 response 是有效的 JSON
-                })
-                .then(data => {
-                    if (data.token) {
-                        localStorage.setItem('token', data.token);
-                        console.log('Token 已存儲:', data.token);
-                    } else {
-                        console.error('登入失敗');
-                    }
-                })
-                .catch(error => console.error('錯誤:', error));
-        });
+        //     // 發送登入請求到後端
+        //     fetch('Login', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(loginData)
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();  // 確保 response 是有效的 JSON
+        //         })
+        //         .then(data => {
+        //             if (data.token) {
+        //                 localStorage.setItem('token', data.token);
+        //                 console.log('Token 已存儲:', data.token);
+        //             } else {
+        //                 console.error('登入失敗');
+        //             }
+        //         })
+        //         .catch(error => console.error('錯誤:', error));
+        // });
     </script>
 }
 
