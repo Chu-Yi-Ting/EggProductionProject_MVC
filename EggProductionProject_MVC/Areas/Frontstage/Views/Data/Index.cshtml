@@ -56,6 +56,116 @@
             cursor: pointer; /* 改變鼠標樣式 */
         }
 
+        /* 自定義 Modal 樣式 */
+        .confirm-modal .modal-content {
+            background-color: #fff; /* 背景顏色 */
+            border-radius: 10px; /* 圓角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 增加陰影效果 */
+        }
+
+        .confirm-modal .modal-header {
+            border-bottom: none; /* 去掉邊框 */
+            padding-bottom: 10px; /* 調整內邊距 */
+        }
+
+        .confirm-modal .modal-footer {
+            border-top: none; /* 去掉邊框 */
+            padding-top: 10px; /* 調整內邊距 */
+        }
+
+        .confirm-modal .modal-dialog {
+            max-width: 400px; /* 調整寬度 */
+        }
+
+        /* 自定義按鈕樣式 */
+        .custom-btn-secondary, .custom-btn-primary, .custom-btn-danger, .custom-btn-warning {
+            border: none;
+            padding: 8px 16px; /* 調整內距 */
+            border-radius: 5px; /* 邊框圓角 */
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s; /* 增加過渡效果 */
+            font-size: 14px; /* 調整字體大小 */
+            margin: 2px; /* 增加按鈕之間的間距 */
+        }
+
+        /* 調整各按鈕的顏色及其懸停效果 */
+        .custom-btn-secondary {
+            background-color: #aebcc9;
+            color: #fff;
+        }
+
+            .custom-btn-secondary:hover {
+                background-color: #6c757d;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 懸停時增加陰影效果 */
+            }
+
+        .custom-btn-primary {
+            background-color: #cb9205;
+            color: #fff;
+        }
+
+            .custom-btn-primary:hover {
+                background-color: #e0a800;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 懸停時增加陰影效果 */
+            }
+
+        .custom-btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+            .custom-btn-danger:hover {
+                background-color: #c82333;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 懸停時增加陰影效果 */
+            }
+
+        .custom-btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+            .custom-btn-warning:hover {
+                background-color: #e0a800;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 懸停時增加陰影效果 */
+            }
+
+        /* 自定義 Modal 文字和表單樣式 */
+        .modal-body {
+            max-height: 70vh; /* 設定最大高度為視窗高度的70% */
+            overflow-y: auto; /* 超出時自動顯示滾動條 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 設定字體 */
+            color: #333; /* 設定文字顏色 */
+            line-height: 1.6; /* 設定行距 */
+            font-size: 15px; /* 設定字體大小 */
+        }
+
+            /* 表單標籤樣式 */
+            .modal-body label {
+                font-weight: bold; /* 粗體字 */
+                color: #555; /* 標籤文字顏色 */
+                margin-bottom: 5px; /* 底部外距 */
+                display: block; /* 顯示為塊狀 */
+            }
+
+            /* 輸入框和文本區域樣式 */
+            .modal-body .form-control {
+                border: 1px solid #cb9205; /* 邊框顏色 */
+                border-radius: 5px; /* 邊框圓角 */
+                padding: 10px; /* 內距 */
+                box-shadow: none; /* 移除內建的陰影 */
+                transition: border-color 0.3s, box-shadow 0.3s; /* 增加過渡效果 */
+            }
+
+                .modal-body .form-control:focus {
+                    border-color: #e0a800; /* 聚焦時的邊框顏色 */
+                    box-shadow: 0 0 5px rgba(224, 168, 0, 0.5); /* 聚焦時的陰影 */
+                }
+
+            /* 文字區域樣式 */
+            .modal-body textarea {
+                resize: none; /* 禁止調整大小 */
+                height: 100px; /* 設定高度 */
+            }
     </style>
 }
 
@@ -167,7 +277,7 @@
                 </div>
 
                 <!-- Modal 事件新增彈出視窗 -->
-                <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade confirm-modal" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -190,15 +300,15 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="closeAddModal()">取消</button>
-                                <button type="button" class="btn btn-primary" onclick="submitEvent()">保存</button>
+                                <button type="button" class="custom-btn-secondary" onclick="closeAddModal()">取消</button>
+                                <button type="button" class="custom-btn-primary" onclick="submitEvent()">保存</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal 事件修改彈出視窗 -->
-                <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade confirm-modal" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -229,22 +339,23 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">取消</button>
-                                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteEvent()">刪除</button>
-                                <button type="button" class="btn btn-warning" id="editEventBtn" onclick="enableEdit()">修改</button>
-                                <button type="button" class="btn btn-primary" id="saveEventBtn" onclick="updateEvent()" style="display: none;">保存</button>
+                                <button type="button" class="custom-btn-secondary" onclick="closeEditModal()">取消</button>
+                                <button type="button" class="custom-btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteEvent()">刪除</button>
+                                <button type="button" class="custom-btn-warning" id="editEventBtn" onclick="enableEdit()">修改</button>
+                                <button type="button" class="custom-btn-primary" id="saveEventBtn" onclick="updateEvent()" style="display: none;">保存</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-                    <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                <!-- 消息內容將在 JavaScript 中動態設置 -->
-                            </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="dynamicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto" id="toastTitle">通知</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body" id="toastMessage">
+                            <!-- 訊息將由 JavaScript 動態設置 -->
                         </div>
                     </div>
                 </div>
@@ -359,9 +470,9 @@
                                 label: '', // 實際數據集的標籤
                                 data: [],
                                 fill: false,
-                                borderColor: 'rgb(0, 0, 255)', // 深藍色
+                                borderColor: 'rgb(203, 146, 5)', // 澄黃色
                                 borderWidth: 3, // 增加線條寬度
-                                pointBackgroundColor: 'rgb(0, 0, 255)', // 點的顏色
+                                pointBackgroundColor: 'rgb(203, 146, 5)', // 點的顏色
                                 pointRadius: 4, // 增加點的大小
                                 tension: 0.1
                             },
@@ -438,6 +549,7 @@
             function enableEdit() {
                 document.getElementById('editEventTodoList').readOnly = false;
                 document.getElementById('editEventFinished').disabled = false;
+                document.getElementById('confirmDeleteBtn').style.display = 'none';
                 document.getElementById('editEventBtn').style.display = 'none';
                 document.getElementById('saveEventBtn').style.display = 'inline-block';
             }
@@ -466,14 +578,14 @@
                     const data = await response.json();
 
                     if (!response.ok) {
-                        alert('Error: ' + (data.message || '無法儲存事件'));
+                        showToast('Error: ' + (data.message || '無法儲存事件'),'error');
                         return;
                     }
 
                     closeAddModal();
                     reloadCalendarEvents()
                 } catch (e) {
-                    alert('Error:' + e.message);
+                    showToast('Error:' + e.message,'error');
                 }
             }
 
@@ -503,14 +615,14 @@
                     const data = await response.json();
 
                     if (!response.ok) {
-                        alert('Error: ' + (data.message || '無法更新事件'));
+                        showToast('Error: ' + (data.message || '無法更新事件'),'error');
                         return;
                     }
 
                     closeEditModal();
                     reloadCalendarEvents()
                 } catch (e) {
-                    alert('Error:' + e.message);
+                    showToast('Error:' + e.message,'error');
                 }
             }
 
@@ -536,14 +648,14 @@
                     const data = await response.json();
 
                     if (!response.ok) {
-                        alert('Error: ' + (data.message || '無法刪除事件'));
+                        showToast('Error: ' + (data.message || '無法刪除事件'),'error');
                         return;
                     }
 
                     closeEditModal();
                     reloadCalendarEvents()
                 } catch (e) {
-                    alert('Error:'+e.message);
+                    showToast('Error:' + e.message,'error');
                 }
             }
 
@@ -581,7 +693,7 @@
                     });
 
                     if (!response.ok) {
-                        alert(`HTTP error! status: ${response.status}`);
+                        showToast(`HTTP error! status: ${response.status}`,'error');
                         return;
                     }
 
@@ -621,7 +733,7 @@
 
                     myChart.update(); // 更新圖表
                 } catch (error) {
-                    console.error('更新圖表時發生錯誤:', error);
+                    showToast('更新圖表時發生錯誤:'+error.message, error);
                 }
             }
 
