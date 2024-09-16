@@ -22,8 +22,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 		// 查詢賣家資訊及賣家的商品
 		public IActionResult Store(StoreQueryDTO _storeQueryDTO)
-		{
-			var storeInfo = _context.Stores
+		{			
+            var storeInfo = _context.Stores
 				.Where(s => s.StoreSid == _storeQueryDTO.storeSid)
 				.Select(s => new StoreViewModel
 				{
@@ -85,8 +85,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		//SellerInformation動作函式生賣家中心基本資料畫面
 		public IActionResult SellerInformation()
 		{
-			// 獲取當前登入用戶的AspUserId
-			var aspUserId = _userManager.GetUserId(User);
+            ViewData["Title"] = "GOOD EGG 賣家中心-基本資料";
+            // 獲取當前登入用戶的AspUserId
+            var aspUserId = _userManager.GetUserId(User);
 			if (string.IsNullOrEmpty(aspUserId))
 			{
 				return RedirectToAction("Login", "Account", new { area = "Identity" });
@@ -189,8 +190,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		//ProductLaunch動作函式生賣家中心商品上架畫面
 		public IActionResult ProductLaunch()
         {
-			// 查詢當前登入用戶的 StoreSid
-			var aspUserId = _userManager.GetUserId(User);
+            ViewData["Title"] = "GOOD EGG 賣家中心-商品上架";
+            // 查詢當前登入用戶的 StoreSid
+            var aspUserId = _userManager.GetUserId(User);
 			if (string.IsNullOrEmpty(aspUserId))
 			{
 				return RedirectToAction("Login", "Account", new { area = "Identity" });
