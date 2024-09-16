@@ -427,6 +427,12 @@
                 if (result.success) {
                     // 成功後顯示 Toast 通知
                     showAddToCartToast("商品已成功加入購物車！");
+                } else if (result.isLoginRequired) {
+                    showAddToCartToast("加入購物車失敗，您尚未登入會員！");
+                    // 如果需要登录，重定向到登录页面
+                    setTimeout(function () {
+                        window.location.href = result.redirectUrl;
+                    }, 3000);                   
                 } else {
                     alert("加入購物車失敗，請重試。");
                 }
@@ -470,20 +476,17 @@
 
                 const result = await response.json();
 
-                // if (result.success) {
-                //     // 成功加入購物車後，跳轉到購物車頁面
-                //     window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
-                // } else {
-                //     alert('加入購物車失敗');
-                // }
-
                 if (result.success) {
-
+                    // 成功加入購物車後，跳轉到購物車頁面
                     sessionStorage.setItem('cartSid', result.cartSid);
                     window.location.href = '@Url.Action("Index", "Carts", new { area = "Frontstage" })';
 
                 } else {
-                    alert('加入購物車失敗');
+                    showAddToCartToast('立即購買失敗，您尚未登入會員');
+                    // 等待3秒後跳轉到登入頁面
+                    setTimeout(function () {
+                        window.location.href = "https://localhost:7080/Identity/Account/Login";
+                    }, 3000); 
                 }
 
             } catch (error) {

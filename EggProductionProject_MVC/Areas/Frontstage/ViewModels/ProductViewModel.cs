@@ -22,6 +22,8 @@
         // 接受上傳圖片的參數
         public IFormFile? productImage { get; set; }
 
+        public IFormFile? croppedImage { get; set; }
+
         // 新增這個屬性來存放所有產品
         public List<ProductViewModel>? products { get; set; }
 	}

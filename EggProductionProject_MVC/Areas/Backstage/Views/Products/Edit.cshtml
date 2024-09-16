@@ -104,6 +104,11 @@
                 <span asp-validation-for="PublicStatusNo" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="DiscountPercent" class="control-label" hidden></label>
+                <input asp-for="DiscountPercent" class="form-control" hidden />
+                <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-secondary">
                     <i class="fa-solid fa-save"></i> 儲存
                 </button>

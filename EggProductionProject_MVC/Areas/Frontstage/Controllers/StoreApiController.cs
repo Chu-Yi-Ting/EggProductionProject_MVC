@@ -91,19 +91,32 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     _context.Products.Add(product);
                     await _context.SaveChangesAsync();
 
-                    // 保存圖片到資料庫
-                    if (model.productImage != null)
+                    //// 保存圖片到資料庫
+                    //if (model.productImage != null)
+                    //{
+                    //    // 確定文件名字且確保其名字唯一性
+                    //    string uniqueFileName = $"{Guid.NewGuid()}_{model.productImage.FileName}";
+                    //    // 組合儲存於靜態文件的路徑字串
+                    //    string uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Products", uniqueFileName);
+                    //    // 將相對路徑存於productImagePath，之後要寫進資料庫
+                    //    string productImagePath = $"/Images/Products/{uniqueFileName}";  
+                    //    // 將圖片保存到 wwwroot/Images/Products
+                    //    using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                    //    {
+                    //        await model.productImage.CopyToAsync(fileStream);
+                    //    }
+
+                    // 保存裁剪後的圖片到資料庫
+                    if (Request.Form.Files["croppedImage"] != null)
                     {
-                        // 確定文件名字且確保其名字唯一性
-                        string uniqueFileName = $"{Guid.NewGuid()}_{model.productImage.FileName}";
-                        // 組合儲存於靜態文件的路徑字串
+                        var croppedImage = Request.Form.Files["croppedImage"];
+                        string uniqueFileName = $"{Guid.NewGuid()}_{croppedImage.FileName}";
                         string uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Products", uniqueFileName);
-                        // 將相對路徑存於productImagePath，之後要寫進資料庫
-                        string productImagePath = $"/Images/Products/{uniqueFileName}";  
-                        // 將圖片保存到 wwwroot/Images/Products
+                        string productImagePath = $"/Images/Products/{uniqueFileName}";
+
                         using (var fileStream = new FileStream(uploadPath, FileMode.Create))
                         {
-                            await model.productImage.CopyToAsync(fileStream);
+                            await croppedImage.CopyToAsync(fileStream);
                         }
 
                         // 保存圖片路径到 ProductImages 資料表
@@ -161,6 +174,17 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         public IActionResult GetProductById(int productSid)
         {
             var image = _context.ProductImages.Where(I => I.ProductSid == productSid).FirstOrDefault();
+            string productImagePath;
+            if (image == null)
+            {
+                // 如果沒有圖片資料，使用預設圖片
+                productImagePath = "/images/noimage2.jpg";
+            }
+            else
+            {
+                // 如果有圖片資料，使用圖片的路徑
+                productImagePath = image.ProductImagePath;
+            }
 
             var product = _context.Products.Where(p => p.ProductSid == productSid)
                 .Select(p => new
@@ -168,7 +192,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     p.ProductSid,
                     p.ProductName,
                     p.Price,
-                    ProductImagePath = image.ProductImagePath,
+                    ProductImagePath = productImagePath,
                     p.SubcategoryNo,
                     SubcategoryName = p.SubcategoryNoNavigation.SubcategoryName,  // 假設 Subcategory 是外鍵
                     p.ItemNo,
@@ -231,7 +255,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
                 // 2. 上傳新的圖片
                 var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Products");
-                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.productImage.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}_{model.productImage.FileName}";
                 var newImagePath = Path.Combine(uploadPath, uniqueFileName);
                 productImagePath = $"/Images/Products/{uniqueFileName}";  // 將相對路徑存入資料庫
 

@@ -22,8 +22,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 		// 查詢賣家資訊及賣家的商品
 		public IActionResult Store(StoreQueryDTO _storeQueryDTO)
-		{
-			var storeInfo = _context.Stores
+		{			
+            var storeInfo = _context.Stores
 				.Where(s => s.StoreSid == _storeQueryDTO.storeSid)
 				.Select(s => new StoreViewModel
 				{
@@ -85,8 +85,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		//SellerInformation動作函式生賣家中心基本資料畫面
 		public IActionResult SellerInformation()
 		{
-			// 獲取當前登入用戶的AspUserId
-			var aspUserId = _userManager.GetUserId(User);
+            ViewData["Title"] = "GOOD EGG 賣家中心-基本資料";
+            // 獲取當前登入用戶的AspUserId
+            var aspUserId = _userManager.GetUserId(User);
 			if (string.IsNullOrEmpty(aspUserId))
 			{
 				return RedirectToAction("Login", "Account", new { area = "Identity" });
@@ -189,8 +190,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 		//ProductLaunch動作函式生賣家中心商品上架畫面
 		public IActionResult ProductLaunch()
         {
-			// 查詢當前登入用戶的 StoreSid
-			var aspUserId = _userManager.GetUserId(User);
+            ViewData["Title"] = "GOOD EGG 賣家中心-商品上架";
+            // 查詢當前登入用戶的 StoreSid
+            var aspUserId = _userManager.GetUserId(User);
 			if (string.IsNullOrEmpty(aspUserId))
 			{
 				return RedirectToAction("Login", "Account", new { area = "Identity" });
@@ -200,8 +202,8 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			var model = new ProductLaunchViewModel();
 
-			if (store != null)
-			{
+            if (store != null)
+            {
                 // 查詢該賣家的當前上架產品 (PublicStatusNo = 1)，按LaunchTime降序排列
                 model.CurrentProducts = _context.Products
                     .Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
@@ -232,6 +234,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     })
                     .ToList();
             }
+            else
+            {
+                // 沒有賣場資料，將錯誤訊息放入 TempData
+                TempData["ErrorMessage"] = "您尚未填寫賣場基本資料，要填寫完才能開通賣場功能!";
+            }
 
 
             // 判斷是否是 AJAX 請求
@@ -254,7 +261,5 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
 			return View(model);
         }
-
-	
 	}
 }

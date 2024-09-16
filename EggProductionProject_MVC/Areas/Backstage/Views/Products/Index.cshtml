@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<EggProductionProject_MVC.Models.Product>
 
-
-@{
-    ViewData["Title"] = "Index";
-}
-
 @section Styles {
 
     <style>
@@ -131,7 +126,7 @@
                             @Html.DisplayFor(modelItem => item.ProductName)
                         </td>
                         <td class="text-center align-middle">
-                            @Html.DisplayFor(modelItem => item.Price)
+                            @String.Format("{0:N0}", item.Price)
                         </td>
                         <td class="text-center align-middle">
                             @Html.DisplayFor(modelItem => item.Stock)

@@ -152,56 +152,17 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             return Json(pagingDTO);
         }
 
-
-        //[HttpPost]
-        //public IActionResult AddToCart([FromBody] CartViewModel cartData)
-        //{
-        //    if (cartData != null)
-        //    {
-        //        var aspUserId = _userManager.GetUserId(User);
-        //        var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-        //        if (member == null)
-        //        {
-        //            return Json(new { success = false, message = "Member not found" });
-        //        }
-
-        //        var existingCart = _context.Carts.FirstOrDefault(c => c.MemberSid == member.MemberSid && c.ProductSid == cartData.productSid);
-
-        //        if (existingCart != null)
-        //        {
-        //            existingCart.Qty += cartData.qty;
-        //            existingCart.NewInTime = DateTime.Now; 
-
-        //            _context.Carts.Update(existingCart);
-        //        }
-        //        else
-        //        {
-        //            var newCart = new Cart
-        //            {
-        //                MemberSid = member.MemberSid,
-        //                ProductSid = cartData.productSid,
-        //                Qty = cartData.qty,
-        //                NewInTime = DateTime.Now 
-        //            };
-
-        //            _context.Carts.Add(newCart);
-        //        }
-
-        //        // 保存更改到資料庫
-        //        _context.SaveChanges();
-
-        //        return Json(new { success = true });
-        //    }
-
-        //    return Json(new { success = false });
-        //}
-
         [HttpPost]
         public IActionResult AddToCart([FromBody] CartViewModel cartData)
         {
             if (cartData != null)
             {
                 var aspUserId = _userManager.GetUserId(User);
+                if (aspUserId == null)
+                {
+                    // 改为返回一个 JSON 对象，告知前端需要重定向
+                    return Json(new { success = false, isLoginRequired = true, redirectUrl = "https://localhost:7080/Identity/Account/Login" });
+                }
                 var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
                 if (member == null)
                 {

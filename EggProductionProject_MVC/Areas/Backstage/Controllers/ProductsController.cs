@@ -22,8 +22,13 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // GET: Backstage/Products
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = "GOOD EGG 員工管理-商品管理";
             ViewData["Company"] = new SelectList(_context.Stores, "StoreSid", "Company");
-            var eggPlatformContext = _context.Products.Include(p => p.PublicStatusNoNavigation).Include(p => p.StoreS).Include(p => p.SubcategoryNoNavigation);
+            var eggPlatformContext = _context.Products
+                .Include(p => p.PublicStatusNoNavigation)
+                .Include(p => p.StoreS)
+                .Include(p => p.SubcategoryNoNavigation)
+                .OrderByDescending(p => p.LaunchTime); // 按照 LaunchTime 降序排序
             return View(await eggPlatformContext.ToListAsync());
         }
 
@@ -105,7 +110,7 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,ItemNo,StoreSid,,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductSid,ProductNo,ProductName,Price,Stock,SubcategoryNo,ItemNo,StoreSid,,Description,Origin,Quanitity,Weight,Component,LaunchTime,PublicStatusNo,DiscountPercent")] Product product)
         {
             if (id != product.ProductSid)
             {
@@ -135,9 +140,6 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
             ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "StatusDescription");
             ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "Company");
             ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryName");
-            //ViewData["PublicStatusNo"] = new SelectList(_context.PublicStatuses, "PublicStatusNo", "PublicStatusNo", product.PublicStatusNo);
-            //ViewData["StoreSid"] = new SelectList(_context.Stores, "StoreSid", "StoreSid", product.StoreSid);
-            //ViewData["SubcategoryNo"] = new SelectList(_context.ProductSubcategories, "SubcategoryNo", "SubcategoryNo", product.SubcategoryNo);
             return View(product);
         }
 
