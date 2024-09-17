@@ -175,6 +175,23 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
+                    var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id.ToLower() == user.Id.ToLower());
+
+                    //登入時儲存使用者名稱、AspID、大頭貼路徑
+                    if (member != null)
+                    {
+                        if (member.Name != null) { HttpContext.Session.SetString("userName", member.Name); }
+                        if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
+                        HttpContext.Session.SetInt32("userMemberSid", member.MemberSid);
+                        HttpContext.Session.SetString("userId", user.Id);
+
+                        if (member.IsBlocked == 1)
+                        {
+                            HttpContext.Session.Clear();
+                            return RedirectToPage("./Lockout");
+                        }
+
+                    }
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
                 if (result.IsLockedOut)
