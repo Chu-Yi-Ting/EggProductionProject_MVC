@@ -195,7 +195,7 @@
                     // 判断当前条目是否为最早或最晚
                     const isFirst = (trackTime.trackTimeSid === firstTrackTimeSid) ? 'first' : '';
                     const isLast = (trackTime.trackTimeSid === lastTrackTimeSid) ? 'last' : '';
-                    const formattedDateTime = trackTime.createdTime.replace('T', ' ');
+                    const formattedDateTime = trackTime.createdTime.replace('T', ' ').split('.')[0];
 
                     // 生成条目并添加到时间线容器中
                     timelineContainer.append(`

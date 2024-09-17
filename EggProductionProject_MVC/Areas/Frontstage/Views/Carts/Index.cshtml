@@ -156,7 +156,10 @@
                                     <div class="discount_total cal-box-list percent_discount">
                                         <div class="d-flex justify-content-start align-items-center">
                                             <p class="my-0 me-3">組合優惠</p>
-                                            <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg" alt="" srcset="">
+                                            <button type="button" class="btn p-0" data-bs-toggle="tooltip" data-bs-placement="top" title="同時購買蛋與蛋加工品，可享9折優惠">
+                                                <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg" alt="" srcset="">
+                                            </button>
+                                            
                                         </div>
 
                                         <span class="">無</span>
@@ -252,7 +255,6 @@
                                     </div>
                                 </div>
 
-                                @* <input class="form-control form-control-sm" type="text" placeholder="0" aria-label=""> *@
                                 <input id="amountInput"
                                        class="form-control form-control-sm"
                                        type="number"
@@ -264,16 +266,14 @@
                             </div>
 
                             <div class="form-control-n mt-4">
-                                <div class="title mb-3 d-flex justify-content-between">
+                                <div class="title mb-3 d-flex justify-content-start">
                                     優惠券
+                                    <div class="text-gray ps-2" style="padding-bottom: 5px;">
+                                        <button type="button" class="btn p-0" data-bs-toggle="tooltip" data-bs-placement="top" title="依商品總價合計作為低消門檻">
+                                            <img src="~/FrontstageTemplate/assets/brand/common/octicon_info-16.svg" alt="" srcset="" width="18px">
+                                        </button>
+                                    </div>
                                 </div>
-                                @*   <div id="div3">
-                                <select class="select-n " name="state">
-                                <option value="31" disabled>慶日券(低消，需滿 NT$1800)</option>
-                                <option value="1">生日券</option>
-                                <option value="null">無需使用優惠券</option>
-                                </select>
-                                </div> *@
 
                                 <div id="div3">
                                     <select class="select-n " name="state" id="couponSelect">
@@ -780,6 +780,11 @@
 
 
         $(document).ready(function () {
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
 
             var memberSid = '@ViewBag.MemberSid';
             console.log("Member SID: " + memberSid);
