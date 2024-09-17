@@ -17,6 +17,10 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 //using System.IdentityModel.Tokens.Jwt;
 //using System.Security.Claims;
 //using System.Text;
@@ -32,14 +36,16 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly EggPlatformContext _context;
         private readonly GoogleCaptchaService _captchaService;
+		private readonly IConfiguration _configuration;
 
-        //recapctha密鑰匙
-        private readonly string secretKey = "6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_"; // 替換為你的 Secret Key
+		//recapctha密鑰匙
+		private readonly string secretKey = "6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_"; // 替換為你的 Secret Key
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
              EggPlatformContext context,
-             GoogleCaptchaService captchaService
+             GoogleCaptchaService captchaService,
+             IConfiguration configuration
             )
         {
             _userManager = userManager;
@@ -47,6 +53,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
             _logger = logger;
             _context = context;
             _captchaService = captchaService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -125,8 +132,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    //var jwtoken = GenerateJwtToken(user.Id);
-                    _logger.LogInformation("User logged in.");
+					// 這裡生成 JWT token
+					//var token = GenerateJwtToken(user);
+
+					_logger.LogInformation("User logged in.");
 
                     // 這裡你可以存取到 user.Id 或其他使用者資料
                     
@@ -156,10 +165,13 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     }
 
-                    //return RedirectToAction("Index", "Home",new { jwtoken });  // 這裡的 "Home" 是控制器名稱，"Index" 是方法名稱
+                    // 重定向到指定的頁面並附帶 JWT token
+                    //string redirectUrlWithToken = $"{returnUrl}?token={token}";
+                    //return LocalRedirect(redirectUrlWithToken);
                    
-                    //舊版的
-                    return LocalRedirect(returnUrl);
+
+					//舊版的
+					return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -186,25 +198,28 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         }
 
 
-        ////JWT在登入時候生成一個TOKEN
-        //public string GenerateJwtToken(string userId)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes("S3cUr3K3yF0rJwtTok3n!@#1234567890\r\n"); // 你的密鑰
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(new[]
-        //        {
-        //    new Claim(ClaimTypes.Name, userId) // 包含使用者ID等資料
-        //}),
-        //        Expires = DateTime.UtcNow.AddHours(1), // 設置 Token 過期時間
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //    };
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token); // 返回 JWT Token
-        //}
+		private string GenerateJwtToken(IdentityUser user)
+		{
+			var claims = new[]
+			{
+			new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+			new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+		};
 
-    }
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+			var token = new JwtSecurityToken(
+				issuer: _configuration["Jwt:Issuer"],
+				audience: _configuration["Jwt:Audience"],
+				claims: claims,
+				expires: DateTime.Now.AddMinutes(30),
+				signingCredentials: creds);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
+		}
+
+	}
     public class GoogleCaptchaConfig
     {
         public string SiteKey { get; set; }

@@ -75,3 +75,81 @@ else
     
 }
 
+
+@* <div class="offcanvas-footer">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+        <li class="nav-item">
+            <div class="logoin-user">
+                <div class="border-img">
+                    <!-- 預設顯示的圖片，稍後使用者資料加載後會更新 -->
+                    <img id="botUserPic" src="~/memberimg/nopicchick.jpg" />
+                </div>
+                <!-- 預設顯示的使用者名稱 -->
+                <p id="botUserName" style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, 使用者</p>
+            </div>
+        </li>
+    </ul>
+
+    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="btn">
+            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+            登出
+        </button>
+    </form>
+
+    <div id="loginRegister" style="display: none;">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">登入/註冊</a>
+    </div>
+</div> *@
+
+<script>
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     // 從 localStorage 取得 JWT token
+    //     const token = localStorage.getItem('jwtToken');
+
+    //     if (token) {
+    //         // 正確傳遞 JWT token 在 Authorization 標頭中
+    //         fetch('/api/UserInfo/GetUserInfo', {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}` // 使用 Authorization 標頭來傳遞 JWT token
+    //             }
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error('Unauthorized');
+    //                 }
+    //                 return response.json();
+    //             })
+    //             .then(data => {
+    //                 if (data.success) {
+    //                     // 更新使用者名稱和頭像
+    //                     document.getElementById('botUserName').textContent = `歡迎, ${data.userName}`;
+    //                     if (data.profilePic) {
+    //                         document.getElementById('botUserPic').src = data.profilePic;
+    //                     }
+    //                     // 隱藏登入/註冊按鈕
+    //                     document.getElementById('loginRegister').style.display = 'none';
+    //                     // 顯示登出表單
+    //                     document.getElementById('logoutForm').style.display = 'block';
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error fetching user info:', error);
+    //                 // 顯示登入/註冊按鈕
+    //                 document.getElementById('loginRegister').style.display = 'block';
+    //                 document.getElementById('logoutForm').style.display = 'none';
+    //             });
+    //     } else {
+    //         // 如果沒有 token，顯示登入/註冊按鈕
+    //         document.getElementById('loginRegister').style.display = 'block';
+    //         document.getElementById('logoutForm').style.display = 'none';
+    //     }
+    // });
+
+</script>
+
+
+
+
+
