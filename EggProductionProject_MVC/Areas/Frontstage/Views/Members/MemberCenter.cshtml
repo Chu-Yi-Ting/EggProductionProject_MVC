@@ -384,6 +384,8 @@
 
 															}
 
+
+														   <br />
 															<!-- 點擊這個按鈕會打開新分頁並跳轉 -->
 															<button type="button" class="btn btn-light" onclick="open2FaPage()">
 																兩步驟驗證
@@ -420,6 +422,7 @@
 
 														</span>
 														<input type="text" id="Chickcode" name="Chickcode" asp-for="Chickcode">
+														<span class="text-danger" asp-validation-for="Chickcode"></span>
 													</div>
 
 

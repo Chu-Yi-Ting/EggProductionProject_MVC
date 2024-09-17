@@ -87,7 +87,8 @@
                若您手邊沒有可獲取驗證碼的裝置，並且也沒有取回代碼時，你的帳號將會丟失
             </p>
         </div>
-        <div><partial name="_StatusMessage" for="StatusMessage" /></div>
+        @* <div><partial name="_StatusMessage" for="StatusMessage" /></div> *@
+        <div>您的帳號目前已被雙步驟驗證所保護，以下為您的取回代碼</div>
         <div class="row">
             <div class="col-md-12">
                 @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
