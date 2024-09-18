@@ -944,6 +944,11 @@
             document.getElementById('croppedCanvas').style.display = 'none';
             // 隱藏裁剪按鈕
             document.getElementById('cropImageButton').style.display = 'none';
+            document.getElementById('rotateLeftButton').style.display = 'none';
+            document.getElementById('rotateRightButton').style.display = 'none';
+            document.getElementById('resetButton').style.display = 'none';
+            document.getElementById('flipHorizontalButton').style.display = 'none';
+            document.getElementById('flipVerticalButton').style.display = 'none';
 
             // 銷毀當前的 Cropper 實例
             if (cropper) {
@@ -1344,7 +1349,7 @@
 
         // 新增DEMO按鈕自動填入欄位值
         document.getElementById('addDemoButton').addEventListener('click', function () {            
-            document.getElementById('productName').value = '靈靈葉黃素蛋';
+            document.getElementById('productName').value = '霆霆葉黃素蛋';
             document.getElementById('price').value = 200;
             document.getElementById('stock').value = 500;
             document.getElementById('description').value = '嚴選優質穀物飼料，添加靈靈牧場獨家營養配方，含植物性葉黃素、靈芝多醣體、納豆菌...';
