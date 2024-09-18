@@ -109,17 +109,14 @@ builder.Services.AddSession(options =>
 
 
 
-// �`�U�ۭq�� EmailSender �A��
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-// ���U���v�A��
 builder.Services.AddAuthorization();
 
 builder.Services.AddHttpClient<WebScrapingService>();
 builder.Services.AddControllersWithViews();
 
 
-// ���URazor Pages�A��
 builder.Services.AddRazorPages();
 
 
