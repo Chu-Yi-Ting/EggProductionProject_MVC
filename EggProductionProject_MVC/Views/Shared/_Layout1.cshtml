@@ -15,6 +15,9 @@
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/choices.js/choices.min.css" rel="stylesheet" />
     <link href="~/frontstagetemplate/assets/dist/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/dist/css/style-index.css">
+    <link rel="stylesheet" href="~/assets/dist/css/footer-style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.10.0/matter.js"></script>
     @await RenderSectionAsync("Styles", required: false)
 
 </head>
@@ -24,7 +27,7 @@
             <div class="nav-main nav-main-white px-lg-5 d-flex justify-content-between align-items-center w-100">
                 <div class="outer-layout-n">
                     <a asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index"
-                       class="d-flex align-items-center  text-decoration-none">
+                       class="d-flex align-items-center  text-decoration-none " style="min-width:100px">
                         賣家中心
                     </a>
                     <a href="https://localhost:7080/"
@@ -161,13 +164,54 @@
 
     </header>
 
-    <main>
+    <main class="outer-main">
         @RenderBody()
     </main>
+
+    <footer class="section bg-footer d-flex justify-content-center flex-column flex-lg-row">
+        <div class=" footer-container d-flex justify-content-center flex-column flex-lg-row">
+            <div class="d-flex justify-content-center mb-5 mb-lg-0">
+                <div class="mx-4">
+                    <h6 class="footer-heading text-uppercase text-white">網站服務</h6>
+                    <ul class="footer-link mt-4">
+                        <li><a href="#!">生產分析</a></li>
+                        <li><a href="#!">知識討論</a></li>
+                        <li><a href="#!">影片生活</a></li>
+                        <li><a href="#!">商城購物</a></li>
+                    </ul>
+                </div>
+                <div class="mx-4">
+                    <h6 class="footer-heading text-uppercase text-white">用戶服務</h6>
+                    <ul class="footer-link mt-4">
+                        <li><a href="#!">註冊登入</a></li>
+                        <li><a href="#!">會員中心</a></li>
+                        <li><a href="#!">賣家中心</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-link mx-2-4">
+                <h6 class="footer-heading text-uppercase text-white">聯絡我們</h6>
+                <p class="contact-info mt-4">電子信箱</p>
+                <p class="contact-info">goodeggtworg@gmail.com</p>
+                <div>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#!"><i class="fab facebook footer-social-icon fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a href="#!"><i class="fab instagram footer-social-icon fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <p class="footer-alt">修蛋幾勒 ©2024出品  | 企業編號 MSIT161</p>
+
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/choices.js/choices.min.js"></script>
+    <script src="~/assets/dist/js/script-canvas.js"></script>
     @* <script src="~/FrontstageTemplate/assets/dist/js/self_n.js"></script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>

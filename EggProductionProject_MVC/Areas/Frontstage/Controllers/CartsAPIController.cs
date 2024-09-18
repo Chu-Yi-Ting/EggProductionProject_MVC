@@ -1192,26 +1192,26 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			}
 
 			// Uncomment to delete carts and update coupon status if needed
-			// if (cartSidsToDelete.Any())
-			// {
-			//     var cartsToDelete = await _context.Carts
-			//                                        .Where(c => cartSidsToDelete.Contains(c.CartSid))
-			//                                        .ToListAsync();
-			//     _context.Carts.RemoveRange(cartsToDelete);
-			//     await _context.SaveChangesAsync();
-			// }
+			if (cartSidsToDelete.Any())
+			{
+				var cartsToDelete = await _context.Carts
+												   .Where(c => cartSidsToDelete.Contains(c.CartSid))
+												   .ToListAsync();
+				_context.Carts.RemoveRange(cartsToDelete);
+				await _context.SaveChangesAsync();
+			}
 
-			// if (request.CouponSid.HasValue)
-			// {
-			//     var coupon = await _context.Coupons
-			//                                .FirstOrDefaultAsync(c => c.CouponSid == request.CouponSid.Value);
-			//     if (coupon != null)
-			//     {
-			//         coupon.CouponStatusNo = 2; // Update status to 2
-			//         _context.Coupons.Update(coupon);
-			//         await _context.SaveChangesAsync();
-			//     }
-			// }
+			if (request.CouponSid.HasValue)
+			{
+				var coupon = await _context.Coupons
+										   .FirstOrDefaultAsync(c => c.CouponSid == request.CouponSid.Value);
+				if (coupon != null)
+				{
+					coupon.CouponStatusNo = 2; // Update status to 2
+					_context.Coupons.Update(coupon);
+					await _context.SaveChangesAsync();
+				}
+			}
 
 			return orderNumbers;
 		}
