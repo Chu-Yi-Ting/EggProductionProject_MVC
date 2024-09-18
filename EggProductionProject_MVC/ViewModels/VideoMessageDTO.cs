@@ -23,7 +23,10 @@ namespace EggProductionProject_MVC.ViewModels
 
         [Display(Name ="留言總數")]
         public int? MessageLength { get; set; }
-        
+
+        [Display(Name = "會員圖片")]
+        public string MemberImage { get; set; }
+
         public string NumberName { get; set; }
 
     }
