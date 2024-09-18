@@ -134,6 +134,7 @@
                 <h5 class="mb-3 d-flex justify-content-between w-100">
                     賣場基本資料
                     <span class="d-flex">
+                        <button class="btn light-btn-n me-3" type="button" onclick="fillDemoData()" style = "font-size:16px; border-radius:10px;">新增DEMO</button>
                         <a class="btn light-btn-n" onclick="window.location.href='/Frontstage/Store/Store?storeSid=@Model.storeSid'">
                             前往賣場
                         </a>
@@ -237,6 +238,11 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
+        // 自動填入DEMO數據
+        function fillDemoData() {           
+            document.getElementById('storeName').value = '仲仁畜牧場';
+            document.getElementById('storeIntroduction').value = '我們是一家用心培育的小農雞蛋，致力於提供最純淨、最優質的葉黃素雞蛋給您。每隻母雞都用心飼養、每顆雞蛋都嚴格洗選，不計成本就是要讓每顆葉黃素雞蛋保有更高濃度的葉黃素含量。未來我們也將秉持信念，堅持給予您最高品質的葉黃素雞蛋';
+        }
     </script>
 
 }
