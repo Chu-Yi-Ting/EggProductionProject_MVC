@@ -46,7 +46,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="驗證碼為必填欄位")]
             [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Verification Code")]
@@ -88,7 +88,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account.Manage
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError("Input.Code", "Verification code is invalid.");
+                ModelState.AddModelError("Input.Code", "無效的驗證碼");
                 await LoadSharedKeyAndQrCodeUriAsync(user);
                 return Page();
             }

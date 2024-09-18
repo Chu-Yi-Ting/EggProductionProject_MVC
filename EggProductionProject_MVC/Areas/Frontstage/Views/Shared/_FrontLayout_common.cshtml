@@ -53,7 +53,7 @@
                         @{
                             if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
                             {
-                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+                                <img id="TopUserPic" src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
                                      alt="mdo"
                                      width="28"
                                      height="28"
@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                <img src="~/memberimg/nopicchick.jpg"
+                                <img id="TopUserPic" src="~/memberimg/nopicchick.jpg"
                                      alt="mdo"
                                      width="28"
                                      height="28"

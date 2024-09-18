@@ -5,7 +5,7 @@
 @{
 	var antiForgeryToken = Html.AntiForgeryToken().ToString();
 }
-@model EggProductionProject_MVC.Models.Member
+@model EggProductionProject_MVC.Models.MemberVM.MemberPageVM
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @section Styles {
@@ -341,7 +341,7 @@
 																	<label for="email">電子郵件</label>
 																	<span class="required-tag">必填</span>
 																</span>
-																<input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
+																<input type="text" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
 															</div>
 															<span class="text-danger" asp-validation-for="Email"></span>
 															<br>
@@ -383,6 +383,14 @@
 																}
 
 															}
+
+
+														   <br />
+															<!-- 點擊這個按鈕會打開新分頁並跳轉 -->
+															<button type="button" class="btn btn-light" onclick="open2FaPage()">
+																兩步驟驗證
+															</button>
+
 														</div>
 													</div>
 												</div>
@@ -411,6 +419,7 @@
 
 														</span>
 														<input type="text" id="Chickcode" name="Chickcode" asp-for="Chickcode">
+														<span class="text-danger" asp-validation-for="Chickcode"></span>
 													</div>
 												</div>
 												<div class="modal-footer">
@@ -804,6 +813,9 @@
 	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
 	<script src="~/js/common.js"></script>
 	<script src="~/js/Data/Data.js"></script>
+	<!-- 引用jquery來驗證表單的資料輸入是否正確 -->
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 	<script>
 		//---------------------會員鎖住的話-----------------------
@@ -938,6 +950,37 @@
 				console.error('Error:', error);
 			}
 
+			//----------------ajax來更改layout的使用者姓名頭貼--------------------------------
+			$(document).ready(function () {
+				// 抓取 Layout 中的 Header 並做一些操作
+				// var TopUserPicSrc = $('#TopUserPic').attr('src');
+				// var botUserPicSrc = $('#botUserPic').attr('src');
+
+			
+				
+			})
+
+			function updateProfile() {
+
+				$.ajax({
+					url: '@Url.Action("GetUpdatedProfile", "Members", new { area = "Frontstage" })',  // 動態生成正確的 URL
+					type: 'POST',
+					success: function (response) {
+						// 當請求成功後，更新圖片和姓名
+						$('#TopUserPic').attr('src', response.imageUrl);
+						$('#botUserPic').attr('src', response.imageUrl);
+						$('#botUserName').text('歡迎,' + response.userName);
+						console.log('response' + response);
+					},
+					error: function (error) {
+						console.log("Error updating profile: ", error);
+					}
+				});
+			}
+
+			// 在你需要的地方（如資料庫更新完成後）呼叫這個方法來更新圖片和姓名
+			updateProfile();
+
 
 			const userUpdateSuccessToast = document.getElementById('userUpdateSuccess')
 			const toastInstance = new bootstrap.Toast(userUpdateSuccessToast);
@@ -1004,8 +1047,16 @@
 			} catch (error) {
 				console.error('Error:', error);
 			}
-
+			
 		});
+
+		//-------------------------------2fa驗證---------------------------------------
+		function open2FaPage() {
+			
+
+			// 在新分頁中打開這個 URL
+			window.open('https://localhost:7080/identity/account/manage/enableauthenticator');
+		}
 
 
 		//-------------------------------雞農每日紀錄--------------------------------------------
