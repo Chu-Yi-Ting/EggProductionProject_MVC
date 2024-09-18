@@ -92,6 +92,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MessageLikes = M.MessageLikes,
                     MessageDate = M.MessageDate,
                     MessageNumber = M.MessageNumber,
+                    MemberImage = M.MemberS.ProfilePic,
                 });
 
             return Json(Message);
@@ -172,6 +173,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 MessageDate = message.MessageDate,
                 MessageLikes = message.MessageLikes,
                 MessageDelete = false,
+
             };
             
             _context.Messages.Add(newmessage);
