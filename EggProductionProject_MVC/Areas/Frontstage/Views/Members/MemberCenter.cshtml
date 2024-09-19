@@ -307,15 +307,15 @@
 															@{
 																if (Model.ProfilePic == null)
 																{
-																					<img id="img1" 
-																					 	src="https://via.placeholder.com/100" 
-																					 	alt="會員照片">
+																						<img id="img1" 
+																						 	src="https://via.placeholder.com/100" 
+																						 	alt="會員照片">
 																}
 																else
 																{
-																					<img id="img1" 
-																					 	src="@Model.ProfilePic" 
-																					 	alt="會員照片">
+																						<img id="img1" 
+																						 	src="@Model.ProfilePic" 
+																						 	alt="會員照片">
 																}
 															}
 
@@ -370,16 +370,16 @@
 															@{
 																if (Model.IsChickFarm == 0)
 																{
-																					<div class="form-group">
-																						<span>
-																							<label for="password">成為雞農！</label>
-																						</span>
-																						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																						<div class="form-group">
+																							<span>
+																								<label for="password">成為雞農！</label>
+																							</span>
+																							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-																						<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-																							開通功能
-																						</button>
-																					</div>
+																							<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+																								開通功能
+																							</button>
+																						</div>
 																}
 
 															}
@@ -451,7 +451,7 @@
 
 								</div>
 								
-								<div class="tab-pane fade" id="pills-three-data" role="tabpanel" aria-labelledby="pills-three-tab">
+								<div class="tab-pane fade" id="pills-three-tab" role="tabpanel" aria-labelledby="pills-three-tab">
 									@if (Model.Chickcode == null)
 									{
 										<div class="d-flex justify-content-center">
@@ -511,7 +511,7 @@
 									}
 
 								</div>
-								<div class="tab-pane fade" id="pills-four-data" role="tabpanel" aria-labelledby="pills-four-tab">
+								<div class="tab-pane fade" id="pills-four-tab" role="tabpanel" aria-labelledby="pills-four-tab">
 									@if (Model.Chickcode == null)
 									{
 										<div class="d-flex justify-content-center">
@@ -1125,6 +1125,26 @@
 			}
 		}
 
+		const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-four-tab"]');
+
+		tabElement.addEventListener('shown.bs.tab', async function  (event) {
+			try {
+				const response = await fetch('/Frontstage/DataApi/FeedData', {
+					method: 'GET',
+				});
+
+				const result = await response.json();
+
+				if (!result.success) {
+				 	return;
+				 }
+				showToast('您的行事曆有新增事項: ' + result.message, 'success'); // 顯示失敗的 Toast
+			} catch (error) {
+				showToast('Error inserting record: ' + error, 'error'); // 顯示錯誤的 Toast
+			}
+		});
+
+		//-----------------------------------------------------------------------------------------
 		$(document).ready(function () {
 
 			const nowId = '@ViewBag.MemberSid';
