@@ -150,18 +150,15 @@ namespace EggProductionProject_MVC.Areas.Backstage.Controllers
 
         public async Task<IActionResult> Send(int id,string Text1, string Text2)
         {
-            var Email = ((from m in _context.Members
-                          where m.MemberSid == id
-                          select m.Email
-                         ).FirstOrDefaultAsync()).ToString();
-            Email = "heartfuldays307@gmail.com";
+            string Email = await (from m in _context.Members
+                                  where m.MemberSid == id
+                                  select m.Email).FirstOrDefaultAsync();
+            //Email = "heartfuldays307@gmail.com";
             string fileName = $"{Text1}-{Text2}.xlsx";
             string wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             string filePath = Path.Combine(wwwrootPath, fileName);
 
-            await SendEmailAsync(Email, "您的EXCEL報表",
-                        "<h2>您雞舍的EXCEL報表</h2>", filePath
-                        );
+            await SendEmailAsync(Email, "您的EXCEL報表","<h2>您雞舍的EXCEL報表</h2>", filePath);
             return Ok();
         }
 

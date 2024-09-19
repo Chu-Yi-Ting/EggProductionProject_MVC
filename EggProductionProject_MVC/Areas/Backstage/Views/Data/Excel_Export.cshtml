@@ -212,15 +212,15 @@
         });
 
         document.getElementById("sendButton").addEventListener("click", async function () {
-            let firstSid = parseInt($('#Name_Selected').val())
             let NameSelected = $('#Name_Selected');
+            let firstSid = parseInt(NameSelected.val())
             let HouseSelected = $('#ChickHouse_Selected');
             let text1 = NameSelected.find("option:selected").text()
             let text2 = HouseSelected.find("option:selected").text()
-
+            console.log(firstSid)
             try {
                 // 發送匯出請求
-                const response = await fetch(`@Url.Content("/Backstage/Api/Send")?Sid=${firstSid}&Text1=${text1}&Text2=${text2}`,
+                const response = await fetch(`@Url.Content("/Backstage/Api/Send")?id=${firstSid}&Text1=${text1}&Text2=${text2}`,
                 {
                      method: 'GET',
                 });
