@@ -32,9 +32,11 @@
         }
 
         .left-column {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg') no-repeat center center;
-            background-size: cover;
+            /* background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg/1200px-A_Basket_of_Chicken_Eggs_at_Tuen_Mun.jpg')*/
+            no-repeat center center;
+            background-size: cover; 
             height: 100vh;
+            
         }
 
         .right-column {
@@ -151,7 +153,11 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6 left-column"></div>
+            <div class="col-md-6 left-column">
+                <img style="no-repeat center center;
+            background-size: cover;
+            height: 90vh;" src="~/memberimg/chickloginbigpic.png" />
+            </div>
             <div class="col-md-6 right-column">
                 <div class="login-box">
                     <h1 id="loginText">登入</h1>

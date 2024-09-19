@@ -130,7 +130,8 @@
                             SuccessToast.show();
 
                         } else {
-                            alert("註冊失敗，請再嘗試一次")
+                            const SuccessToast = new bootstrap.Toast(document.getElementById('SuccessToast'));
+                            SuccessToast.show();
                         }
                     },
                     error: function () {

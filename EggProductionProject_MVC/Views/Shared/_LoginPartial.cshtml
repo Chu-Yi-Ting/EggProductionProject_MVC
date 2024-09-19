@@ -28,7 +28,11 @@
                         @if (HttpContextAccessor.HttpContext.Session.GetString("userName") != null)
                         {
                         <p id="botUserName" style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, @HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
-                        }
+                    }
+                    else
+                    {
+                        <p id="botUserName" style="font-weight:500;font-size:larger; margin-top:auto;">歡迎, 新用戶！</p>
+                    }
                     </div>
                 </li>
             </ul>
