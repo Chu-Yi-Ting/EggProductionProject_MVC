@@ -29,7 +29,7 @@ namespace EggProductionProject_MVC.Hubs
             var ChatTime = DateTime.UtcNow;
 
             // 廣播訊息給所有已連接的客戶端
-            await Clients.All.SendAsync("ReceiveMessage", MemberSid, ChatContent, ChatTime);
+            //await Clients.All.SendAsync("ReceiveMessage", MemberSid, ChatContent, ChatTime);
 
             // 保存訊息到資料庫
             var chatMessageDto = new ChatMessageDto
