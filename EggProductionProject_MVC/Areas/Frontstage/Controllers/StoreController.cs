@@ -119,77 +119,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
         }
 
-		//[HttpPost]
-		//public IActionResult SellerInformation(StoreViewModel model)
-		//{
-		//	// 1. 取得當前已登入的用戶，並根據 AspUserId 取得對應的 Member
-		//	var aspUserId = _userManager.GetUserId(User);
-		//	var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-		//	if (member == null)
-		//	{
-		//		return RedirectToAction("Login", "Account");
-		//	}
-
-  //          // 2. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
-  //          var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
-
-  //          // 3. 處理圖片上傳
-  //          string storeImagePath = store?.StoreImagePath; // 保留舊圖片路徑
-  //          if (model.storeImage != null && model.storeImage.Length > 0)
-  //          {
-  //              // 3.1 刪除舊的圖片
-  //              if (!string.IsNullOrEmpty(storeImagePath))
-  //              {
-  //                  var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, storeImagePath.TrimStart('/'));
-  //                  if (System.IO.File.Exists(oldImagePath))
-  //                  {
-  //                      System.IO.File.Delete(oldImagePath);
-  //                  }
-  //              }
-
-  //              // 3.2 上傳新的圖片
-  //              var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Stores");
-  //              var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.storeImage.FileName);
-  //              var newImagePath = Path.Combine(uploadPath, uniqueFileName);
-  //              storeImagePath = $"/Images/Stores/{uniqueFileName}";  // 將相對路徑存入資料庫
-
-  //              using (var stream = new FileStream(newImagePath, FileMode.Create))
-  //              {
-  //                  model.storeImage.CopyTo(stream);
-  //              }
-  //          }
-           
-		//	if (store == null)
-		//	{
-		//		// 創建新賣場資料
-		//		store = new Store
-		//		{
-		//			MemberSid = member.MemberSid,
-		//			Company = model.storeName,  // 賣場名稱
-		//			StoreIntroduction = model.storeIntroduction,  // 賣場簡介
-		//			StoreImagePath = storeImagePath,  // 圖片路徑
-		//			EstablishDate = DateOnly.FromDateTime(DateTime.Now),   // 設定創建時間
-  //                  PublicStatusNo = 1  // 設定賣場公開狀態為 1（公開）
-  //              };
-
-		//		_context.Stores.Add(store);  // 將新賣場資料加入資料庫
-  //              TempData["Message"] = "註冊成功"; // 設置 TempData 為註冊成功
-  //          }
-		//	else
-		//	{
-		//		// 更新現有賣場資料
-		//		store.Company = model.storeName;  // 更新賣場名稱
-		//		store.StoreIntroduction = model.storeIntroduction;  // 更新賣場簡介
-		//		store.StoreImagePath = storeImagePath;  // 更新圖片路徑
-
-  //              TempData["Message"] = "更新成功"; // 設置 TempData 為更新成功
-  //          }
-
-		//	_context.SaveChanges();  // 儲存變更到資料庫
-
-		//	return RedirectToAction("SellerInformation");
-		//}
-
         [HttpPost]
         public JsonResult SellerInformation(StoreViewModel model)
         {
@@ -207,14 +136,35 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 });
             }
 
-            // 2. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
+            // 2.後端驗證賣場名稱必填
+            if (string.IsNullOrWhiteSpace(model.storeName))
+            {
+                return Json(new { success = false});
+            }
+
+            // 2.後端驗證賣場簡介必填
+            if (string.IsNullOrWhiteSpace(model.storeIntroduction))
+            {
+                return Json(new { success = false});
+            }
+
+            // 2.檢查賣場名稱是否已存在（排除當前賣場）
+            var existingStore = _context.Stores
+                .FirstOrDefault(s => s.Company == model.storeName && s.StoreSid != model.storeSid);
+
+            if (existingStore != null)
+            {
+                return Json(new { success = false});
+            }
+
+            // 3. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
             var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
-            // 3. 處理圖片上傳
+            // 4. 處理圖片上傳
             string storeImagePath = store?.StoreImagePath; // 保留舊圖片路徑
             if (model.storeImage != null && model.storeImage.Length > 0)
             {
-                // 3.1 刪除舊的圖片
+                // 4.1 刪除舊的圖片
                 if (!string.IsNullOrEmpty(storeImagePath))
                 {
                     var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, storeImagePath.TrimStart('/'));
@@ -224,7 +174,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     }
                 }
 
-                // 3.2 上傳新的圖片
+                // 4.2 上傳新的圖片
                 var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Stores");
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.storeImage.FileName);
                 var newImagePath = Path.Combine(uploadPath, uniqueFileName);

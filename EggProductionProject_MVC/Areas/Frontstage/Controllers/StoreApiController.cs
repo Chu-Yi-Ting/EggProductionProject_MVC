@@ -91,21 +91,6 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     _context.Products.Add(product);
                     await _context.SaveChangesAsync();
 
-                    //// 保存圖片到資料庫
-                    //if (model.productImage != null)
-                    //{
-                    //    // 確定文件名字且確保其名字唯一性
-                    //    string uniqueFileName = $"{Guid.NewGuid()}_{model.productImage.FileName}";
-                    //    // 組合儲存於靜態文件的路徑字串
-                    //    string uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Products", uniqueFileName);
-                    //    // 將相對路徑存於productImagePath，之後要寫進資料庫
-                    //    string productImagePath = $"/Images/Products/{uniqueFileName}";  
-                    //    // 將圖片保存到 wwwroot/Images/Products
-                    //    using (var fileStream = new FileStream(uploadPath, FileMode.Create))
-                    //    {
-                    //        await model.productImage.CopyToAsync(fileStream);
-                    //    }
-
                     // 保存裁剪後的圖片到資料庫
                     if (Request.Form.Files["croppedImage"] != null)
                     {
@@ -315,8 +300,15 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 return Json(new { success = true, selectedProductSid = _deleteRequestDTO.productSid, message = "商品已成功刪除!" });
 			}
 			return Json(new { success = false, message = "找不到該商品!" });
-		}       
+		}
 
+        //賣場名稱驗證
+        [HttpGet]
+        public JsonResult CheckStoreName(string storeName, int storeSid)
+        {
+            var exists = _context.Stores.Any(s => s.Company == storeName && s.StoreSid != storeSid);
+            return Json(new { exists });
+        }
     }
 }
 
