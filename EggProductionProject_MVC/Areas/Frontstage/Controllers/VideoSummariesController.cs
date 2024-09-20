@@ -92,6 +92,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     MessageLikes = M.MessageLikes,
                     MessageDate = M.MessageDate,
                     MessageNumber = M.MessageNumber,
+                    MemberImage = M.MemberS.ProfilePic,
                 });
 
             return Json(Message);
@@ -172,6 +173,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 MessageDate = message.MessageDate,
                 MessageLikes = message.MessageLikes,
                 MessageDelete = false,
+
             };
             
             _context.Messages.Add(newmessage);
@@ -260,6 +262,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         [HttpPost]
         public IActionResult CreatVideo([FromBody] CreatVideoDTO Creat)
         {
+            
             // 儲存影片的基本資訊
             var CreatVideo = new EggProductionProject_MVC.Models.VideoSummary
             {
@@ -280,7 +283,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 返回影片Sid，讓前端繼續處理檔案上傳
             return Json(new { videoSid = CreatVideo.VideoSid });
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> UploadVideoFiles([FromForm] VideoAddDTO AddVideo, IFormFile? image, IFormFile video)
         {

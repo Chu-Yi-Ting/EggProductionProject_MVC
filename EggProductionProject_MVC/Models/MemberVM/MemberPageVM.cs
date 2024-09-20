@@ -15,7 +15,8 @@ namespace EggProductionProject_MVC.Models.MemberVM
         [Required(ErrorMessage = "電話為必填欄位")]
 
         [RegularExpression(@"^09\d{8}$", ErrorMessage = "電話號碼應為09開頭的10碼數字")]
-        public string Phone { get; set; }
+		[StringLength(10, ErrorMessage = "電話號碼應為09開頭的10碼數字", MinimumLength = 10)]
+		public string Phone { get; set; }
 
         public DateOnly? BirthDate { get; set; }
 

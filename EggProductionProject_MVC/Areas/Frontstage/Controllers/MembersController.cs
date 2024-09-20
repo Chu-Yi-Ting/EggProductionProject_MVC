@@ -370,17 +370,50 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 			string aspuseEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email);
 			var userAspId = HttpContext.Session.GetString("userId");
 
-			var user = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+			var member = _context.Members.Where(x => x.AspUser.Id == aspuserId).FirstOrDefault();
+			var memberPageVM = new MemberPageVM
+			{
+				// 將 member 的屬性對應到 MemberPageVM 的屬性
+				MemberSid = member.MemberSid,
+				Name = member.Name,
+				Email = member.Email,
+				Phone = member.Phone,
+				BirthDate = member.BirthDate,
+				IsChickFarm = member.IsChickFarm,
+				IsBlocked = member.IsBlocked,
+				Chickcode = member.Chickcode,
+				AspUserId = member.AspUserId,
+				ProfilePic = member.ProfilePic,
+				MemberAreas = member.MemberAreas,
+				Certifications = member.Certifications,
+			};
 
-            ViewData["Title"] = "GOOD EGG 會員中心";
+			ViewData["Title"] = "GOOD EGG 會員中心";
 
-            return View(user);
+            return View(memberPageVM);
 
         }
 
 
+		[HttpPost]
+		public IActionResult GetUpdatedProfile()
+		{
+			string aspuserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+			// 查詢要更新的 Member 資料
+			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspuserId);
+			// 從資料庫或其他存儲中獲取更新的圖片路徑和使用者姓名
+			var imagePath = member.ProfilePic;  // 假設這是更新後的圖片路徑
+			var name = member.Name;  // 假設這是更新後的使用者姓名
+
+			// 返回圖片路徑和姓名
+			return Json(new { imageUrl = imagePath, userName = name });
+		}
 
 
 
-    }
+
+
+	}
 }

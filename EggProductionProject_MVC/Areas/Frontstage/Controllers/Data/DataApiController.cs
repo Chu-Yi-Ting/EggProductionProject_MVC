@@ -24,9 +24,54 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
         {
             _context = context;
         }
-        
-//-----------------------------------行事曆------------------------------------------------
-        [HttpPost]
+
+		[HttpGet]
+		public async Task<IActionResult> FeedData(EggProductionProject_MVC.Models.Calendar Calendar)
+		{
+			var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
+            try
+            {
+                var result1 = await ((from c in _context.AreaFeeds
+                                      where c.MemberSid == MemberSid && c.AreaSid == 3 //需抓瀏覽器session的id
+                                      select c.Date).MaxAsync());
+                DateTime result1Date = result1.ToDateTime(TimeOnly.MinValue).Date;
+                if ((DateTime.Now.Date - result1Date).Days > 15)
+                { 
+                    Calendar.MemberSid = MemberSid;
+                    Calendar.InsertDate = DateOnly.FromDateTime(DateTime.Now);
+                    Calendar.Finished = 0;
+
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("InsertCalendar", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@MemberSid", Calendar.MemberSid);
+                            cmd.Parameters.AddWithValue("@Title", "飼料通知");
+                            cmd.Parameters.AddWithValue("@TodoList", "可能需要購買飼料，請確認飼料還夠不夠");
+                            cmd.Parameters.AddWithValue("@StartDate", Calendar.InsertDate);
+                            cmd.Parameters.AddWithValue("@InsertDate", Calendar.InsertDate);
+                            cmd.Parameters.AddWithValue("@Finished", Calendar.Finished);
+
+                            await conn.OpenAsync();
+                            var result2 = await cmd.ExecuteNonQueryAsync();
+                        }
+                    }
+
+                    return Ok(new { success = true, message = "飼料行事曆通知已建立！" });
+                }
+
+				return Ok(new { success = false });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex);
+			}
+		}
+
+		//-----------------------------------行事曆------------------------------------------------
+		[HttpPost]
         public async Task<IActionResult> InsertCalendar([FromBody] EggProductionProject_MVC.Models.Calendar Calendar)
         {
             if(!ModelState.IsValid)

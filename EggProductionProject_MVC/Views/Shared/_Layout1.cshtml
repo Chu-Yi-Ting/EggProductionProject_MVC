@@ -15,7 +15,7 @@
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/choices.js/choices.min.css" rel="stylesheet" />
     <link href="~/frontstagetemplate/assets/dist/css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/assets/dist/css/style-index.css">
+    <link rel="stylesheet" href="~/assets/dist/css/style-index.css?version=1.0">
     <link rel="stylesheet" href="~/assets/dist/css/footer-style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.10.0/matter.js"></script>
     @await RenderSectionAsync("Styles", required: false)
@@ -150,8 +150,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"  asp-controller="AccountLogin" asp-action="Index">
-                            <i class="fa-solid fa-shop me-2"></i>
+                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/AccountLogin" target="_blank">
+                            <i class="fa-solid fa-user-large me-2"></i>
                             員工管理
                         </a>
                     </li>

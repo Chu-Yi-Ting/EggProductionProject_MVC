@@ -53,7 +53,7 @@
                         @{
                             if (@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic") != null)
                             {
-                                <img src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
+                                <img id="TopUserPic" src="@HttpContextAccessor.HttpContext.Session.GetString("userProfilePic")"
                                      alt="mdo"
                                      width="28"
                                      height="28"
@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                <img src="~/memberimg/nopicchick.jpg"
+                                <img id="TopUserPic" src="~/memberimg/nopicchick.jpg"
                                      alt="mdo"
                                      width="28"
                                      height="28"
@@ -127,8 +127,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="AccountLogin" asp-action="Index">
+                        <a class="nav-link active" aria-current="page" asp-area="Frontstage" asp-controller="StoreCenters" asp-action="Index">
                             <i class="fa-solid fa-shop me-2"></i>
+                            賣家中心
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="https://localhost:7080/AccountLogin" target="_blank">
+                            <i class="fa-solid fa-user-large me-2"></i>
                             員工管理
                         </a>
                     </li>

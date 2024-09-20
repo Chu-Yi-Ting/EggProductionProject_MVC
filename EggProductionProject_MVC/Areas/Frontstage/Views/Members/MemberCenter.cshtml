@@ -5,7 +5,7 @@
 @{
 	var antiForgeryToken = Html.AntiForgeryToken().ToString();
 }
-@model EggProductionProject_MVC.Models.Member
+@model EggProductionProject_MVC.Models.MemberVM.MemberPageVM
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @section Styles {
@@ -307,15 +307,15 @@
 															@{
 																if (Model.ProfilePic == null)
 																{
-																					<img id="img1" 
-																					 	src="https://via.placeholder.com/100" 
-																					 	alt="會員照片">
+																						<img id="img1" 
+																						 	src="https://via.placeholder.com/100" 
+																						 	alt="會員照片">
 																}
 																else
 																{
-																					<img id="img1" 
-																					 	src="@Model.ProfilePic" 
-																					 	alt="會員照片">
+																						<img id="img1" 
+																						 	src="@Model.ProfilePic" 
+																						 	alt="會員照片">
 																}
 															}
 
@@ -341,7 +341,7 @@
 																	<label for="email">電子郵件</label>
 																	<span class="required-tag">必填</span>
 																</span>
-																<input type="email" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
+																<input type="text" id="email" name="Email" asp-for="Email" style="width: 370px;" required>
 															</div>
 															<span class="text-danger" asp-validation-for="Email"></span>
 															<br>
@@ -370,19 +370,27 @@
 															@{
 																if (Model.IsChickFarm == 0)
 																{
-																					<div class="form-group">
-																						<span>
-																							<label for="password">成為雞農！</label>
-																						</span>
-																						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																						<div class="form-group">
+																							<span>
+																								<label for="password">成為雞農！</label>
+																							</span>
+																							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-																						<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-																							開通功能
-																						</button>
-																					</div>
+																							<button id="btnBecomeFarm" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+																								開通功能
+																							</button>
+																						</div>
 																}
 
 															}
+
+
+														   <br />
+															<!-- 點擊這個按鈕會打開新分頁並跳轉 -->
+															<button type="button" class="btn btn-light" onclick="open2FaPage()">
+																兩步驟驗證
+															</button>
+
 														</div>
 													</div>
 												</div>
@@ -411,6 +419,7 @@
 
 														</span>
 														<input type="text" id="Chickcode" name="Chickcode" asp-for="Chickcode">
+														<span class="text-danger" asp-validation-for="Chickcode"></span>
 													</div>
 												</div>
 												<div class="modal-footer">
@@ -472,21 +481,21 @@
 										<div class="form-row mb-3">
 											<div class="col-md-9 d-flex justify-content-end align-items-center">
 												<label for="production" class="form-label me-custom">產蛋數</label>
-												<input type="number" class="form-control w-50" id="production" required />
+												<input type="number" class="form-control w-50" id="production" value="33300" required />
 											</div>
 										</div>
 										<br />
 										<div class="form-row mb-3">
 											<div class="col-md-9 d-flex justify-content-end align-items-center">
 												<label for="defective" class="form-label me-custom">不合格數</label>
-												<input type="number" class="form-control w-50" id="defective" required />
+												<input type="number" class="form-control w-50" id="defective" value="250" required />
 											</div>
 										</div>
 										<br />
 										<div class="form-row mb-3">
 											<div class="col-md-9 d-flex justify-content-end align-items-center">
 												<label for="death" class="form-label me-custom">死亡數</label>
-												<input type="number" class="form-control w-50" id="death" required />
+												<input type="number" class="form-control w-50" id="death" value="320" required />
 											</div>
 										</div>
 										<br />
@@ -503,7 +512,7 @@
 
 								</div>
 								<div class="tab-pane fade" id="pills-four-data" role="tabpanel" aria-labelledby="pills-four-tab">
-									@if (Model.IsChickFarm == null)
+									@if (Model.Chickcode == null)
 									{
 										<div class="d-flex justify-content-center">
 											<img src="~/memberimg/chickopenfirst.jpg" />
@@ -804,6 +813,9 @@
 	<script src="~/lib/datatables.net-fixedcolumns/datatables.fixedcolumns.min.js"></script>
 	<script src="~/js/common.js"></script>
 	<script src="~/js/Data/Data.js"></script>
+	<!-- 引用jquery來驗證表單的資料輸入是否正確 -->
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 	<script>
 		//---------------------會員鎖住的話-----------------------
@@ -938,6 +950,36 @@
 				console.error('Error:', error);
 			}
 
+			//----------------ajax來更改layout的使用者姓名頭貼--------------------------------
+			$(document).ready(function () {
+				// 抓取 Layout 中的 Header 並做一些操作
+				// var TopUserPicSrc = $('#TopUserPic').attr('src');
+				// var botUserPicSrc = $('#botUserPic').attr('src');
+
+				
+			})
+
+			function updateProfile() {
+
+				$.ajax({
+					url: '@Url.Action("GetUpdatedProfile", "Members", new { area = "Frontstage" })',  // 動態生成正確的 URL
+					type: 'POST',
+					success: function (response) {
+						// 當請求成功後，更新圖片和姓名
+						$('#TopUserPic').attr('src', response.imageUrl);
+						$('#botUserPic').attr('src', response.imageUrl);
+						$('#botUserName').text('歡迎,' + response.userName);
+						console.log('response' + response);
+					},
+					error: function (error) {
+						console.log("Error updating profile: ", error);
+					}
+				});
+			}
+
+			// 在你需要的地方（如資料庫更新完成後）呼叫這個方法來更新圖片和姓名
+			updateProfile();
+
 
 			const userUpdateSuccessToast = document.getElementById('userUpdateSuccess')
 			const toastInstance = new bootstrap.Toast(userUpdateSuccessToast);
@@ -1004,8 +1046,16 @@
 			} catch (error) {
 				console.error('Error:', error);
 			}
-
+			
 		});
+
+		//-------------------------------2fa驗證---------------------------------------
+		function open2FaPage() {
+			
+
+			// 在新分頁中打開這個 URL
+			window.open('https://localhost:7080/identity/account/manage/enableauthenticator');
+		}
 
 
 		//-------------------------------雞農每日紀錄--------------------------------------------
@@ -1074,6 +1124,26 @@
 			}
 		}
 
+		const tabElement = document.querySelector('button[data-bs-toggle="pill"][id="pills-four-tab"]');
+
+		tabElement.addEventListener('shown.bs.tab', async function  (event) {
+			try {
+				const response = await fetch('/Frontstage/DataApi/FeedData', {
+					method: 'GET',
+				});
+
+				const result = await response.json();
+
+				if (!result.success) {
+				 	return;
+				 }
+				showToast('您的行事曆有新增事項: ' + result.message, 'success'); // 顯示失敗的 Toast
+			} catch (error) {
+				showToast('Error inserting record: ' + error, 'error'); // 顯示錯誤的 Toast
+			}
+		});
+
+		//-----------------------------------------------------------------------------------------
 		$(document).ready(function () {
 
 			const nowId = '@ViewBag.MemberSid';

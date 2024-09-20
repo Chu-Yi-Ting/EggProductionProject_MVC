@@ -232,8 +232,18 @@
 						<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
 							<li><a class="dropdown-item" href="https://localhost:7080/">首頁</a></li>
 							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Product" asp-action="OnlineShop">商城</a></li>
-							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" asp-area="Frontstage" asp-controller="Members" asp-action="MemberCenter">會員中心</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Login", "Account", new { area = "Identity" })">
+
+									<button type="submit" class="btn ">
+										<i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+
+										登出
+									</button>
+								</form>
+							</li>
 						</ul>
 					</div>
 				</div>

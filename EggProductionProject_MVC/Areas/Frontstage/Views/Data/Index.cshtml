@@ -175,7 +175,7 @@
             <img class="w-100" src="~/frontstagetemplate/assets/brand/layout/banners/banner_18.png" />
         </div>
 
-        @if(Model == null)
+        @if(Model.Chickcode == null)
         {
             <div class="d-flex justify-content-center">
                 <img src="~/memberimg/chickopenfirst.jpg" />
@@ -290,11 +290,11 @@
                                 <form id="addEventForm">
                                     <div class="form-group">
                                         <label for="addEventTitle">標題</label>
-                                        <input type="text" class="form-control" id="addEventTitle" required>
+                                        <input type="text" class="form-control" id="addEventTitle" value="打掃雞舍" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="addEventTodoList">敘述</label>
-                                        <textarea class="form-control" id="addEventTodoList" required></textarea>
+                                        <textarea class="form-control" id="addEventTodoList" required>今天需要清理雞舍</textarea>
                                     </div>
                                     <input type="hidden" id="addEventDate">
                                 </form>
@@ -369,7 +369,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
     <script src="~/js/Data/Data.js"></script>
-    @if (Model != null)
+    @if (Model.Chickcode != null)
     {
         <script>
             let calendar; // 定義行事曆變數

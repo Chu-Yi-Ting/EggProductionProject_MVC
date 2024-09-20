@@ -14,6 +14,17 @@ using Microsoft.Extensions.Logging;
 using EggProductionProject_MVC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Net;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+//using System.IdentityModel.Tokens.Jwt;
+//using System.Security.Claims;
+//using System.Text;
+//using Microsoft.IdentityModel.Tokens;
 
 namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 {
@@ -24,15 +35,25 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly EggPlatformContext _context;
+        private readonly GoogleCaptchaService _captchaService;
+		private readonly IConfiguration _configuration;
+
+		//recapctha密鑰匙
+		private readonly string secretKey = "6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_"; // 替換為你的 Secret Key
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
-             EggPlatformContext context)
+             EggPlatformContext context,
+             GoogleCaptchaService captchaService,
+             IConfiguration configuration
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            _captchaService = captchaService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -44,6 +65,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
+       
+        public string Token { get; set; }
 
         //第三方登入
         //public List<AuthenticationScheme> Schemes { get; set; }
@@ -63,6 +86,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+            public string Token { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -86,11 +110,20 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            Console.WriteLine(Input.Email+Input.Password+Input.Token);
+			//驗證capchta token with google
+			var captchaResult = await _captchaService.VerifyToken(Input.Token);
+			// 打印或記錄分數
+			
+			if (!captchaResult)return Page();
+
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
-            if (ModelState.IsValid)
-            {
+
+           
+
+                if (ModelState.IsValid)
+                {
 
                 // 使用 Email 查找使用者
                 var user = await _userManager.FindByEmailAsync(Input.Email);
@@ -99,8 +132,10 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    
-                    _logger.LogInformation("User logged in.");
+					// 這裡生成 JWT token
+					//var token = GenerateJwtToken(user);
+
+					_logger.LogInformation("User logged in.");
 
                     // 這裡你可以存取到 user.Id 或其他使用者資料
                     
@@ -110,6 +145,7 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     //{
                     //    Console.WriteLine(m.AspUserId+">>"+m.Email);
                     //}
+
                     //登入的時候如果有找到該名會員(aspid去找)
                     var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id.ToLower() == user.Id.ToLower());
 
@@ -129,10 +165,33 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                     
                     }
 
-                    return LocalRedirect(returnUrl);
+                    // 重定向到指定的頁面並附帶 JWT token
+                    //string redirectUrlWithToken = $"{returnUrl}?token={token}";
+                    //return LocalRedirect(redirectUrlWithToken);
+                   
+
+					//舊版的
+					return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
+                    var member = _context.Members.Include(m => m.AspUser).FirstOrDefault(x => x.AspUser.Id.ToLower() == user.Id.ToLower());
+
+                    //登入時儲存使用者名稱、AspID、大頭貼路徑
+                    if (member != null)
+                    {
+                        if (member.Name != null) { HttpContext.Session.SetString("userName", member.Name); }
+                        if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
+                        HttpContext.Session.SetInt32("userMemberSid", member.MemberSid);
+                        HttpContext.Session.SetString("userId", user.Id);
+
+                        if (member.IsBlocked == 1)
+                        {
+                            HttpContext.Session.Clear();
+                            return RedirectToPage("./Lockout");
+                        }
+
+                    }
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
                 if (result.IsLockedOut)
@@ -150,8 +209,69 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                 }
             }
 
+        
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+		private string GenerateJwtToken(IdentityUser user)
+		{
+			var claims = new[]
+			{
+			new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+			new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+		};
+
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+			var token = new JwtSecurityToken(
+				issuer: _configuration["Jwt:Issuer"],
+				audience: _configuration["Jwt:Audience"],
+				claims: claims,
+				expires: DateTime.Now.AddMinutes(30),
+				signingCredentials: creds);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
+		}
+
+	}
+    public class GoogleCaptchaConfig
+    {
+        public string SiteKey { get; set; }
+        public string SecretKey { get; set; }
     }
+    public class GoogleCaptchaService
+    {
+        public async Task<bool> VerifyToken(string token)
+        {
+            try
+            {
+                var url = $"https://www.google.com/recaptcha/api/siteverify?secret=6LdH2UQqAAAAAP-UAga-dBgpEtj5SrxfRdMb880_&response={token}";
+                using (var client = new HttpClient())
+                {
+                    var httpResult = await client.GetAsync(url);
+                    if (httpResult.StatusCode != HttpStatusCode.OK)
+                    {
+                        return false;
+                    }
+                    var responseString = await httpResult.Content.ReadAsStringAsync();
+                    var googleResult = JsonConvert.DeserializeObject<GoogleCaptchaResponse>(responseString);
+
+                    return googleResult.Success && googleResult.score >= 0.5;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+    }
+
+    public class GoogleCaptchaResponse
+    {
+        public bool Success { get; set; }
+        public double score { get; set; }
+    }
+
+
+
 }

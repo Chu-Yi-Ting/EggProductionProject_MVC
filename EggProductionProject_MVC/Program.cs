@@ -10,8 +10,13 @@ using EggProductionProject_MVC.HTTPModels;
 using EggProductionProject_MVC.Hubs;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using EggProductionProject_MVC.Areas.Identity.Pages.Account;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var Configuration = builder.Configuration;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -135,6 +140,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 
+builder.Services.AddTransient(typeof(GoogleCaptchaService));
+
+builder.Services.Configure<GoogleCaptchaConfig>(builder.Configuration.GetSection("GoogleReCaptcha"));
 
 //沒用到
 builder.Services.Configure<MvcOptions>(options =>
@@ -142,6 +150,27 @@ builder.Services.Configure<MvcOptions>(options =>
     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
         _ => "此欄位是必填項目");
 });
+
+
+////JWT認證設定
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(options =>
+//{
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidateIssuerSigningKey = true,
+//        ValidIssuer = Configuration["Jwt:Issuer"],
+//        ValidAudience = Configuration["Jwt:Audience"],
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+//    };
+//});
 
 
 var app = builder.Build();
