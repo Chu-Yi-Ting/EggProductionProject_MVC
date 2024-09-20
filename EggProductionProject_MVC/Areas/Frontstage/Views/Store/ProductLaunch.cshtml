@@ -220,7 +220,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="5">目前沒有上架中的商品。</td>
+                            <td colspan="5">目前沒有上架中的商品</td>
                         </tr>
                     }
                 </tbody>
@@ -280,7 +280,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="5">目前沒有上架中的商品。</td>
+                            <td colspan="5">目前沒有審核中的商品</td>
                         </tr>
                     }
                 </tbody>
@@ -914,6 +914,7 @@
         // 更新審核中分頁局部内容
         function afterLaunchaddProductToReviewingTab(product) {
             const table = document.querySelector('#pills-two tbody');
+            table.innerHTML = '';
             const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const newRow = `
                 <tr id="product-row-${product.productSid}">
@@ -1281,14 +1282,22 @@
                     reviewingProductsTable.innerHTML = ''; // 清空表格
 
                     // 添加新的當前上架商品到表格
-                    data.currentProducts.forEach(product => {
-                        addProductToLaunchTab(product); // 將商品新增到當前上架分頁
-                    });
+                    if (data.currentProducts && data.currentProducts.length > 0) {
+                        data.currentProducts.forEach(product => {
+                            addProductToLaunchTab(product); // 將商品新增到當前上架分頁
+                        });
+                    } else {
+                        currentProductsTable.innerHTML = `<tr><td colspan="5">目前沒有上架中的商品</td></tr>`;
+                    }
 
                     // 添加新的審核中商品到表格
-                    data.reviewingProducts.forEach(product => {
-                        addProductToReviewingTab(product); // 將商品新增到審核中分頁
-                    });
+                    if (data.reviewingProducts && data.reviewingProducts.length > 0) {
+                        data.reviewingProducts.forEach(product => {
+                            addProductToReviewingTab(product); // 將商品新增到審核中分頁
+                        });
+                    } else {
+                        reviewingProductsTable.innerHTML = `<tr><td colspan="5">目前沒有審核中的商品</td></tr>`;
+                    }
 
                 } else {
                     alert('重整失敗，請稍後再試。');
@@ -1310,7 +1319,7 @@
 
         //更新當前上架商品的方法
         function addProductToLaunchTab(product) {
-            const table = document.querySelector('#pills-one tbody');
+            const table = document.querySelector('#pills-one tbody');            
             const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const formattedDate = formatDate(product.launchTime);
             const newRow = `
