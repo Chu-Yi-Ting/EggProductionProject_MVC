@@ -174,7 +174,7 @@
                 </div>
                 <div class="search-box d-flex justify-content-end align-items-center mb-3">
                     <!-- 新增商品的彈跳視窗按鈕 -->
-                    <button class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">新增</button>
+                    <button id="addProductButton" class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" @(Model.IsStoreSetup ? "" : "disabled")>新增</button>
                     <button class="btn btn-custom me-2" id="refreshButton"><i class="fa-solid fa-rotate-right"></i></button>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="輸入商品名稱"
@@ -793,6 +793,18 @@
                 setTimeout(function () {
                     window.location.href = '@Url.Action("SellerInformation", "Store")'; // 導向賣場資料填寫頁面
                 }, 3000);  // 延遲 3 秒 (3000 毫秒)
+            }
+
+            // 檢查賣場資料是否已經設置
+            var isStoreSetup = '@Model.IsStoreSetup';
+            var addButton = document.getElementById('addProductButton');
+
+            if (isStoreSetup === 'False') { // 如果沒有設置賣場資料
+                addButton.disabled = true;
+                addButton.setAttribute('title', '您尚未填寫賣場基本資料，無法新增商品。');
+            } else {
+                addButton.disabled = false; // 賣場已設置，啟用按鈕
+                addButton.removeAttribute('title'); // 移除警告提示
             }
         });
 
