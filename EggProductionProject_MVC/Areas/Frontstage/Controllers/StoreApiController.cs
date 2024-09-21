@@ -309,6 +309,15 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var exists = _context.Stores.Any(s => s.Company == storeName && s.StoreSid != storeSid);
             return Json(new { exists });
         }
+
+        //商品名稱驗證
+        [HttpGet]
+        public JsonResult CheckProductName(string productName, int productSid = 0)
+        {
+            var exists = _context.Products.Any(p => p.ProductName == productName && p.ProductSid != productSid);
+           
+            return Json(new { exists });
+        }
     }
 }
 

@@ -218,7 +218,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
         }
 
         //ProductLaunch動作函式生賣家中心商品上架畫面
-        public IActionResult ProductLaunch()
+        public IActionResult ProductLaunch(int? productSid = null)
         {
             ViewData["Title"] = "GOOD EGG 賣家中心-商品上架";
             // 查詢當前登入用戶的 StoreSid
@@ -235,6 +235,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             if (store != null)
             {
                 model.IsStoreSetup = true; // 設置為 true 代表賣場已設置
+
+                // 如果傳入的 productSid 有值，設置到模型中
+                model.productSid = productSid ?? 0;
 
                 // 查詢該賣家的當前上架產品 (PublicStatusNo = 1)，按LaunchTime降序排列
                 model.CurrentProducts = _context.Products
