@@ -192,7 +192,7 @@
                 <hr style="border: 2px solid #b8860b" />
                 <div class="d-flex justify-content-end">
                     <button class="btn solid-coffee-btn" type="button" onclick="cancelEdit()">取消</button>
-                    <button id="submitSellerInformationButton" class="btn solid-coffee-btn ms-3" type="button" onclick="submitSellerInformation()">儲存</button>
+                    <button id="submitSellerInformationButton" class="btn solid-coffee-btn ms-3" type="button" @* onclick="submitSellerInformation()" *@>儲存</button>
                 </div>
             </form>
         </div>
@@ -219,10 +219,6 @@
         // 前端賣場基本資料表單驗證
         document.getElementById('submitSellerInformationButton').addEventListener('click', async function (event) {
             event.preventDefault(); // 阻止表單提交
-
-            // 清除舊的錯誤訊息
-            document.getElementById('storeNameError').textContent = '';
-            document.getElementById('storeIntroductionError').textContent = '';
 
             // 清除舊的錯誤訊息
             clearErrorMessages();
@@ -284,6 +280,10 @@
             var form = document.getElementById('sellerInformationForm');
             var formData = new FormData(form);
 
+            // 禁用提交按鈕，防止多次提交
+            var submitButton = document.getElementById('submitSellerInformationButton');
+            submitButton.disabled = true;
+
             // 清空前端錯誤提示
             clearErrorMessages();
 
@@ -312,7 +312,11 @@
                 }
             } catch (error) {
                 showToast('提交失敗，請稍後再試！'); // 顯示錯誤通知
+            } finally {
+                // 無論成功或失敗，解鎖按鈕
+                submitButton.disabled = false;
             }
+
         }
 
         // 清空所有前端錯誤訊息

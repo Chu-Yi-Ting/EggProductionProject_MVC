@@ -148,23 +148,23 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                 return Json(new { success = false});
             }
 
-            // 2.檢查賣場名稱是否已存在（排除當前賣場）
-            var existingStore = _context.Stores
-                .FirstOrDefault(s => s.Company == model.storeName && s.StoreSid != model.storeSid);
-
-            if (existingStore != null)
-            {
-                return Json(new { success = false});
-            }
-
             // 3. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
             var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
-            // 4. 處理圖片上傳
+            // 4.檢查賣場名稱是否已存在（排除當前賣場）
+            var existingStore = _context.Stores
+                .FirstOrDefault(s => s.Company == model.storeName && s.StoreSid != store.StoreSid);
+
+            if (existingStore != null)
+            {
+                return Json(new { success = false });
+            }
+
+            // 5. 處理圖片上傳
             string storeImagePath = store?.StoreImagePath; // 保留舊圖片路徑
             if (model.storeImage != null && model.storeImage.Length > 0)
             {
-                // 4.1 刪除舊的圖片
+                // 刪除舊的圖片
                 if (!string.IsNullOrEmpty(storeImagePath))
                 {
                     var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, storeImagePath.TrimStart('/'));
@@ -174,9 +174,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     }
                 }
 
-                // 4.2 上傳新的圖片
+                // 上傳新的圖片
                 var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Stores");
-                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.storeImage.FileName);
+                var originalFileName = Path.GetFileNameWithoutExtension(model.storeImage.FileName); // 原始檔名(不含副檔名)
+                var extension = Path.GetExtension(model.storeImage.FileName); // 取得副檔名
+                var uniqueFileName = $"{Guid.NewGuid()}_{originalFileName}{extension}"; // 生成格式為 GUID_原始檔名.副檔名
                 var newImagePath = Path.Combine(uploadPath, uniqueFileName);
                 storeImagePath = $"/Images/Stores/{uniqueFileName}";  // 將相對路徑存入資料庫
 
