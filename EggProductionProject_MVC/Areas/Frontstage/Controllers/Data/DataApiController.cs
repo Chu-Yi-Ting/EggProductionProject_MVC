@@ -35,7 +35,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
                                       where c.MemberSid == MemberSid && c.AreaSid == 3 //需抓瀏覽器session的id
                                       select c.Date).MaxAsync());
                 DateTime result1Date = result1.ToDateTime(TimeOnly.MinValue).Date;
-                if ((DateTime.Now.Date - result1Date).Days > 20)
+                if ((DateTime.Now.Date - result1Date).Days > 15)
                 { 
                     Calendar.MemberSid = MemberSid;
                     Calendar.InsertDate = DateOnly.FromDateTime(DateTime.Now);
