@@ -28,10 +28,12 @@
     <Content Remove="wwwroot\BackstageTemplate\production\chartjs.html" />
     <Content Remove="wwwroot\BackstageTemplate\production\chartjs2.html" />
     <Content Remove="wwwroot\BackstageTemplate\production\morisjs.html" />
+    <Content Remove="wwwroot\Images\Products\096ab3b0-eae8-4b5d-b7e7-fdee3c3ed787_cropped_chicken.png" />
     <Content Remove="wwwroot\Images\Stores\46f02f52-aa25-437c-ab8b-d3a9ecc5522c.jpg" />
     <Content Remove="wwwroot\Images\Stores\4a965d25-388b-4aea-a2db-2d9f1a2dba60.jpg" />
     <Content Remove="wwwroot\Images\Stores\4ebd34a3-0106-4b65-bbce-ae6e81456c46.jpg" />
     <Content Remove="wwwroot\Images\Stores\caaee27f-7e50-460f-9051-1d95936535d9.jpg" />
+    <Content Remove="wwwroot\Images\Stores\cde5f498-26df-41ad-b538-c6215ad7d165_farmer.png" />
   </ItemGroup>
 
   <ItemGroup>
