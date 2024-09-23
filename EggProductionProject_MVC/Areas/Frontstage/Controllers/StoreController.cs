@@ -119,25 +119,52 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             
         }
 
-		[HttpPost]
-		public IActionResult SellerInformation(StoreViewModel model)
-		{
-			// 1. 取得當前已登入的用戶，並根據 AspUserId 取得對應的 Member
-			var aspUserId = _userManager.GetUserId(User);
-			var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
-			if (member == null)
-			{
-				return RedirectToAction("Login", "Account");
-			}
+        [HttpPost]
+        public JsonResult SellerInformation(StoreViewModel model)
+        {
+            // 1. 取得當前已登入的用戶，並根據 AspUserId 取得對應的 Member
+            var aspUserId = _userManager.GetUserId(User);
+            var member = _context.Members.FirstOrDefault(m => m.AspUserId == aspUserId);
+            if (member == null)
+            {
+                // 用戶未登入，返回 JSON 結果並提供重定向 URL
+                return Json(new
+                {
+                    success = false,
+                    message = "請先登入再進行操作。",
+                    redirectUrl = Url.Action("Login", "Account")
+                });
+            }
 
-            // 2. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
+            // 2.後端驗證賣場名稱必填
+            if (string.IsNullOrWhiteSpace(model.storeName))
+            {
+                return Json(new { success = false});
+            }
+
+            // 2.後端驗證賣場簡介必填
+            if (string.IsNullOrWhiteSpace(model.storeIntroduction))
+            {
+                return Json(new { success = false});
+            }
+
+            // 3. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
             var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
-            // 3. 處理圖片上傳
+            // 4.檢查賣場名稱是否已存在（排除當前賣場）
+            var existingStore = _context.Stores
+                .FirstOrDefault(s => s.Company == model.storeName && s.StoreSid != store.StoreSid);
+
+            if (existingStore != null)
+            {
+                return Json(new { success = false });
+            }
+
+            // 5. 處理圖片上傳
             string storeImagePath = store?.StoreImagePath; // 保留舊圖片路徑
             if (model.storeImage != null && model.storeImage.Length > 0)
             {
-                // 3.1 刪除舊的圖片
+                // 刪除舊的圖片
                 if (!string.IsNullOrEmpty(storeImagePath))
                 {
                     var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, storeImagePath.TrimStart('/'));
@@ -147,9 +174,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     }
                 }
 
-                // 3.2 上傳新的圖片
+                // 上傳新的圖片
                 var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "Stores");
-                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.storeImage.FileName);
+                var originalFileName = Path.GetFileNameWithoutExtension(model.storeImage.FileName); // 原始檔名(不含副檔名)
+                var extension = Path.GetExtension(model.storeImage.FileName); // 取得副檔名
+                var uniqueFileName = $"{Guid.NewGuid()}_{originalFileName}{extension}"; // 生成格式為 GUID_原始檔名.副檔名
                 var newImagePath = Path.Combine(uploadPath, uniqueFileName);
                 storeImagePath = $"/Images/Stores/{uniqueFileName}";  // 將相對路徑存入資料庫
 
@@ -158,37 +187,40 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     model.storeImage.CopyTo(stream);
                 }
             }
-           
-			if (store == null)
-			{
-				// 創建新賣場資料
-				store = new Store
-				{
-					MemberSid = member.MemberSid,
-					Company = model.storeName,  // 賣場名稱
-					StoreIntroduction = model.storeIntroduction,  // 賣場簡介
-					StoreImagePath = storeImagePath,  // 圖片路徑
-					EstablishDate = DateOnly.FromDateTime(DateTime.Now),   // 設定創建時間
+
+            if (store == null)
+            {
+                // 創建新賣場資料
+                store = new Store
+                {
+                    MemberSid = member.MemberSid,
+                    Company = model.storeName,  // 賣場名稱
+                    StoreIntroduction = model.storeIntroduction,  // 賣場簡介
+                    StoreImagePath = storeImagePath,  // 圖片路徑
+                    EstablishDate = DateOnly.FromDateTime(DateTime.Now),   // 設定創建時間
                     PublicStatusNo = 1  // 設定賣場公開狀態為 1（公開）
                 };
 
-				_context.Stores.Add(store);  // 將新賣場資料加入資料庫
-			}
-			else
-			{
-				// 更新現有賣場資料
-				store.Company = model.storeName;  // 更新賣場名稱
-				store.StoreIntroduction = model.storeIntroduction;  // 更新賣場簡介
-				store.StoreImagePath = storeImagePath;  // 更新圖片路徑
-			}
+                _context.Stores.Add(store);  // 將新賣場資料加入資料庫
+                _context.SaveChanges();
 
-			_context.SaveChanges();  // 儲存變更到資料庫
+                return Json(new { success = true, message = "您已成功註冊賣家身分" });
+            }
+            else
+            {
+                // 更新現有賣場資料
+                store.Company = model.storeName;  // 更新賣場名稱
+                store.StoreIntroduction = model.storeIntroduction;  // 更新賣場簡介
+                store.StoreImagePath = storeImagePath;  // 更新圖片路徑
 
-			return RedirectToAction("SellerInformation");
-		}
+                _context.SaveChanges();
 
-		//ProductLaunch動作函式生賣家中心商品上架畫面
-		public IActionResult ProductLaunch()
+                return Json(new { success = true, message = "賣家基本資料更新成功" });
+            }
+        }
+
+        //ProductLaunch動作函式生賣家中心商品上架畫面
+        public IActionResult ProductLaunch(int? productSid = null)
         {
             ViewData["Title"] = "GOOD EGG 賣家中心-商品上架";
             // 查詢當前登入用戶的 StoreSid
@@ -204,6 +236,11 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
 
             if (store != null)
             {
+                model.IsStoreSetup = true; // 設置為 true 代表賣場已設置
+
+                // 如果傳入的 productSid 有值，設置到模型中
+                model.productSid = productSid ?? 0;
+
                 // 查詢該賣家的當前上架產品 (PublicStatusNo = 1)，按LaunchTime降序排列
                 model.CurrentProducts = _context.Products
                     .Where(p => p.PublicStatusNo == 1 && p.StoreSid == store.StoreSid)
@@ -238,6 +275,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             {
                 // 沒有賣場資料，將錯誤訊息放入 TempData
                 TempData["ErrorMessage"] = "您尚未填寫賣場基本資料，要填寫完才能開通賣場功能!";
+                model.IsStoreSetup = false; // 設置為 false 表示賣場未設置
             }
 
 
