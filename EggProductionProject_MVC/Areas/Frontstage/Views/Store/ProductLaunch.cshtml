@@ -77,6 +77,17 @@
             overflow-y: auto; /* 自動出現垂直滾動條 */
         }
 
+        .error-message {
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none; /* 初始隱藏 */
+        }
+
+            .error-message.active {
+                display: block; /* 顯示錯誤訊息 */
+            }
+
         .image-container {
             display: flex;
             justify-content: space-between;
@@ -174,7 +185,7 @@
                 </div>
                 <div class="search-box d-flex justify-content-end align-items-center mb-3">
                     <!-- 新增商品的彈跳視窗按鈕 -->
-                    <button class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">新增</button>
+                    <button id="addProductButton" class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" @(Model.IsStoreSetup ? "" : "disabled")>新增</button>
                     <button class="btn btn-custom me-2" id="refreshButton"><i class="fa-solid fa-rotate-right"></i></button>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="輸入商品名稱"
@@ -195,7 +206,7 @@
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody>        
+                <tbody>
                     @if (Model.CurrentProducts != null && Model.CurrentProducts.Any())
                     {
                         @foreach (var product in Model.CurrentProducts)
@@ -220,7 +231,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="5">目前沒有上架中的商品。</td>
+                            <td colspan="5">目前沒有上架中的商品</td>
                         </tr>
                     }
                 </tbody>
@@ -258,29 +269,29 @@
                 <tbody>
                     @if (Model.ReviewingProducts != null && Model.ReviewingProducts.Any())
                     {
-                    @foreach (var product in Model.ReviewingProducts)
-                    {
-                        <tr id="product-row-@product.productSid">
-                            <td>@product.productName</td>
-                            <td>$@string.Format("{0:N0}", product.price)</td>
-                            <td>@product.stock</td>
-                            <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
-                            <td>
-                                <button class="btn btn-custom me-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editProductModal"
-                                        onclick="openEditModal(@product.productSid)">
-                                    編輯
-                                </button>
-                                <button class="btn btn-custom" onclick="openDeleteModal(@product.productSid)">取消審核</button>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var product in Model.ReviewingProducts)
+                        {
+                            <tr id="product-row-@product.productSid">
+                                <td>@product.productName</td>
+                                <td>$@string.Format("{0:N0}", product.price)</td>
+                                <td>@product.stock</td>
+                                <td>@(product.launchTime.HasValue ? product.launchTime.Value.ToString("yyyy-MM-dd") : "")</td>
+                                <td>
+                                    <button class="btn btn-custom me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editProductModal"
+                                            onclick="openEditModal(@product.productSid)">
+                                        編輯
+                                    </button>
+                                    <button class="btn btn-custom" onclick="openDeleteModal(@product.productSid)">取消審核</button>
+                                </td>
+                            </tr>
+                        }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="5">目前沒有上架中的商品。</td>
+                            <td colspan="5">目前沒有審核中的商品</td>
                         </tr>
                     }
                 </tbody>
@@ -317,6 +328,8 @@
                                        name="productName"
                                        placeholder="請輸入商品名稱"
                                        aria-label="商品名稱" />
+                                <input type="hidden" id="productSid" name="productSid" value= "0"/>
+                                <span class="error-message" id="productNameError" aria-live="polite"></span>
                             </div>
 
                             <!-- 商品價格 -->
@@ -330,6 +343,7 @@
                                        name="price"
                                        placeholder="請輸入商品價格"
                                        aria-label="商品價格" />
+                                <span class="error-message" id="priceError" aria-live="polite"></span>
                             </div>
 
                             <!-- 商品圖片上傳 -->
@@ -343,6 +357,7 @@
                                        name="productImage"
                                        accept="image/*"
                                        onchange="launchPreviewImage(event)" />
+                                <span class="error-message" id="productImageError" aria-live="polite"></span>
                             </div>
 
                             <div class="image-container d-flex mt-3">
@@ -357,7 +372,7 @@
                                 </div>
                             </div>
                             <!-- 新增裁剪图片的确认按钮 -->
-                            <div class="btn-group">
+                            <div id="cropper-btns-group" class="btn-group" style="display: none;">
                                 <button type="button" class="btn btn-custom mt-3" id="rotateLeftButton" style="display: none;"><i class="fa-solid fa-rotate-left"></i></button>
                                 <button type="button" class="btn btn-custom mt-3" id="rotateRightButton" style="display: none;"><i class="fa-solid fa-rotate-right"></i></button>
                                 <button type="button" class="btn btn-custom mt-3" id="resetButton" style="display: none;"><i class="fa-solid fa-rotate"></i></button>
@@ -377,6 +392,7 @@
                                        name="stock"
                                        placeholder="請輸入庫存數量"
                                        aria-label="庫存數量" />
+                                <span class="error-message" id="stockError" aria-live="polite"></span>
                             </div>
 
                             <!-- 商品分類 -->
@@ -386,7 +402,7 @@
                                 </div>
                                 <select class="form-select"
                                         id="subcategoryNo"
-                                        name="subcategoryNo" 
+                                        name="subcategoryNo"
                                         onchange="updateItemOptions()">
                                     <option value="">請選擇商品分類</option>
                                     <!-- 動態生成選項 -->
@@ -395,6 +411,7 @@
                                         <option value="@subcategory.SubcategoryNo">@subcategory.SubcategoryName</option>
                                     }
                                 </select>
+                                <span class="error-message" id="subcategoryNoError" aria-live="polite"></span>
                             </div>
 
                             <!-- 品項分類 -->
@@ -405,8 +422,9 @@
                                 <select class="form-select"
                                         id="itemNo"
                                         name="itemNo">
-                                    <!-- 品項選項將根據AJAX請求進行更新 -->                      
+                                    <!-- 品項選項將根據AJAX請求進行更新 -->
                                 </select>
+                                <span class="error-message" id="itemNoError" aria-live="polite"></span>
                             </div>
 
                             <!-- 商品描述 -->
@@ -420,6 +438,7 @@
                                           rows="3"
                                           placeholder="請輸入商品描述"
                                           aria-label="商品描述"></textarea>
+                                <span class="error-message" id="descriptionError" aria-live="polite"></span>
                             </div>
 
                             <!-- 單位數量 -->
@@ -433,6 +452,7 @@
                                        name="quantity"
                                        placeholder="請輸入商品單位數量"
                                        aria-label="單位數量" />
+                                <span class="error-message" id="quantityError" aria-live="polite"></span>
                             </div>
 
                             <!-- 重量 -->
@@ -446,6 +466,7 @@
                                        name="weight"
                                        placeholder="請輸入商品重量"
                                        aria-label="重量" />
+                                <span class="error-message" id="weightError" aria-live="polite"></span>
                             </div>
 
                             <!-- 成分 -->
@@ -459,6 +480,7 @@
                                        name="component"
                                        placeholder="請輸入商品成分"
                                        aria-label="成分" />
+                                <span class="error-message" id="componentError" aria-live="polite"></span>
                             </div>
 
                             <!-- 折扣百分比 -->
@@ -474,6 +496,7 @@
                                        name="discountPercent"
                                        placeholder="請輸入折扣比率"
                                        aria-label="折扣比率" />
+                                <span class="error-message" id="discountPercentError" aria-live="polite"></span>
                             </div>
 
                             <!-- 送出按鈕 -->
@@ -493,7 +516,7 @@
 <!-- 商品編輯的彈跳視窗 -->
 <form id="editProductForm" enctype="multipart/form-data">
     <div class="modal modal-n fade"
-         id="editProductModal"         
+         id="editProductModal"
          aria-hidden="true"
          aria-labelledby="editProductModalLabel"
          tabindex="-1">
@@ -794,6 +817,18 @@
                     window.location.href = '@Url.Action("SellerInformation", "Store")'; // 導向賣場資料填寫頁面
                 }, 3000);  // 延遲 3 秒 (3000 毫秒)
             }
+
+            // 檢查賣場資料是否已經設置
+            var isStoreSetup = '@Model.IsStoreSetup';
+            var addButton = document.getElementById('addProductButton');
+
+            if (isStoreSetup === 'False') { // 如果沒有設置賣場資料
+                addButton.disabled = true;
+                addButton.setAttribute('title', '您尚未填寫賣場基本資料，無法新增商品。');
+            } else {
+                addButton.disabled = false; // 賣場已設置，啟用按鈕
+                addButton.removeAttribute('title'); // 移除警告提示
+            }
         });
 
         function showErrorToast(message) {
@@ -806,10 +841,141 @@
 
         //-----商品上架功能---------------------------------------------------------------
         // 商品上架modal送出按鈕綁定事件，顯示確認的Modal
-        $('#confirmSubmitButton').click(function (e) {
+        document.getElementById('confirmSubmitButton').addEventListener('click', async function (e) {
             e.preventDefault(); // 阻止表單的默認提交
-            $('#confirmSubmitModal').modal('show');
+
+            //前端表單驗證
+            // 清除先前的錯誤訊息
+            clearErrorMessages();
+
+            let isValid = true;
+
+            // 驗證商品名稱
+            const productName = document.getElementById('productName').value.trim();
+            const productSid = document.getElementById('productSid').value.trim() || '0'; // 假設有一個隱藏欄位存儲productSid，如果沒有傳遞ProductSid，設定為'0'
+            if (!productName) {
+                displayErrorMessage('productNameError', '商品名稱為必填項目');
+                isValid = false;
+            } else {
+                // 使用 async/await 進行檢查
+                const api = '@Url.Content("~/Frontstage/StoreApi/CheckProductName")';
+                try {
+                    const response = await fetch(`${api}?productName=${productName}&productSid=${productSid}`);
+                    const data = await response.json();
+                    // 嚴格判斷存在的情況
+                    if (data.exists === true) {
+                        displayErrorMessage('productNameError', '商品名稱已被使用，請填寫其他名稱');
+                        isValid = false;
+                    }
+                } catch (error) {
+                    console.error('檢查商品名稱時發生錯誤:', error);
+                }
+            }
+
+            // 驗證商品價格
+            const price = document.getElementById('price').value;
+            if (!price || price <= 0) {
+                displayErrorMessage('priceError', '商品價格必須大於0');
+                isValid = false;
+            }
+
+            // 驗證商品圖片
+            const productImage = document.getElementById('productImage').files[0];
+            if (productImage) {
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif'];
+                if (!validImageTypes.includes(productImage.type)) {
+                    displayErrorMessage('productImageError', '只允許上傳 JPEG, PNG, GIF 或 jfif 格式的圖片');
+                    isValid = false;
+                }
+                if (productImage.size > 2 * 1024 * 1024) { // 2MB
+                    displayErrorMessage('productImageError', '圖片大小不能超過 2MB');
+                    isValid = false;
+                }
+            }
+
+            // 驗證庫存數量
+            const stock = document.getElementById('stock').value;
+            if (!stock || stock <= 0) {
+                displayErrorMessage('stockError', '庫存數量必須大於0');
+                isValid = false;
+            }
+
+            // 驗證商品分類
+            const subcategoryNo = document.getElementById('subcategoryNo').value;
+            if (!subcategoryNo) {
+                displayErrorMessage('subcategoryNoError', '請選擇商品分類');
+                isValid = false;
+            }
+
+            // 驗證品項分類
+            const itemNo = document.getElementById('itemNo').value;
+            if (!itemNo) {
+                displayErrorMessage('itemNoError', '請選擇品項分類');
+                isValid = false;
+            }
+
+            // 驗證商品描述
+            const description = document.getElementById('description').value.trim();
+            if (!description) {
+                displayErrorMessage('descriptionError', '商品描述為必填項目');
+                isValid = false;
+            }
+
+            // 驗證單位數量
+            const quantity = document.getElementById('quantity').value.trim();
+            if (!quantity || quantity <= 0) {
+                displayErrorMessage('quantityError', '商品單位數量必須大於0');
+                isValid = false;
+            }
+
+            // 驗證重量
+            const weight = document.getElementById('weight').value.trim();
+            if (!weight || weight <= 0) {
+                displayErrorMessage('weightError', '商品重量必須大於0');
+                isValid = false;
+            }
+
+            // 驗證成分
+            const component = document.getElementById('component').value.trim();
+            if (!component) {
+                displayErrorMessage('componentError', '商品成分為必填項目');
+                isValid = false;
+            }
+
+            // 驗證折扣比率是否為必填項目以及數值範圍
+            const discountPercent = document.getElementById('discountPercent').value;
+            if (discountPercent === '') {
+                displayErrorMessage('discountPercentError', '折扣比率為必填項目');
+                isValid = false;
+            } else if (discountPercent < 0 || discountPercent > 1) {
+                displayErrorMessage('discountPercentError', '折扣比率必須介於 0 至 1 之間');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // 表單驗證通過，顯示確認的Modal
+                const confirmSubmitModal = new bootstrap.Modal(document.getElementById('confirmSubmitModal'));
+                confirmSubmitModal.show();
+            }
         });
+
+        //表單驗證錯誤訊息的方法
+        function displayErrorMessage(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.add('active'); // 顯示錯誤訊息
+            }
+        }
+
+        //清除表單驗證錯誤訊息的方法
+        function clearErrorMessages() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(errorElement => {
+                errorElement.textContent = '';
+                errorElement.classList.remove('active'); // 隱藏錯誤訊息
+            });
+        }
 
         //根據商品分類再局部更新品項分類的下拉式選單
         async function updateItemOptions() {
@@ -837,16 +1003,17 @@
 
         //確認的Modal按下"是"，提交表單給ProductLaunch的API
         document.getElementById('confirmSubmitYes').addEventListener('click', async function () {
-            // 获取表单元素
+
+            // 獲取表單元素
             const form = document.getElementById('productForm');
             formData = new FormData(form);
 
-            // 获取上传的原始文件
+            // 獲取上傳的原始文件
             const fileInput = document.getElementById('productImage');
             const originalFile = fileInput.files[0];
 
             if (croppedImageBlob && originalFile) {
-                // 获取原始文件名并将其用于裁剪后的文件名
+                // 獲取原始文件名稱並將其用於裁剪後的文件名稱
                 const originalFileName = originalFile.name;
                 const croppedFileName = `cropped_${originalFileName}`; // 添加前缀以区分裁剪后的文件
 
@@ -869,8 +1036,8 @@
                     showCreateToast('商品已成功送出審核!');
 
                     // 當表單被提交後
-                    form.reset(); // 清空表单内容               
-                    document.getElementById('launchImagePreview').src = '/images/noimage2.jpg'; // 恢復到預設的圖片                   
+                    form.reset(); // 清空表单内容
+                    document.getElementById('launchImagePreview').src = '/images/noimage2.jpg'; // 恢復到預設的圖片
                     document.getElementById('croppedCanvas').style.display = 'none'
                     document.getElementById('cropImageButton').style.display = 'none'; // 隱藏裁剪按鈕
 
@@ -886,7 +1053,7 @@
                     // 更新審核中页面的商品列表
                     afterLaunchaddProductToReviewingTab(result.newProduct);
 
-                    // 关闭兩個弹出窗口            
+                    // 关闭兩個弹出窗口
                     const confirmSubmitModal = bootstrap.Modal.getInstance(document.getElementById('confirmSubmitModal'));
                     confirmSubmitModal.hide();
                     const exampleModal = bootstrap.Modal.getInstance(document.getElementById('exampleModalToggle'));
@@ -914,18 +1081,19 @@
         // 更新審核中分頁局部内容
         function afterLaunchaddProductToReviewingTab(product) {
             const table = document.querySelector('#pills-two tbody');
+            table.innerHTML = '';
             const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const newRow = `
-                <tr id="product-row-${product.productSid}">
-                    <td>${product.productName}</td>
-                    <td>$${formattedPrice}</td>
-                    <td>${product.stock}</td>
-                    <td>${product.launchTime}</td>
-                    <td>
-                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
-                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
-                    </td>
-                </tr>`;
+                                <tr id="product-row-${product.productSid}">
+                                    <td>${product.productName}</td>
+                                    <td>$${formattedPrice}</td>
+                                    <td>${product.stock}</td>
+                                    <td>${product.launchTime}</td>
+                                    <td>
+                                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
+                                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
+                                    </td>
+                                </tr>`;
             table.insertAdjacentHTML('afterbegin', newRow);
         }
 
@@ -939,6 +1107,8 @@
         document.getElementById('exampleModalToggle').addEventListener('hide.bs.modal', function (e) {
             // 重置表单
             document.getElementById('productForm').reset();
+            // 清除錯誤訊息
+            clearErrorMessages();
             // 清空圖片預覽
             document.getElementById('launchImagePreview').src = '@Url.Content("~/images/noimage2.jpg")';
             document.getElementById('croppedCanvas').style.display = 'none';
@@ -960,12 +1130,12 @@
             croppedImageBlob = null;
         });
 
-        //-----編輯功能---------------------------------------------------------------        
+        //-----編輯功能---------------------------------------------------------------
         // 點擊編輯按鈕，發送請求取得商品資料，並將資料顯示在編輯的modal中
         async function openEditModal(productSid) {
             try {
                 // 重置上傳的檔案的input，讓其不顯示上次上傳的檔案名稱
-                document.getElementById('editProductModal').addEventListener('shown.bs.modal', function () {                    
+                document.getElementById('editProductModal').addEventListener('shown.bs.modal', function () {
                     document.getElementById('editproductImage').value = '';
                 });
 
@@ -1002,7 +1172,7 @@
             e.preventDefault(); // 阻止表單的默認提交
             $('#confirmEditModal').modal('show');
         });
-            
+
 
         // 編輯:當使用者按下 "是" 時，提交表單
         document.getElementById('confirmEditYes').addEventListener('click', async function () {
@@ -1029,7 +1199,7 @@
 
                     // 局部更新表格中的商品資料
                     editProductToLaunchTab(result);
-                   
+
 
                     // 隱藏編輯的modal和確認的modal
                     const confirmEditModal = bootstrap.Modal.getInstance(document.getElementById('confirmEditModal'));
@@ -1158,32 +1328,109 @@
         let flipX = 1; // 記錄水平翻轉狀態
         let flipY = 1; // 記錄垂直翻轉狀態
 
-        function launchPreviewImage(event) {
+         function launchPreviewImage(event) {
             const image = document.getElementById('launchImagePreview');
+            const croppedCanvas = document.getElementById('croppedCanvas'); // 裁剪結果的畫布
             const file = event.target.files[0];
+
+            // 隱藏所有按鈕及裁剪容器（確保在初始化前不顯示）
+            document.getElementById('cropper-btns-group').style.display = 'none';
+            document.getElementById('cropImageButton').style.display = 'none';
+            document.getElementById('rotateLeftButton').style.display = 'none';
+            document.getElementById('rotateRightButton').style.display = 'none';
+            document.getElementById('resetButton').style.display = 'none';
+            document.getElementById('flipHorizontalButton').style.display = 'none';
+            document.getElementById('flipVerticalButton').style.display = 'none';
+
+            // 檢查文件是否存在
+            if (!file) {
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null; // 清空 cropper 變數
+                }
+
+                croppedImageBlob = null;
+
+                const ctx = croppedCanvas.getContext('2d');
+                ctx.clearRect(0, 0, croppedCanvas.width, croppedCanvas.height); // 清除畫布內容
+                croppedCanvas.style.display = 'none'; // 隱藏裁剪畫布
+
+                image.src = '@Url.Content("~/Images/NoImage2.jpg")'; // 使用替代圖片
+                image.style.display = 'block';
+                return;
+            }
+
+            // 檢查圖片格式
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif'];
+            if (!validImageTypes.includes(file.type)) {
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null; // 清空 cropper 變數
+                }
+
+                croppedImageBlob = null;
+
+                const ctx = croppedCanvas.getContext('2d');
+                ctx.clearRect(0, 0, croppedCanvas.width, croppedCanvas.height); // 清除畫布內容
+                croppedCanvas.style.display = 'none'; // 隱藏裁剪畫布
+
+                image.src = '@Url.Content("~/Images/NoImage2.jpg")' // 使用替代圖片
+                image.style.display = 'block';
+                return;
+            }
+
+            // 檢查圖片大小（2MB 以下）
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null; // 清空 cropper 變數
+                }
+
+                croppedImageBlob = null;
+
+                const ctx = croppedCanvas.getContext('2d');
+                ctx.clearRect(0, 0, croppedCanvas.width, croppedCanvas.height); // 清除畫布內容
+                croppedCanvas.style.display = 'none'; // 隱藏裁剪畫布
+
+                image.src = '@Url.Content("~/Images/NoImage2.jpg")'; // 使用替代圖片
+                image.style.display = 'block';
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = function (e) {
                 image.src = e.target.result;
                 image.style.display = 'block';
 
+                // 銷毀舊的 Cropper 實例
                 if (cropper) {
                     cropper.destroy();
+                    cropper = null; // 清空 cropper 變數
                 }
+
+                const ctx = croppedCanvas.getContext('2d');
+                ctx.clearRect(0, 0, croppedCanvas.width, croppedCanvas.height); // 清除畫布內容
+                croppedCanvas.style.display = 'none'; // 隱藏裁剪畫布
+
+                // 初始化新的 Cropper 實例
                 cropper = new Cropper(image, {
                     aspectRatio: NaN,
-                    viewMode: 1
+                    viewMode: 1,
+                    ready: function () {
+                        // 確保 Cropper 實例初始化完成後再顯示按鈕
+                        document.getElementById('cropper-btns-group').style.display = 'flex';
+                        document.getElementById('cropImageButton').style.display = 'inline-block';
+                        document.getElementById('rotateLeftButton').style.display = 'inline-block';
+                        document.getElementById('rotateRightButton').style.display = 'inline-block';
+                        document.getElementById('resetButton').style.display = 'inline-block';
+                        document.getElementById('flipHorizontalButton').style.display = 'inline-block';
+                        document.getElementById('flipVerticalButton').style.display = 'inline-block';
+                    }
                 });
-
-                document.getElementById('cropImageButton').style.display = 'inline-block';
-                document.getElementById('rotateLeftButton').style.display = 'inline-block';
-                document.getElementById('rotateRightButton').style.display = 'inline-block';
-                document.getElementById('resetButton').style.display = 'inline-block';
-                document.getElementById('flipHorizontalButton').style.display = 'inline-block';
-                document.getElementById('flipVerticalButton').style.display = 'inline-block';
             };
             reader.readAsDataURL(file);
         }
+
 
         // 当用户点击裁剪按钮时，获取裁剪后的图像
         document.getElementById('cropImageButton').addEventListener('click', function () {
@@ -1281,14 +1528,22 @@
                     reviewingProductsTable.innerHTML = ''; // 清空表格
 
                     // 添加新的當前上架商品到表格
-                    data.currentProducts.forEach(product => {
-                        addProductToLaunchTab(product); // 將商品新增到當前上架分頁
-                    });
+                    if (data.currentProducts && data.currentProducts.length > 0) {
+                        data.currentProducts.forEach(product => {
+                            addProductToLaunchTab(product); // 將商品新增到當前上架分頁
+                        });
+                    } else {
+                        currentProductsTable.innerHTML = `<tr><td colspan="5">目前沒有上架中的商品</td></tr>`;
+                    }
 
                     // 添加新的審核中商品到表格
-                    data.reviewingProducts.forEach(product => {
-                        addProductToReviewingTab(product); // 將商品新增到審核中分頁
-                    });
+                    if (data.reviewingProducts && data.reviewingProducts.length > 0) {
+                        data.reviewingProducts.forEach(product => {
+                            addProductToReviewingTab(product); // 將商品新增到審核中分頁
+                        });
+                    } else {
+                        reviewingProductsTable.innerHTML = `<tr><td colspan="5">目前沒有審核中的商品</td></tr>`;
+                    }
 
                 } else {
                     alert('重整失敗，請稍後再試。');
@@ -1314,16 +1569,16 @@
             const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const formattedDate = formatDate(product.launchTime);
             const newRow = `
-                <tr id="product-row-${product.productSid}">
-                    <td>${product.productName}</td>
-                    <td>$${formattedPrice}</td>
-                    <td>${product.stock}</td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
-                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">刪除</button>
-                    </td>
-                </tr>`;
+                                <tr id="product-row-${product.productSid}">
+                                    <td>${product.productName}</td>
+                                    <td>$${formattedPrice}</td>
+                                    <td>${product.stock}</td>
+                                    <td>${formattedDate}</td>
+                                    <td>
+                                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
+                                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">刪除</button>
+                                    </td>
+                                </tr>`;
             table.insertAdjacentHTML('beforeend', newRow);
         }
 
@@ -1334,21 +1589,21 @@
             const formattedPrice = product.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const formattedDate = formatDate(product.launchTime);
             const newRow = `
-                <tr id="product-row-${product.productSid}">
-                    <td>${product.productName}</td>
-                    <td>$${formattedPrice}</td>
-                    <td>${product.stock}</td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
-                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
-                    </td>
-                </tr>`;
+                                <tr id="product-row-${product.productSid}">
+                                    <td>${product.productName}</td>
+                                    <td>$${formattedPrice}</td>
+                                    <td>${product.stock}</td>
+                                    <td>${formattedDate}</td>
+                                    <td>
+                                        <button class="btn btn-custom" onclick="openEditModal(${product.productSid})">編輯</button>
+                                        <button class="btn btn-custom" onclick="openDeleteModal(${product.productSid})">取消審核</button>
+                                    </td>
+                                </tr>`;
             table.insertAdjacentHTML('beforeend', newRow);
         }
 
         // 新增DEMO按鈕自動填入欄位值
-        document.getElementById('addDemoButton').addEventListener('click', function () {            
+        document.getElementById('addDemoButton').addEventListener('click', function () {
             document.getElementById('productName').value = '霆霆葉黃素蛋';
             document.getElementById('price').value = 200;
             document.getElementById('stock').value = 500;
