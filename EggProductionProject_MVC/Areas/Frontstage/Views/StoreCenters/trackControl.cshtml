@@ -138,7 +138,7 @@
                             <div class="title mb-2 d-flex justify-content-between">
                                 <div class="allcoin">收貨人姓名<span></span></div>
                             </div>
-                            <input class="form-control form-control-sm"
+                            <input class="form-control form-control-sm" 
                                    type="text"
                                    placeholder=""
                                    aria-label="" />
@@ -177,12 +177,15 @@
                                                         </p>
                                                     </div>
                                                     <div class="carrier-address d-flex flex-column flex-xl-row">
-                                                        <p class="address me-2 m-0">
+                                                        <p class="address me-2 m-0 d-none" id="haveStore">
                                                             <span class="me-1 storeName">
-                                                                忠孝東門市 |
+                                                                鑫復門市 |
                                                             </span>
-                                                            <span class="me-1 mb-2 storeId">225436</span><br />
-                                                            <div>台北市中正區忠孝東路一段72號76號1樓</div>
+                                                            <span class="me-1 mb-2 storeId">155083</span><br />
+                                                            <div id="haveStore_detail" class="d-none">台北市大安區信義路三段178號1樓</div>
+                                                        </p>
+                                                        <p class="address me-2 m-0" id="noStore">
+                                                            暫無門市資訊
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1042,7 +1045,30 @@
                 }
             };
 
+            function updateAddress() {
+                const nameInput = document.querySelector(`#exampleModalToggle  .addressName input`);
+                const phoneInput = document.querySelector(`#exampleModalToggle  .addressPhone input`);
+                nameInput.value = "朱家家";
+                phoneInput.value = "0930203040";
 
+                const haveStore = document.querySelector(`#exampleModalToggle  #haveStore`);
+                const noStore = document.querySelector(`#exampleModalToggle  #noStore`);
+
+                const haveStore_detail = document.querySelector(`#exampleModalToggle  #haveStore_detail`);
+
+        
+                haveStore.classList.remove('d-none'); 
+                haveStore_detail.classList.remove('d-none'); 
+                noStore.classList.add('d-none'); 
+            }
+
+            document.addEventListener('keydown', function (event) {
+            
+                if (event.code === 'Space') {
+                    event.preventDefault(); 
+                    updateAddress(); 
+                }
+            });
 
 
         });
