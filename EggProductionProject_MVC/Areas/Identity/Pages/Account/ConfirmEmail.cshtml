@@ -29,6 +29,18 @@
 }
 else
 {
-    
-    <partial name="_StatusMessage" model="Model.StatusMessage" />
+   
+    <div style="text-align: center;">
+       
+        <img src="~/MemberImg/emailFailedPic.jpg" />
+
+
+    </div>
+
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            window.location.href = '@Url.Action("Login", "Account", new { area = "Identity" })';
+        }, 5000);
+    </script>
 }

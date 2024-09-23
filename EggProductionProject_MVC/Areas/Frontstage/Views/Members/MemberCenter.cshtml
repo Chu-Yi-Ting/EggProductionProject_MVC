@@ -243,7 +243,7 @@
 	<div class="col-12">
 		<div class="d-flex flex-column align-items-center">
 			<div class="page-title memberCenter-outer-title">
-				<h5 class="mb-3 page-title-in" style="border: 2px solid;">會員中心</h5>
+				<h5 id="memberCenterText" class="mb-3 page-title-in" style="border: 2px solid;">會員中心</h5>
 			</div>
 			<div class="tab-see outer-nav my-1">
 				<ul class="nav nav-pills mb-1 tab-controll-n" id="outers-tab" role="tablist">
@@ -1879,6 +1879,21 @@
 
 			});
 
+		});
+		//-----------------------自動輸入------------------------
+		let isFirstAccount = true; // 用來追蹤目前的帳號
+
+		document.getElementById("memberCenterText").addEventListener("click", function () {
+			if (isFirstAccount) {
+				// 填入第一組帳號密碼
+				document.getElementById("username").value = "姜尚";
+				document.getElementById("phone").value = "0919941180";
+				document.getElementById("birthdate").value = "1996-04-18";
+			} else {
+				
+			}
+			// 切換帳號狀態
+			isFirstAccount = !isFirstAccount;
 		});
 	</script>
 }
