@@ -155,7 +155,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         if (member.Name != null) { HttpContext.Session.SetString("userName", member.Name); }
                         if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
                         HttpContext.Session.SetInt32("userMemberSid", member.MemberSid);
-                        HttpContext.Session.SetString("userId", user.Id);                 
+                        HttpContext.Session.SetString("userId", user.Id);
+                        HttpContext.Session.SetInt32("IsChickFarm", (int)member.IsChickFarm);
 
                         if (member.IsBlocked == 1)
                         {
@@ -184,6 +185,8 @@ namespace EggProductionProject_MVC.Areas.Identity.Pages.Account
                         if (member.ProfilePic != null) { HttpContext.Session.SetString("userProfilePic", member.ProfilePic); }
                         HttpContext.Session.SetInt32("userMemberSid", member.MemberSid);
                         HttpContext.Session.SetString("userId", user.Id);
+                        HttpContext.Session.SetInt32("IsChickFarm", (int)member.IsChickFarm);
+                        
 
                         if (member.IsBlocked == 1)
                         {
