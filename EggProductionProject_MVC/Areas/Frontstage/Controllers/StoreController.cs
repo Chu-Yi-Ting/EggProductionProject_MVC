@@ -151,9 +151,9 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             // 3. 檢查是否已經存在該會員的賣場，若無則創建新的 Store 資料
             var store = _context.Stores.FirstOrDefault(s => s.MemberSid == member.MemberSid);
 
-            // 4.檢查賣場名稱是否已存在（排除當前賣場）
+            // 4.檢查賣場名稱是否已存在（排除當前賣場）       
             var existingStore = _context.Stores
-                .FirstOrDefault(s => s.Company == model.storeName && s.StoreSid != store.StoreSid);
+                .FirstOrDefault(s => s.Company == model.storeName && (store == null || s.StoreSid != store.StoreSid));
 
             if (existingStore != null)
             {

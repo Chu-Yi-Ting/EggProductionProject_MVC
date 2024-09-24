@@ -31,7 +31,7 @@
             position: relative;
             z-index: 10; /* 確保它顯示在影片上方 */
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             padding: 40px;
             padding-top: 100px;
             border-radius: 10px;
@@ -80,12 +80,12 @@
     </video>
 
                 <div class="login-box">
-                    <h1>重新寄送驗證信</h1>
+                    <h1 id="resendText">重新寄送驗證信</h1>
                     <form method="post" id="resendEmailForm">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" />
+                            <input asp-for="Input.Email" class="form-control" id="emailInput"/>
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 me-2">確定</button>
@@ -139,6 +139,23 @@
                     }
                 });
             });
+        });
+
+        //-----------------------自動輸入------------------------
+        let isFirstAccount = true; // 用來追蹤目前的帳號
+
+        document.getElementById("resendText").addEventListener("click", function () {
+            if (isFirstAccount) {
+                // 填入第一組帳號密碼
+                document.getElementById("emailInput").value = "johnson041804182@gmail.com";
+               
+            } else {
+                // 填入第二組帳號密碼
+                document.getElementById("emailInput").value = "";
+                
+            }
+            // 切換帳號狀態
+            isFirstAccount = !isFirstAccount;
         });
     </script>
 }
