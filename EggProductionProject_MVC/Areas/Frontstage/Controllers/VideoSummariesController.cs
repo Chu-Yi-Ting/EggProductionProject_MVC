@@ -126,7 +126,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
             var TotalVideo = _context.VideoSummaries
                 .Include(M => M.CreatorS)
                 .Include(M=> M.CreatorS.MemberS)
-                .Where(M => M.VideoSid != videoid)
+                .Where(M => M.VideoSid != videoid && M.PublicStatusNo == 1)
                 .Select(M => new TotalVideoDTO
                 {
                     VideoSid = M.VideoSid,
@@ -136,6 +136,7 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers
                     UploadDate = M.UploadDate,
                     NumberName = M.CreatorS.MemberS.Name,
                 });
+
             return Json(TotalVideo);
         }
 

@@ -183,11 +183,11 @@
                     <img src="~/assets/brand/common/loudspeaker.svg" alt="loudspeaker" style="width: 24px;">
                     <span style="font-size: 14px;">流程提醒 : 完成新增後，經GOOD EGG官方審核，產品將自動上架!!</span>
                 </div>
-                <div class="search-box d-flex justify-content-end align-items-center mb-3">
+                <div class="search-box d-flex justify-content-end align-items-center mb-1">
                     <!-- 新增商品的彈跳視窗按鈕 -->
-                    <button id="addProductButton" class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" @(Model.IsStoreSetup ? "" : "disabled")>新增</button>
+                    <button id="addProductButton" class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" style="white-space:nowrap;" @(Model.IsStoreSetup ? "" : "disabled")>新增</button>
                     <button class="btn btn-custom me-2" id="refreshButton"><i class="fa-solid fa-rotate-right"></i></button>
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                         <input type="text" class="form-control" placeholder="輸入商品名稱"
                                aria-label="輸入商品名稱" aria-describedby="button-addon2">
                         <button class="btn btn-custom" type="button" id="button-addon2">
@@ -246,8 +246,8 @@
                     <img src="~/assets/brand/common/loudspeaker.svg" alt="" style="width: 24px;">
                     <span style="font-size: 14px;">流程提醒 : 耐心等待GOOD EGG官方審核，商品將自動上架!!</span>
                 </div>
-                <div class="search-box d-flex justify-content-end align-items-center mb-3">
-                    <div class="input-group mb-3">
+                <div class="search-box d-flex justify-content-end align-items-center mb-1">
+                    <div class="input-group">
                         <input type="text" class="form-control" placeholder="輸入商品名稱"
                                aria-label="輸入商品名稱" aria-describedby="button-addon2">
                         <button class="btn btn-custom" type="button" id="button-addon2">
