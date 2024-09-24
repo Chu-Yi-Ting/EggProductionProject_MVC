@@ -29,6 +29,10 @@ namespace EggProductionProject_MVC.Areas.Frontstage.Controllers.Data
 		public async Task<IActionResult> FeedData(EggProductionProject_MVC.Models.Calendar Calendar)
 		{
 			var MemberSid = HttpContext.Session.GetInt32("userMemberSid");
+            var IsChickFarm = HttpContext.Session.GetInt32("IsChickFarm");
+
+            if(IsChickFarm==0)
+                return Ok(new { success = false });
             try
             {
                 var result1 = await ((from c in _context.AreaFeeds
