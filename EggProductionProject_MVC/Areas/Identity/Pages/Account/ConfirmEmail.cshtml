@@ -7,6 +7,9 @@
    
 
 }
+@{
+    Layout = "_layout";
+}
 
 @* <h2>信箱驗證成功！</h2> *@
 
@@ -14,8 +17,8 @@
 @if (!string.IsNullOrEmpty(userId) && (Model.StatusMessage != "驗證連結無效或已過期"))
 {
     <div style="text-align: center;">
-        @* <partial name="_StatusMessage" model="Model.StatusMessage" /> *@
-        <img src="~/MemberImg/emailConfirmed.png" />
+        
+        <img style="width:100%" src="~/MemberImg/emailConfirmed.png" />
         
 
     </div>
@@ -24,7 +27,7 @@
      <script type="text/javascript">
         setTimeout(function () {
             window.location.href = '@Url.Action("Login", "Account", new { area = "Identity" })';
-        }, 5000);
+        }, 4000);
     </script>
 }
 else
@@ -41,6 +44,6 @@ else
     <script type="text/javascript">
         setTimeout(function () {
             window.location.href = '@Url.Action("Login", "Account", new { area = "Identity" })';
-        }, 5000);
+        }, 4000);
     </script>
 }
